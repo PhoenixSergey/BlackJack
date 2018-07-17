@@ -5,6 +5,7 @@ using BlackJack.Entities.Enum;
 using BlackJack.GameViewModel;
 using BlackJack.ViewModels.GameViewModel;
 using BlackJack.ViewModels.GameViewModel.Enum;
+using BlackJack.ViewModels.HistoryViewModel;
 using BusinessLogic.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,10 +43,28 @@ namespace BusinessLogic
             return playerEndGameViewItem;
         }
 
+        public async Task<PlayerGameDetailsHistoryViewItem> PlayerToPlayerGameDetails(Player player)
+        {
+            PlayerGameDetailsHistoryViewItem playerGameDetailsHistoryViewItem = new PlayerGameDetailsHistoryViewItem
+            {
+                Id = player.Id,
+                Name = player.Name,
+                Role = (RoleViewModel)player.Role
+            };
+
+            return playerGameDetailsHistoryViewItem;
+        }
+
         public async Task<CardCurrentGameGameViewItem> CardToCardCurrentGame(Card card)
         {
             var cardCurrentGameGameViewItem = Mapper.Map<Card, CardCurrentGameGameViewItem>(card);
             return cardCurrentGameGameViewItem;
+        }
+
+        public async Task<CardGameDetailsHistoryViewItem> CardToCardGameDetails(Card card)
+        {
+            var cardGameDetailsHistoryViewItem = Mapper.Map<Card, CardGameDetailsHistoryViewItem>(card);
+            return cardGameDetailsHistoryViewItem;
         }
 
         public async Task<CardEndGameGameViewItem> CardToCardEndGame(Card card)

@@ -59,25 +59,13 @@ namespace BusinessLogic.Services
             foreach (var p in groupedCustomerList)
             {
                 var playerOnGame = await _playersRepository.Get(p.Key);
-                PlayerGameDetailsHistoryViewItem playerOnTheGame = new PlayerGameDetailsHistoryViewItem
-                {
-                    Id = playerOnGame.Id,
-                    Name = playerOnGame.Name,
-                    Role = (RoleViewModel)playerOnGame.Role,
-                    Result = (ResultViewModel)(await _playersGamesRepository.GetPlayerStatusOnTheGame(gameId, p.Key)),
-
-                };
+                var playerOnTheGame = await _mappingServices.PlayerToPlayerGameDetails(playerOnGame);
+                playerOnTheGame.Result = (ResultViewModel)(await _playersGamesRepository.GetPlayerStatusOnTheGame(gameId, p.Key));
                 playerOnTheGame.CardSum = await _gameService.CalculationPlayerCardSum(playerOnTheGame.Id, gameId);
                 playersOnTheGame.Add(playerOnTheGame);
                 foreach (var item in p)
                 {
-                    CardGameDetailsHistoryViewItem playerCard = new CardGameDetailsHistoryViewItem
-                    {
-                        Id = item.Card.Id,
-                        Name = item.Card.Name,
-                        Value = item.Card.Value,
-                        Suit = item.Card.Suit
-                    };
+                    var playerCard = await _mappingServices.CardToCardGameDetails(item.Card);                  
                     playerOnTheGame.PlayerCards.Add(playerCard);
                 }
             }
