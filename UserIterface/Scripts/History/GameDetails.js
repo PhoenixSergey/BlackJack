@@ -1,0 +1,1 @@
+﻿$("#button_view_history").kendoButton({});

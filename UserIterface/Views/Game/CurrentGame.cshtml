@@ -1,0 +1,35 @@
+﻿@using BlackJack.GameViewModel
+@model CurrentGameGameViewModel
+@{
+    ViewBag.Title = "Games";
+}
+<div>
+    <center><h4>Game # @Model.GameId.ToString()</h4></center>
+    <center>
+        <div id="results">
+            @{
+                Html.RenderPartial("ViewRound");
+            }
+        </div>
+        @using (Ajax.BeginForm("ViewRound", "Game", new AjaxOptions { UpdateTargetId = "results", OnSuccess = "onSuccess", HttpMethod = "Post" }))
+        {
+            @Html.HiddenFor(model => Model.GameId);
+            <div id="button_block">
+                <button id="button_take" type="submit">Take more</button>
+            </div>
+        }
+        <br />
+        @using (Html.BeginForm("EndGame", "Game", FormMethod.Post))
+        {
+            @Html.HiddenFor(model => Model.GameId);
+            <div id="button_block">
+                <button id="button_enough" type="submit">Enough</button>
+            </div>
+        }
+        <br />
+        <br />
+    </center>
+</div>
+@Scripts.Render("~/bundles/Game/CurrentGame")
+@Scripts.Render("~/scripts/jquery-3.3.1.js")
+@Scripts.Render("~/scripts/jquery.unobtrusive-ajax.js")

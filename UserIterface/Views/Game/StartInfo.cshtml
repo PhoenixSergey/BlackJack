@@ -1,0 +1,29 @@
+﻿@using BlackJack.ViewModels.GameViewModel
+@model StartInfoGameViewModel
+@{
+    ViewBag.Title = "BlackJack";
+    List<string> HumanPlayers = new List<string>();
+    foreach (PlayerStartInfoGameViewItem p in Model.HumanPLayers)
+    {
+        HumanPlayers.Add(p.Name);
+    }
+}
+<center><h1>Welcome to the game</h1></center>
+<center>
+    <div class="startGame">
+        @using (Html.BeginForm("CurrentGame", "Game", FormMethod.Post))
+        {
+            <h4>Enter your name or select player</h4>
+            <input id="ourPlayers" name="ourPlayers" />
+            <h4>Choose count bot-player</h4>
+            <input id="countBot" name="countBot" />
+            <h4>and start game</h4>
+            <button id="button_start" type="submit">Start</button>
+        }
+    </div>
+</center>
+<script>
+var array= JSON.parse('@Newtonsoft.Json.JsonConvert.SerializeObject(HumanPlayers)'.replace(/&quot;/g, "\""));
+</script>
+@Scripts.Render("~/bundles/Game/StartInfo")
+

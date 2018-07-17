@@ -1,0 +1,3 @@
+C:\Users\Anuitex\source\repos\BlackJack\test\obj\Debug\test.csprojAssemblyReference.cache
+C:\Users\Anuitex\source\repos\BlackJack\test\obj\Debug\test.exe.config
+C:\Users\Anuitex\source\repos\BlackJack\test\obj\Debug\test.csproj.CoreCompileInputs.cache

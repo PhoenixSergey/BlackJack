@@ -1,0 +1,64 @@
+﻿@using BlackJack.ViewModels.GameViewModel
+@model EndGameGameViewModel
+@{
+    ViewBag.Title = "EndGame";
+}
+<center><h2>End of Game</h2></center>
+<center><h2>Result</h2></center>
+<center>
+    <table class="table1">
+        <tr><th>Name </th><th>Role </th><th>Cards </th><th>Total points </th><th>Status </th></tr>
+        @foreach (var players in Model.PlayerList)
+        {
+            <tr>
+                <td>@players.Name</td>
+                <td>@players.Role.ToString()</td>
+                <td>
+                    @for (int i = 0; i < players.PlayerCards.Count; i++)
+                    {
+                        @players.PlayerCards[i].Name<text></text> @players.PlayerCards[i].Suit<text></text> @players.PlayerCards[i].Value
+                        <br />
+                    }
+                </td>
+                <td>
+                    @players.CardSum.ToString()
+                </td>
+                <td>
+                    @players.Result.ToString()
+                </td>
+            </tr>
+        }
+        <tr>
+            <td>@Model.DealerPlayer.Name</td>
+            <td>@Model.DealerPlayer.Role.ToString()</td>
+            <td>
+                @for (int i = 0; i < @Model.DealerPlayer.PlayerCards.Count; i++)
+                {
+                    @Model.DealerPlayer.PlayerCards[i].Name<text></text> @Model.DealerPlayer.PlayerCards[i].Suit<text></text> @Model.DealerPlayer.PlayerCards[i].Value
+                    <br />
+                }
+            </td>
+            <td>
+                @Model.DealerPlayer.CardSum.ToString()
+            </td>
+            <td>
+                -
+            </td>
+        </tr>
+    </table>
+    <br />
+    @using (Html.BeginForm("StartInfo", "Game", FormMethod.Post))
+    {
+        <div id="button_block">
+            <button id="button_start_new_game" type="submit">Start new game</button>
+        </div>
+    }
+    <br />
+    @using (Html.BeginForm("AllGames", "History", FormMethod.Post))
+    {
+        <div id="button_block">
+            <button id="button_view_history" type="submit">View history</button>
+        </div>
+    }
+</center>
+@Scripts.Render("~/bundles/Game/EndGame")
