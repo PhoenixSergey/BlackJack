@@ -1,5 +1,5 @@
 ﻿$("#button_start").kendoButton({});
-var data = array;
+var data = user;
 $("#ourPlayers").kendoComboBox({
     dataSource: data
 });

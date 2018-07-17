@@ -7,8 +7,7 @@ namespace BlackJack.ViewModels.GameViewModel
         public List<PlayerStartInfoGameViewItem> HumanPLayers = new List<PlayerStartInfoGameViewItem>();    
     }
     public class PlayerStartInfoGameViewItem
-    {
-        public int Id { get; set; }
+    {      
         public string Name { get; set; }
     }
 }

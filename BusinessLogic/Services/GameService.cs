@@ -1,4 +1,4 @@
-﻿using System;
+﻿                using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -227,7 +227,7 @@ namespace BusinessLogic
             return dealer;
         }
 
-        private async Task<int> CalculationPlayerCardSum(int playersOnTheGameId, int gameId)
+        public async Task<int> CalculationPlayerCardSum(int playersOnTheGameId, int gameId)
         {
             int cardSum = 0;
             var cardsForPlayer = (await _roundRepository.GetAllRoundsInTheGame(gameId))

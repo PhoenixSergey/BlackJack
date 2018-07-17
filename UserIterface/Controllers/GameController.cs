@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using BlackJack.ViewModels.GameViewModel.Enum;
 using BusinessLogic.Interfaces;
@@ -19,6 +20,7 @@ namespace UserIterface.Controllers
         {
             return View();
         }
+
 
         public async Task<ActionResult> StartInfo()
         {

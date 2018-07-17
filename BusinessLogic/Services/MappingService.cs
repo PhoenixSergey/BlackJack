@@ -64,7 +64,6 @@ namespace BusinessLogic
             {
                 var playerViewModel = new PlayerStartInfoGameViewItem
                 {
-                    Id = player.Id,
                     Name = player.Name
                 };
                 allHumanPlayers.HumanPLayers.Add(playerViewModel);

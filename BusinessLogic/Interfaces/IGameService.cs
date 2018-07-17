@@ -9,6 +9,7 @@ namespace BusinessLogic.Interfaces
         Task<CurrentGameGameViewModel> StartFirstRoundForAllPLayers(string ourPlayers, int countBot);
         Task<CurrentGameGameViewModel> ContinueGameForPlayer(int gameId);
         Task<EndGameGameViewModel> ContinueGameForDealer(int gameId);
-        Task<EndGameGameViewModel> GetInformationForEndGame(int gameId);    
+        Task<EndGameGameViewModel> GetInformationForEndGame(int gameId);
+        Task<int> CalculationPlayerCardSum(int playersOnTheGameId, int gameId);
     }
 }

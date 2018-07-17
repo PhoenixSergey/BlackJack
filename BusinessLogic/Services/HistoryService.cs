@@ -15,13 +15,15 @@ namespace BusinessLogic.Services
     public class HistoryService : IHistoryService
     {
         #region references   
+        private readonly IGameService _gameService;
         private readonly IPlayerRepository _playersRepository;
         private readonly IRoundRepository _roundRepository;
         private readonly IPlayersGamesRepository _playersGamesRepository;
         private readonly IGameRepository _gameRepository;
         private readonly ICardRepository _cardRepository;
         private readonly IMappingService _mappingServices;
-        public HistoryService(          
+        public HistoryService(
+            IGameService gameService,
             IPlayerRepository playersRepository,
             IRoundRepository roundRepository,
             IPlayersGamesRepository playersGamesRepository,
@@ -29,7 +31,8 @@ namespace BusinessLogic.Services
             ICardRepository cardRepository,
             IMappingService mappingServices
             )
-        {         
+        {
+            _gameService = gameService;
             _playersRepository = playersRepository;
             _roundRepository = roundRepository;
             _playersGamesRepository = playersGamesRepository;
@@ -50,20 +53,21 @@ namespace BusinessLogic.Services
         public async Task<GameDetailsHistoryViewModel> GetDetails(int gameId)
         {
             List<PlayerGameDetailsHistoryViewItem> playersOnTheGame = new List<PlayerGameDetailsHistoryViewItem>();
-            List<Round> roundGames = new List<Round>();
-            roundGames = (await _roundRepository.GetAllRoundsInTheGame(gameId)).ToList();
-            var groupedCustomerList = roundGames.GroupBy(u => u.Player.Id);
+            List<Round> roundsGame = new List<Round>();
+            roundsGame = (await _roundRepository.GetAllRoundsInTheGame(gameId)).ToList();
+            var groupedCustomerList = roundsGame.GroupBy(u => u.Player.Id);
             foreach (var p in groupedCustomerList)
             {
-                Player playeringames = new Player();
-                playeringames = await _playersRepository.Get(p.Key);
+                var playerOnGame = await _playersRepository.Get(p.Key);
                 PlayerGameDetailsHistoryViewItem playerOnTheGame = new PlayerGameDetailsHistoryViewItem
                 {
-                    Id = playeringames.Id,
-                    Name = playeringames.Name,
-                    Role = (RoleViewModel)playeringames.Role,
-                    Result = (ResultViewModel)(await _playersGamesRepository.GetPlayerStatusOnTheGame(gameId, p.Key))
+                    Id = playerOnGame.Id,
+                    Name = playerOnGame.Name,
+                    Role = (RoleViewModel)playerOnGame.Role,
+                    Result = (ResultViewModel)(await _playersGamesRepository.GetPlayerStatusOnTheGame(gameId, p.Key)),
+
                 };
+                playerOnTheGame.CardSum = await _gameService.CalculationPlayerCardSum(playerOnTheGame.Id, gameId);
                 playersOnTheGame.Add(playerOnTheGame);
                 foreach (var item in p)
                 {
@@ -79,14 +83,7 @@ namespace BusinessLogic.Services
             }
             var dealerPlayer = playersOnTheGame.Where(x => x.Role == (RoleViewModel)Role.Dealer).First();
             playersOnTheGame.Remove(dealerPlayer);
-            dealerPlayer.CardSum = 0;
-            await CalculationPlayerCardSum(dealerPlayer);
-            foreach (PlayerGameDetailsHistoryViewItem players in playersOnTheGame)
-            {
-                players.CardSum = 0;
-                await CalculationPlayerCardSum(players);
-                players.Result = (ResultViewModel)await _playersGamesRepository.GetPlayerStatusOnTheGame(gameId, players.Id);
-            }           
+            dealerPlayer.CardSum = await _gameService.CalculationPlayerCardSum(dealerPlayer.Id, gameId);
             GameDetailsHistoryViewModel detailsGameViewModel = new GameDetailsHistoryViewModel
             {
                 PlayerList = playersOnTheGame,
@@ -95,19 +92,5 @@ namespace BusinessLogic.Services
             };
             return detailsGameViewModel;
         }
-
-        private async Task CalculationPlayerCardSum(PlayerGameDetailsHistoryViewItem players)
-        {
-            for (int i = 0; i < players.PlayerCards.Count; i++)
-            {
-                players.CardSum += players.PlayerCards[i].Value;
-                if (players.CardSum > Config.BlackJack && players.PlayerCards[i].Name == "ace")
-                {
-                    players.PlayerCards[i].Value = 1;
-                    players.CardSum -= Config.DoubleAcePointReduce;
-                }
-            }
-        }
-
     }
 }
