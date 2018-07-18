@@ -15,7 +15,7 @@ namespace BusinessLogic
 {
     public class MappingServices : IMappingService
     {
-       
+        #region references
         private readonly IPlayerRepository _playerRepository;
         private readonly ICardRepository _cardRepository;
         public MappingServices(IPlayerRepository playerRepository, ICardRepository cardRepository)
@@ -23,7 +23,7 @@ namespace BusinessLogic
             _cardRepository = cardRepository;
             _playerRepository = playerRepository;
         }
-
+        #endregion
         public async Task<PlayerCurrentGameGameViewItem> PlayerToPlayerCurrentGame(Player player)
         {
             var playerCurrentGameGameView = Mapper.Map<Player, PlayerCurrentGameGameViewItem>(player);
@@ -33,25 +33,13 @@ namespace BusinessLogic
 
         public async Task<PlayerEndGameGameViewItem> PlayerToPlayerEndGame(Player player)
         {
-            PlayerEndGameGameViewItem playerEndGameViewItem = new PlayerEndGameGameViewItem
-            {
-                Id = player.Id,
-                Name = player.Name,
-                Role = (RoleViewModel)player.Role
-            };
-
+            var playerEndGameViewItem = Mapper.Map<Player, PlayerEndGameGameViewItem>(player);
             return playerEndGameViewItem;
         }
 
         public async Task<PlayerGameDetailsHistoryViewItem> PlayerToPlayerGameDetails(Player player)
         {
-            PlayerGameDetailsHistoryViewItem playerGameDetailsHistoryViewItem = new PlayerGameDetailsHistoryViewItem
-            {
-                Id = player.Id,
-                Name = player.Name,
-                Role = (RoleViewModel)player.Role
-            };
-
+            var playerGameDetailsHistoryViewItem = Mapper.Map<Player, PlayerGameDetailsHistoryViewItem>(player);
             return playerGameDetailsHistoryViewItem;
         }
 

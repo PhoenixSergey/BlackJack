@@ -21,13 +21,9 @@
             <button id="button_start" type="submit">Start</button>
         }
     </div>
-    <div id="users">
-        <table></table>
-    </div>
 </center>
 <script>
-    var array = JSON.parse('@Newtonsoft.Json.JsonConvert.SerializeObject(HumanPlayers)'.replace(/&quot;/g, "\""));
-    
+    var array = JSON.parse('@Newtonsoft.Json.JsonConvert.SerializeObject(HumanPlayers)'.replace(/&quot;/g, "\""));   
 </script>
 @Scripts.Render("~/bundles/Game/StartInfo")
 

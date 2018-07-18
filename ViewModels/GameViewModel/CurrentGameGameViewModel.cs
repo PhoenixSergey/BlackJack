@@ -24,7 +24,7 @@ namespace BlackJack.GameViewModel
         }
         public PlayerCurrentGameGameViewItem(String name)
         {
-            this.Name = name;
+            Name = name;
         }
         public List<CardCurrentGameGameViewItem> PlayerCards = new List<CardCurrentGameGameViewItem>();
     }

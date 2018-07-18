@@ -8,6 +8,7 @@ namespace UserIterface.Controllers
 {
     public class GameController : Controller
     {
+        #region references
         private readonly IGameService _gameServices;
         private readonly IMappingService _mappingServices;
         public GameController(IGameService gameServices, IMappingService mappingServices)
@@ -20,7 +21,7 @@ namespace UserIterface.Controllers
         {
             return View();
         }
-
+        #endregion
 
         public async Task<ActionResult> StartInfo()
         {
@@ -32,14 +33,16 @@ namespace UserIterface.Controllers
         public async Task<ActionResult> CurrentGame(string ourPlayers, int countBot)
         {
             var startGame = await _gameServices.StartFirstRoundForAllPLayers(ourPlayers, countBot);
-            if(startGame.CheckEndGame==GameEnd.DealerEnd)
+            if (startGame.CheckEndGame == GameEnd.DealerEnd)
             {
                 return Json(new
                 {
                     url = Url.Action("EndGame", "Game", new { startGame.GameId }),
                 }, JsonRequestBehavior.AllowGet);
             }
+
             return View(startGame);
+
         }
 
         public async Task<ActionResult> ViewRound(int gameId)

@@ -1,4 +1,4 @@
-﻿                using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -290,7 +290,7 @@ namespace BusinessLogic
 
         private async Task<bool> CheckAllPlayerLoose(int gameId)
         {
-            var playersOnTheGame= (await _playersGamesRepository.GetAllPlayersOnTheGame(gameId))
+            var playersOnTheGame = (await _playersGamesRepository.GetAllPlayersOnTheGame(gameId))
                 .Where(result => result.Player.Role != Role.Dealer).ToList();
             bool anyLooser = playersOnTheGame.Any(r => r.Result == Result.InGame || r.Result == Result.BlackJack || r.Result == Result.Winner || r.Result == Result.Draw);
             return anyLooser;
@@ -384,7 +384,7 @@ namespace BusinessLogic
                 {
                     await _playersGamesRepository.UpdatePlayerStatus(gameId, player.Id, Result.Winner);
                 }
-                if (await CalculationPlayerCardSum(dealerPlayer.Id, gameId) > await CalculationPlayerCardSum(player.Id, gameId))
+                if (await CheckBust(await CalculationPlayerCardSum(dealerPlayer.Id, gameId)) == false && await CalculationPlayerCardSum(dealerPlayer.Id, gameId) > await CalculationPlayerCardSum(player.Id, gameId))
                 {
                     await _playersGamesRepository.UpdatePlayerStatus(gameId, player.Id, Result.Looser);
                 }

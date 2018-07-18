@@ -6,12 +6,14 @@ namespace UserIterface.Controllers
 {
     public class HistoryController : Controller
     {
+        #region references
         private readonly IHistoryService _historyServices;
         public HistoryController(IHistoryService historyServices)
         {
             _historyServices = historyServices;
         }
-   
+        #endregion
+
         public async Task<ActionResult> AllGames()
         {
             var allGames = await _historyServices.SelectAllGames();
