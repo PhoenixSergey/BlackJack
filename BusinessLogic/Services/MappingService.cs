@@ -49,22 +49,22 @@ namespace BusinessLogic
             return cardCurrentGameGameViewItem;
         }
 
-        public async Task<CardGameDetailsHistoryViewItem> CardToCardGameDetails(Card card)
-        {
-            var cardGameDetailsHistoryViewItem = Mapper.Map<Card, CardGameDetailsHistoryViewItem>(card);
-            return cardGameDetailsHistoryViewItem;
-        }
-
         public async Task<CardEndGameGameViewItem> CardToCardEndGame(Card card)
         {
             var cardEndGameGameViewItem = Mapper.Map<Card, CardEndGameGameViewItem>(card);
             return cardEndGameGameViewItem;
         }
 
+        public async Task<CardGameDetailsHistoryViewItem> CardToCardGameDetails(Card card)
+        {
+            var cardGameDetailsHistoryViewItem = Mapper.Map<Card, CardGameDetailsHistoryViewItem>(card);
+            return cardGameDetailsHistoryViewItem;
+        }
+
         public async Task<StartInfoGameViewModel> SelectAllHumanPlayers()
         {
             List<PlayerStartInfoGameViewItem> listHumanPlayer = new List<PlayerStartInfoGameViewItem>();
-           
+
             List<Player> humanPlayers = (await _playerRepository.GetAllHumanPlayer()).ToList();
             StartInfoGameViewModel allHumanPlayers = new StartInfoGameViewModel();
             foreach (Player player in humanPlayers)

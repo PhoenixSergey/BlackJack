@@ -21,7 +21,7 @@ namespace BusinessLogic.Services
         private readonly IPlayersGamesRepository _playersGamesRepository;
         private readonly IGameRepository _gameRepository;
         private readonly ICardRepository _cardRepository;
-        private readonly IMappingService _mappingServices;
+        private readonly IMappingService _mappingService;
         public HistoryService(
             IGameService gameService,
             IPlayerRepository playersRepository,
@@ -29,7 +29,7 @@ namespace BusinessLogic.Services
             IPlayersGamesRepository playersGamesRepository,
             IGameRepository gameRepository,
             ICardRepository cardRepository,
-            IMappingService mappingServices
+            IMappingService mappingService
             )
         {
             _gameService = gameService;
@@ -38,7 +38,7 @@ namespace BusinessLogic.Services
             _playersGamesRepository = playersGamesRepository;
             _gameRepository = gameRepository;
             _cardRepository = cardRepository;
-            _mappingServices = mappingServices;
+            _mappingService = mappingService;
         }
         #endregion
 
@@ -59,13 +59,13 @@ namespace BusinessLogic.Services
             foreach (var p in groupedCustomerList)
             {
                 var playerOnGame = await _playersRepository.Get(p.Key);
-                var playerOnTheGame = await _mappingServices.PlayerToPlayerGameDetails(playerOnGame);
+                var playerOnTheGame = await _mappingService.PlayerToPlayerGameDetails(playerOnGame);
                 playerOnTheGame.Result = (ResultViewModel)(await _playersGamesRepository.GetPlayerStatusOnTheGame(gameId, p.Key));
                 playerOnTheGame.CardSum = await _gameService.CalculationPlayerCardSum(playerOnTheGame.Id, gameId);
                 playersOnTheGame.Add(playerOnTheGame);
                 foreach (var item in p)
                 {
-                    var playerCard = await _mappingServices.CardToCardGameDetails(item.Card);                  
+                    var playerCard = await _mappingService.CardToCardGameDetails(item.Card);                  
                     playerOnTheGame.PlayerCards.Add(playerCard);
                 }
             }
@@ -74,7 +74,7 @@ namespace BusinessLogic.Services
             dealerPlayer.CardSum = await _gameService.CalculationPlayerCardSum(dealerPlayer.Id, gameId);
             GameDetailsHistoryViewModel detailsGameViewModel = new GameDetailsHistoryViewModel
             {
-                PlayerList = playersOnTheGame,
+                PlayersList = playersOnTheGame,
                 DealerPlayer = dealerPlayer,
                 GameId = gameId
             };

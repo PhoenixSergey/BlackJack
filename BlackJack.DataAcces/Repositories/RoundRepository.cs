@@ -12,11 +12,6 @@ namespace BlackJack.DataAcces.Repositorys
     public class RoundRepository : IRoundRepository
     {
         private readonly string _connectionString;
-
-        public RoundRepository()
-        {
-        }
-
         public RoundRepository(string connectionString)
         {
             _connectionString = connectionString;

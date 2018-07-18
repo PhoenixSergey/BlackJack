@@ -11,15 +11,11 @@ namespace BlackJack.DataAcces.Repositorys
     public class CardRepository : ICardRepository
     {
         private readonly string _connectionString;
-
-        public CardRepository()
-        {
-        }
-
         public CardRepository(string connectionString)
         {
             _connectionString = connectionString;
         }
+
         public async Task<Card> Get(int id)
         {
             using (IDbConnection db = new SqlConnection(_connectionString))

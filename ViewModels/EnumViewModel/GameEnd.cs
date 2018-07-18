@@ -7,6 +7,5 @@
         HumanPlayerEnd = 2,
         DealerStart = 3,
         DealerEnd=4
-           
     }
 }

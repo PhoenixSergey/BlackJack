@@ -6,7 +6,7 @@ namespace BlackJack.ViewModels.GameViewModel
 {
     public class EndGameGameViewModel
     {
-        public List<PlayerEndGameGameViewItem> PlayerList = new List<PlayerEndGameGameViewItem>();
+        public List<PlayerEndGameGameViewItem> PlayersList = new List<PlayerEndGameGameViewItem>();
         public PlayerEndGameGameViewItem DealerPlayer = new PlayerEndGameGameViewItem();
         public GameEnd CheckEndGame;
         public int GameId;

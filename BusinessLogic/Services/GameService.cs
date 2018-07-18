@@ -15,7 +15,7 @@ using BlackJack.ViewModels.GameViewModel;
 
 namespace BusinessLogic
 {
-    public class GameServices : IGameService
+    public class GameService : IGameService
     {
         #region references
         private readonly IPlayerRepository _playerRepository;
@@ -23,14 +23,14 @@ namespace BusinessLogic
         private readonly IPlayersGamesRepository _playersGamesRepository;
         private readonly IGameRepository _gameRepository;
         private readonly ICardRepository _cardRepository;
-        private readonly IMappingService _mappingServices;
-        public GameServices(
+        private readonly IMappingService _mappingService;
+        public GameService(
             IPlayerRepository playersRepository,
             IRoundRepository roundRepository,
             IPlayersGamesRepository playersGamesRepository,
             IGameRepository gameRepository,
             ICardRepository cardRepository,
-            IMappingService mappingServices
+            IMappingService mappingService
             )
         {
             _playerRepository = playersRepository;
@@ -38,7 +38,7 @@ namespace BusinessLogic
             _playersGamesRepository = playersGamesRepository;
             _gameRepository = gameRepository;
             _cardRepository = cardRepository;
-            _mappingServices = mappingServices;
+            _mappingService = mappingService;
         }
         #endregion
 
@@ -104,7 +104,7 @@ namespace BusinessLogic
             CurrentGameGameViewModel currentGame = new CurrentGameGameViewModel
             {
                 DealerPlayer = dealerPlayerViewItem,
-                PlayerList = playersOnTheGameViewItem,
+                PlayersList = playersOnTheGameViewItem,
                 GameId = gameId
             };
 
@@ -160,7 +160,7 @@ namespace BusinessLogic
             CurrentGameGameViewModel continueGame = new CurrentGameGameViewModel
             {
                 DealerPlayer = dealerPlayerOnTheCurrentGame,
-                PlayerList = playersOnTheCurrentGame,
+                PlayersList = playersOnTheCurrentGame,
                 GameId = gameId
             };
             if (await CheckAllPlayerLoose(gameId) == false)
@@ -191,7 +191,7 @@ namespace BusinessLogic
             {
                 if (await CalculationPlayerCardSum(dealerPlayer.Id, gameId) >= Config.DealerMinTotalPoint)
                 {
-                    dealer.DealerPlayer = await _mappingServices.PlayerToPlayerEndGame(dealerPlayer);
+                    dealer.DealerPlayer = await _mappingService.PlayerToPlayerEndGame(dealerPlayer);
                     dealer.CheckEndGame = GameEnd.DealerEnd;
                     dealer.GameId = gameId;
                     return dealer;
@@ -260,10 +260,10 @@ namespace BusinessLogic
                 .Select(round => round.Card)
                 .ToList();
                 var player = await _playerRepository.Get(id);
-                var playerCurrentGameViewItem = await _mappingServices.PlayerToPlayerCurrentGame(player);
+                var playerCurrentGameViewItem = await _mappingService.PlayerToPlayerCurrentGame(player);
                 foreach (var card in cardsForPlayer)
                 {
-                    playerCurrentGameViewItem.PlayerCards.Add(await _mappingServices.CardToCardCurrentGame(card));
+                    playerCurrentGameViewItem.PlayerCards.Add(await _mappingService.CardToCardCurrentGame(card));
                 }
                 playersOnTheGame.Add(playerCurrentGameViewItem);
             }
@@ -336,10 +336,10 @@ namespace BusinessLogic
                 .Select(round => round.Card)
                 .ToList();
                 var player = await _playerRepository.Get(id);
-                var playerCurrentGameViewItem = await _mappingServices.PlayerToPlayerEndGame(player);
+                var playerCurrentGameViewItem = await _mappingService.PlayerToPlayerEndGame(player);
                 foreach (var card in cardsForPlayer)
                 {
-                    playerCurrentGameViewItem.PlayerCards.Add(await _mappingServices.CardToCardEndGame(card));
+                    playerCurrentGameViewItem.PlayerCards.Add(await _mappingService.CardToCardEndGame(card));
                 }
                 playersOnTheGame.Add(playerCurrentGameViewItem);
             }
@@ -408,7 +408,7 @@ namespace BusinessLogic
             EndGameGameViewModel endGame = new EndGameGameViewModel
             {
                 DealerPlayer = dealerOnTheEndGame,
-                PlayerList = playersOnTheGameEndGame,
+                PlayersList = playersOnTheGameEndGame,
                 GameId = gameId,
             };
             return endGame;

@@ -7,22 +7,22 @@ namespace UserIterface.Controllers
     public class HistoryController : Controller
     {
         #region references
-        private readonly IHistoryService _historyServices;
+        private readonly IHistoryService _historyService;
         public HistoryController(IHistoryService historyServices)
         {
-            _historyServices = historyServices;
+            _historyService = historyServices;
         }
         #endregion
 
         public async Task<ActionResult> AllGames()
         {
-            var allGames = await _historyServices.SelectAllGames();
+            var allGames = await _historyService.SelectAllGames();
             return View(allGames);
         }
 
         public async Task<ActionResult> GameDetails(int id)
         {
-            var detailsGame = await _historyServices.GetDetails(id);
+            var detailsGame = await _historyService.GetDetails(id);
             return View(detailsGame);
         }
     }

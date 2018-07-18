@@ -6,7 +6,7 @@ namespace BlackJack.ViewModels.HistoryViewModel
 {
     public class GameDetailsHistoryViewModel
     {
-        public List<PlayerGameDetailsHistoryViewItem> PlayerList = new List<PlayerGameDetailsHistoryViewItem>();
+        public List<PlayerGameDetailsHistoryViewItem> PlayersList = new List<PlayerGameDetailsHistoryViewItem>();
         public PlayerGameDetailsHistoryViewItem DealerPlayer = new PlayerGameDetailsHistoryViewItem();
         public int GameId;
     }

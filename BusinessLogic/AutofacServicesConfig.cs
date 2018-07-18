@@ -11,7 +11,7 @@ namespace BusinessLogic
         {
             builder.RegisterType<HistoryService>().As<IHistoryService>();
             builder.RegisterType<MappingServices>().As<IMappingService>();
-            builder.RegisterType<GameServices>().As<IGameService>();
+            builder.RegisterType<GameService>().As<IGameService>();
             AutofacRepositoriesConfig.ConfigureContainer(builder, connectionString);
         }
     }

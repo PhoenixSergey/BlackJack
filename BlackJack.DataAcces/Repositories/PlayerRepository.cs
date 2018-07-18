@@ -19,8 +19,6 @@ namespace BlackJack.DataAcces.Repositorys
             _connectionString = connectionString;
         }
 
-
-
         public async Task<IEnumerable<Player>> GetAll()
         {
             IEnumerable<Player> players = new List<Player>();

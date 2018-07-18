@@ -6,7 +6,7 @@ namespace BlackJack.GameViewModel
 {
     public class CurrentGameGameViewModel
     {
-        public List<PlayerCurrentGameGameViewItem> PlayerList = new List<PlayerCurrentGameGameViewItem>();
+        public List<PlayerCurrentGameGameViewItem> PlayersList = new List<PlayerCurrentGameGameViewItem>();
         public PlayerCurrentGameGameViewItem DealerPlayer = new PlayerCurrentGameGameViewItem();
         public GameEnd CheckEndGame;
         public int GameId;
