@@ -4,7 +4,6 @@ C:\Users\Anuitex\source\repos\BlackJack\BlackJack.Entities\bin\Debug\Dapper.Cont
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.Entities\bin\Debug\Dapper.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.Entities\bin\Debug\Dapper.xml
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.Entities\bin\Debug\Dapper.Contrib.xml
-C:\Users\Anuitex\source\repos\BlackJack\BlackJack.Entities\obj\Debug\BlackJack.Entities.csprojAssemblyReference.cache
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.Entities\obj\Debug\BlackJack.Entities.csproj.CoreCompileInputs.cache
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.Entities\obj\Debug\BlackJack.Entities.csproj.CopyComplete
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.Entities\obj\Debug\BlackJack.Entities.dll
