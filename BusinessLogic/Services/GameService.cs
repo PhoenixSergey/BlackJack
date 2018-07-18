@@ -18,7 +18,6 @@ namespace BusinessLogic
     public class GameServices : IGameService
     {
         #region references
-        readonly Config config = new Config();
         private readonly IPlayerRepository _playerRepository;
         private readonly IRoundRepository _roundRepository;
         private readonly IPlayersGamesRepository _playersGamesRepository;
@@ -229,7 +228,7 @@ namespace BusinessLogic
 
         public async Task<int> CalculationPlayerCardSum(int playersOnTheGameId, int gameId)
         {
-            int cardSum = 0;
+            int cardSum = Config.ZeroingOutCardSum;
             var cardsForPlayer = (await _roundRepository.GetAllRoundsInTheGame(gameId))
             .Where(round => round.PlayerId == playersOnTheGameId)
             .Select(round => round.Card)
@@ -237,9 +236,9 @@ namespace BusinessLogic
             foreach (var card in cardsForPlayer)
             {
                 cardSum = cardSum + card.Value;
-                if (cardSum > Config.BlackJack && card.Name == "ace")
+                if (cardSum > Config.BlackJack && card.Name == Config.AceName)
                 {
-                    card.Value = 1;
+                    card.Value = Config.DoubleAcePoint;
                     cardSum -= Config.DoubleAcePointReduce;
                 }
             }
