@@ -1,9 +1,9 @@
 ﻿@using BlackJack.ViewModels.GameViewModel
-@model StartInfoGameViewModel
+@model StartInfoGameView
 @{
     ViewBag.Title = "BlackJack";
     List<string> HumanPlayers = new List<string>();
-    foreach (PlayerStartInfoGameViewItem p in Model.HumanPLayers)
+    foreach (PlayerStartInfoGameViewItem p in Model.HumanPlayers)
     {
         HumanPlayers.Add(p.Name);
     }
@@ -11,7 +11,7 @@
 <center><h1>Welcome to the game</h1></center>
 <center>
     <div class="startGame">
-        @using (Html.BeginForm("CurrentGame", "Game", FormMethod.Post))
+        @using (Html.BeginForm("CreateGame", "Game", FormMethod.Post))
         {
             <h4>Enter your name or select player</h4>
             <input id="ourPlayers" name="ourPlayers" />
@@ -25,5 +25,5 @@
 <script>
     var array = JSON.parse('@Newtonsoft.Json.JsonConvert.SerializeObject(HumanPlayers)'.replace(/&quot;/g, "\""));   
 </script>
-@Scripts.Render("~/bundles/Game/StartInfo")
+@Scripts.Render("~/bundles/Game/Start")
 

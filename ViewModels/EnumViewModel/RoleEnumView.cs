@@ -1,6 +1,6 @@
 ﻿namespace BlackJack.ViewModels.GameViewModel.Enum
 {
-    public enum RoleViewModel
+    public enum RoleEnumView
     {
         None = 0,
         Dealer = 1,

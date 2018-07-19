@@ -6,10 +6,12 @@ namespace BusinessLogic.Interfaces
 {
     public interface IGameService
     {
-        Task<CurrentGameGameViewModel> StartFirstRoundForAllPLayers(string ourPlayers, int countBot);
-        Task<CurrentGameGameViewModel> ContinueGameForPlayer(int gameId);
-        Task<EndGameGameViewModel> ContinueGameForDealer(int gameId);
-        Task<EndGameGameViewModel> GetInformationForEndGame(int gameId);
+        Task<StartInfoGameView> SelectAllHumanPlayers();
+        Task<int> CreateGame(string ourPlayers, int countBot);
+        Task<CurrentGameGameView> CreateFirstRoundForAllPLayers(int gameId);
+        Task<CurrentGameGameView> ContinueGameForPlayers(int gameId);
+        Task<EndGameGameView> ContinueGameForDealer(int gameId);
+        Task<EndGameGameView> GetInformationForEndGame(int gameId);
         Task<int> CalculationPlayerCardSum(int playersOnTheGameId, int gameId);
     }
 }

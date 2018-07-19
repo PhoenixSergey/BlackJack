@@ -1,5 +1,5 @@
 ﻿@using BlackJack.ViewModels.GameViewModel
-@model EndGameGameViewModel
+@model EndGameGameView
 @{
     ViewBag.Title = "EndGame";
 }
@@ -47,7 +47,7 @@
         </tr>
     </table>
     <br />
-    @using (Html.BeginForm("StartInfo", "Game", FormMethod.Post))
+    @using (Html.BeginForm("Start", "Game", FormMethod.Post))
     {
         <div id="button_block">
             <button id="button_start_new_game" type="submit">Start new game</button>

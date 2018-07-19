@@ -28,6 +28,14 @@ namespace BlackJack.DataAcces.Repositorys
             }
         }
 
+        public async Task<Player> GetPlayer(string name)
+        {
+            using (IDbConnection connection = new SqlConnection(_connectionString))
+            {
+                return (await connection.QueryAsync<Player>("SELECT * FROM Players WHERE Name = @Name", new { name })).FirstOrDefault();
+            }
+        }
+
         public async Task<IEnumerable<Player>> GetAllHumanPlayer()
         {
             IEnumerable<Player> players = new List<Player>();
@@ -36,6 +44,9 @@ namespace BlackJack.DataAcces.Repositorys
                 return await connection.QueryAsync<Player>("SELECT * FROM Players where Role=3");
             }
         }
+
+     
+
 
         public async Task<IEnumerable<Player>> GetBotPlayers(int count)
         {

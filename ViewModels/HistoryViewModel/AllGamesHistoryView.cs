@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BlackJack.ViewModels.HistoryViewModel
 {
-    public class AllGamesHistoryViewModel
+    public class AllGamesHistoryView
     {    
        public List<GameAllGamesHistoryViewItem> ListGames = new List<GameAllGamesHistoryViewItem>();
     }

@@ -47,15 +47,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameViewModel\EndGameGameViewModel.cs" />
+    <Compile Include="GameViewModel\EndGameGameView.cs" />
     <Compile Include="EnumViewModel\GameEnd.cs" />
-    <Compile Include="EnumViewModel\ResultViewModel.cs" />
-    <Compile Include="EnumViewModel\RoleViewModel.cs" />
-    <Compile Include="GameViewModel\CurrentGameGameViewModel.cs" />
-    <Compile Include="HistoryViewModel\GameDetailsHistoryViewModel.cs" />
-    <Compile Include="HistoryViewModel\AllGamesHistoryViewModel.cs" />
+    <Compile Include="EnumViewModel\ResultEnumView.cs" />
+    <Compile Include="EnumViewModel\RoleEnumView.cs" />
+    <Compile Include="GameViewModel\CurrentGameGameView.cs" />
+    <Compile Include="HistoryViewModel\GameDetailsHistoryView.cs" />
+    <Compile Include="HistoryViewModel\AllGamesHistoryView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GameViewModel\StartInfoGameViewModel.cs" />
+    <Compile Include="GameViewModel\StartInfoGameView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

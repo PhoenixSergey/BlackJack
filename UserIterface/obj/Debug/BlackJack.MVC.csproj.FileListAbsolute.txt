@@ -1,3 +1,9 @@
+C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\System.IO.Compression.dll
+C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\VBCSCompiler.exe
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\ApplicationInsights.config
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\UserIterface.dll.config
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\UserIterface.dll
@@ -9,13 +15,9 @@ C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\csi.exe
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\csi.exe.config
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\csi.rsp
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
-C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\Microsoft.CodeAnalysis.dll
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
-C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\Microsoft.CSharp.Core.targets
-C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\Microsoft.VisualBasic.Core.targets
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\Microsoft.Win32.Primitives.dll
@@ -25,7 +27,6 @@ C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\System.Console.d
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\System.Diagnostics.Process.dll
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\System.Diagnostics.StackTrace.dll
-C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\System.IO.Compression.dll
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\System.IO.FileSystem.dll
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\System.IO.FileSystem.DriveInfo.dll
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\System.IO.FileSystem.Primitives.dll
@@ -48,7 +49,6 @@ C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\System.Xml.XPath
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\vbc.exe
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\vbc.exe.config
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\vbc.rsp
-C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\VBCSCompiler.exe
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\roslyn\VBCSCompiler.exe.config
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\Antlr3.Runtime.dll
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\Autofac.dll
@@ -91,6 +91,7 @@ C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\Autofac.xml
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\Autofac.Integration.Mvc.xml
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\AutoMapper.pdb
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\AutoMapper.xml
+C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\Newtonsoft.Json.xml
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\System.ValueTuple.xml
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\System.Web.Helpers.xml
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\System.Web.Mvc.xml
@@ -99,7 +100,6 @@ C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\System.Web.Razor.xml
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\System.Web.WebPages.xml
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\System.Web.WebPages.Deployment.xml
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\System.Web.WebPages.Razor.xml
-C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\Newtonsoft.Json.xml
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\Antlr3.Runtime.pdb
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\System.Diagnostics.DiagnosticSource.xml
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\Microsoft.AspNet.TelemetryCorrelation.xml
@@ -117,3 +117,5 @@ C:\Users\Anuitex\source\repos\BlackJack\UserIterface\obj\Debug\BlackJack.MVC.csp
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\obj\Debug\BlackJack.MVC.csproj.CopyComplete
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\obj\Debug\UserIterface.dll
 C:\Users\Anuitex\source\repos\BlackJack\UserIterface\obj\Debug\UserIterface.pdb
+C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\MoreLinq.Portable.dll
+C:\Users\Anuitex\source\repos\BlackJack\UserIterface\bin\MoreLinq.Portable.xml

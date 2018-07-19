@@ -1,5 +1,5 @@
 ﻿@using BlackJack.GameViewModel
-@model CurrentGameGameViewModel
+@model CurrentGameGameView
 @{
     ViewBag.Title = "Games";
 }
@@ -8,10 +8,10 @@
     <center>
         <div id="results">
             @{
-                Html.RenderPartial("ViewRound");
+                Html.RenderPartial("_ViewRound");
             }
         </div>
-        @using (Ajax.BeginForm("ViewRound", "Game", new AjaxOptions { UpdateTargetId = "results", OnSuccess = "onSuccess", HttpMethod = "Post" }))
+        @using (Ajax.BeginForm("_ViewRound", "Game", new AjaxOptions { UpdateTargetId = "results", OnSuccess = "onSuccess", HttpMethod = "Post" }))
         {
             @Html.HiddenFor(model => Model.GameId);
             <div id="button_block">

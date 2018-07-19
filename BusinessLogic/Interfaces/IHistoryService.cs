@@ -5,7 +5,7 @@ namespace BusinessLogic.Interfaces
 {
     public interface IHistoryService
     {
-        Task<AllGamesHistoryViewModel> SelectAllGames();
-        Task<GameDetailsHistoryViewModel> GetDetails(int gameId);
+        Task<AllGamesHistoryView> SelectAllGames();
+        Task<GameDetailsHistoryView> GetDetails(int gameId);
     }
 }

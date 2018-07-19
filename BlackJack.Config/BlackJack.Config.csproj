@@ -83,9 +83,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BlackJack.DataAcces\BlackJack.DataAcces.csproj">
+    <ProjectReference Include="..\BlackJack.DataAcces\BlackJack.DataAccess.csproj">
       <Project>{9E547F87-8C94-468D-A2BF-B8CC229C7C7D}</Project>
-      <Name>BlackJack.DataAcces</Name>
+      <Name>BlackJack.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\BlackJack.Entities\BlackJack.Entities.csproj">
       <Project>{48ED6677-31FD-4488-8A40-14EB8DF895FA}</Project>

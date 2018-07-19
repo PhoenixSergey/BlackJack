@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using BlackJack.ViewModels.GameViewModel.Enum;
 using BusinessLogic.Interfaces;
@@ -16,39 +15,40 @@ namespace UserIterface.Controllers
             _mappingService = mappingService;
             _gameService = gameService;
         }
-
-        public ActionResult Index()
-        {
-            return View();
-        }
         #endregion
 
-        public async Task<ActionResult> StartInfo()
+        public async Task<ActionResult> Start()
         {
-            var allHumanPlayer = await _mappingService.SelectAllHumanPlayers();
+            var allHumanPlayer = await _gameService.SelectAllHumanPlayers();
             return View(allHumanPlayer);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CurrentGame(string ourPlayers, int countBot)
+        [HttpGet]
+        public async Task<ActionResult> CurrentGame(int gameId)
         {
-            var startGame = await _gameService.StartFirstRoundForAllPLayers(ourPlayers, countBot);
-            if (startGame.CheckEndGame == GameEnd.DealerEnd)
+            var startGame = await _gameService.CreateFirstRoundForAllPLayers(gameId);
+            if (startGame.CheckEndGame == GameEnd.EndGame)
             {
-                return Json(new
-                {
-                    url = Url.Action("EndGame", "Game", new { startGame.GameId }),
-                }, JsonRequestBehavior.AllowGet);
+                return RedirectToAction("EndGame", "Game", new { gameId = startGame.GameId  });
             }
-
             return View(startGame);
-
         }
 
-        public async Task<ActionResult> ViewRound(int gameId)
+        [HttpPost]
+        public async Task<ActionResult> CreateGame(string ourPlayers, int countBot)
         {
-            var continueGame = await _gameService.ContinueGameForPlayer(gameId);
-            if (continueGame.CheckEndGame == GameEnd.None)
+            var startGame = await _gameService.CreateGame(ourPlayers, countBot);
+            if (startGame != 0)
+            {
+                return RedirectToAction("CurrentGame", "Game", new { gameId = startGame });
+            }
+            return RedirectToAction("Start");
+        }
+
+        public async Task<ActionResult> _ViewRound(int gameId)
+        {
+            var continueGame = await _gameService.ContinueGameForPlayers(gameId);
+            if (continueGame.CheckEndGame == GameEnd.ContinueGame)
             {
                 return View(continueGame);
             }
@@ -57,6 +57,7 @@ namespace UserIterface.Controllers
                 url = Url.Action("EndGame", "Game", new { gameId }),
             }, JsonRequestBehavior.AllowGet);
         }
+
 
         public async Task<ActionResult> EndGame(int gameId)
         {

@@ -42,6 +42,9 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="MoreLinq.Portable, Version=1.4.18916.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MoreLinq.Portable.1.4.0\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\MoreLinq.Portable.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -88,9 +91,9 @@
       <Project>{257425E4-57DD-4522-8749-FBC1CDE26A1D}</Project>
       <Name>BlackJack.Config</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BlackJack.DataAcces\BlackJack.DataAcces.csproj">
+    <ProjectReference Include="..\BlackJack.DataAcces\BlackJack.DataAccess.csproj">
       <Project>{9e547f87-8c94-468d-a2bf-b8cc229c7c7d}</Project>
-      <Name>BlackJack.DataAcces</Name>
+      <Name>BlackJack.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\BlackJack.Entities\BlackJack.Entities.csproj">
       <Project>{48ed6677-31fd-4488-8a40-14eb8df895fa}</Project>

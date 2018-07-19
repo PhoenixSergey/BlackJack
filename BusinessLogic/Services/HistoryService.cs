@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BlackJack.ViewModels.GameViewModel.Enum;
 using BlackJack.Entities.Enum;
-using BlackJack.Config;
+using MoreLinq;
 
 namespace BusinessLogic.Services
 {
@@ -16,68 +16,61 @@ namespace BusinessLogic.Services
     {
         #region references   
         private readonly IGameService _gameService;
-        private readonly IPlayerRepository _playersRepository;
         private readonly IRoundRepository _roundRepository;
-        private readonly IPlayersGamesRepository _playersGamesRepository;
+        private readonly IPlayerGameRepository _playersGameRepository;
         private readonly IGameRepository _gameRepository;
-        private readonly ICardRepository _cardRepository;
-        private readonly IMappingService _mappingService;
         public HistoryService(
             IGameService gameService,
-            IPlayerRepository playersRepository,
             IRoundRepository roundRepository,
-            IPlayersGamesRepository playersGamesRepository,
-            IGameRepository gameRepository,
-            ICardRepository cardRepository,
-            IMappingService mappingService
+            IPlayerGameRepository playerGameRepository,
+            IGameRepository gameRepository
             )
         {
             _gameService = gameService;
-            _playersRepository = playersRepository;
             _roundRepository = roundRepository;
-            _playersGamesRepository = playersGamesRepository;
+            _playersGameRepository = playerGameRepository;
             _gameRepository = gameRepository;
-            _cardRepository = cardRepository;
-            _mappingService = mappingService;
         }
         #endregion
 
-        public async Task<AllGamesHistoryViewModel> SelectAllGames()
+        public async Task<AllGamesHistoryView> SelectAllGames()
         {
-            AllGamesHistoryViewModel historyViewModel = new AllGamesHistoryViewModel();
+            AllGamesHistoryView historyViewModel = new AllGamesHistoryView();
             var allGamesViewModel = Mapper.Map<IEnumerable<Game>, List<GameAllGamesHistoryViewItem>>((await _gameRepository.GetAll()).ToList());
             historyViewModel.ListGames = allGamesViewModel;
             return historyViewModel;
         }
 
-        public async Task<GameDetailsHistoryViewModel> GetDetails(int gameId)
+        public async Task<GameDetailsHistoryView> GetDetails(int gameId)
         {
             List<PlayerGameDetailsHistoryViewItem> playersOnTheGame = new List<PlayerGameDetailsHistoryViewItem>();
-            List<Round> roundsGame = new List<Round>();
-            roundsGame = (await _roundRepository.GetAllRoundsInTheGame(gameId)).ToList();
-            var groupedCustomerList = roundsGame.GroupBy(u => u.Player.Id);
-            foreach (var p in groupedCustomerList)
+            var rounds = (await _roundRepository.GetAllRoundsInTheGame(gameId)).ToList();
+            playersOnTheGame = rounds.Select(x => new PlayerGameDetailsHistoryViewItem()
             {
-                var playerOnGame = await _playersRepository.Get(p.Key);
-                var playerOnTheGame = await _mappingService.PlayerToPlayerGameDetails(playerOnGame);
-                playerOnTheGame.Result = (ResultViewModel)(await _playersGamesRepository.GetPlayerStatusOnTheGame(gameId, p.Key));
-                playerOnTheGame.CardSum = await _gameService.CalculationPlayerCardSum(playerOnTheGame.Id, gameId);
-                playersOnTheGame.Add(playerOnTheGame);
-                foreach (var item in p)
+                Id = x.Player.Id,
+                Name = x.Player.Name,
+                Role = (RoleEnumView)x.Player.Role,
+                PlayerCards = rounds
+                .Where(y => y.Player.Id == x.Player.Id)
+                .Select(c => new CardGameDetailsHistoryViewItem
                 {
-                    var playerCard = await _mappingService.CardToCardGameDetails(item.Card);                  
-                    playerOnTheGame.PlayerCards.Add(playerCard);
-                }
-            }
-            var dealerPlayer = playersOnTheGame.Where(x => x.Role == (RoleViewModel)Role.Dealer).First();
-            playersOnTheGame.Remove(dealerPlayer);
-            dealerPlayer.CardSum = await _gameService.CalculationPlayerCardSum(dealerPlayer.Id, gameId);
-            GameDetailsHistoryViewModel detailsGameViewModel = new GameDetailsHistoryViewModel
+                    Id = c.Card.Id,
+                    Name = c.Card.Name,
+                    Value = c.Card.Value,
+                    Suit = c.Card.Suit
+                }).ToList()
+            }).DistinctBy(x => x.Id).ToList();
+            foreach (var player in playersOnTheGame)
             {
-                PlayersList = playersOnTheGame,
-                DealerPlayer = dealerPlayer,
-                GameId = gameId
-            };
+                player.Result = (ResultEnumView)(await _playersGameRepository.GetPlayerStatusOnTheGame(gameId, player.Id));
+                player.CardSum = player.PlayerCards.Sum(x => x.Value);
+            }
+            var dealerPlayer = playersOnTheGame.Where(x => x.Role == (RoleEnumView)Role.Dealer).First();
+            playersOnTheGame.Remove(dealerPlayer);
+            GameDetailsHistoryView detailsGameViewModel = new GameDetailsHistoryView();
+            detailsGameViewModel.PlayersList = playersOnTheGame;
+            detailsGameViewModel.DealerPlayer = dealerPlayer;
+            detailsGameViewModel.GameId = gameId;
             return detailsGameViewModel;
         }
     }

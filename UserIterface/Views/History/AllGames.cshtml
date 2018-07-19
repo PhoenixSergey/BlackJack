@@ -1,5 +1,5 @@
 ﻿@using BlackJack.ViewModels.HistoryViewModel
-@model AllGamesHistoryViewModel
+@model AllGamesHistoryView
 @{
     ViewBag.Title = "AllGames";
 }
@@ -12,7 +12,7 @@
 <br />
 <br />
 <center>
-    @using (Html.BeginForm("StartInfo", "Game", FormMethod.Post))
+    @using (Html.BeginForm("Start", "Game", FormMethod.Post))
     {
         <div id="button_block">
             <button id="button_start_new_game" type="submit">Start new game</button>

@@ -16,11 +16,11 @@ namespace BlackJack.DataAcces.Repositorys
             _connectionString = connectionString;
         }
 
-        public async Task<Card> Get(int id)
+        public async Task<Card> GetRandom()
         {
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                return (await db.QueryAsync<Card>("SELECT * FROM Card WHERE Id = @Id", new { id })).FirstOrDefault();
+                return (await db.QueryAsync<Card>("SELECT TOP 1 * FROM Card ORDER BY NEWID()")).FirstOrDefault();
             }
         }
     }

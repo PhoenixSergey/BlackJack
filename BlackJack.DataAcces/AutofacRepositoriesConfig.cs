@@ -13,7 +13,7 @@ namespace BlackJack.DataAcces
             builder.RegisterType<PlayerRepository>().As<IPlayerRepository>().WithParameter("connectionString", connectionString);
             builder.RegisterType<RoundRepository>().As<IRoundRepository>().WithParameter("connectionString", connectionString);
             builder.RegisterType<GameRepository>().As<IGameRepository>().WithParameter("connectionString", connectionString);
-            builder.RegisterType<PlayersGamesRepository>().As<IPlayersGamesRepository>().WithParameter("connectionString", connectionString);
+            builder.RegisterType<PlayerGameRepository>().As<IPlayerGameRepository>().WithParameter("connectionString", connectionString);
             builder.RegisterType<CardRepository>().As<ICardRepository>().WithParameter("connectionString", connectionString);          
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

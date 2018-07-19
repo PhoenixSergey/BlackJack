@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BlackJack.ViewModels.GameViewModel
 {
-    public class EndGameGameViewModel
+    public class EndGameGameView
     {
         public List<PlayerEndGameGameViewItem> PlayersList = new List<PlayerEndGameGameViewItem>();
         public PlayerEndGameGameViewItem DealerPlayer = new PlayerEndGameGameViewItem();
@@ -16,16 +16,8 @@ namespace BlackJack.ViewModels.GameViewModel
         public int Id { get; set; }
         public string Name { get; set; }
         public int CardSum { get; set; }
-        public ResultViewModel Result;
-        public RoleViewModel Role { get; set; }
-        public PlayerEndGameGameViewItem()
-        {
-            Result = ResultViewModel.InGame;
-        }
-        public PlayerEndGameGameViewItem(String name)
-        {
-            Name = name;
-        }
+        public ResultEnumView Result;
+        public RoleEnumView Role { get; set; }
         public List<CardEndGameGameViewItem> PlayerCards = new List<CardEndGameGameViewItem>();
     }
     public class CardEndGameGameViewItem

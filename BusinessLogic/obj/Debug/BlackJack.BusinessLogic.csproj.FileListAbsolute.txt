@@ -42,3 +42,5 @@ C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\obj\Debug\BlackJack.Busine
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\obj\Debug\BlackJack.BusinessLogic.csproj.CopyComplete
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\obj\Debug\BusinessLogic.dll
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\obj\Debug\BusinessLogic.pdb
+C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\MoreLinq.Portable.dll
+C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\MoreLinq.Portable.xml

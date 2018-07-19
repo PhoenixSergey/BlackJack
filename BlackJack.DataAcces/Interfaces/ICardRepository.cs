@@ -5,6 +5,6 @@ namespace BlackJack.DataAcces.Interfaces
 {
     public interface ICardRepository
     {
-        Task<Card> Get(int id);
+        Task<Card> GetRandom();
     }
 }

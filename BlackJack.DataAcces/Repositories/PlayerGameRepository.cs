@@ -11,45 +11,47 @@ using System.Threading.Tasks;
 
 namespace BlackJack.DataAcces.Repositorys
 {
-    public class PlayersGamesRepository : IPlayersGamesRepository
+    public class PlayerGameRepository : IPlayerGameRepository
     {
         private readonly string _connectionString;
-        public PlayersGamesRepository(string connectionString)
+        public PlayerGameRepository(string connectionString)
         {
             _connectionString = connectionString;
         }
 
-        public async Task<IEnumerable<PlayersGames>> GetAll()
+        public async Task<IEnumerable<PlayerGame>> GetAll()
         {
-            IEnumerable<PlayersGames> playersGames = new List<PlayersGames>();
-            using (IDbConnection db = new SqlConnection(_connectionString))
+            IEnumerable<PlayerGame> playerGame = new List<PlayerGame>();
+            using (IDbConnection connection = new SqlConnection(_connectionString))
             {
-                playersGames = await db.QueryAsync<PlayersGames>("SELECT * FROM PlayersGamess");
+                playerGame = await connection.QueryAsync<PlayerGame>("SELECT * FROM PlayerGame");
             }
-            return playersGames;
+            return playerGame;
         }
-        public async Task Create(PlayersGames playersgames)
+
+        public async Task Create(List<PlayerGame> playersGame)
         {
             using (IDbConnection connection = new SqlConnection(_connectionString))
             {
-                await connection.InsertAsync(playersgames);
+                string processQuery = "INSERT INTO PlayerGame VALUES (@PlayerId,@GameId,@Result)";
+                await  connection.ExecuteAsync(processQuery, playersGame);             
             }
         }
 
         public async Task<Result> GetPlayerStatusOnTheGame(int gameId, int playerId)
         {
-            PlayersGames playersGames = new PlayersGames();
+            PlayerGame playerGame = new PlayerGame();
 
             using (IDbConnection connection = new SqlConnection(_connectionString))
             {
-                playersGames = (await connection.QueryAsync<PlayersGames>("SELECT * FROM PlayersGamess WHERE GameId = @GameId and PlayerId = @PlayerId", new { gameId, playerId })).FirstOrDefault();
+                playerGame = (await connection.QueryAsync<PlayerGame>("SELECT * FROM PlayerGame WHERE GameId = @GameId and PlayerId = @PlayerId", new { gameId, playerId })).FirstOrDefault();
             }
-            return playersGames.Result;
+            return playerGame.Result;
         }
 
         public async Task UpdatePlayerStatus(int gameId, int playerId, Result status)
         {
-            string sql = "UPDATE PlayersGamess SET Result = @Result WHERE GameId = @GameId and PlayerId = @PlayerId";
+            string sql = "UPDATE PlayerGame SET Result = @Result WHERE GameId = @GameId and PlayerId = @PlayerId";
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -58,10 +60,21 @@ namespace BlackJack.DataAcces.Repositorys
             }
         }
 
-        public async Task<IEnumerable<PlayersGames>> GetAllPlayersOnTheGame(int gameId)
+        public async Task<PlayerGame> GetHumanPlayerOnTheGame(int gameId)
+        {
+            PlayerGame humanPlayerOnTheGame = new PlayerGame();
+
+            using (IDbConnection connection = new SqlConnection(_connectionString))
+            {
+                humanPlayerOnTheGame = (await connection.QueryAsync<PlayerGame>(@"SELECT * FROM PlayerGame AS A JOIN Players AS B ON A.PlayerId = B.Id WHERE GameId = @GameId And B.Role = 3 ", new { gameId })).FirstOrDefault();
+            }
+            return humanPlayerOnTheGame;
+        }
+
+        public async Task<IEnumerable<PlayerGame>> GetAllPlayersOnTheGame(int gameId)
         {
             string sql = @"SELECT * 
-                            FROM PlayersGamess AS A
+                            FROM PlayerGame AS A
                             JOIN Players AS B ON A.PlayerId = B.Id
                             JOIN Games AS C ON A.GameId = C.Id
                             WHERE GameId = " + gameId;
@@ -70,7 +83,7 @@ namespace BlackJack.DataAcces.Repositorys
             using (IDbConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                var players = await connection.QueryAsync<PlayersGames, Player, Game, PlayersGames>(
+                var players = await connection.QueryAsync<PlayerGame, Player, Game, PlayerGame>(
                         sql,
                         (playersGames, player, game) =>
                         {

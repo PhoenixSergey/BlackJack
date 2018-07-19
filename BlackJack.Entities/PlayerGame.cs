@@ -1,10 +1,9 @@
-﻿using BlackJack.Entities;
-using BlackJack.Entities.Enum;
+﻿using BlackJack.Entities.Enum;
 using Dapper.Contrib.Extensions;
 
 namespace BlackJack.Entities
 {
-    public class PlayersGames 
+    public class PlayerGame 
     {
         public int PlayerId { get; set; }
         [Write(false)]
