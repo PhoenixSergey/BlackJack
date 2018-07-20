@@ -8,7 +8,7 @@ using Dapper;
 
 namespace BlackJack.DataAcces.Repositorys
 {
-    public class CardRepository : ICardRepository
+    public class CardRepository : ICardRepository<Card> 
     {
         private readonly string _connectionString;
         public CardRepository(string connectionString)

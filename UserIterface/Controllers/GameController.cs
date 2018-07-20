@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web.Mvc;
+using BlackJack.ViewModels.GameViewModel;
 using BlackJack.ViewModels.GameViewModel.Enum;
+using BusinessLogic;
 using BusinessLogic.Interfaces;
 
 namespace UserIterface.Controllers
@@ -26,10 +29,11 @@ namespace UserIterface.Controllers
         [HttpGet]
         public async Task<ActionResult> CurrentGame(int gameId)
         {
-            var startGame = await _gameService.CreateFirstRoundForAllPLayers(gameId);
+
+            var startGame = await _gameService.CreateFirstRoundForAllPlayers(gameId);
             if (startGame.CheckEndGame == GameEnd.EndGame)
             {
-                return RedirectToAction("EndGame", "Game", new { gameId = startGame.GameId  });
+                return RedirectToAction("EndGame", "Game", new { gameId = startGame.GameId });
             }
             return View(startGame);
         }
@@ -37,16 +41,29 @@ namespace UserIterface.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateGame(string ourPlayers, int countBot)
         {
-            var startGame = await _gameService.CreateGame(ourPlayers, countBot);
-            if (startGame != 0)
+            try
             {
+                var startGame = await _gameService.CreateGame(ourPlayers, countBot);
                 return RedirectToAction("CurrentGame", "Game", new { gameId = startGame });
+
             }
-            return RedirectToAction("Start");
+            catch (AppValidationException e)
+            {
+                ErrorGameView errorGameView = new ErrorGameView();
+                errorGameView.Error = e.Message;
+                return View("_Error", errorGameView);
+            }
+            catch (Exception e)
+            {
+                ErrorGameView errorGameView = new ErrorGameView();
+                errorGameView.Error = e.Message;
+                return View("_Error", errorGameView);
+            }
         }
 
         public async Task<ActionResult> _ViewRound(int gameId)
         {
+
             var continueGame = await _gameService.ContinueGameForPlayers(gameId);
             if (continueGame.CheckEndGame == GameEnd.ContinueGame)
             {
@@ -56,6 +73,7 @@ namespace UserIterface.Controllers
             {
                 url = Url.Action("EndGame", "Game", new { gameId }),
             }, JsonRequestBehavior.AllowGet);
+
         }
 
 

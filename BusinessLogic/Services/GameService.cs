@@ -17,18 +17,18 @@ namespace BusinessLogic
     public class GameService : IGameService
     {
         #region references
-        private readonly IPlayerRepository _playerRepository;
-        private readonly IRoundRepository _roundRepository;
-        private readonly IPlayerGameRepository _playerGameRepository;
-        private readonly IGameRepository _gameRepository;
-        private readonly ICardRepository _cardRepository;
+        private readonly IPlayerRepository<Player> _playerRepository;
+        private readonly IRoundRepository<Round> _roundRepository;
+        private readonly IPlayerGameRepository<PlayerGame> _playerGameRepository;
+        private readonly IGameRepository<Game> _gameRepository;
+        private readonly ICardRepository<Card> _cardRepository;
         private readonly IMappingService _mappingService;
         public GameService(
-            IPlayerRepository playersRepository,
-            IRoundRepository roundRepository,
-            IPlayerGameRepository playerGameRepository,
-            IGameRepository gameRepository,
-            ICardRepository cardRepository,
+            IPlayerRepository<Player> playersRepository,
+            IRoundRepository<Round> roundRepository,
+            IPlayerGameRepository<PlayerGame> playerGameRepository,
+            IGameRepository<Game> gameRepository,
+            ICardRepository<Card> cardRepository,
             IMappingService mappingService
             )
         {
@@ -46,10 +46,7 @@ namespace BusinessLogic
         {
             IEnumerable<Player> humanPlayers = await _playerRepository.GetAllHumanPlayer();
             StartInfoGameView allHumanPlayers = new StartInfoGameView();
-            allHumanPlayers.HumanPlayers = humanPlayers.Select(x => new PlayerStartInfoGameViewItem
-            {
-                Name = x.Name
-            }).ToList();
+            allHumanPlayers.HumanPlayers = humanPlayers.Select(x => x.Name).ToList();
             return allHumanPlayers;
         }
 
@@ -68,11 +65,19 @@ namespace BusinessLogic
 
         public async Task<int> CreateGame(string ourPlayers, int countBot)
         {
+            if (ourPlayers == System.String.Empty)
+            {
+                throw new AppValidationException("Error: empty name");
+            }
             Game game = new Game();
             int gameId = await _gameRepository.Create(game);
             var userPlayer = await CreateOrSelectNewPlayer(ourPlayers);
             var dealerPlayer = await _playerRepository.GetDealerPlayer();
             var botPlayers = (await _playerRepository.GetBotPlayers(countBot)).ToList();
+            if (userPlayer == null || dealerPlayer == null || botPlayers == null)
+            {
+                throw new AppValidationException("Something went wrong");
+            }
             var playersOnTheGame = botPlayers;
             playersOnTheGame.Add(userPlayer);
             playersOnTheGame.Add(dealerPlayer);
@@ -84,12 +89,11 @@ namespace BusinessLogic
             }).ToList();
             await _playerGameRepository.Create(playerGames);
             return gameId;
-
         }
 
-        public async Task<CurrentGameGameView> CreateFirstRoundForAllPLayers(int gameId)
-        {
-            var playersOnTheGame = await GetAllPLayersOnTheGame(gameId);
+        public async Task<CurrentGameGameView> CreateFirstRoundForAllPlayers(int gameId)
+        {    
+            var playersOnTheGame = await GetAllPlayersOnTheGame(gameId);
             foreach (Player player in playersOnTheGame)
             {
                 await CreateFirstRoundsForPlayer(player.Id, gameId);
@@ -101,7 +105,7 @@ namespace BusinessLogic
             currentGame.DealerPlayer = dealerPlayerViewItem;
             currentGame.PlayersList = playersOnTheGameViewItem;
             currentGame.GameId = gameId;
-            if ((dealerPlayerViewItem.Result == ResultEnumView.BlackJack) || (playersOnTheGameViewItem.Where(x => x.Role == (RoleEnumView)Role.Human).First()).Result==(ResultEnumView)Result.BlackJack)
+            if ((dealerPlayerViewItem.Result == ResultEnumView.BlackJack) || (playersOnTheGameViewItem.Where(x => x.Role == (RoleEnumView)Role.Human).First()).Result == (ResultEnumView)Result.BlackJack)
             {
                 currentGame.CheckEndGame = GameEnd.EndGame;
             }
@@ -126,7 +130,7 @@ namespace BusinessLogic
 
         public async Task<CurrentGameGameView> ContinueGameForPlayers(int gameId)
         {
-            List<Player> playersOnTheGame = await GetAllPLayersOnTheGame(gameId);
+            var playersOnTheGame = await GetAllPlayersOnTheGame(gameId);
             var dealerPlayer = playersOnTheGame.Where(x => x.Role == Role.Dealer).First();
             foreach (Player player in playersOnTheGame.Where(x => x.Role != Role.Dealer).ToList())
             {
@@ -167,27 +171,25 @@ namespace BusinessLogic
 
         public async Task<EndGameGameView> ContinueGameForDealer(int gameId)
         {
-            List<Player> playersOnTheGame = await GetAllPLayersOnTheGame(gameId);
-            var dealerPlayer = playersOnTheGame.Where(x => x.Role == Role.Dealer).First();
-            int dealerCardSum = await CalculationPlayerCardSum(dealerPlayer.Id, gameId);
-            EndGameGameView dealer = new EndGameGameView();
+            var dealerPlayer = await _playerGameRepository.GetDealerPlayerOnTheGame(gameId);
+            int dealerCardSum = await CalculationPlayerCardSum(dealerPlayer.Player.Id, gameId);
+            var dealer = new EndGameGameView();
             if (await CheckAllPlayerLoose(gameId))
             {
                 if (dealerCardSum >= Config.DealerMinTotalPoint)
                 {
-                    dealer.DealerPlayer = _mappingService.PlayerToPlayerEndGame(dealerPlayer);
+                    dealer.DealerPlayer = _mappingService.PlayerToPlayerEndGame(dealerPlayer.Player);
                     dealer.CheckEndGame = GameEnd.EndGame;
                     dealer.GameId = gameId;
                     return dealer;
                 }
                 if (dealerCardSum < Config.DealerMinTotalPoint)
                 {
-                    await CreateNextRoundForPlayer(dealerPlayer.Id, gameId);
-                    dealer.DealerPlayer.CardSum = await CalculationPlayerCardSum(dealerPlayer.Id, gameId);
+                    await CreateNextRoundForPlayer(dealerPlayer.Player.Id, gameId);
+                    dealer.DealerPlayer.CardSum = await CalculationPlayerCardSum(dealerPlayer.Player.Id, gameId);
                 }
                 if (CheckBust(dealer.DealerPlayer.CardSum))
                 {
-                    playersOnTheGame.Add(dealerPlayer);
                     dealer.CheckEndGame = GameEnd.EndGame;
                     dealer.GameId = gameId;
                     return dealer;
@@ -254,7 +256,7 @@ namespace BusinessLogic
             return playersOnTheGame;
         }
 
-        private async Task<List<Player>> GetAllPLayersOnTheGame(int gameId)
+        private async Task<List<Player>> GetAllPlayersOnTheGame(int gameId)
         {
             var identityPlayersId = (await _playerGameRepository.GetAllPlayersOnTheGame(gameId)).ToList();
             var playersOnTheGame = identityPlayersId
@@ -277,9 +279,9 @@ namespace BusinessLogic
 
         private async Task<bool> CheckResultrHumanPlayer(int gameId)
         {
-            var playersOnTheGame = await _playerGameRepository.GetHumanPlayerOnTheGame(gameId);
-            return playersOnTheGame.Result == Result.InGame;
-           
+            var humanPlayerOnTheGame = await _playerGameRepository.GetHumanPlayerOnTheGame(gameId);
+            return humanPlayerOnTheGame.Result == Result.InGame;
+
         }
 
         private bool CheckBlackJack(int cardsum)
@@ -294,9 +296,8 @@ namespace BusinessLogic
 
         private async Task<List<PlayerEndGameGameViewItem>> GetInformationForEndGameAboutPlayers(int gameId)
         {
-            List<PlayerEndGameGameViewItem> playersOnTheGame = new List<PlayerEndGameGameViewItem>();
             var rounds = (await _roundRepository.GetAllRoundsInTheGame(gameId)).ToList();
-            playersOnTheGame = rounds.Select(x => new PlayerEndGameGameViewItem()
+            var playersOnTheGame = rounds.Select(x => new PlayerEndGameGameViewItem()
             {
                 Id = x.Player.Id,
                 Name = x.Player.Name,
@@ -351,14 +352,12 @@ namespace BusinessLogic
 
         public async Task<EndGameGameView> GetInformationForEndGame(int gameId)
         {
-            List<Player> playersOnTheGame = await GetAllPLayersOnTheGame(gameId);
+            var playersOnTheGame = await GetAllPlayersOnTheGame(gameId);
             var dealerPlayer = playersOnTheGame.Where(x => x.Role == Role.Dealer).First();
-            playersOnTheGame.Remove(dealerPlayer);
+            int dealerCardSum = await CalculationPlayerCardSum(dealerPlayer.Id, gameId);
             foreach (Player player in playersOnTheGame)
             {
                 int playerCardSum = await CalculationPlayerCardSum(player.Id, gameId);
-                int dealerCardSum = await CalculationPlayerCardSum(dealerPlayer.Id, gameId);
-
                 if (CheckBust(dealerCardSum) && (!CheckBust(playerCardSum)))
                 {
                     await _playerGameRepository.UpdatePlayerStatus(gameId, player.Id, Result.Winner);

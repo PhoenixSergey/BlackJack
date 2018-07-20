@@ -187,6 +187,7 @@
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Game\CurrentGame.js" />
     <Content Include="Scripts\Game\EndGame.js" />
+    <Content Include="Scripts\Game\Error.js" />
     <Content Include="Scripts\Game\Start.js" />
     <Content Include="Scripts\History\AllGames.js" />
     <Content Include="Scripts\History\GameDetails.js" />
@@ -224,6 +225,7 @@
     <Content Include="Views\History\AllGames.cshtml" />
     <Content Include="Views\History\GameDetails.cshtml" />
     <Content Include="Views\Game\Start.cshtml" />
+    <Content Include="Views\Game\_Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

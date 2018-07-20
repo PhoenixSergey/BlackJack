@@ -4,7 +4,7 @@ using BlackJack.Entities;
 
 namespace BlackJack.DataAcces.Interfaces
 {
-    public interface IRoundRepository
+    public interface IRoundRepository<T> where T : Round
     {
         Task<int> Create(Round round);
         Task<IEnumerable<Round>> GetAll();

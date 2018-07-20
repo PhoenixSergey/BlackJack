@@ -4,7 +4,7 @@ using BlackJack.Entities;
 
 namespace BlackJack.DataAcces.Interfaces
 {
-    public interface IPlayerRepository
+    public interface IPlayerRepository<T> where T : Player
     {
         Task<int> Create(Player player);
         Task<Player> Get(int id);

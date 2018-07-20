@@ -7,11 +7,10 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using BlackJack.DataAcces.Interfaces;
-using System.Configuration;
 
 namespace BlackJack.DataAcces.Repositorys
 {
-    public class PlayerRepository : IPlayerRepository
+    public class PlayerRepository : IPlayerRepository<Player>
     {
         private readonly string _connectionString;
         public PlayerRepository(string connectionString)
@@ -46,8 +45,6 @@ namespace BlackJack.DataAcces.Repositorys
         }
 
      
-
-
         public async Task<IEnumerable<Player>> GetBotPlayers(int count)
         {
             IEnumerable<Player> botPlayers = new List<Player>();
@@ -59,7 +56,6 @@ namespace BlackJack.DataAcces.Repositorys
 
         public async Task<Player> GetDealerPlayer()
         {
-            Player dealerPlayers = new Player();
             using (IDbConnection connection = new SqlConnection(_connectionString))
             {
                 return (await connection.QueryAsync<Player>("SELECT * FROM Players where Role=1")).FirstOrDefault();

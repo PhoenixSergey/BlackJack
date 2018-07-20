@@ -28,6 +28,9 @@ namespace UserIterface
             bundles.Add(new ScriptBundle("~/bundles/Game/Start").Include(
                       "~/Scripts/Game/Start.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/Game/Error").Include(
+                      "~/Scripts/Game/Error.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/Game/EndGame").Include(
                       "~/Scripts/Game/EndGame.js"));
 

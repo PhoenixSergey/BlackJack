@@ -10,7 +10,7 @@ using BlackJack.DataAcces.Interfaces;
 
 namespace BlackJack.DataAcces.Repositorys
 {
-    public class GameRepository : IGameRepository
+    public class GameRepository : IGameRepository<Game> 
     {
         private readonly string _connectionString;
         public GameRepository(string connectionString)

@@ -2,11 +2,6 @@
 @model StartInfoGameView
 @{
     ViewBag.Title = "BlackJack";
-    List<string> HumanPlayers = new List<string>();
-    foreach (PlayerStartInfoGameViewItem p in Model.HumanPlayers)
-    {
-        HumanPlayers.Add(p.Name);
-    }
 }
 <center><h1>Welcome to the game</h1></center>
 <center>
@@ -23,7 +18,7 @@
     </div>
 </center>
 <script>
-    var array = JSON.parse('@Newtonsoft.Json.JsonConvert.SerializeObject(HumanPlayers)'.replace(/&quot;/g, "\""));   
+    var array = JSON.parse('@Newtonsoft.Json.JsonConvert.SerializeObject(Model.HumanPlayers)'.replace(/&quot;/g, "\""));   
 </script>
 @Scripts.Render("~/bundles/Game/Start")
 

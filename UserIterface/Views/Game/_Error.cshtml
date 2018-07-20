@@ -1,0 +1,17 @@
+﻿@using BlackJack.ViewModels.GameViewModel
+@model ErrorGameView
+
+
+<center>
+    <h2>@Model.Error.ToString()</h2>
+    <br />
+    <img src="https://tincan.co.uk/sites/default/files/styles/banner_image_tincan/public/images/Blog-404-01.png?itok=G8jyKL7k" width="700" height="400"/>
+    @using (Html.BeginForm("Start", "Game", FormMethod.Post))
+    {
+        <div id="button_block">
+            <button id="button_start_new_game" type="submit">Try again</button>
+        </div>
+    }
+</center>
+@Scripts.Render("~/bundles/Game/Error")
+

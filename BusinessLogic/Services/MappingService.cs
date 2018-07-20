@@ -11,8 +11,8 @@ namespace BusinessLogic
     public class MappingServices : IMappingService
     {
         #region references
-        private readonly IPlayerRepository _playerRepository;
-        public MappingServices(IPlayerRepository playerRepository)
+        private readonly IPlayerRepository<Player> _playerRepository;
+        public MappingServices(IPlayerRepository<Player> playerRepository)
         {
             _playerRepository = playerRepository;
         }

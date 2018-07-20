@@ -52,6 +52,7 @@
     <Compile Include="EnumViewModel\ResultEnumView.cs" />
     <Compile Include="EnumViewModel\RoleEnumView.cs" />
     <Compile Include="GameViewModel\CurrentGameGameView.cs" />
+    <Compile Include="GameViewModel\ErrorGameView.cs" />
     <Compile Include="HistoryViewModel\GameDetailsHistoryView.cs" />
     <Compile Include="HistoryViewModel\AllGamesHistoryView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -4,7 +4,7 @@ using BlackJack.Entities;
 
 namespace BlackJack.DataAcces.Interfaces
 {
-    public interface IGameRepository
+    public interface IGameRepository<T> where T : Game
     {
         Task<IEnumerable<Game>> GetAll();
         Task<int> Create(Game game);

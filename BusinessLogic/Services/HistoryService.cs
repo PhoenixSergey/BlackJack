@@ -16,14 +16,14 @@ namespace BusinessLogic.Services
     {
         #region references   
         private readonly IGameService _gameService;
-        private readonly IRoundRepository _roundRepository;
-        private readonly IPlayerGameRepository _playersGameRepository;
-        private readonly IGameRepository _gameRepository;
+        private readonly IRoundRepository<Round> _roundRepository;
+        private readonly IPlayerGameRepository<PlayerGame> _playersGameRepository;
+        private readonly IGameRepository<Game> _gameRepository;
         public HistoryService(
             IGameService gameService,
-            IRoundRepository roundRepository,
-            IPlayerGameRepository playerGameRepository,
-            IGameRepository gameRepository
+            IRoundRepository<Round> roundRepository,
+            IPlayerGameRepository<PlayerGame> playerGameRepository,
+            IGameRepository<Game> gameRepository
             )
         {
             _gameService = gameService;
@@ -36,16 +36,15 @@ namespace BusinessLogic.Services
         public async Task<AllGamesHistoryView> SelectAllGames()
         {
             AllGamesHistoryView historyViewModel = new AllGamesHistoryView();
-            var allGamesViewModel = Mapper.Map<IEnumerable<Game>, List<GameAllGamesHistoryViewItem>>((await _gameRepository.GetAll()).ToList());
-            historyViewModel.ListGames = allGamesViewModel;
+            historyViewModel.ListGames = Mapper.Map<IEnumerable<Game>, List<GameAllGamesHistoryViewItem>>((await _gameRepository.GetAll()).ToList()); 
             return historyViewModel;
         }
 
         public async Task<GameDetailsHistoryView> GetDetails(int gameId)
         {
-            List<PlayerGameDetailsHistoryViewItem> playersOnTheGame = new List<PlayerGameDetailsHistoryViewItem>();
+            //List<PlayerGameDetailsHistoryViewItem> playersOnTheGame = new List<PlayerGameDetailsHistoryViewItem>();
             var rounds = (await _roundRepository.GetAllRoundsInTheGame(gameId)).ToList();
-            playersOnTheGame = rounds.Select(x => new PlayerGameDetailsHistoryViewItem()
+            var playersOnTheGame = rounds.Select(x => new PlayerGameDetailsHistoryViewItem()
             {
                 Id = x.Player.Id,
                 Name = x.Player.Name,

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace BlackJack.DataAcces.Interfaces
 {
-    public interface ICardRepository
+    public interface ICardRepository<T> where T : Card 
     {
         Task<Card> GetRandom();
     }

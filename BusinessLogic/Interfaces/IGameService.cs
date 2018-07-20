@@ -8,7 +8,7 @@ namespace BusinessLogic.Interfaces
     {
         Task<StartInfoGameView> SelectAllHumanPlayers();
         Task<int> CreateGame(string ourPlayers, int countBot);
-        Task<CurrentGameGameView> CreateFirstRoundForAllPLayers(int gameId);
+        Task<CurrentGameGameView> CreateFirstRoundForAllPlayers(int gameId);
         Task<CurrentGameGameView> ContinueGameForPlayers(int gameId);
         Task<EndGameGameView> ContinueGameForDealer(int gameId);
         Task<EndGameGameView> GetInformationForEndGame(int gameId);

@@ -9,7 +9,7 @@ using BlackJack.DataAcces.Interfaces;
 
 namespace BlackJack.DataAcces.Repositorys
 {
-    public class RoundRepository : IRoundRepository
+    public class RoundRepository : IRoundRepository<Round>
     {
         private readonly string _connectionString;
         public RoundRepository(string connectionString)
@@ -24,6 +24,7 @@ namespace BlackJack.DataAcces.Repositorys
                 return await connection.InsertAsync(round);
             }
         }
+
         public async Task<IEnumerable<Round>> GetAll()
         {
             IEnumerable<Round> rounds = new List<Round>();
@@ -33,6 +34,7 @@ namespace BlackJack.DataAcces.Repositorys
             }
             return rounds;
         }
+
         public async Task<IEnumerable<Round>> GetAllRoundsInTheGame(int gameId)
         {
             string sql = @"SELECT * 
