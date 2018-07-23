@@ -42,7 +42,6 @@ namespace BusinessLogic.Services
 
         public async Task<GameDetailsHistoryView> GetDetails(int gameId)
         {
-            //List<PlayerGameDetailsHistoryViewItem> playersOnTheGame = new List<PlayerGameDetailsHistoryViewItem>();
             var rounds = (await _roundRepository.GetAllRoundsInTheGame(gameId)).ToList();
             var playersOnTheGame = rounds.Select(x => new PlayerGameDetailsHistoryViewItem()
             {

@@ -2,7 +2,6 @@
 using BlackJack.Entities;
 using BlackJack.Entities.Enum;
 using Dapper;
-using Dapper.Contrib.Extensions;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -79,13 +78,13 @@ namespace BlackJack.DataAcces.Repositorys
                              WHERE GameId = " + gameId + "And B.Role = 1";
             using (IDbConnection connection = new SqlConnection(_connectionString))
             {
-                var dealerPlayerOnTheGame = (await connection.QueryAsync<PlayerGame, Player, PlayerGame>(sql,
-                                                                                        (playersGames, player) =>
-                                                                                        {
-                                                                                            playersGames.Player = player;
-                                                                                            return playersGames;
-                                                                                        }
-                                                                                        )).FirstOrDefault();
+                var dealerPlayerOnTheGame = (await connection.QueryAsync<PlayerGame, Player, PlayerGame>(
+                    sql,
+                    (playersGames, player) =>
+                    {
+                        playersGames.Player = player;
+                        return playersGames;
+                    })).FirstOrDefault();
                 return dealerPlayerOnTheGame;
             }
 
@@ -98,8 +97,6 @@ namespace BlackJack.DataAcces.Repositorys
                             JOIN Players AS B ON A.PlayerId = B.Id
                             JOIN Games AS C ON A.GameId = C.Id
                             WHERE GameId = " + gameId;
-
-
             using (IDbConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
@@ -116,4 +113,3 @@ namespace BlackJack.DataAcces.Repositorys
         }
     }
 }
-

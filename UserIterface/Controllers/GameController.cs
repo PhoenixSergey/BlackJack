@@ -29,7 +29,6 @@ namespace UserIterface.Controllers
         [HttpGet]
         public async Task<ActionResult> CurrentGame(int gameId)
         {
-
             var startGame = await _gameService.CreateFirstRoundForAllPlayers(gameId);
             if (startGame.CheckEndGame == GameEnd.EndGame)
             {
@@ -45,7 +44,6 @@ namespace UserIterface.Controllers
             {
                 var startGame = await _gameService.CreateGame(ourPlayers, countBot);
                 return RedirectToAction("CurrentGame", "Game", new { gameId = startGame });
-
             }
             catch (AppValidationException e)
             {
@@ -63,7 +61,6 @@ namespace UserIterface.Controllers
 
         public async Task<ActionResult> _ViewRound(int gameId)
         {
-
             var continueGame = await _gameService.ContinueGameForPlayers(gameId);
             if (continueGame.CheckEndGame == GameEnd.ContinueGame)
             {
@@ -73,9 +70,7 @@ namespace UserIterface.Controllers
             {
                 url = Url.Action("EndGame", "Game", new { gameId }),
             }, JsonRequestBehavior.AllowGet);
-
         }
-
 
         public async Task<ActionResult> EndGame(int gameId)
         {

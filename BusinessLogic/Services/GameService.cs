@@ -281,7 +281,6 @@ namespace BusinessLogic
         {
             var humanPlayerOnTheGame = await _playerGameRepository.GetHumanPlayerOnTheGame(gameId);
             return humanPlayerOnTheGame.Result == Result.InGame;
-
         }
 
         private bool CheckBlackJack(int cardsum)
