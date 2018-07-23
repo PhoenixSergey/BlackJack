@@ -4,8 +4,8 @@ C:\Users\Anuitex\source\repos\BlackJack\ViewModels\bin\Debug\Dapper.Contrib.dll
 C:\Users\Anuitex\source\repos\BlackJack\ViewModels\bin\Debug\Dapper.dll
 C:\Users\Anuitex\source\repos\BlackJack\ViewModels\bin\Debug\Dapper.xml
 C:\Users\Anuitex\source\repos\BlackJack\ViewModels\bin\Debug\Dapper.Contrib.xml
+C:\Users\Anuitex\source\repos\BlackJack\ViewModels\obj\Debug\BlackJack.ViewModels.csprojAssemblyReference.cache
 C:\Users\Anuitex\source\repos\BlackJack\ViewModels\obj\Debug\BlackJack.ViewModels.csproj.CoreCompileInputs.cache
 C:\Users\Anuitex\source\repos\BlackJack\ViewModels\obj\Debug\BlackJack.ViewModels.csproj.CopyComplete
 C:\Users\Anuitex\source\repos\BlackJack\ViewModels\obj\Debug\ViewModels.dll
 C:\Users\Anuitex\source\repos\BlackJack\ViewModels\obj\Debug\ViewModels.pdb
-C:\Users\Anuitex\source\repos\BlackJack\ViewModels\obj\Debug\BlackJack.ViewModels.csprojAssemblyReference.cache

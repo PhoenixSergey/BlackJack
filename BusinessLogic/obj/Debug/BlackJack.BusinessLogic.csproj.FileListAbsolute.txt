@@ -8,6 +8,7 @@ C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\BlackJack.Config
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\BlackJack.DataAcces.dll
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\BlackJack.Entities.dll
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\Microsoft.Web.Infrastructure.dll
+C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\MoreLinq.Portable.dll
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\System.ValueTuple.dll
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\System.Web.Helpers.dll
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\System.Web.Mvc.dll
@@ -28,6 +29,7 @@ C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\Autofac.xml
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\Autofac.Integration.Mvc.xml
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\AutoMapper.pdb
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\AutoMapper.xml
+C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\MoreLinq.Portable.xml
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\System.ValueTuple.xml
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\System.Web.Helpers.xml
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\System.Web.Mvc.xml
@@ -42,5 +44,3 @@ C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\obj\Debug\BlackJack.Busine
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\obj\Debug\BlackJack.BusinessLogic.csproj.CopyComplete
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\obj\Debug\BusinessLogic.dll
 C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\obj\Debug\BusinessLogic.pdb
-C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\MoreLinq.Portable.dll
-C:\Users\Anuitex\source\repos\BlackJack\BusinessLogic\bin\Debug\MoreLinq.Portable.xml
