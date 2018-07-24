@@ -1,5 +1,5712 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["vendor"],{
 
+/***/ "./node_modules/@angular/animations/fesm5/animations.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/@angular/animations/fesm5/animations.js ***!
+  \**************************************************************/
+/*! exports provided: AnimationBuilder, AnimationFactory, AUTO_STYLE, animate, animateChild, animation, group, keyframes, query, sequence, stagger, state, style, transition, trigger, useAnimation, NoopAnimationPlayer, ɵPRE_STYLE, ɵAnimationGroupPlayer */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimationBuilder", function() { return AnimationBuilder; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimationFactory", function() { return AnimationFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AUTO_STYLE", function() { return AUTO_STYLE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "animate", function() { return animate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "animateChild", function() { return animateChild; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "animation", function() { return animation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "group", function() { return group; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "keyframes", function() { return keyframes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "query", function() { return query; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sequence", function() { return sequence; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "stagger", function() { return stagger; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "state", function() { return state; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "style", function() { return style; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transition", function() { return transition; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "trigger", function() { return trigger; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useAnimation", function() { return useAnimation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NoopAnimationPlayer", function() { return NoopAnimationPlayer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵPRE_STYLE", function() { return ɵPRE_STYLE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationGroupPlayer", function() { return AnimationGroupPlayer; });
+/**
+ * @license Angular v6.0.9
+ * (c) 2010-2018 Google, Inc. https://angular.io/
+ * License: MIT
+ */
+
+/**
+ * AnimationBuilder is an injectable service that is available when the {@link
+ * BrowserAnimationsModule BrowserAnimationsModule} or {@link NoopAnimationsModule
+ * NoopAnimationsModule} modules are used within an application.
+ *
+ * The purpose if this service is to produce an animation sequence programmatically within an
+ * angular component or directive.
+ *
+ * Programmatic animations are first built and then a player is created when the build animation is
+ * attached to an element.
+ *
+ * ```ts
+ * // remember to include the BrowserAnimationsModule module for this to work...
+ * import {AnimationBuilder} from '@angular/animations';
+ *
+ * class MyCmp {
+ *   constructor(private _builder: AnimationBuilder) {}
+ *
+ *   makeAnimation(element: any) {
+ *     // first build the animation
+ *     const myAnimation = this._builder.build([
+ *       style({ width: 0 }),
+ *       animate(1000, style({ width: '100px' }))
+ *     ]);
+ *
+ *     // then create a player from it
+ *     const player = myAnimation.create(element);
+ *
+ *     player.play();
+ *   }
+ * }
+ * ```
+ *
+ * When an animation is built an instance of {@link AnimationFactory AnimationFactory} will be
+ * returned. Using that an {@link AnimationPlayer AnimationPlayer} can be created which can then be
+ * used to start the animation.
+ *
+ * @experimental Animation support is experimental.
+ */
+var AnimationBuilder = /** @class */ (function () {
+    function AnimationBuilder() {
+    }
+    return AnimationBuilder;
+}());
+/**
+ * An instance of `AnimationFactory` is returned from {@link AnimationBuilder#build
+ * AnimationBuilder.build}.
+ *
+ * @experimental Animation support is experimental.
+ */
+var AnimationFactory = /** @class */ (function () {
+    function AnimationFactory() {
+    }
+    return AnimationFactory;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * Specifies automatic styling.
+ */
+var AUTO_STYLE = '*';
+/**
+ * Creates a named animation trigger, containing a  list of `state()`
+ * and `transition()` entries to be evaluated when the expression
+ * bound to the trigger changes.
+ *
+ * @param name An identifying string.
+ * @param definitions  An animation definition object, containing an array of `state()`
+ * and `transition()` declarations.
+ *
+ * @return An object that encapsulates the trigger data.
+ *
+ * @usageNotes
+ * Define an animation trigger in the `animations` section of `@Component` metadata.
+ * In the template, reference the trigger by name and bind it to a trigger expression that
+ * evaluates to a defined animation state, using the following format:
+ *
+ * `[@triggerName]="expression"`
+ *
+ * Animation trigger bindings convert all values to strings, and then match the
+ * previous and current values against any linked transitions.
+ * Booleans can be specified as `1` or `true` and `0` or `false`.
+ *
+ * ### Usage Example
+ *
+ * The following example creates an animation trigger reference based on the provided
+ * name value.
+ * The provided animation value is expected to be an array consisting of state and
+ * transition declarations.
+ *
+ * ```typescript
+ * @Component({
+ *   selector: "my-component",
+ *   templateUrl: "my-component-tpl.html",
+ *   animations: [
+ *     trigger("myAnimationTrigger", [
+ *       state(...),
+ *       state(...),
+ *       transition(...),
+ *       transition(...)
+ *     ])
+ *   ]
+ * })
+ * class MyComponent {
+ *   myStatusExp = "something";
+ * }
+ * ```
+ *
+ * The template associated with this component makes use of the defined trigger
+ * by binding to an element within its template code.
+ *
+ * ```html
+ * <!-- somewhere inside of my-component-tpl.html -->
+ * <div [@myAnimationTrigger]="myStatusExp">...</div>
+ * ```
+ *
+ * ### Using an inline function
+ * The `transition` animation method also supports reading an inline function which can decide
+ * if its associated animation should be run.
+ *
+ * ```typescript
+ * // this method is run each time the `myAnimationTrigger` trigger value changes.
+ * function myInlineMatcherFn(fromState: string, toState: string, element: any, params: {[key:
+ string]: any}): boolean {
+ *   // notice that `element` and `params` are also available here
+ *   return toState == 'yes-please-animate';
+ * }
+ *
+ * @Component({
+ *   selector: 'my-component',
+ *   templateUrl: 'my-component-tpl.html',
+ *   animations: [
+ *     trigger('myAnimationTrigger', [
+ *       transition(myInlineMatcherFn, [
+ *         // the animation sequence code
+ *       ]),
+ *     ])
+ *   ]
+ * })
+ * class MyComponent {
+ *   myStatusExp = "yes-please-animate";
+ * }
+ * ```
+ *
+ * ### Disabling Animations
+ * When true, the special animation control binding `@.disabled` binding prevents
+ * all animations from rendering.
+ * Place the  `@.disabled` binding on an element to disable
+ * animations on the element itself, as well as any inner animation triggers
+ * within the element.
+ *
+ * The following example shows how to use this feature:
+ *
+ * ```typescript
+ * @Component({
+ *   selector: 'my-component',
+ *   template: `
+ *     <div [@.disabled]="isDisabled">
+ *       <div [@childAnimation]="exp"></div>
+ *     </div>
+ *   `,
+ *   animations: [
+ *     trigger("childAnimation", [
+ *       // ...
+ *     ])
+ *   ]
+ * })
+ * class MyComponent {
+ *   isDisabled = true;
+ *   exp = '...';
+ * }
+ * ```
+ *
+ * When `@.disabled` is true, it prevents the `@childAnimation` trigger from animating,
+ * along with any inner animations.
+ *
+ * ### Disable animations application-wide
+ * When an area of the template is set to have animations disabled,
+ * **all** inner components have their animations disabled as well.
+ * This means that you can disable all animations for an app
+ * by placing a host binding set on `@.disabled` on the topmost Angular component.
+ *
+ * ```typescript
+ * import {Component, HostBinding} from '@angular/core';
+ *
+ * @Component({
+ *   selector: 'app-component',
+ *   templateUrl: 'app.component.html',
+ * })
+ * class AppComponent {
+ *   @HostBinding('@.disabled')
+ *   public animationsDisabled = true;
+ * }
+ * ```
+ *
+ * ### Overriding disablement of inner animations
+ * Despite inner animations being disabled, a parent animation can `query()`
+ * for inner elements located in disabled areas of the template and still animate
+ * them if needed. This is also the case for when a sub animation is
+ * queried by a parent and then later animated using `animateChild()`.
+ *
+ * ### Detecting when an animation is disabled
+ * If a region of the DOM (or the entire application) has its animations disabled, the animation
+ * trigger callbacks still fire, but for zero seconds. When the callback fires, it provides
+ * an instance of an `AnimationEvent`. If animations are disabled,
+ * the `.disabled` flag on the event is true.
+ *
+ * @experimental Animation support is experimental.
+ */
+function trigger(name, definitions) {
+    return { type: 7 /* Trigger */, name: name, definitions: definitions, options: {} };
+}
+/**
+ * Defines an animation step that combines styling information with timing information.
+ *
+ * @param timings Sets `AnimateTimings` for the parent animation.
+ * A string in the format "duration [delay] [easing]".
+ *  - Duration and delay are expressed as a number and optional time unit,
+ * such as "1s" or "10ms" for one second and 10 milliseconds, respectively.
+ * The default unit is milliseconds.
+ *  - The easing value controls how the animation accelerates and decelerates
+ * during its runtime. Value is one of  `ease`, `ease-in`, `ease-out`,
+ * `ease-in-out`, or a `cubic-bezier()` function call.
+ * If not supplied, no easing is applied.
+ *
+ * For example, the string "1s 100ms ease-out" specifies a duration of
+ * 1000 milliseconds, and delay of 100 ms, and the "ease-out" easing style,
+ * which decelerates near the end of the duration.
+ * @param styles Sets AnimationStyles for the parent animation.
+ * A function call to either `style()` or `keyframes()`
+ * that returns a collection of CSS style entries to be applied to the parent animation.
+ * When null, uses the styles from the destination state.
+ * This is useful when describing an animation step that will complete an animation;
+ * see "Animating to the final state" in `transitions()`.
+ * @returns An object that encapsulates the animation step.
+ *
+ * @usageNotes
+ * Call within an animation `sequence()`, `{@link animations/group group()}`, or
+ * `transition()` call to specify an animation step
+ * that applies given style data to the parent animation for a given amount of time.
+ *
+ * ### Syntax Examples
+ * **Timing examples**
+ *
+ * The following examples show various `timings` specifications.
+ * - `animate(500)` : Duration is 500 milliseconds.
+ * - `animate("1s")` : Duration is 1000 milliseconds.
+ * - `animate("100ms 0.5s")` : Duration is 100 milliseconds, delay is 500 milliseconds.
+ * - `animate("5s ease-in")` : Duration is 5000 milliseconds, easing in.
+ * - `animate("5s 10ms cubic-bezier(.17,.67,.88,.1)")` : Duration is 5000 milliseconds, delay is 10
+ * milliseconds, easing according to a bezier curve.
+ *
+ * **Style examples**
+ *
+ * The following example calls `style()` to set a single CSS style.
+ * ```typescript
+ * animate(500, style({ background: "red" }))
+ * ```
+ * The following example calls `keyframes()` to set a CSS style
+ * to different values for successive keyframes.
+ * ```typescript
+ * animate(500, keyframes(
+ *  [
+ *   style({ background: "blue" })),
+ *   style({ background: "red" }))
+ *  ])
+ * ```
+ */
+function animate(timings, styles) {
+    if (styles === void 0) { styles = null; }
+    return { type: 4 /* Animate */, styles: styles, timings: timings };
+}
+/**
+ * @description Defines a list of animation steps to be run in parallel.
+ *
+ * @param steps An array of animation step objects.
+ * - When steps are defined by `style()` or `animate()`
+ * function calls, each call within the group is executed instantly.
+ * - To specify offset styles to be applied at a later time, define steps with
+ * `keyframes()`, or use `animate()` calls with a delay value.
+ * For example:
+ *
+ * ```typescript
+ * group([
+ *   animate("1s", { background: "black" }))
+ *   animate("2s", { color: "white" }))
+ * ])
+ * ```
+ *
+ * @param options An options object containing a delay and
+ * developer-defined parameters that provide styling defaults and
+ * can be overridden on invocation.
+ *
+ * @return An object that encapsulates the group data.
+ *
+ * @usageNotes
+ * Grouped animations are useful when a series of styles must be
+ * animated at different starting times and closed off at different ending times.
+ *
+ * When called within a `sequence()` or a
+ * `transition()` call, does not continue to the next
+ * instruction until all of the inner animation steps have completed.
+ */
+function group(steps, options) {
+    if (options === void 0) { options = null; }
+    return { type: 3 /* Group */, steps: steps, options: options };
+}
+/**
+ * Defines a list of animation steps to be run sequentially, one by one.
+ *
+ * @param steps An array of animation step objects.
+ * - Steps defined by `style()` calls apply the styling data immediately.
+ * - Steps defined by `animate()` calls apply the styling data over time
+ *   as specified by the timing data.
+ *
+ * ```typescript
+ * sequence([
+ *   style({ opacity: 0 })),
+ *   animate("1s", { opacity: 1 }))
+ * ])
+ * ```
+ *
+ * @param options An options object containing a delay and
+ * developer-defined parameters that provide styling defaults and
+ * can be overridden on invocation.
+ *
+ * @return An object that encapsulates the sequence data.
+ *
+ * @usageNotes
+ * When you pass an array of steps to a
+ * `transition()` call, the steps run sequentially by default.
+ * Compare this to the `{@link animations/group group()}` call, which runs animation steps in parallel.
+ *
+ * When a sequence is used within a `{@link animations/group group()}` or a `transition()` call,
+ * execution continues to the next instruction only after each of the inner animation
+ * steps have completed.
+ *
+ **/
+function sequence(steps, options) {
+    if (options === void 0) { options = null; }
+    return { type: 2 /* Sequence */, steps: steps, options: options };
+}
+/**
+ * Declares a key/value object containing CSS properties/styles that
+ * can then be used for an animation `state`, within an animation `sequence`,
+ * or as styling data for calls to `animate()` and `keyframes()`.
+ *
+ * @param tokens A set of CSS styles or HTML styles associated with an animation state.
+ * The value can be any of the following:
+ * - A key-value style pair associating a CSS property with a value.
+ * - An array of key-value style pairs.
+ * - An asterisk (*), to use auto-styling, where styles are derived from the element
+ * being animated and applied to the animation when it starts.
+ *
+ * Auto-styling can be used to define a state that depends on layout or other
+ * environmental factors.
+ *
+ * @return An object that encapsulates the style data.
+ *
+ * @usageNotes
+ * The following examples create animation styles that collect a set of
+ * CSS property values:
+ *
+ * ```typescript
+ * // string values for CSS properties
+ * style({ background: "red", color: "blue" })
+ *
+ * // numerical pixel values
+ * style({ width: 100, height: 0 })
+ * ```
+ *
+ * The following example uses auto-styling to allow a component to animate from
+ * a height of 0 up to the height of the parent element:
+ *
+ * ```
+ * style({ height: 0 }),
+ * animate("1s", style({ height: "*" }))
+ * ```
+ *
+ **/
+function style(tokens) {
+    return { type: 6 /* Style */, styles: tokens, offset: null };
+}
+/**
+ * Declares an animation state within a trigger attached to an element.
+ *
+ * @param name One or more names for the defined state in a comma-separated string.
+ * The following reserved state names can be supplied to define a style for specific use
+ * cases:
+ *
+ * - `void` You can associate styles with this name to be used when
+ * the element is detached from the application. For example, when an `ngIf` evaluates
+ * to false, the state of the associated element is void.
+ *  - `*` (asterisk) Indicates the default state. You can associate styles with this name
+ * to be used as the fallback when the state that is being animated is not declared
+ * within the trigger.
+ *
+ * @param styles A set of CSS styles associated with this state, created using the
+ * `style()` function.
+ * This set of styles persists on the element once the state has been reached.
+ * @param options Parameters that can be passed to the state when it is invoked.
+ * 0 or more key-value pairs.
+ * @return An object that encapsulates the new state data.
+ *
+ * @usageNotes
+ * Use the `trigger()` function to register states to an animation trigger.
+ * Use the `transition()` function to animate between states.
+ * When a state is active within a component, its associated styles persist on the element,
+ * even when the animation ends.
+ **/
+function state(name, styles, options) {
+    return { type: 0 /* State */, name: name, styles: styles, options: options };
+}
+/**
+ * Defines a set of animation styles, associating each style with an optional `offset` value.
+ *
+ * @param steps A set of animation styles with optional offset data.
+ * The optional `offset` value for a style specifies a percentage of the total animation
+ * time at which that style is applied.
+ * @returns An object that encapsulates the keyframes data.
+ *
+ * @usageNotes
+ * Use with the `animate()` call. Instead of applying animations
+ * from the current state
+ * to the destination state, keyframes describe how each style entry is applied and at what point
+ * within the animation arc.
+ * Compare [CSS Keyframe Animations](https://www.w3schools.com/css/css3_animations.asp).
+ *
+ * ### Usage
+ *
+ * In the following example, the offset values describe
+ * when each `backgroundColor` value is applied. The color is red at the start, and changes to
+ * blue when 20% of the total time has elapsed.
+ *
+ * ```typescript
+ * // the provided offset values
+ * animate("5s", keyframes([
+ *   style({ backgroundColor: "red", offset: 0 }),
+ *   style({ backgroundColor: "blue", offset: 0.2 }),
+ *   style({ backgroundColor: "orange", offset: 0.3 }),
+ *   style({ backgroundColor: "black", offset: 1 })
+ * ]))
+ * ```
+ *
+ * If there are no `offset` values specified in the style entries, the offsets
+ * are calculated automatically.
+ *
+ * ```typescript
+ * animate("5s", keyframes([
+ *   style({ backgroundColor: "red" }) // offset = 0
+ *   style({ backgroundColor: "blue" }) // offset = 0.33
+ *   style({ backgroundColor: "orange" }) // offset = 0.66
+ *   style({ backgroundColor: "black" }) // offset = 1
+ * ]))
+ *```
+ */
+function keyframes(steps) {
+    return { type: 5 /* Keyframes */, steps: steps };
+}
+/**
+ * Declares an animation transition as a sequence of animation steps to run when a given
+ * condition is satisfied. The condition is a Boolean expression or function that compares
+ * the previous and current animation states, and returns true if this transition should occur.
+ * When the state criteria of a defined transition are met, the associated animation is
+ * triggered.
+ *
+ * @param stateChangeExpr A Boolean expression or function that compares the previous and current
+ * animation states, and returns true if this transition should occur. Note that  "true" and "false"
+ * match 1 and 0, respectively. An expression is evaluated each time a state change occurs in the
+ * animation trigger element.
+ * The animation steps run when the expression evaluates to true.
+ *
+ * - A state-change string takes the form "state1 => state2", where each side is a defined animation
+ * state, or an asterix (*) to refer to a dynamic start or end state.
+ *   - The expression string can contain multiple comma-separated statements;
+ * for example "state1 => state2, state3 => state4".
+ *   - Special values `:enter` and `:leave` initiate a transition on the entry and exit states,
+ * equivalent to  "void => *"  and "* => void".
+ *   - Special values `:increment` and `:decrement` initiate a transition when a numeric value has
+ * increased or decreased in value.
+ * - A function is executed each time a state change occurs in the animation trigger element.
+ * The animation steps run when the function returns true.
+ *
+ * @param steps One or more animation objects, as returned by the `animate()` or
+ * `sequence()` function, that form a transformation from one state to another.
+ * A sequence is used by default when you pass an array.
+ * @param options An options object that can contain a delay value for the start of the animation,
+ * and additional developer-defined parameters. Provided values for additional parameters are used
+ * as defaults, and override values can be passed to the caller on invocation.
+ * @returns An object that encapsulates the transition data.
+ *
+ * @usageNotes
+ * The template associated with a component binds an animation trigger to an element.
+ *
+ * ```HTML
+ * <!-- somewhere inside of my-component-tpl.html -->
+ * <div [@myAnimationTrigger]="myStatusExp">...</div>
+ * ```
+ *
+ * All transitions are defined within an animation trigger,
+ * along with named states that the transitions change to and from.
+ *
+ * ```typescript
+ * trigger("myAnimationTrigger", [
+ *  // define states
+ *  state("on", style({ background: "green" })),
+ *  state("off", style({ background: "grey" })),
+ *  ...]
+ * ```
+ *
+ * Note that when you call the `sequence()` function within a `{@link animations/group group()}`
+ * or a `transition()` call, execution does not continue to the next instruction
+ * until each of the inner animation steps have completed.
+ *
+ * ### Syntax examples
+ *
+ * The following examples define transitions between the two defined states (and default states),
+ * using various options:
+ *
+ * ```typescript
+ * // Transition occurs when the state value
+ * // bound to "myAnimationTrigger" changes from "on" to "off"
+ * transition("on => off", animate(500))
+ * // Run the same animation for both directions
+ * transition("on <=> off", animate(500))
+ * // Define multiple state-change pairs separated by commas
+ * transition("on => off, off => void", animate(500))
+ * ```
+ *
+ * ### Special values for state-change expressions
+ *
+ * - Catch-all state change for when an element is inserted into the page and the
+ * destination state is unknown:
+ *
+ * ```typescript
+ * transition("void => *", [
+ *  style({ opacity: 0 }),
+ *  animate(500)
+ *  ])
+ * ```
+ *
+ * - Capture a state change between any states:
+ *
+ *  `transition("* => *", animate("1s 0s"))`
+ *
+ * - Entry and exit transitions:
+ *
+ * ```typescript
+ * transition(":enter", [
+ *   style({ opacity: 0 }),
+ *   animate(500, style({ opacity: 1 }))
+ *   ]),
+ * transition(":leave", [
+ *   animate(500, style({ opacity: 0 }))
+ *   ])
+ * ```
+ *
+ * - Use `:increment` and `:decrement` to initiate transitions:
+ *
+ * ```typescript
+ * transition(":increment", group([
+ *  query(':enter', [
+ *     style({ left: '100%' }),
+ *     animate('0.5s ease-out', style('*'))
+ *   ]),
+ *  query(':leave', [
+ *     animate('0.5s ease-out', style({ left: '-100%' }))
+ *  ])
+ * ]))
+ *
+ * transition(":decrement", group([
+ *  query(':enter', [
+ *     style({ left: '100%' }),
+ *     animate('0.5s ease-out', style('*'))
+ *   ]),
+ *  query(':leave', [
+ *     animate('0.5s ease-out', style({ left: '-100%' }))
+ *  ])
+ * ]))
+ * ```
+ *
+ * ### State-change functions
+ *
+ * Here is an example of a `fromState` specified as a state-change function that invokes an
+ * animation when true:
+ *
+ * ```typescript
+ * transition((fromState, toState) =>
+ *  {
+ *   return fromState == "off" && toState == "on";
+ *  },
+ *  animate("1s 0s"))
+ * ```
+ *
+ * ### Animating to the final state
+ *
+ * If the final step in a transition is a call to `animate()` that uses a timing value
+ * with no style data, that step is automatically considered the final animation arc,
+ * for the element to reach the final state. Angular automatically adds or removes
+ * CSS styles to ensure that the element is in the correct final state.
+ *
+ * The following example defines a transition that starts by hiding the element,
+ * then makes sure that it animates properly to whatever state is currently active for trigger:
+ *
+ * ```typescript
+ * transition("void => *", [
+ *   style({ opacity: 0 }),
+ *   animate(500)
+ *  ])
+ * ```
+ * ### Boolean value matching
+ * If a trigger binding value is a Boolean, it can be matched using a transition expression
+ * that compares true and false or 1 and 0. For example:
+ *
+ * ```
+ * // in the template
+ * <div [@openClose]="open ? true : false">...</div>
+ * // in the component metadata
+ * trigger('openClose', [
+ *   state('true', style({ height: '*' })),
+ *   state('false', style({ height: '0px' })),
+ *   transition('false <=> true', animate(500))
+ * ])
+ * ```
+ **/
+function transition(stateChangeExpr, steps, options) {
+    if (options === void 0) { options = null; }
+    return { type: 1 /* Transition */, expr: stateChangeExpr, animation: steps, options: options };
+}
+/**
+ * Produces a reusable animation that can be invoked in another animation or sequence,
+ * by calling the `useAnimation()` function.
+ *
+ * @param steps One or more animation objects, as returned by the `animate()`
+ * or `sequence()` function, that form a transformation from one state to another.
+ * A sequence is used by default when you pass an array.
+ * @param options An options object that can contain a delay value for the start of the
+ * animation, and additional developer-defined parameters.
+ * Provided values for additional parameters are used as defaults,
+ * and override values can be passed to the caller on invocation.
+ * @returns An object that encapsulates the animation data.
+ *
+ * @usageNotes
+ * The following example defines a reusable animation, providing some default parameter
+ * values.
+ *
+ * ```typescript
+ * var fadeAnimation = animation([
+ *   style({ opacity: '{{ start }}' }),
+ *   animate('{{ time }}',
+ *   style({ opacity: '{{ end }}'}))
+ *   ],
+ *   { params: { time: '1000ms', start: 0, end: 1 }});
+ * ```
+ *
+ * The following invokes the defined animation with a call to `useAnimation()`,
+ * passing in override parameter values.
+ *
+ * ```js
+ * useAnimation(fadeAnimation, {
+ *   params: {
+ *     time: '2s',
+ *     start: 1,
+ *     end: 0
+ *   }
+ * })
+ * ```
+ *
+ * If any of the passed-in parameter values are missing from this call,
+ * the default values are used. If one or more parameter values are missing before a step is
+ * animated, `useAnimation()` throws an error.
+ */
+function animation(steps, options) {
+    if (options === void 0) { options = null; }
+    return { type: 8 /* Reference */, animation: steps, options: options };
+}
+/**
+ * Executes a queried inner animation element within an animation sequence.
+ *
+ * @param options An options object that can contain a delay value for the start of the
+ * animation, and additional override values for developer-defined parameters.
+ * @return An object that encapsulates the child animation data.
+ *
+ * @usageNotes
+ * Each time an animation is triggered in Angular, the parent animation
+ * has priority and any child animations are blocked. In order
+ * for a child animation to run, the parent animation must query each of the elements
+ * containing child animations, and run them using this function.
+ *
+ * Note that this feature designed to be used with `query()` and it will only work
+ * with animations that are assigned using the Angular animation library. CSS keyframes
+ * and transitions are not handled by this API.
+ */
+function animateChild(options) {
+    if (options === void 0) { options = null; }
+    return { type: 9 /* AnimateChild */, options: options };
+}
+/**
+ * Starts a reusable animation that is created using the `animation()` function.
+ *
+ * @param animation The reusable animation to start.
+ * @param options An options object that can contain a delay value for the start of
+ * the animation, and additional override values for developer-defined parameters.
+ * @return An object that contains the animation parameters.
+ */
+function useAnimation(animation, options) {
+    if (options === void 0) { options = null; }
+    return { type: 10 /* AnimateRef */, animation: animation, options: options };
+}
+/**
+ * Finds one or more inner elements within the current element that is
+ * being animated within a sequence. Use with `animateChild()`.
+ *
+ * @param selector The element to query, or a set of elements that contain Angular-specific
+ * characteristics, specified with one or more of the following tokens.
+ *  - `query(":enter")` or `query(":leave")` : Query for newly inserted/removed elements.
+ *  - `query(":animating")` : Query all currently animating elements.
+ *  - `query("@triggerName")` : Query elements that contain an animation trigger.
+ *  - `query("@*")` : Query all elements that contain an animation triggers.
+ *  - `query(":self")` : Include the current element into the animation sequence.
+ *
+ * @param animation One or more animation steps to apply to the queried element or elements.
+ * An array is treated as an animation sequence.
+ * @param options An options object. Use the 'limit' field to limit the total number of
+ * items to collect.
+ * @return An object that encapsulates the query data.
+ *
+ * @usageNotes
+ * Tokens can be merged into a combined query selector string. For example:
+ *
+ * ```typescript
+ *  query(':self, .record:enter, .record:leave, @subTrigger', [...])
+ * ```
+ *
+ * The `query()` function collects multiple elements and works internally by using
+ * `element.querySelectorAll`. Use the `limit` field of an options object to limit
+ * the total number of items to be collected. For example:
+ *
+ * ```js
+ * query('div', [
+ *   animate(...),
+ *   animate(...)
+ * ], { limit: 1 })
+ * ```
+ *
+ * By default, throws an error when zero items are found. Set the
+ * `optional` flag to ignore this error. For example:
+ *
+ * ```js
+ * query('.some-element-that-may-not-be-there', [
+ *   animate(...),
+ *   animate(...)
+ * ], { optional: true })
+ * ```
+ *
+ * ### Usage Example
+ *
+ * The following example queries for inner elements and animates them
+ * individually using `animateChild()`.
+ *
+ * ```typescript
+ * @Component({
+ *   selector: 'inner',
+ *   template: `
+ *     <div [@queryAnimation]="exp">
+ *       <h1>Title</h1>
+ *       <div class="content">
+ *         Blah blah blah
+ *       </div>
+ *     </div>
+ *   `,
+ *   animations: [
+ *    trigger('queryAnimation', [
+ *      transition('* => goAnimate', [
+ *        // hide the inner elements
+ *        query('h1', style({ opacity: 0 })),
+ *        query('.content', style({ opacity: 0 })),
+ *
+ *        // animate the inner elements in, one by one
+ *        query('h1', animate(1000, style({ opacity: 1 })),
+ *        query('.content', animate(1000, style({ opacity: 1 })),
+ *      ])
+ *    ])
+ *  ]
+ * })
+ * class Cmp {
+ *   exp = '';
+ *
+ *   goAnimate() {
+ *     this.exp = 'goAnimate';
+ *   }
+ * }
+ * ```
+ */
+function query(selector, animation, options) {
+    if (options === void 0) { options = null; }
+    return { type: 11 /* Query */, selector: selector, animation: animation, options: options };
+}
+/**
+ * Use within an animation `query()` call to issue a timing gap after
+ * each queried item is animated.
+ *
+ * @param timings A delay value.
+ * @param animation One ore more animation steps.
+ * @returns An object that encapsulates the stagger data.
+ *
+ * @usageNotes
+ * In the following example, a container element wraps a list of items stamped out
+ * by an `ngFor`. The container element contains an animation trigger that will later be set
+ * to query for each of the inner items.
+ *
+ * Each time items are added, the opacity fade-in animation runs,
+ * and each removed item is faded out.
+ * When either of these animations occur, the stagger effect is
+ * applied after each item's animation is started.
+ *
+ * ```html
+ * <!-- list.component.html -->
+ * <button (click)="toggle()">Show / Hide Items</button>
+ * <hr />
+ * <div [@listAnimation]="items.length">
+ *   <div *ngFor="let item of items">
+ *     {{ item }}
+ *   </div>
+ * </div>
+ * ```
+ *
+ * Here is the component code:
+ *
+ * ```typescript
+ * import {trigger, transition, style, animate, query, stagger} from '@angular/animations';
+ * @Component({
+ *   templateUrl: 'list.component.html',
+ *   animations: [
+ *     trigger('listAnimation', [
+ *     ...
+ *     ])
+ *   ]
+ * })
+ * class ListComponent {
+ *   items = [];
+ *
+ *   showItems() {
+ *     this.items = [0,1,2,3,4];
+ *   }
+ *
+ *   hideItems() {
+ *     this.items = [];
+ *   }
+ *
+ *   toggle() {
+ *     this.items.length ? this.hideItems() : this.showItems();
+ *    }
+ *  }
+ * ```
+ *
+ * Here is the animation trigger code:
+ *
+ * ```typescript
+ * trigger('listAnimation', [
+ *   transition('* => *', [ // each time the binding value changes
+ *     query(':leave', [
+ *       stagger(100, [
+ *         animate('0.5s', style({ opacity: 0 }))
+ *       ])
+ *     ]),
+ *     query(':enter', [
+ *       style({ opacity: 0 }),
+ *       stagger(100, [
+ *         animate('0.5s', style({ opacity: 1 }))
+ *       ])
+ *     ])
+ *   ])
+ * ])
+ * ```
+ */
+function stagger(timings, animation) {
+    return { type: 12 /* Stagger */, timings: timings, animation: animation };
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+function scheduleMicroTask(cb) {
+    Promise.resolve(null).then(cb);
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @experimental Animation support is experimental.
+ */
+var NoopAnimationPlayer = /** @class */ (function () {
+    function NoopAnimationPlayer(duration, delay) {
+        if (duration === void 0) { duration = 0; }
+        if (delay === void 0) { delay = 0; }
+        this._onDoneFns = [];
+        this._onStartFns = [];
+        this._onDestroyFns = [];
+        this._started = false;
+        this._destroyed = false;
+        this._finished = false;
+        this.parentPlayer = null;
+        this.totalTime = duration + delay;
+    }
+    NoopAnimationPlayer.prototype._onFinish = function () {
+        if (!this._finished) {
+            this._finished = true;
+            this._onDoneFns.forEach(function (fn) { return fn(); });
+            this._onDoneFns = [];
+        }
+    };
+    NoopAnimationPlayer.prototype.onStart = function (fn) { this._onStartFns.push(fn); };
+    NoopAnimationPlayer.prototype.onDone = function (fn) { this._onDoneFns.push(fn); };
+    NoopAnimationPlayer.prototype.onDestroy = function (fn) { this._onDestroyFns.push(fn); };
+    NoopAnimationPlayer.prototype.hasStarted = function () { return this._started; };
+    NoopAnimationPlayer.prototype.init = function () { };
+    NoopAnimationPlayer.prototype.play = function () {
+        if (!this.hasStarted()) {
+            this._onStart();
+            this.triggerMicrotask();
+        }
+        this._started = true;
+    };
+    /* @internal */
+    NoopAnimationPlayer.prototype.triggerMicrotask = function () {
+        var _this = this;
+        scheduleMicroTask(function () { return _this._onFinish(); });
+    };
+    NoopAnimationPlayer.prototype._onStart = function () {
+        this._onStartFns.forEach(function (fn) { return fn(); });
+        this._onStartFns = [];
+    };
+    NoopAnimationPlayer.prototype.pause = function () { };
+    NoopAnimationPlayer.prototype.restart = function () { };
+    NoopAnimationPlayer.prototype.finish = function () { this._onFinish(); };
+    NoopAnimationPlayer.prototype.destroy = function () {
+        if (!this._destroyed) {
+            this._destroyed = true;
+            if (!this.hasStarted()) {
+                this._onStart();
+            }
+            this.finish();
+            this._onDestroyFns.forEach(function (fn) { return fn(); });
+            this._onDestroyFns = [];
+        }
+    };
+    NoopAnimationPlayer.prototype.reset = function () { };
+    NoopAnimationPlayer.prototype.setPosition = function (p) { };
+    NoopAnimationPlayer.prototype.getPosition = function () { return 0; };
+    /* @internal */
+    NoopAnimationPlayer.prototype.triggerCallback = function (phaseName) {
+        var methods = phaseName == 'start' ? this._onStartFns : this._onDoneFns;
+        methods.forEach(function (fn) { return fn(); });
+        methods.length = 0;
+    };
+    return NoopAnimationPlayer;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var AnimationGroupPlayer = /** @class */ (function () {
+    function AnimationGroupPlayer(_players) {
+        var _this = this;
+        this._onDoneFns = [];
+        this._onStartFns = [];
+        this._finished = false;
+        this._started = false;
+        this._destroyed = false;
+        this._onDestroyFns = [];
+        this.parentPlayer = null;
+        this.totalTime = 0;
+        this.players = _players;
+        var doneCount = 0;
+        var destroyCount = 0;
+        var startCount = 0;
+        var total = this.players.length;
+        if (total == 0) {
+            scheduleMicroTask(function () { return _this._onFinish(); });
+        }
+        else {
+            this.players.forEach(function (player) {
+                player.onDone(function () {
+                    if (++doneCount == total) {
+                        _this._onFinish();
+                    }
+                });
+                player.onDestroy(function () {
+                    if (++destroyCount == total) {
+                        _this._onDestroy();
+                    }
+                });
+                player.onStart(function () {
+                    if (++startCount == total) {
+                        _this._onStart();
+                    }
+                });
+            });
+        }
+        this.totalTime = this.players.reduce(function (time, player) { return Math.max(time, player.totalTime); }, 0);
+    }
+    AnimationGroupPlayer.prototype._onFinish = function () {
+        if (!this._finished) {
+            this._finished = true;
+            this._onDoneFns.forEach(function (fn) { return fn(); });
+            this._onDoneFns = [];
+        }
+    };
+    AnimationGroupPlayer.prototype.init = function () { this.players.forEach(function (player) { return player.init(); }); };
+    AnimationGroupPlayer.prototype.onStart = function (fn) { this._onStartFns.push(fn); };
+    AnimationGroupPlayer.prototype._onStart = function () {
+        if (!this.hasStarted()) {
+            this._started = true;
+            this._onStartFns.forEach(function (fn) { return fn(); });
+            this._onStartFns = [];
+        }
+    };
+    AnimationGroupPlayer.prototype.onDone = function (fn) { this._onDoneFns.push(fn); };
+    AnimationGroupPlayer.prototype.onDestroy = function (fn) { this._onDestroyFns.push(fn); };
+    AnimationGroupPlayer.prototype.hasStarted = function () { return this._started; };
+    AnimationGroupPlayer.prototype.play = function () {
+        if (!this.parentPlayer) {
+            this.init();
+        }
+        this._onStart();
+        this.players.forEach(function (player) { return player.play(); });
+    };
+    AnimationGroupPlayer.prototype.pause = function () { this.players.forEach(function (player) { return player.pause(); }); };
+    AnimationGroupPlayer.prototype.restart = function () { this.players.forEach(function (player) { return player.restart(); }); };
+    AnimationGroupPlayer.prototype.finish = function () {
+        this._onFinish();
+        this.players.forEach(function (player) { return player.finish(); });
+    };
+    AnimationGroupPlayer.prototype.destroy = function () { this._onDestroy(); };
+    AnimationGroupPlayer.prototype._onDestroy = function () {
+        if (!this._destroyed) {
+            this._destroyed = true;
+            this._onFinish();
+            this.players.forEach(function (player) { return player.destroy(); });
+            this._onDestroyFns.forEach(function (fn) { return fn(); });
+            this._onDestroyFns = [];
+        }
+    };
+    AnimationGroupPlayer.prototype.reset = function () {
+        this.players.forEach(function (player) { return player.reset(); });
+        this._destroyed = false;
+        this._finished = false;
+        this._started = false;
+    };
+    AnimationGroupPlayer.prototype.setPosition = function (p) {
+        var timeAtPosition = p * this.totalTime;
+        this.players.forEach(function (player) {
+            var position = player.totalTime ? Math.min(1, timeAtPosition / player.totalTime) : 1;
+            player.setPosition(position);
+        });
+    };
+    AnimationGroupPlayer.prototype.getPosition = function () {
+        var min = 0;
+        this.players.forEach(function (player) {
+            var p = player.getPosition();
+            min = Math.min(p, min);
+        });
+        return min;
+    };
+    AnimationGroupPlayer.prototype.beforeDestroy = function () {
+        this.players.forEach(function (player) {
+            if (player.beforeDestroy) {
+                player.beforeDestroy();
+            }
+        });
+    };
+    /* @internal */
+    AnimationGroupPlayer.prototype.triggerCallback = function (phaseName) {
+        var methods = phaseName == 'start' ? this._onStartFns : this._onDoneFns;
+        methods.forEach(function (fn) { return fn(); });
+        methods.length = 0;
+    };
+    return AnimationGroupPlayer;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var ɵPRE_STYLE = '!';
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+//# sourceMappingURL=animations.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/animations/fesm5/browser.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@angular/animations/fesm5/browser.js ***!
+  \***********************************************************/
+/*! exports provided: AnimationDriver, ɵAnimation, ɵAnimationStyleNormalizer, ɵNoopAnimationStyleNormalizer, ɵWebAnimationsStyleNormalizer, ɵAnimationDriver, ɵNoopAnimationDriver, ɵAnimationEngine, ɵCssKeyframesDriver, ɵCssKeyframesPlayer, ɵcontainsElement, ɵinvokeQuery, ɵmatchesElement, ɵvalidateStyleProperty, ɵWebAnimationsDriver, ɵsupportsWebAnimations, ɵWebAnimationsPlayer, ɵallowPreviousPlayerStylesMerge */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimationDriver", function() { return AnimationDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimation", function() { return Animation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationStyleNormalizer", function() { return AnimationStyleNormalizer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵNoopAnimationStyleNormalizer", function() { return NoopAnimationStyleNormalizer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵWebAnimationsStyleNormalizer", function() { return WebAnimationsStyleNormalizer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationDriver", function() { return AnimationDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵNoopAnimationDriver", function() { return NoopAnimationDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationEngine", function() { return AnimationEngine; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵCssKeyframesDriver", function() { return CssKeyframesDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵCssKeyframesPlayer", function() { return CssKeyframesPlayer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵcontainsElement", function() { return containsElement; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵinvokeQuery", function() { return invokeQuery; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵmatchesElement", function() { return matchesElement; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵvalidateStyleProperty", function() { return validateStyleProperty; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵWebAnimationsDriver", function() { return WebAnimationsDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵsupportsWebAnimations", function() { return supportsWebAnimations; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵWebAnimationsPlayer", function() { return WebAnimationsPlayer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵallowPreviousPlayerStylesMerge", function() { return allowPreviousPlayerStylesMerge; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_animations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/animations */ "./node_modules/@angular/animations/fesm5/animations.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/**
+ * @license Angular v6.0.9
+ * (c) 2010-2018 Google, Inc. https://angular.io/
+ * License: MIT
+ */
+
+
+
+
+
+function isBrowser() {
+    return (typeof window !== 'undefined' && typeof window.document !== 'undefined');
+}
+function isNode() {
+    return (typeof process !== 'undefined');
+}
+function optimizeGroupPlayer(players) {
+    switch (players.length) {
+        case 0:
+            return new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"]();
+        case 1:
+            return players[0];
+        default:
+            return new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["ɵAnimationGroupPlayer"](players);
+    }
+}
+function normalizeKeyframes(driver, normalizer, element, keyframes, preStyles, postStyles) {
+    if (preStyles === void 0) { preStyles = {}; }
+    if (postStyles === void 0) { postStyles = {}; }
+    var errors = [];
+    var normalizedKeyframes = [];
+    var previousOffset = -1;
+    var previousKeyframe = null;
+    keyframes.forEach(function (kf) {
+        var offset = kf['offset'];
+        var isSameOffset = offset == previousOffset;
+        var normalizedKeyframe = (isSameOffset && previousKeyframe) || {};
+        Object.keys(kf).forEach(function (prop) {
+            var normalizedProp = prop;
+            var normalizedValue = kf[prop];
+            if (prop !== 'offset') {
+                normalizedProp = normalizer.normalizePropertyName(normalizedProp, errors);
+                switch (normalizedValue) {
+                    case _angular_animations__WEBPACK_IMPORTED_MODULE_1__["ɵPRE_STYLE"]:
+                        normalizedValue = preStyles[prop];
+                        break;
+                    case _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]:
+                        normalizedValue = postStyles[prop];
+                        break;
+                    default:
+                        normalizedValue =
+                            normalizer.normalizeStyleValue(prop, normalizedProp, normalizedValue, errors);
+                        break;
+                }
+            }
+            normalizedKeyframe[normalizedProp] = normalizedValue;
+        });
+        if (!isSameOffset) {
+            normalizedKeyframes.push(normalizedKeyframe);
+        }
+        previousKeyframe = normalizedKeyframe;
+        previousOffset = offset;
+    });
+    if (errors.length) {
+        var LINE_START = '\n - ';
+        throw new Error("Unable to animate due to the following errors:" + LINE_START + errors.join(LINE_START));
+    }
+    return normalizedKeyframes;
+}
+function listenOnPlayer(player, eventName, event, callback) {
+    switch (eventName) {
+        case 'start':
+            player.onStart(function () { return callback(event && copyAnimationEvent(event, 'start', player)); });
+            break;
+        case 'done':
+            player.onDone(function () { return callback(event && copyAnimationEvent(event, 'done', player)); });
+            break;
+        case 'destroy':
+            player.onDestroy(function () { return callback(event && copyAnimationEvent(event, 'destroy', player)); });
+            break;
+    }
+}
+function copyAnimationEvent(e, phaseName, player) {
+    var totalTime = player.totalTime;
+    var disabled = player.disabled ? true : false;
+    var event = makeAnimationEvent(e.element, e.triggerName, e.fromState, e.toState, phaseName || e.phaseName, totalTime == undefined ? e.totalTime : totalTime, disabled);
+    var data = e['_data'];
+    if (data != null) {
+        event['_data'] = data;
+    }
+    return event;
+}
+function makeAnimationEvent(element, triggerName, fromState, toState, phaseName, totalTime, disabled) {
+    if (phaseName === void 0) { phaseName = ''; }
+    if (totalTime === void 0) { totalTime = 0; }
+    return { element: element, triggerName: triggerName, fromState: fromState, toState: toState, phaseName: phaseName, totalTime: totalTime, disabled: !!disabled };
+}
+function getOrSetAsInMap(map, key, defaultValue) {
+    var value;
+    if (map instanceof Map) {
+        value = map.get(key);
+        if (!value) {
+            map.set(key, value = defaultValue);
+        }
+    }
+    else {
+        value = map[key];
+        if (!value) {
+            value = map[key] = defaultValue;
+        }
+    }
+    return value;
+}
+function parseTimelineCommand(command) {
+    var separatorPos = command.indexOf(':');
+    var id = command.substring(1, separatorPos);
+    var action = command.substr(separatorPos + 1);
+    return [id, action];
+}
+var _contains = function (elm1, elm2) { return false; };
+var _matches = function (element, selector) {
+    return false;
+};
+var _query = function (element, selector, multi) {
+    return [];
+};
+// Define utility methods for browsers and platform-server(domino) where Element
+// and utility methods exist.
+var _isNode = isNode();
+if (_isNode || typeof Element !== 'undefined') {
+    // this is well supported in all browsers
+    _contains = function (elm1, elm2) { return elm1.contains(elm2); };
+    if (_isNode || Element.prototype.matches) {
+        _matches = function (element, selector) { return element.matches(selector); };
+    }
+    else {
+        var proto = Element.prototype;
+        var fn_1 = proto.matchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector ||
+            proto.oMatchesSelector || proto.webkitMatchesSelector;
+        if (fn_1) {
+            _matches = function (element, selector) { return fn_1.apply(element, [selector]); };
+        }
+    }
+    _query = function (element, selector, multi) {
+        var results = [];
+        if (multi) {
+            results.push.apply(results, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(element.querySelectorAll(selector)));
+        }
+        else {
+            var elm = element.querySelector(selector);
+            if (elm) {
+                results.push(elm);
+            }
+        }
+        return results;
+    };
+}
+function containsVendorPrefix(prop) {
+    // Webkit is the only real popular vendor prefix nowadays
+    // cc: http://shouldiprefix.com/
+    return prop.substring(1, 6) == 'ebkit'; // webkit or Webkit
+}
+var _CACHED_BODY = null;
+var _IS_WEBKIT = false;
+function validateStyleProperty(prop) {
+    if (!_CACHED_BODY) {
+        _CACHED_BODY = getBodyNode() || {};
+        _IS_WEBKIT = _CACHED_BODY.style ? ('WebkitAppearance' in _CACHED_BODY.style) : false;
+    }
+    var result = true;
+    if (_CACHED_BODY.style && !containsVendorPrefix(prop)) {
+        result = prop in _CACHED_BODY.style;
+        if (!result && _IS_WEBKIT) {
+            var camelProp = 'Webkit' + prop.charAt(0).toUpperCase() + prop.substr(1);
+            result = camelProp in _CACHED_BODY.style;
+        }
+    }
+    return result;
+}
+function getBodyNode() {
+    if (typeof document != 'undefined') {
+        return document.body;
+    }
+    return null;
+}
+var matchesElement = _matches;
+var containsElement = _contains;
+var invokeQuery = _query;
+function hypenatePropsObject(object) {
+    var newObj = {};
+    Object.keys(object).forEach(function (prop) {
+        var newProp = prop.replace(/([a-z])([A-Z])/g, '$1-$2');
+        newObj[newProp] = object[prop];
+    });
+    return newObj;
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @experimental
+ */
+var NoopAnimationDriver = /** @class */ (function () {
+    function NoopAnimationDriver() {
+    }
+    NoopAnimationDriver.prototype.validateStyleProperty = function (prop) { return validateStyleProperty(prop); };
+    NoopAnimationDriver.prototype.matchesElement = function (element, selector) {
+        return matchesElement(element, selector);
+    };
+    NoopAnimationDriver.prototype.containsElement = function (elm1, elm2) { return containsElement(elm1, elm2); };
+    NoopAnimationDriver.prototype.query = function (element, selector, multi) {
+        return invokeQuery(element, selector, multi);
+    };
+    NoopAnimationDriver.prototype.computeStyle = function (element, prop, defaultValue) {
+        return defaultValue || '';
+    };
+    NoopAnimationDriver.prototype.animate = function (element, keyframes, duration, delay, easing, previousPlayers, scrubberAccessRequested) {
+        if (previousPlayers === void 0) { previousPlayers = []; }
+        return new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"](duration, delay);
+    };
+    NoopAnimationDriver.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"] }
+    ];
+    return NoopAnimationDriver;
+}());
+/**
+ * @experimental
+ */
+var AnimationDriver = /** @class */ (function () {
+    function AnimationDriver() {
+    }
+    AnimationDriver.NOOP = new NoopAnimationDriver();
+    return AnimationDriver;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var ONE_SECOND = 1000;
+var SUBSTITUTION_EXPR_START = '{{';
+var SUBSTITUTION_EXPR_END = '}}';
+var ENTER_CLASSNAME = 'ng-enter';
+var LEAVE_CLASSNAME = 'ng-leave';
+var NG_TRIGGER_CLASSNAME = 'ng-trigger';
+var NG_TRIGGER_SELECTOR = '.ng-trigger';
+var NG_ANIMATING_CLASSNAME = 'ng-animating';
+var NG_ANIMATING_SELECTOR = '.ng-animating';
+function resolveTimingValue(value) {
+    if (typeof value == 'number')
+        return value;
+    var matches = value.match(/^(-?[\.\d]+)(m?s)/);
+    if (!matches || matches.length < 2)
+        return 0;
+    return _convertTimeValueToMS(parseFloat(matches[1]), matches[2]);
+}
+function _convertTimeValueToMS(value, unit) {
+    switch (unit) {
+        case 's':
+            return value * ONE_SECOND;
+        default:// ms or something else
+            return value;
+    }
+}
+function resolveTiming(timings, errors, allowNegativeValues) {
+    return timings.hasOwnProperty('duration') ?
+        timings :
+        parseTimeExpression(timings, errors, allowNegativeValues);
+}
+function parseTimeExpression(exp, errors, allowNegativeValues) {
+    var regex = /^(-?[\.\d]+)(m?s)(?:\s+(-?[\.\d]+)(m?s))?(?:\s+([-a-z]+(?:\(.+?\))?))?$/i;
+    var duration;
+    var delay = 0;
+    var easing = '';
+    if (typeof exp === 'string') {
+        var matches = exp.match(regex);
+        if (matches === null) {
+            errors.push("The provided timing value \"" + exp + "\" is invalid.");
+            return { duration: 0, delay: 0, easing: '' };
+        }
+        duration = _convertTimeValueToMS(parseFloat(matches[1]), matches[2]);
+        var delayMatch = matches[3];
+        if (delayMatch != null) {
+            delay = _convertTimeValueToMS(Math.floor(parseFloat(delayMatch)), matches[4]);
+        }
+        var easingVal = matches[5];
+        if (easingVal) {
+            easing = easingVal;
+        }
+    }
+    else {
+        duration = exp;
+    }
+    if (!allowNegativeValues) {
+        var containsErrors = false;
+        var startIndex = errors.length;
+        if (duration < 0) {
+            errors.push("Duration values below 0 are not allowed for this animation step.");
+            containsErrors = true;
+        }
+        if (delay < 0) {
+            errors.push("Delay values below 0 are not allowed for this animation step.");
+            containsErrors = true;
+        }
+        if (containsErrors) {
+            errors.splice(startIndex, 0, "The provided timing value \"" + exp + "\" is invalid.");
+        }
+    }
+    return { duration: duration, delay: delay, easing: easing };
+}
+function copyObj(obj, destination) {
+    if (destination === void 0) { destination = {}; }
+    Object.keys(obj).forEach(function (prop) { destination[prop] = obj[prop]; });
+    return destination;
+}
+function normalizeStyles(styles) {
+    var normalizedStyles = {};
+    if (Array.isArray(styles)) {
+        styles.forEach(function (data) { return copyStyles(data, false, normalizedStyles); });
+    }
+    else {
+        copyStyles(styles, false, normalizedStyles);
+    }
+    return normalizedStyles;
+}
+function copyStyles(styles, readPrototype, destination) {
+    if (destination === void 0) { destination = {}; }
+    if (readPrototype) {
+        // we make use of a for-in loop so that the
+        // prototypically inherited properties are
+        // revealed from the backFill map
+        for (var prop in styles) {
+            destination[prop] = styles[prop];
+        }
+    }
+    else {
+        copyObj(styles, destination);
+    }
+    return destination;
+}
+function getStyleAttributeString(element, key, value) {
+    // Return the key-value pair string to be added to the style attribute for the
+    // given CSS style key.
+    if (value) {
+        return key + ':' + value + ';';
+    }
+    else {
+        return '';
+    }
+}
+function writeStyleAttribute(element) {
+    // Read the style property of the element and manually reflect it to the
+    // style attribute. This is needed because Domino on platform-server doesn't
+    // understand the full set of allowed CSS properties and doesn't reflect some
+    // of them automatically.
+    var styleAttrValue = '';
+    for (var i = 0; i < element.style.length; i++) {
+        var key = element.style.item(i);
+        styleAttrValue += getStyleAttributeString(element, key, element.style.getPropertyValue(key));
+    }
+    for (var key in element.style) {
+        // Skip internal Domino properties that don't need to be reflected.
+        if (!element.style.hasOwnProperty(key) || key.startsWith('_')) {
+            continue;
+        }
+        var dashKey = camelCaseToDashCase(key);
+        styleAttrValue += getStyleAttributeString(element, dashKey, element.style[key]);
+    }
+    element.setAttribute('style', styleAttrValue);
+}
+function setStyles(element, styles) {
+    if (element['style']) {
+        Object.keys(styles).forEach(function (prop) {
+            var camelProp = dashCaseToCamelCase(prop);
+            element.style[camelProp] = styles[prop];
+        });
+        // On the server set the 'style' attribute since it's not automatically reflected.
+        if (isNode()) {
+            writeStyleAttribute(element);
+        }
+    }
+}
+function eraseStyles(element, styles) {
+    if (element['style']) {
+        Object.keys(styles).forEach(function (prop) {
+            var camelProp = dashCaseToCamelCase(prop);
+            element.style[camelProp] = '';
+        });
+        // On the server set the 'style' attribute since it's not automatically reflected.
+        if (isNode()) {
+            writeStyleAttribute(element);
+        }
+    }
+}
+function normalizeAnimationEntry(steps) {
+    if (Array.isArray(steps)) {
+        if (steps.length == 1)
+            return steps[0];
+        return Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["sequence"])(steps);
+    }
+    return steps;
+}
+function validateStyleParams(value, options, errors) {
+    var params = options.params || {};
+    var matches = extractStyleParams(value);
+    if (matches.length) {
+        matches.forEach(function (varName) {
+            if (!params.hasOwnProperty(varName)) {
+                errors.push("Unable to resolve the local animation param " + varName + " in the given list of values");
+            }
+        });
+    }
+}
+var PARAM_REGEX = new RegExp(SUBSTITUTION_EXPR_START + "\\s*(.+?)\\s*" + SUBSTITUTION_EXPR_END, 'g');
+function extractStyleParams(value) {
+    var params = [];
+    if (typeof value === 'string') {
+        var val = value.toString();
+        var match = void 0;
+        while (match = PARAM_REGEX.exec(val)) {
+            params.push(match[1]);
+        }
+        PARAM_REGEX.lastIndex = 0;
+    }
+    return params;
+}
+function interpolateParams(value, params, errors) {
+    var original = value.toString();
+    var str = original.replace(PARAM_REGEX, function (_, varName) {
+        var localVal = params[varName];
+        // this means that the value was never overridden by the data passed in by the user
+        if (!params.hasOwnProperty(varName)) {
+            errors.push("Please provide a value for the animation param " + varName);
+            localVal = '';
+        }
+        return localVal.toString();
+    });
+    // we do this to assert that numeric values stay as they are
+    return str == original ? value : str;
+}
+function iteratorToArray(iterator) {
+    var arr = [];
+    var item = iterator.next();
+    while (!item.done) {
+        arr.push(item.value);
+        item = iterator.next();
+    }
+    return arr;
+}
+var DASH_CASE_REGEXP = /-+([a-z0-9])/g;
+function dashCaseToCamelCase(input) {
+    return input.replace(DASH_CASE_REGEXP, function () {
+        var m = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            m[_i] = arguments[_i];
+        }
+        return m[1].toUpperCase();
+    });
+}
+function camelCaseToDashCase(input) {
+    return input.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
+function allowPreviousPlayerStylesMerge(duration, delay) {
+    return duration === 0 || delay === 0;
+}
+function balancePreviousStylesIntoKeyframes(element, keyframes, previousStyles) {
+    var previousStyleProps = Object.keys(previousStyles);
+    if (previousStyleProps.length && keyframes.length) {
+        var startingKeyframe_1 = keyframes[0];
+        var missingStyleProps_1 = [];
+        previousStyleProps.forEach(function (prop) {
+            if (!startingKeyframe_1.hasOwnProperty(prop)) {
+                missingStyleProps_1.push(prop);
+            }
+            startingKeyframe_1[prop] = previousStyles[prop];
+        });
+        if (missingStyleProps_1.length) {
+            var _loop_1 = function () {
+                var kf = keyframes[i];
+                missingStyleProps_1.forEach(function (prop) { kf[prop] = computeStyle(element, prop); });
+            };
+            // tslint:disable-next-line
+            for (var i = 1; i < keyframes.length; i++) {
+                _loop_1();
+            }
+        }
+    }
+    return keyframes;
+}
+function visitDslNode(visitor, node, context) {
+    switch (node.type) {
+        case 7 /* Trigger */:
+            return visitor.visitTrigger(node, context);
+        case 0 /* State */:
+            return visitor.visitState(node, context);
+        case 1 /* Transition */:
+            return visitor.visitTransition(node, context);
+        case 2 /* Sequence */:
+            return visitor.visitSequence(node, context);
+        case 3 /* Group */:
+            return visitor.visitGroup(node, context);
+        case 4 /* Animate */:
+            return visitor.visitAnimate(node, context);
+        case 5 /* Keyframes */:
+            return visitor.visitKeyframes(node, context);
+        case 6 /* Style */:
+            return visitor.visitStyle(node, context);
+        case 8 /* Reference */:
+            return visitor.visitReference(node, context);
+        case 9 /* AnimateChild */:
+            return visitor.visitAnimateChild(node, context);
+        case 10 /* AnimateRef */:
+            return visitor.visitAnimateRef(node, context);
+        case 11 /* Query */:
+            return visitor.visitQuery(node, context);
+        case 12 /* Stagger */:
+            return visitor.visitStagger(node, context);
+        default:
+            throw new Error("Unable to resolve animation metadata node #" + node.type);
+    }
+}
+function computeStyle(element, prop) {
+    return window.getComputedStyle(element)[prop];
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var ANY_STATE = '*';
+function parseTransitionExpr(transitionValue, errors) {
+    var expressions = [];
+    if (typeof transitionValue == 'string') {
+        transitionValue
+            .split(/\s*,\s*/)
+            .forEach(function (str) { return parseInnerTransitionStr(str, expressions, errors); });
+    }
+    else {
+        expressions.push(transitionValue);
+    }
+    return expressions;
+}
+function parseInnerTransitionStr(eventStr, expressions, errors) {
+    if (eventStr[0] == ':') {
+        var result = parseAnimationAlias(eventStr, errors);
+        if (typeof result == 'function') {
+            expressions.push(result);
+            return;
+        }
+        eventStr = result;
+    }
+    var match = eventStr.match(/^(\*|[-\w]+)\s*(<?[=-]>)\s*(\*|[-\w]+)$/);
+    if (match == null || match.length < 4) {
+        errors.push("The provided transition expression \"" + eventStr + "\" is not supported");
+        return expressions;
+    }
+    var fromState = match[1];
+    var separator = match[2];
+    var toState = match[3];
+    expressions.push(makeLambdaFromStates(fromState, toState));
+    var isFullAnyStateExpr = fromState == ANY_STATE && toState == ANY_STATE;
+    if (separator[0] == '<' && !isFullAnyStateExpr) {
+        expressions.push(makeLambdaFromStates(toState, fromState));
+    }
+}
+function parseAnimationAlias(alias, errors) {
+    switch (alias) {
+        case ':enter':
+            return 'void => *';
+        case ':leave':
+            return '* => void';
+        case ':increment':
+            return function (fromState, toState) { return parseFloat(toState) > parseFloat(fromState); };
+        case ':decrement':
+            return function (fromState, toState) { return parseFloat(toState) < parseFloat(fromState); };
+        default:
+            errors.push("The transition alias value \"" + alias + "\" is not supported");
+            return '* => *';
+    }
+}
+// DO NOT REFACTOR ... keep the follow set instantiations
+// with the values intact (closure compiler for some reason
+// removes follow-up lines that add the values outside of
+// the constructor...
+var TRUE_BOOLEAN_VALUES = new Set(['true', '1']);
+var FALSE_BOOLEAN_VALUES = new Set(['false', '0']);
+function makeLambdaFromStates(lhs, rhs) {
+    var LHS_MATCH_BOOLEAN = TRUE_BOOLEAN_VALUES.has(lhs) || FALSE_BOOLEAN_VALUES.has(lhs);
+    var RHS_MATCH_BOOLEAN = TRUE_BOOLEAN_VALUES.has(rhs) || FALSE_BOOLEAN_VALUES.has(rhs);
+    return function (fromState, toState) {
+        var lhsMatch = lhs == ANY_STATE || lhs == fromState;
+        var rhsMatch = rhs == ANY_STATE || rhs == toState;
+        if (!lhsMatch && LHS_MATCH_BOOLEAN && typeof fromState === 'boolean') {
+            lhsMatch = fromState ? TRUE_BOOLEAN_VALUES.has(lhs) : FALSE_BOOLEAN_VALUES.has(lhs);
+        }
+        if (!rhsMatch && RHS_MATCH_BOOLEAN && typeof toState === 'boolean') {
+            rhsMatch = toState ? TRUE_BOOLEAN_VALUES.has(rhs) : FALSE_BOOLEAN_VALUES.has(rhs);
+        }
+        return lhsMatch && rhsMatch;
+    };
+}
+
+var SELF_TOKEN = ':self';
+var SELF_TOKEN_REGEX = new RegExp("s*" + SELF_TOKEN + "s*,?", 'g');
+/*
+ * [Validation]
+ * The visitor code below will traverse the animation AST generated by the animation verb functions
+ * (the output is a tree of objects) and attempt to perform a series of validations on the data. The
+ * following corner-cases will be validated:
+ *
+ * 1. Overlap of animations
+ * Given that a CSS property cannot be animated in more than one place at the same time, it's
+ * important that this behaviour is detected and validated. The way in which this occurs is that
+ * each time a style property is examined, a string-map containing the property will be updated with
+ * the start and end times for when the property is used within an animation step.
+ *
+ * If there are two or more parallel animations that are currently running (these are invoked by the
+ * group()) on the same element then the validator will throw an error. Since the start/end timing
+ * values are collected for each property then if the current animation step is animating the same
+ * property and its timing values fall anywhere into the window of time that the property is
+ * currently being animated within then this is what causes an error.
+ *
+ * 2. Timing values
+ * The validator will validate to see if a timing value of `duration delay easing` or
+ * `durationNumber` is valid or not.
+ *
+ * (note that upon validation the code below will replace the timing data with an object containing
+ * {duration,delay,easing}.
+ *
+ * 3. Offset Validation
+ * Each of the style() calls are allowed to have an offset value when placed inside of keyframes().
+ * Offsets within keyframes() are considered valid when:
+ *
+ *   - No offsets are used at all
+ *   - Each style() entry contains an offset value
+ *   - Each offset is between 0 and 1
+ *   - Each offset is greater to or equal than the previous one
+ *
+ * Otherwise an error will be thrown.
+ */
+function buildAnimationAst(driver, metadata, errors) {
+    return new AnimationAstBuilderVisitor(driver).build(metadata, errors);
+}
+var ROOT_SELECTOR = '';
+var AnimationAstBuilderVisitor = /** @class */ (function () {
+    function AnimationAstBuilderVisitor(_driver) {
+        this._driver = _driver;
+    }
+    AnimationAstBuilderVisitor.prototype.build = function (metadata, errors) {
+        var context = new AnimationAstBuilderContext(errors);
+        this._resetContextStyleTimingState(context);
+        return visitDslNode(this, normalizeAnimationEntry(metadata), context);
+    };
+    AnimationAstBuilderVisitor.prototype._resetContextStyleTimingState = function (context) {
+        context.currentQuerySelector = ROOT_SELECTOR;
+        context.collectedStyles = {};
+        context.collectedStyles[ROOT_SELECTOR] = {};
+        context.currentTime = 0;
+    };
+    AnimationAstBuilderVisitor.prototype.visitTrigger = function (metadata, context) {
+        var _this = this;
+        var queryCount = context.queryCount = 0;
+        var depCount = context.depCount = 0;
+        var states = [];
+        var transitions = [];
+        if (metadata.name.charAt(0) == '@') {
+            context.errors.push('animation triggers cannot be prefixed with an `@` sign (e.g. trigger(\'@foo\', [...]))');
+        }
+        metadata.definitions.forEach(function (def) {
+            _this._resetContextStyleTimingState(context);
+            if (def.type == 0 /* State */) {
+                var stateDef_1 = def;
+                var name_1 = stateDef_1.name;
+                name_1.toString().split(/\s*,\s*/).forEach(function (n) {
+                    stateDef_1.name = n;
+                    states.push(_this.visitState(stateDef_1, context));
+                });
+                stateDef_1.name = name_1;
+            }
+            else if (def.type == 1 /* Transition */) {
+                var transition = _this.visitTransition(def, context);
+                queryCount += transition.queryCount;
+                depCount += transition.depCount;
+                transitions.push(transition);
+            }
+            else {
+                context.errors.push('only state() and transition() definitions can sit inside of a trigger()');
+            }
+        });
+        return {
+            type: 7 /* Trigger */,
+            name: metadata.name, states: states, transitions: transitions, queryCount: queryCount, depCount: depCount,
+            options: null
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitState = function (metadata, context) {
+        var styleAst = this.visitStyle(metadata.styles, context);
+        var astParams = (metadata.options && metadata.options.params) || null;
+        if (styleAst.containsDynamicStyles) {
+            var missingSubs_1 = new Set();
+            var params_1 = astParams || {};
+            styleAst.styles.forEach(function (value) {
+                if (isObject(value)) {
+                    var stylesObj_1 = value;
+                    Object.keys(stylesObj_1).forEach(function (prop) {
+                        extractStyleParams(stylesObj_1[prop]).forEach(function (sub) {
+                            if (!params_1.hasOwnProperty(sub)) {
+                                missingSubs_1.add(sub);
+                            }
+                        });
+                    });
+                }
+            });
+            if (missingSubs_1.size) {
+                var missingSubsArr = iteratorToArray(missingSubs_1.values());
+                context.errors.push("state(\"" + metadata.name + "\", ...) must define default values for all the following style substitutions: " + missingSubsArr.join(', '));
+            }
+        }
+        return {
+            type: 0 /* State */,
+            name: metadata.name,
+            style: styleAst,
+            options: astParams ? { params: astParams } : null
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitTransition = function (metadata, context) {
+        context.queryCount = 0;
+        context.depCount = 0;
+        var animation = visitDslNode(this, normalizeAnimationEntry(metadata.animation), context);
+        var matchers = parseTransitionExpr(metadata.expr, context.errors);
+        return {
+            type: 1 /* Transition */,
+            matchers: matchers,
+            animation: animation,
+            queryCount: context.queryCount,
+            depCount: context.depCount,
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitSequence = function (metadata, context) {
+        var _this = this;
+        return {
+            type: 2 /* Sequence */,
+            steps: metadata.steps.map(function (s) { return visitDslNode(_this, s, context); }),
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitGroup = function (metadata, context) {
+        var _this = this;
+        var currentTime = context.currentTime;
+        var furthestTime = 0;
+        var steps = metadata.steps.map(function (step) {
+            context.currentTime = currentTime;
+            var innerAst = visitDslNode(_this, step, context);
+            furthestTime = Math.max(furthestTime, context.currentTime);
+            return innerAst;
+        });
+        context.currentTime = furthestTime;
+        return {
+            type: 3 /* Group */,
+            steps: steps,
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitAnimate = function (metadata, context) {
+        var timingAst = constructTimingAst(metadata.timings, context.errors);
+        context.currentAnimateTimings = timingAst;
+        var styleAst;
+        var styleMetadata = metadata.styles ? metadata.styles : Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])({});
+        if (styleMetadata.type == 5 /* Keyframes */) {
+            styleAst = this.visitKeyframes(styleMetadata, context);
+        }
+        else {
+            var styleMetadata_1 = metadata.styles;
+            var isEmpty = false;
+            if (!styleMetadata_1) {
+                isEmpty = true;
+                var newStyleData = {};
+                if (timingAst.easing) {
+                    newStyleData['easing'] = timingAst.easing;
+                }
+                styleMetadata_1 = Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])(newStyleData);
+            }
+            context.currentTime += timingAst.duration + timingAst.delay;
+            var _styleAst = this.visitStyle(styleMetadata_1, context);
+            _styleAst.isEmptyStep = isEmpty;
+            styleAst = _styleAst;
+        }
+        context.currentAnimateTimings = null;
+        return {
+            type: 4 /* Animate */,
+            timings: timingAst,
+            style: styleAst,
+            options: null
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitStyle = function (metadata, context) {
+        var ast = this._makeStyleAst(metadata, context);
+        this._validateStyleAst(ast, context);
+        return ast;
+    };
+    AnimationAstBuilderVisitor.prototype._makeStyleAst = function (metadata, context) {
+        var styles = [];
+        if (Array.isArray(metadata.styles)) {
+            metadata.styles.forEach(function (styleTuple) {
+                if (typeof styleTuple == 'string') {
+                    if (styleTuple == _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]) {
+                        styles.push(styleTuple);
+                    }
+                    else {
+                        context.errors.push("The provided style string value " + styleTuple + " is not allowed.");
+                    }
+                }
+                else {
+                    styles.push(styleTuple);
+                }
+            });
+        }
+        else {
+            styles.push(metadata.styles);
+        }
+        var containsDynamicStyles = false;
+        var collectedEasing = null;
+        styles.forEach(function (styleData) {
+            if (isObject(styleData)) {
+                var styleMap = styleData;
+                var easing = styleMap['easing'];
+                if (easing) {
+                    collectedEasing = easing;
+                    delete styleMap['easing'];
+                }
+                if (!containsDynamicStyles) {
+                    for (var prop in styleMap) {
+                        var value = styleMap[prop];
+                        if (value.toString().indexOf(SUBSTITUTION_EXPR_START) >= 0) {
+                            containsDynamicStyles = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+        return {
+            type: 6 /* Style */,
+            styles: styles,
+            easing: collectedEasing,
+            offset: metadata.offset, containsDynamicStyles: containsDynamicStyles,
+            options: null
+        };
+    };
+    AnimationAstBuilderVisitor.prototype._validateStyleAst = function (ast, context) {
+        var _this = this;
+        var timings = context.currentAnimateTimings;
+        var endTime = context.currentTime;
+        var startTime = context.currentTime;
+        if (timings && startTime > 0) {
+            startTime -= timings.duration + timings.delay;
+        }
+        ast.styles.forEach(function (tuple) {
+            if (typeof tuple == 'string')
+                return;
+            Object.keys(tuple).forEach(function (prop) {
+                if (!_this._driver.validateStyleProperty(prop)) {
+                    context.errors.push("The provided animation property \"" + prop + "\" is not a supported CSS property for animations");
+                    return;
+                }
+                var collectedStyles = context.collectedStyles[context.currentQuerySelector];
+                var collectedEntry = collectedStyles[prop];
+                var updateCollectedStyle = true;
+                if (collectedEntry) {
+                    if (startTime != endTime && startTime >= collectedEntry.startTime &&
+                        endTime <= collectedEntry.endTime) {
+                        context.errors.push("The CSS property \"" + prop + "\" that exists between the times of \"" + collectedEntry.startTime + "ms\" and \"" + collectedEntry.endTime + "ms\" is also being animated in a parallel animation between the times of \"" + startTime + "ms\" and \"" + endTime + "ms\"");
+                        updateCollectedStyle = false;
+                    }
+                    // we always choose the smaller start time value since we
+                    // want to have a record of the entire animation window where
+                    // the style property is being animated in between
+                    startTime = collectedEntry.startTime;
+                }
+                if (updateCollectedStyle) {
+                    collectedStyles[prop] = { startTime: startTime, endTime: endTime };
+                }
+                if (context.options) {
+                    validateStyleParams(tuple[prop], context.options, context.errors);
+                }
+            });
+        });
+    };
+    AnimationAstBuilderVisitor.prototype.visitKeyframes = function (metadata, context) {
+        var _this = this;
+        var ast = { type: 5 /* Keyframes */, styles: [], options: null };
+        if (!context.currentAnimateTimings) {
+            context.errors.push("keyframes() must be placed inside of a call to animate()");
+            return ast;
+        }
+        var MAX_KEYFRAME_OFFSET = 1;
+        var totalKeyframesWithOffsets = 0;
+        var offsets = [];
+        var offsetsOutOfOrder = false;
+        var keyframesOutOfRange = false;
+        var previousOffset = 0;
+        var keyframes = metadata.steps.map(function (styles) {
+            var style$$1 = _this._makeStyleAst(styles, context);
+            var offsetVal = style$$1.offset != null ? style$$1.offset : consumeOffset(style$$1.styles);
+            var offset = 0;
+            if (offsetVal != null) {
+                totalKeyframesWithOffsets++;
+                offset = style$$1.offset = offsetVal;
+            }
+            keyframesOutOfRange = keyframesOutOfRange || offset < 0 || offset > 1;
+            offsetsOutOfOrder = offsetsOutOfOrder || offset < previousOffset;
+            previousOffset = offset;
+            offsets.push(offset);
+            return style$$1;
+        });
+        if (keyframesOutOfRange) {
+            context.errors.push("Please ensure that all keyframe offsets are between 0 and 1");
+        }
+        if (offsetsOutOfOrder) {
+            context.errors.push("Please ensure that all keyframe offsets are in order");
+        }
+        var length = metadata.steps.length;
+        var generatedOffset = 0;
+        if (totalKeyframesWithOffsets > 0 && totalKeyframesWithOffsets < length) {
+            context.errors.push("Not all style() steps within the declared keyframes() contain offsets");
+        }
+        else if (totalKeyframesWithOffsets == 0) {
+            generatedOffset = MAX_KEYFRAME_OFFSET / (length - 1);
+        }
+        var limit = length - 1;
+        var currentTime = context.currentTime;
+        var currentAnimateTimings = context.currentAnimateTimings;
+        var animateDuration = currentAnimateTimings.duration;
+        keyframes.forEach(function (kf, i) {
+            var offset = generatedOffset > 0 ? (i == limit ? 1 : (generatedOffset * i)) : offsets[i];
+            var durationUpToThisFrame = offset * animateDuration;
+            context.currentTime = currentTime + currentAnimateTimings.delay + durationUpToThisFrame;
+            currentAnimateTimings.duration = durationUpToThisFrame;
+            _this._validateStyleAst(kf, context);
+            kf.offset = offset;
+            ast.styles.push(kf);
+        });
+        return ast;
+    };
+    AnimationAstBuilderVisitor.prototype.visitReference = function (metadata, context) {
+        return {
+            type: 8 /* Reference */,
+            animation: visitDslNode(this, normalizeAnimationEntry(metadata.animation), context),
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitAnimateChild = function (metadata, context) {
+        context.depCount++;
+        return {
+            type: 9 /* AnimateChild */,
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitAnimateRef = function (metadata, context) {
+        return {
+            type: 10 /* AnimateRef */,
+            animation: this.visitReference(metadata.animation, context),
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitQuery = function (metadata, context) {
+        var parentSelector = context.currentQuerySelector;
+        var options = (metadata.options || {});
+        context.queryCount++;
+        context.currentQuery = metadata;
+        var _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])(normalizeSelector(metadata.selector), 2), selector = _a[0], includeSelf = _a[1];
+        context.currentQuerySelector =
+            parentSelector.length ? (parentSelector + ' ' + selector) : selector;
+        getOrSetAsInMap(context.collectedStyles, context.currentQuerySelector, {});
+        var animation = visitDslNode(this, normalizeAnimationEntry(metadata.animation), context);
+        context.currentQuery = null;
+        context.currentQuerySelector = parentSelector;
+        return {
+            type: 11 /* Query */,
+            selector: selector,
+            limit: options.limit || 0,
+            optional: !!options.optional, includeSelf: includeSelf, animation: animation,
+            originalSelector: metadata.selector,
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitStagger = function (metadata, context) {
+        if (!context.currentQuery) {
+            context.errors.push("stagger() can only be used inside of query()");
+        }
+        var timings = metadata.timings === 'full' ?
+            { duration: 0, delay: 0, easing: 'full' } :
+            resolveTiming(metadata.timings, context.errors, true);
+        return {
+            type: 12 /* Stagger */,
+            animation: visitDslNode(this, normalizeAnimationEntry(metadata.animation), context), timings: timings,
+            options: null
+        };
+    };
+    return AnimationAstBuilderVisitor;
+}());
+function normalizeSelector(selector) {
+    var hasAmpersand = selector.split(/\s*,\s*/).find(function (token) { return token == SELF_TOKEN; }) ? true : false;
+    if (hasAmpersand) {
+        selector = selector.replace(SELF_TOKEN_REGEX, '');
+    }
+    // the :enter and :leave selectors are filled in at runtime during timeline building
+    selector = selector.replace(/@\*/g, NG_TRIGGER_SELECTOR)
+        .replace(/@\w+/g, function (match) { return NG_TRIGGER_SELECTOR + '-' + match.substr(1); })
+        .replace(/:animating/g, NG_ANIMATING_SELECTOR);
+    return [selector, hasAmpersand];
+}
+function normalizeParams(obj) {
+    return obj ? copyObj(obj) : null;
+}
+var AnimationAstBuilderContext = /** @class */ (function () {
+    function AnimationAstBuilderContext(errors) {
+        this.errors = errors;
+        this.queryCount = 0;
+        this.depCount = 0;
+        this.currentTransition = null;
+        this.currentQuery = null;
+        this.currentQuerySelector = null;
+        this.currentAnimateTimings = null;
+        this.currentTime = 0;
+        this.collectedStyles = {};
+        this.options = null;
+    }
+    return AnimationAstBuilderContext;
+}());
+function consumeOffset(styles) {
+    if (typeof styles == 'string')
+        return null;
+    var offset = null;
+    if (Array.isArray(styles)) {
+        styles.forEach(function (styleTuple) {
+            if (isObject(styleTuple) && styleTuple.hasOwnProperty('offset')) {
+                var obj = styleTuple;
+                offset = parseFloat(obj['offset']);
+                delete obj['offset'];
+            }
+        });
+    }
+    else if (isObject(styles) && styles.hasOwnProperty('offset')) {
+        var obj = styles;
+        offset = parseFloat(obj['offset']);
+        delete obj['offset'];
+    }
+    return offset;
+}
+function isObject(value) {
+    return !Array.isArray(value) && typeof value == 'object';
+}
+function constructTimingAst(value, errors) {
+    var timings = null;
+    if (value.hasOwnProperty('duration')) {
+        timings = value;
+    }
+    else if (typeof value == 'number') {
+        var duration = resolveTiming(value, errors).duration;
+        return makeTimingAst(duration, 0, '');
+    }
+    var strValue = value;
+    var isDynamic = strValue.split(/\s+/).some(function (v) { return v.charAt(0) == '{' && v.charAt(1) == '{'; });
+    if (isDynamic) {
+        var ast = makeTimingAst(0, 0, '');
+        ast.dynamic = true;
+        ast.strValue = strValue;
+        return ast;
+    }
+    timings = timings || resolveTiming(strValue, errors);
+    return makeTimingAst(timings.duration, timings.delay, timings.easing);
+}
+function normalizeAnimationOptions(options) {
+    if (options) {
+        options = copyObj(options);
+        if (options['params']) {
+            options['params'] = normalizeParams(options['params']);
+        }
+    }
+    else {
+        options = {};
+    }
+    return options;
+}
+function makeTimingAst(duration, delay, easing) {
+    return { duration: duration, delay: delay, easing: easing };
+}
+
+function createTimelineInstruction(element, keyframes, preStyleProps, postStyleProps, duration, delay, easing, subTimeline) {
+    if (easing === void 0) { easing = null; }
+    if (subTimeline === void 0) { subTimeline = false; }
+    return {
+        type: 1 /* TimelineAnimation */,
+        element: element,
+        keyframes: keyframes,
+        preStyleProps: preStyleProps,
+        postStyleProps: postStyleProps,
+        duration: duration,
+        delay: delay,
+        totalTime: duration + delay, easing: easing, subTimeline: subTimeline
+    };
+}
+
+var ElementInstructionMap = /** @class */ (function () {
+    function ElementInstructionMap() {
+        this._map = new Map();
+    }
+    ElementInstructionMap.prototype.consume = function (element) {
+        var instructions = this._map.get(element);
+        if (instructions) {
+            this._map.delete(element);
+        }
+        else {
+            instructions = [];
+        }
+        return instructions;
+    };
+    ElementInstructionMap.prototype.append = function (element, instructions) {
+        var existingInstructions = this._map.get(element);
+        if (!existingInstructions) {
+            this._map.set(element, existingInstructions = []);
+        }
+        existingInstructions.push.apply(existingInstructions, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(instructions));
+    };
+    ElementInstructionMap.prototype.has = function (element) { return this._map.has(element); };
+    ElementInstructionMap.prototype.clear = function () { this._map.clear(); };
+    return ElementInstructionMap;
+}());
+
+var ONE_FRAME_IN_MILLISECONDS = 1;
+var ENTER_TOKEN = ':enter';
+var ENTER_TOKEN_REGEX = new RegExp(ENTER_TOKEN, 'g');
+var LEAVE_TOKEN = ':leave';
+var LEAVE_TOKEN_REGEX = new RegExp(LEAVE_TOKEN, 'g');
+/*
+ * The code within this file aims to generate web-animations-compatible keyframes from Angular's
+ * animation DSL code.
+ *
+ * The code below will be converted from:
+ *
+ * ```
+ * sequence([
+ *   style({ opacity: 0 }),
+ *   animate(1000, style({ opacity: 0 }))
+ * ])
+ * ```
+ *
+ * To:
+ * ```
+ * keyframes = [{ opacity: 0, offset: 0 }, { opacity: 1, offset: 1 }]
+ * duration = 1000
+ * delay = 0
+ * easing = ''
+ * ```
+ *
+ * For this operation to cover the combination of animation verbs (style, animate, group, etc...) a
+ * combination of prototypical inheritance, AST traversal and merge-sort-like algorithms are used.
+ *
+ * [AST Traversal]
+ * Each of the animation verbs, when executed, will return an string-map object representing what
+ * type of action it is (style, animate, group, etc...) and the data associated with it. This means
+ * that when functional composition mix of these functions is evaluated (like in the example above)
+ * then it will end up producing a tree of objects representing the animation itself.
+ *
+ * When this animation object tree is processed by the visitor code below it will visit each of the
+ * verb statements within the visitor. And during each visit it will build the context of the
+ * animation keyframes by interacting with the `TimelineBuilder`.
+ *
+ * [TimelineBuilder]
+ * This class is responsible for tracking the styles and building a series of keyframe objects for a
+ * timeline between a start and end time. The builder starts off with an initial timeline and each
+ * time the AST comes across a `group()`, `keyframes()` or a combination of the two wihtin a
+ * `sequence()` then it will generate a sub timeline for each step as well as a new one after
+ * they are complete.
+ *
+ * As the AST is traversed, the timing state on each of the timelines will be incremented. If a sub
+ * timeline was created (based on one of the cases above) then the parent timeline will attempt to
+ * merge the styles used within the sub timelines into itself (only with group() this will happen).
+ * This happens with a merge operation (much like how the merge works in mergesort) and it will only
+ * copy the most recently used styles from the sub timelines into the parent timeline. This ensures
+ * that if the styles are used later on in another phase of the animation then they will be the most
+ * up-to-date values.
+ *
+ * [How Missing Styles Are Updated]
+ * Each timeline has a `backFill` property which is responsible for filling in new styles into
+ * already processed keyframes if a new style shows up later within the animation sequence.
+ *
+ * ```
+ * sequence([
+ *   style({ width: 0 }),
+ *   animate(1000, style({ width: 100 })),
+ *   animate(1000, style({ width: 200 })),
+ *   animate(1000, style({ width: 300 }))
+ *   animate(1000, style({ width: 400, height: 400 })) // notice how `height` doesn't exist anywhere
+ * else
+ * ])
+ * ```
+ *
+ * What is happening here is that the `height` value is added later in the sequence, but is missing
+ * from all previous animation steps. Therefore when a keyframe is created it would also be missing
+ * from all previous keyframes up until where it is first used. For the timeline keyframe generation
+ * to properly fill in the style it will place the previous value (the value from the parent
+ * timeline) or a default value of `*` into the backFill object. Given that each of the keyframe
+ * styles are objects that prototypically inhert from the backFill object, this means that if a
+ * value is added into the backFill then it will automatically propagate any missing values to all
+ * keyframes. Therefore the missing `height` value will be properly filled into the already
+ * processed keyframes.
+ *
+ * When a sub-timeline is created it will have its own backFill property. This is done so that
+ * styles present within the sub-timeline do not accidentally seep into the previous/future timeline
+ * keyframes
+ *
+ * (For prototypically-inherited contents to be detected a `for(i in obj)` loop must be used.)
+ *
+ * [Validation]
+ * The code in this file is not responsible for validation. That functionality happens with within
+ * the `AnimationValidatorVisitor` code.
+ */
+function buildAnimationTimelines(driver, rootElement, ast, enterClassName, leaveClassName, startingStyles, finalStyles, options, subInstructions, errors) {
+    if (startingStyles === void 0) { startingStyles = {}; }
+    if (finalStyles === void 0) { finalStyles = {}; }
+    if (errors === void 0) { errors = []; }
+    return new AnimationTimelineBuilderVisitor().buildKeyframes(driver, rootElement, ast, enterClassName, leaveClassName, startingStyles, finalStyles, options, subInstructions, errors);
+}
+var AnimationTimelineBuilderVisitor = /** @class */ (function () {
+    function AnimationTimelineBuilderVisitor() {
+    }
+    AnimationTimelineBuilderVisitor.prototype.buildKeyframes = function (driver, rootElement, ast, enterClassName, leaveClassName, startingStyles, finalStyles, options, subInstructions, errors) {
+        if (errors === void 0) { errors = []; }
+        subInstructions = subInstructions || new ElementInstructionMap();
+        var context = new AnimationTimelineContext(driver, rootElement, subInstructions, enterClassName, leaveClassName, errors, []);
+        context.options = options;
+        context.currentTimeline.setStyles([startingStyles], null, context.errors, options);
+        visitDslNode(this, ast, context);
+        // this checks to see if an actual animation happened
+        var timelines = context.timelines.filter(function (timeline) { return timeline.containsAnimation(); });
+        if (timelines.length && Object.keys(finalStyles).length) {
+            var tl = timelines[timelines.length - 1];
+            if (!tl.allowOnlyTimelineStyles()) {
+                tl.setStyles([finalStyles], null, context.errors, options);
+            }
+        }
+        return timelines.length ? timelines.map(function (timeline) { return timeline.buildKeyframes(); }) :
+            [createTimelineInstruction(rootElement, [], [], [], 0, 0, '', false)];
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitTrigger = function (ast, context) {
+        // these values are not visited in this AST
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitState = function (ast, context) {
+        // these values are not visited in this AST
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitTransition = function (ast, context) {
+        // these values are not visited in this AST
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitAnimateChild = function (ast, context) {
+        var elementInstructions = context.subInstructions.consume(context.element);
+        if (elementInstructions) {
+            var innerContext = context.createSubContext(ast.options);
+            var startTime = context.currentTimeline.currentTime;
+            var endTime = this._visitSubInstructions(elementInstructions, innerContext, innerContext.options);
+            if (startTime != endTime) {
+                // we do this on the upper context because we created a sub context for
+                // the sub child animations
+                context.transformIntoNewTimeline(endTime);
+            }
+        }
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitAnimateRef = function (ast, context) {
+        var innerContext = context.createSubContext(ast.options);
+        innerContext.transformIntoNewTimeline();
+        this.visitReference(ast.animation, innerContext);
+        context.transformIntoNewTimeline(innerContext.currentTimeline.currentTime);
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype._visitSubInstructions = function (instructions, context, options) {
+        var startTime = context.currentTimeline.currentTime;
+        var furthestTime = startTime;
+        // this is a special-case for when a user wants to skip a sub
+        // animation from being fired entirely.
+        var duration = options.duration != null ? resolveTimingValue(options.duration) : null;
+        var delay = options.delay != null ? resolveTimingValue(options.delay) : null;
+        if (duration !== 0) {
+            instructions.forEach(function (instruction) {
+                var instructionTimings = context.appendInstructionToTimeline(instruction, duration, delay);
+                furthestTime =
+                    Math.max(furthestTime, instructionTimings.duration + instructionTimings.delay);
+            });
+        }
+        return furthestTime;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitReference = function (ast, context) {
+        context.updateOptions(ast.options, true);
+        visitDslNode(this, ast.animation, context);
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitSequence = function (ast, context) {
+        var _this = this;
+        var subContextCount = context.subContextCount;
+        var ctx = context;
+        var options = ast.options;
+        if (options && (options.params || options.delay)) {
+            ctx = context.createSubContext(options);
+            ctx.transformIntoNewTimeline();
+            if (options.delay != null) {
+                if (ctx.previousNode.type == 6 /* Style */) {
+                    ctx.currentTimeline.snapshotCurrentStyles();
+                    ctx.previousNode = DEFAULT_NOOP_PREVIOUS_NODE;
+                }
+                var delay = resolveTimingValue(options.delay);
+                ctx.delayNextStep(delay);
+            }
+        }
+        if (ast.steps.length) {
+            ast.steps.forEach(function (s) { return visitDslNode(_this, s, ctx); });
+            // this is here just incase the inner steps only contain or end with a style() call
+            ctx.currentTimeline.applyStylesToKeyframe();
+            // this means that some animation function within the sequence
+            // ended up creating a sub timeline (which means the current
+            // timeline cannot overlap with the contents of the sequence)
+            if (ctx.subContextCount > subContextCount) {
+                ctx.transformIntoNewTimeline();
+            }
+        }
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitGroup = function (ast, context) {
+        var _this = this;
+        var innerTimelines = [];
+        var furthestTime = context.currentTimeline.currentTime;
+        var delay = ast.options && ast.options.delay ? resolveTimingValue(ast.options.delay) : 0;
+        ast.steps.forEach(function (s) {
+            var innerContext = context.createSubContext(ast.options);
+            if (delay) {
+                innerContext.delayNextStep(delay);
+            }
+            visitDslNode(_this, s, innerContext);
+            furthestTime = Math.max(furthestTime, innerContext.currentTimeline.currentTime);
+            innerTimelines.push(innerContext.currentTimeline);
+        });
+        // this operation is run after the AST loop because otherwise
+        // if the parent timeline's collected styles were updated then
+        // it would pass in invalid data into the new-to-be forked items
+        innerTimelines.forEach(function (timeline) { return context.currentTimeline.mergeTimelineCollectedStyles(timeline); });
+        context.transformIntoNewTimeline(furthestTime);
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype._visitTiming = function (ast, context) {
+        if (ast.dynamic) {
+            var strValue = ast.strValue;
+            var timingValue = context.params ? interpolateParams(strValue, context.params, context.errors) : strValue;
+            return resolveTiming(timingValue, context.errors);
+        }
+        else {
+            return { duration: ast.duration, delay: ast.delay, easing: ast.easing };
+        }
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitAnimate = function (ast, context) {
+        var timings = context.currentAnimateTimings = this._visitTiming(ast.timings, context);
+        var timeline = context.currentTimeline;
+        if (timings.delay) {
+            context.incrementTime(timings.delay);
+            timeline.snapshotCurrentStyles();
+        }
+        var style$$1 = ast.style;
+        if (style$$1.type == 5 /* Keyframes */) {
+            this.visitKeyframes(style$$1, context);
+        }
+        else {
+            context.incrementTime(timings.duration);
+            this.visitStyle(style$$1, context);
+            timeline.applyStylesToKeyframe();
+        }
+        context.currentAnimateTimings = null;
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitStyle = function (ast, context) {
+        var timeline = context.currentTimeline;
+        var timings = context.currentAnimateTimings;
+        // this is a special case for when a style() call
+        // directly follows  an animate() call (but not inside of an animate() call)
+        if (!timings && timeline.getCurrentStyleProperties().length) {
+            timeline.forwardFrame();
+        }
+        var easing = (timings && timings.easing) || ast.easing;
+        if (ast.isEmptyStep) {
+            timeline.applyEmptyStep(easing);
+        }
+        else {
+            timeline.setStyles(ast.styles, easing, context.errors, context.options);
+        }
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitKeyframes = function (ast, context) {
+        var currentAnimateTimings = context.currentAnimateTimings;
+        var startTime = (context.currentTimeline).duration;
+        var duration = currentAnimateTimings.duration;
+        var innerContext = context.createSubContext();
+        var innerTimeline = innerContext.currentTimeline;
+        innerTimeline.easing = currentAnimateTimings.easing;
+        ast.styles.forEach(function (step) {
+            var offset = step.offset || 0;
+            innerTimeline.forwardTime(offset * duration);
+            innerTimeline.setStyles(step.styles, step.easing, context.errors, context.options);
+            innerTimeline.applyStylesToKeyframe();
+        });
+        // this will ensure that the parent timeline gets all the styles from
+        // the child even if the new timeline below is not used
+        context.currentTimeline.mergeTimelineCollectedStyles(innerTimeline);
+        // we do this because the window between this timeline and the sub timeline
+        // should ensure that the styles within are exactly the same as they were before
+        context.transformIntoNewTimeline(startTime + duration);
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitQuery = function (ast, context) {
+        var _this = this;
+        // in the event that the first step before this is a style step we need
+        // to ensure the styles are applied before the children are animated
+        var startTime = context.currentTimeline.currentTime;
+        var options = (ast.options || {});
+        var delay = options.delay ? resolveTimingValue(options.delay) : 0;
+        if (delay && (context.previousNode.type === 6 /* Style */ ||
+            (startTime == 0 && context.currentTimeline.getCurrentStyleProperties().length))) {
+            context.currentTimeline.snapshotCurrentStyles();
+            context.previousNode = DEFAULT_NOOP_PREVIOUS_NODE;
+        }
+        var furthestTime = startTime;
+        var elms = context.invokeQuery(ast.selector, ast.originalSelector, ast.limit, ast.includeSelf, options.optional ? true : false, context.errors);
+        context.currentQueryTotal = elms.length;
+        var sameElementTimeline = null;
+        elms.forEach(function (element, i) {
+            context.currentQueryIndex = i;
+            var innerContext = context.createSubContext(ast.options, element);
+            if (delay) {
+                innerContext.delayNextStep(delay);
+            }
+            if (element === context.element) {
+                sameElementTimeline = innerContext.currentTimeline;
+            }
+            visitDslNode(_this, ast.animation, innerContext);
+            // this is here just incase the inner steps only contain or end
+            // with a style() call (which is here to signal that this is a preparatory
+            // call to style an element before it is animated again)
+            innerContext.currentTimeline.applyStylesToKeyframe();
+            var endTime = innerContext.currentTimeline.currentTime;
+            furthestTime = Math.max(furthestTime, endTime);
+        });
+        context.currentQueryIndex = 0;
+        context.currentQueryTotal = 0;
+        context.transformIntoNewTimeline(furthestTime);
+        if (sameElementTimeline) {
+            context.currentTimeline.mergeTimelineCollectedStyles(sameElementTimeline);
+            context.currentTimeline.snapshotCurrentStyles();
+        }
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitStagger = function (ast, context) {
+        var parentContext = context.parentContext;
+        var tl = context.currentTimeline;
+        var timings = ast.timings;
+        var duration = Math.abs(timings.duration);
+        var maxTime = duration * (context.currentQueryTotal - 1);
+        var delay = duration * context.currentQueryIndex;
+        var staggerTransformer = timings.duration < 0 ? 'reverse' : timings.easing;
+        switch (staggerTransformer) {
+            case 'reverse':
+                delay = maxTime - delay;
+                break;
+            case 'full':
+                delay = parentContext.currentStaggerTime;
+                break;
+        }
+        var timeline = context.currentTimeline;
+        if (delay) {
+            timeline.delayNextStep(delay);
+        }
+        var startingTime = timeline.currentTime;
+        visitDslNode(this, ast.animation, context);
+        context.previousNode = ast;
+        // time = duration + delay
+        // the reason why this computation is so complex is because
+        // the inner timeline may either have a delay value or a stretched
+        // keyframe depending on if a subtimeline is not used or is used.
+        parentContext.currentStaggerTime =
+            (tl.currentTime - startingTime) + (tl.startTime - parentContext.currentTimeline.startTime);
+    };
+    return AnimationTimelineBuilderVisitor;
+}());
+var DEFAULT_NOOP_PREVIOUS_NODE = {};
+var AnimationTimelineContext = /** @class */ (function () {
+    function AnimationTimelineContext(_driver, element, subInstructions, _enterClassName, _leaveClassName, errors, timelines, initialTimeline) {
+        this._driver = _driver;
+        this.element = element;
+        this.subInstructions = subInstructions;
+        this._enterClassName = _enterClassName;
+        this._leaveClassName = _leaveClassName;
+        this.errors = errors;
+        this.timelines = timelines;
+        this.parentContext = null;
+        this.currentAnimateTimings = null;
+        this.previousNode = DEFAULT_NOOP_PREVIOUS_NODE;
+        this.subContextCount = 0;
+        this.options = {};
+        this.currentQueryIndex = 0;
+        this.currentQueryTotal = 0;
+        this.currentStaggerTime = 0;
+        this.currentTimeline = initialTimeline || new TimelineBuilder(this._driver, element, 0);
+        timelines.push(this.currentTimeline);
+    }
+    Object.defineProperty(AnimationTimelineContext.prototype, "params", {
+        get: function () { return this.options.params; },
+        enumerable: true,
+        configurable: true
+    });
+    AnimationTimelineContext.prototype.updateOptions = function (options, skipIfExists) {
+        var _this = this;
+        if (!options)
+            return;
+        var newOptions = options;
+        var optionsToUpdate = this.options;
+        // NOTE: this will get patched up when other animation methods support duration overrides
+        if (newOptions.duration != null) {
+            optionsToUpdate.duration = resolveTimingValue(newOptions.duration);
+        }
+        if (newOptions.delay != null) {
+            optionsToUpdate.delay = resolveTimingValue(newOptions.delay);
+        }
+        var newParams = newOptions.params;
+        if (newParams) {
+            var paramsToUpdate_1 = optionsToUpdate.params;
+            if (!paramsToUpdate_1) {
+                paramsToUpdate_1 = this.options.params = {};
+            }
+            Object.keys(newParams).forEach(function (name) {
+                if (!skipIfExists || !paramsToUpdate_1.hasOwnProperty(name)) {
+                    paramsToUpdate_1[name] = interpolateParams(newParams[name], paramsToUpdate_1, _this.errors);
+                }
+            });
+        }
+    };
+    AnimationTimelineContext.prototype._copyOptions = function () {
+        var options = {};
+        if (this.options) {
+            var oldParams_1 = this.options.params;
+            if (oldParams_1) {
+                var params_1 = options['params'] = {};
+                Object.keys(oldParams_1).forEach(function (name) { params_1[name] = oldParams_1[name]; });
+            }
+        }
+        return options;
+    };
+    AnimationTimelineContext.prototype.createSubContext = function (options, element, newTime) {
+        if (options === void 0) { options = null; }
+        var target = element || this.element;
+        var context = new AnimationTimelineContext(this._driver, target, this.subInstructions, this._enterClassName, this._leaveClassName, this.errors, this.timelines, this.currentTimeline.fork(target, newTime || 0));
+        context.previousNode = this.previousNode;
+        context.currentAnimateTimings = this.currentAnimateTimings;
+        context.options = this._copyOptions();
+        context.updateOptions(options);
+        context.currentQueryIndex = this.currentQueryIndex;
+        context.currentQueryTotal = this.currentQueryTotal;
+        context.parentContext = this;
+        this.subContextCount++;
+        return context;
+    };
+    AnimationTimelineContext.prototype.transformIntoNewTimeline = function (newTime) {
+        this.previousNode = DEFAULT_NOOP_PREVIOUS_NODE;
+        this.currentTimeline = this.currentTimeline.fork(this.element, newTime);
+        this.timelines.push(this.currentTimeline);
+        return this.currentTimeline;
+    };
+    AnimationTimelineContext.prototype.appendInstructionToTimeline = function (instruction, duration, delay) {
+        var updatedTimings = {
+            duration: duration != null ? duration : instruction.duration,
+            delay: this.currentTimeline.currentTime + (delay != null ? delay : 0) + instruction.delay,
+            easing: ''
+        };
+        var builder = new SubTimelineBuilder(this._driver, instruction.element, instruction.keyframes, instruction.preStyleProps, instruction.postStyleProps, updatedTimings, instruction.stretchStartingKeyframe);
+        this.timelines.push(builder);
+        return updatedTimings;
+    };
+    AnimationTimelineContext.prototype.incrementTime = function (time) {
+        this.currentTimeline.forwardTime(this.currentTimeline.duration + time);
+    };
+    AnimationTimelineContext.prototype.delayNextStep = function (delay) {
+        // negative delays are not yet supported
+        if (delay > 0) {
+            this.currentTimeline.delayNextStep(delay);
+        }
+    };
+    AnimationTimelineContext.prototype.invokeQuery = function (selector, originalSelector, limit, includeSelf, optional, errors) {
+        var results = [];
+        if (includeSelf) {
+            results.push(this.element);
+        }
+        if (selector.length > 0) {
+            selector = selector.replace(ENTER_TOKEN_REGEX, '.' + this._enterClassName);
+            selector = selector.replace(LEAVE_TOKEN_REGEX, '.' + this._leaveClassName);
+            var multi = limit != 1;
+            var elements = this._driver.query(this.element, selector, multi);
+            if (limit !== 0) {
+                elements = limit < 0 ? elements.slice(elements.length + limit, elements.length) :
+                    elements.slice(0, limit);
+            }
+            results.push.apply(results, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(elements));
+        }
+        if (!optional && results.length == 0) {
+            errors.push("`query(\"" + originalSelector + "\")` returned zero elements. (Use `query(\"" + originalSelector + "\", { optional: true })` if you wish to allow this.)");
+        }
+        return results;
+    };
+    return AnimationTimelineContext;
+}());
+var TimelineBuilder = /** @class */ (function () {
+    function TimelineBuilder(_driver, element, startTime, _elementTimelineStylesLookup) {
+        this._driver = _driver;
+        this.element = element;
+        this.startTime = startTime;
+        this._elementTimelineStylesLookup = _elementTimelineStylesLookup;
+        this.duration = 0;
+        this._previousKeyframe = {};
+        this._currentKeyframe = {};
+        this._keyframes = new Map();
+        this._styleSummary = {};
+        this._pendingStyles = {};
+        this._backFill = {};
+        this._currentEmptyStepKeyframe = null;
+        if (!this._elementTimelineStylesLookup) {
+            this._elementTimelineStylesLookup = new Map();
+        }
+        this._localTimelineStyles = Object.create(this._backFill, {});
+        this._globalTimelineStyles = this._elementTimelineStylesLookup.get(element);
+        if (!this._globalTimelineStyles) {
+            this._globalTimelineStyles = this._localTimelineStyles;
+            this._elementTimelineStylesLookup.set(element, this._localTimelineStyles);
+        }
+        this._loadKeyframe();
+    }
+    TimelineBuilder.prototype.containsAnimation = function () {
+        switch (this._keyframes.size) {
+            case 0:
+                return false;
+            case 1:
+                return this.getCurrentStyleProperties().length > 0;
+            default:
+                return true;
+        }
+    };
+    TimelineBuilder.prototype.getCurrentStyleProperties = function () { return Object.keys(this._currentKeyframe); };
+    Object.defineProperty(TimelineBuilder.prototype, "currentTime", {
+        get: function () { return this.startTime + this.duration; },
+        enumerable: true,
+        configurable: true
+    });
+    TimelineBuilder.prototype.delayNextStep = function (delay) {
+        // in the event that a style() step is placed right before a stagger()
+        // and that style() step is the very first style() value in the animation
+        // then we need to make a copy of the keyframe [0, copy, 1] so that the delay
+        // properly applies the style() values to work with the stagger...
+        var hasPreStyleStep = this._keyframes.size == 1 && Object.keys(this._pendingStyles).length;
+        if (this.duration || hasPreStyleStep) {
+            this.forwardTime(this.currentTime + delay);
+            if (hasPreStyleStep) {
+                this.snapshotCurrentStyles();
+            }
+        }
+        else {
+            this.startTime += delay;
+        }
+    };
+    TimelineBuilder.prototype.fork = function (element, currentTime) {
+        this.applyStylesToKeyframe();
+        return new TimelineBuilder(this._driver, element, currentTime || this.currentTime, this._elementTimelineStylesLookup);
+    };
+    TimelineBuilder.prototype._loadKeyframe = function () {
+        if (this._currentKeyframe) {
+            this._previousKeyframe = this._currentKeyframe;
+        }
+        this._currentKeyframe = this._keyframes.get(this.duration);
+        if (!this._currentKeyframe) {
+            this._currentKeyframe = Object.create(this._backFill, {});
+            this._keyframes.set(this.duration, this._currentKeyframe);
+        }
+    };
+    TimelineBuilder.prototype.forwardFrame = function () {
+        this.duration += ONE_FRAME_IN_MILLISECONDS;
+        this._loadKeyframe();
+    };
+    TimelineBuilder.prototype.forwardTime = function (time) {
+        this.applyStylesToKeyframe();
+        this.duration = time;
+        this._loadKeyframe();
+    };
+    TimelineBuilder.prototype._updateStyle = function (prop, value) {
+        this._localTimelineStyles[prop] = value;
+        this._globalTimelineStyles[prop] = value;
+        this._styleSummary[prop] = { time: this.currentTime, value: value };
+    };
+    TimelineBuilder.prototype.allowOnlyTimelineStyles = function () { return this._currentEmptyStepKeyframe !== this._currentKeyframe; };
+    TimelineBuilder.prototype.applyEmptyStep = function (easing) {
+        var _this = this;
+        if (easing) {
+            this._previousKeyframe['easing'] = easing;
+        }
+        // special case for animate(duration):
+        // all missing styles are filled with a `*` value then
+        // if any destination styles are filled in later on the same
+        // keyframe then they will override the overridden styles
+        // We use `_globalTimelineStyles` here because there may be
+        // styles in previous keyframes that are not present in this timeline
+        Object.keys(this._globalTimelineStyles).forEach(function (prop) {
+            _this._backFill[prop] = _this._globalTimelineStyles[prop] || _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"];
+            _this._currentKeyframe[prop] = _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"];
+        });
+        this._currentEmptyStepKeyframe = this._currentKeyframe;
+    };
+    TimelineBuilder.prototype.setStyles = function (input, easing, errors, options) {
+        var _this = this;
+        if (easing) {
+            this._previousKeyframe['easing'] = easing;
+        }
+        var params = (options && options.params) || {};
+        var styles = flattenStyles(input, this._globalTimelineStyles);
+        Object.keys(styles).forEach(function (prop) {
+            var val = interpolateParams(styles[prop], params, errors);
+            _this._pendingStyles[prop] = val;
+            if (!_this._localTimelineStyles.hasOwnProperty(prop)) {
+                _this._backFill[prop] = _this._globalTimelineStyles.hasOwnProperty(prop) ?
+                    _this._globalTimelineStyles[prop] :
+                    _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"];
+            }
+            _this._updateStyle(prop, val);
+        });
+    };
+    TimelineBuilder.prototype.applyStylesToKeyframe = function () {
+        var _this = this;
+        var styles = this._pendingStyles;
+        var props = Object.keys(styles);
+        if (props.length == 0)
+            return;
+        this._pendingStyles = {};
+        props.forEach(function (prop) {
+            var val = styles[prop];
+            _this._currentKeyframe[prop] = val;
+        });
+        Object.keys(this._localTimelineStyles).forEach(function (prop) {
+            if (!_this._currentKeyframe.hasOwnProperty(prop)) {
+                _this._currentKeyframe[prop] = _this._localTimelineStyles[prop];
+            }
+        });
+    };
+    TimelineBuilder.prototype.snapshotCurrentStyles = function () {
+        var _this = this;
+        Object.keys(this._localTimelineStyles).forEach(function (prop) {
+            var val = _this._localTimelineStyles[prop];
+            _this._pendingStyles[prop] = val;
+            _this._updateStyle(prop, val);
+        });
+    };
+    TimelineBuilder.prototype.getFinalKeyframe = function () { return this._keyframes.get(this.duration); };
+    Object.defineProperty(TimelineBuilder.prototype, "properties", {
+        get: function () {
+            var properties = [];
+            for (var prop in this._currentKeyframe) {
+                properties.push(prop);
+            }
+            return properties;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    TimelineBuilder.prototype.mergeTimelineCollectedStyles = function (timeline) {
+        var _this = this;
+        Object.keys(timeline._styleSummary).forEach(function (prop) {
+            var details0 = _this._styleSummary[prop];
+            var details1 = timeline._styleSummary[prop];
+            if (!details0 || details1.time > details0.time) {
+                _this._updateStyle(prop, details1.value);
+            }
+        });
+    };
+    TimelineBuilder.prototype.buildKeyframes = function () {
+        var _this = this;
+        this.applyStylesToKeyframe();
+        var preStyleProps = new Set();
+        var postStyleProps = new Set();
+        var isEmpty = this._keyframes.size === 1 && this.duration === 0;
+        var finalKeyframes = [];
+        this._keyframes.forEach(function (keyframe, time) {
+            var finalKeyframe = copyStyles(keyframe, true);
+            Object.keys(finalKeyframe).forEach(function (prop) {
+                var value = finalKeyframe[prop];
+                if (value == _angular_animations__WEBPACK_IMPORTED_MODULE_1__["ɵPRE_STYLE"]) {
+                    preStyleProps.add(prop);
+                }
+                else if (value == _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]) {
+                    postStyleProps.add(prop);
+                }
+            });
+            if (!isEmpty) {
+                finalKeyframe['offset'] = time / _this.duration;
+            }
+            finalKeyframes.push(finalKeyframe);
+        });
+        var preProps = preStyleProps.size ? iteratorToArray(preStyleProps.values()) : [];
+        var postProps = postStyleProps.size ? iteratorToArray(postStyleProps.values()) : [];
+        // special case for a 0-second animation (which is designed just to place styles onscreen)
+        if (isEmpty) {
+            var kf0 = finalKeyframes[0];
+            var kf1 = copyObj(kf0);
+            kf0['offset'] = 0;
+            kf1['offset'] = 1;
+            finalKeyframes = [kf0, kf1];
+        }
+        return createTimelineInstruction(this.element, finalKeyframes, preProps, postProps, this.duration, this.startTime, this.easing, false);
+    };
+    return TimelineBuilder;
+}());
+var SubTimelineBuilder = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(SubTimelineBuilder, _super);
+    function SubTimelineBuilder(driver, element, keyframes, preStyleProps, postStyleProps, timings, _stretchStartingKeyframe) {
+        if (_stretchStartingKeyframe === void 0) { _stretchStartingKeyframe = false; }
+        var _this = _super.call(this, driver, element, timings.delay) || this;
+        _this.element = element;
+        _this.keyframes = keyframes;
+        _this.preStyleProps = preStyleProps;
+        _this.postStyleProps = postStyleProps;
+        _this._stretchStartingKeyframe = _stretchStartingKeyframe;
+        _this.timings = { duration: timings.duration, delay: timings.delay, easing: timings.easing };
+        return _this;
+    }
+    SubTimelineBuilder.prototype.containsAnimation = function () { return this.keyframes.length > 1; };
+    SubTimelineBuilder.prototype.buildKeyframes = function () {
+        var keyframes = this.keyframes;
+        var _a = this.timings, delay = _a.delay, duration = _a.duration, easing = _a.easing;
+        if (this._stretchStartingKeyframe && delay) {
+            var newKeyframes = [];
+            var totalTime = duration + delay;
+            var startingGap = delay / totalTime;
+            // the original starting keyframe now starts once the delay is done
+            var newFirstKeyframe = copyStyles(keyframes[0], false);
+            newFirstKeyframe['offset'] = 0;
+            newKeyframes.push(newFirstKeyframe);
+            var oldFirstKeyframe = copyStyles(keyframes[0], false);
+            oldFirstKeyframe['offset'] = roundOffset(startingGap);
+            newKeyframes.push(oldFirstKeyframe);
+            /*
+              When the keyframe is stretched then it means that the delay before the animation
+              starts is gone. Instead the first keyframe is placed at the start of the animation
+              and it is then copied to where it starts when the original delay is over. This basically
+              means nothing animates during that delay, but the styles are still renderered. For this
+              to work the original offset values that exist in the original keyframes must be "warped"
+              so that they can take the new keyframe + delay into account.
+      
+              delay=1000, duration=1000, keyframes = 0 .5 1
+      
+              turns into
+      
+              delay=0, duration=2000, keyframes = 0 .33 .66 1
+             */
+            // offsets between 1 ... n -1 are all warped by the keyframe stretch
+            var limit = keyframes.length - 1;
+            for (var i = 1; i <= limit; i++) {
+                var kf = copyStyles(keyframes[i], false);
+                var oldOffset = kf['offset'];
+                var timeAtKeyframe = delay + oldOffset * duration;
+                kf['offset'] = roundOffset(timeAtKeyframe / totalTime);
+                newKeyframes.push(kf);
+            }
+            // the new starting keyframe should be added at the start
+            duration = totalTime;
+            delay = 0;
+            easing = '';
+            keyframes = newKeyframes;
+        }
+        return createTimelineInstruction(this.element, keyframes, this.preStyleProps, this.postStyleProps, duration, delay, easing, true);
+    };
+    return SubTimelineBuilder;
+}(TimelineBuilder));
+function roundOffset(offset, decimalPoints) {
+    if (decimalPoints === void 0) { decimalPoints = 3; }
+    var mult = Math.pow(10, decimalPoints - 1);
+    return Math.round(offset * mult) / mult;
+}
+function flattenStyles(input, allStyles) {
+    var styles = {};
+    var allProperties;
+    input.forEach(function (token) {
+        if (token === '*') {
+            allProperties = allProperties || Object.keys(allStyles);
+            allProperties.forEach(function (prop) { styles[prop] = _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]; });
+        }
+        else {
+            copyStyles(token, false, styles);
+        }
+    });
+    return styles;
+}
+
+var Animation = /** @class */ (function () {
+    function Animation(_driver, input) {
+        this._driver = _driver;
+        var errors = [];
+        var ast = buildAnimationAst(_driver, input, errors);
+        if (errors.length) {
+            var errorMessage = "animation validation failed:\n" + errors.join("\n");
+            throw new Error(errorMessage);
+        }
+        this._animationAst = ast;
+    }
+    Animation.prototype.buildTimelines = function (element, startingStyles, destinationStyles, options, subInstructions) {
+        var start = Array.isArray(startingStyles) ? normalizeStyles(startingStyles) :
+            startingStyles;
+        var dest = Array.isArray(destinationStyles) ? normalizeStyles(destinationStyles) :
+            destinationStyles;
+        var errors = [];
+        subInstructions = subInstructions || new ElementInstructionMap();
+        var result = buildAnimationTimelines(this._driver, element, this._animationAst, ENTER_CLASSNAME, LEAVE_CLASSNAME, start, dest, options, subInstructions, errors);
+        if (errors.length) {
+            var errorMessage = "animation building failed:\n" + errors.join("\n");
+            throw new Error(errorMessage);
+        }
+        return result;
+    };
+    return Animation;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @experimental Animation support is experimental.
+ */
+var AnimationStyleNormalizer = /** @class */ (function () {
+    function AnimationStyleNormalizer() {
+    }
+    return AnimationStyleNormalizer;
+}());
+/**
+ * @experimental Animation support is experimental.
+ */
+var NoopAnimationStyleNormalizer = /** @class */ (function () {
+    function NoopAnimationStyleNormalizer() {
+    }
+    NoopAnimationStyleNormalizer.prototype.normalizePropertyName = function (propertyName, errors) { return propertyName; };
+    NoopAnimationStyleNormalizer.prototype.normalizeStyleValue = function (userProvidedProperty, normalizedProperty, value, errors) {
+        return value;
+    };
+    return NoopAnimationStyleNormalizer;
+}());
+
+var WebAnimationsStyleNormalizer = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(WebAnimationsStyleNormalizer, _super);
+    function WebAnimationsStyleNormalizer() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    WebAnimationsStyleNormalizer.prototype.normalizePropertyName = function (propertyName, errors) {
+        return dashCaseToCamelCase(propertyName);
+    };
+    WebAnimationsStyleNormalizer.prototype.normalizeStyleValue = function (userProvidedProperty, normalizedProperty, value, errors) {
+        var unit = '';
+        var strVal = value.toString().trim();
+        if (DIMENSIONAL_PROP_MAP[normalizedProperty] && value !== 0 && value !== '0') {
+            if (typeof value === 'number') {
+                unit = 'px';
+            }
+            else {
+                var valAndSuffixMatch = value.match(/^[+-]?[\d\.]+([a-z]*)$/);
+                if (valAndSuffixMatch && valAndSuffixMatch[1].length == 0) {
+                    errors.push("Please provide a CSS unit value for " + userProvidedProperty + ":" + value);
+                }
+            }
+        }
+        return strVal + unit;
+    };
+    return WebAnimationsStyleNormalizer;
+}(AnimationStyleNormalizer));
+var DIMENSIONAL_PROP_MAP = makeBooleanMap('width,height,minWidth,minHeight,maxWidth,maxHeight,left,top,bottom,right,fontSize,outlineWidth,outlineOffset,paddingTop,paddingLeft,paddingBottom,paddingRight,marginTop,marginLeft,marginBottom,marginRight,borderRadius,borderWidth,borderTopWidth,borderLeftWidth,borderRightWidth,borderBottomWidth,textIndent,perspective'
+    .split(','));
+function makeBooleanMap(keys) {
+    var map = {};
+    keys.forEach(function (key) { return map[key] = true; });
+    return map;
+}
+
+function createTransitionInstruction(element, triggerName, fromState, toState, isRemovalTransition, fromStyles, toStyles, timelines, queriedElements, preStyleProps, postStyleProps, totalTime, errors) {
+    return {
+        type: 0 /* TransitionAnimation */,
+        element: element,
+        triggerName: triggerName,
+        isRemovalTransition: isRemovalTransition,
+        fromState: fromState,
+        fromStyles: fromStyles,
+        toState: toState,
+        toStyles: toStyles,
+        timelines: timelines,
+        queriedElements: queriedElements,
+        preStyleProps: preStyleProps,
+        postStyleProps: postStyleProps,
+        totalTime: totalTime,
+        errors: errors
+    };
+}
+
+var EMPTY_OBJECT = {};
+var AnimationTransitionFactory = /** @class */ (function () {
+    function AnimationTransitionFactory(_triggerName, ast, _stateStyles) {
+        this._triggerName = _triggerName;
+        this.ast = ast;
+        this._stateStyles = _stateStyles;
+    }
+    AnimationTransitionFactory.prototype.match = function (currentState, nextState, element, params) {
+        return oneOrMoreTransitionsMatch(this.ast.matchers, currentState, nextState, element, params);
+    };
+    AnimationTransitionFactory.prototype.buildStyles = function (stateName, params, errors) {
+        var backupStateStyler = this._stateStyles['*'];
+        var stateStyler = this._stateStyles[stateName];
+        var backupStyles = backupStateStyler ? backupStateStyler.buildStyles(params, errors) : {};
+        return stateStyler ? stateStyler.buildStyles(params, errors) : backupStyles;
+    };
+    AnimationTransitionFactory.prototype.build = function (driver, element, currentState, nextState, enterClassName, leaveClassName, currentOptions, nextOptions, subInstructions, skipAstBuild) {
+        var errors = [];
+        var transitionAnimationParams = this.ast.options && this.ast.options.params || EMPTY_OBJECT;
+        var currentAnimationParams = currentOptions && currentOptions.params || EMPTY_OBJECT;
+        var currentStateStyles = this.buildStyles(currentState, currentAnimationParams, errors);
+        var nextAnimationParams = nextOptions && nextOptions.params || EMPTY_OBJECT;
+        var nextStateStyles = this.buildStyles(nextState, nextAnimationParams, errors);
+        var queriedElements = new Set();
+        var preStyleMap = new Map();
+        var postStyleMap = new Map();
+        var isRemoval = nextState === 'void';
+        var animationOptions = { params: Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, transitionAnimationParams, nextAnimationParams) };
+        var timelines = skipAstBuild ? [] : buildAnimationTimelines(driver, element, this.ast.animation, enterClassName, leaveClassName, currentStateStyles, nextStateStyles, animationOptions, subInstructions, errors);
+        var totalTime = 0;
+        timelines.forEach(function (tl) { totalTime = Math.max(tl.duration + tl.delay, totalTime); });
+        if (errors.length) {
+            return createTransitionInstruction(element, this._triggerName, currentState, nextState, isRemoval, currentStateStyles, nextStateStyles, [], [], preStyleMap, postStyleMap, totalTime, errors);
+        }
+        timelines.forEach(function (tl) {
+            var elm = tl.element;
+            var preProps = getOrSetAsInMap(preStyleMap, elm, {});
+            tl.preStyleProps.forEach(function (prop) { return preProps[prop] = true; });
+            var postProps = getOrSetAsInMap(postStyleMap, elm, {});
+            tl.postStyleProps.forEach(function (prop) { return postProps[prop] = true; });
+            if (elm !== element) {
+                queriedElements.add(elm);
+            }
+        });
+        var queriedElementsList = iteratorToArray(queriedElements.values());
+        return createTransitionInstruction(element, this._triggerName, currentState, nextState, isRemoval, currentStateStyles, nextStateStyles, timelines, queriedElementsList, preStyleMap, postStyleMap, totalTime);
+    };
+    return AnimationTransitionFactory;
+}());
+function oneOrMoreTransitionsMatch(matchFns, currentState, nextState, element, params) {
+    return matchFns.some(function (fn) { return fn(currentState, nextState, element, params); });
+}
+var AnimationStateStyles = /** @class */ (function () {
+    function AnimationStateStyles(styles, defaultParams) {
+        this.styles = styles;
+        this.defaultParams = defaultParams;
+    }
+    AnimationStateStyles.prototype.buildStyles = function (params, errors) {
+        var finalStyles = {};
+        var combinedParams = copyObj(this.defaultParams);
+        Object.keys(params).forEach(function (key) {
+            var value = params[key];
+            if (value != null) {
+                combinedParams[key] = value;
+            }
+        });
+        this.styles.styles.forEach(function (value) {
+            if (typeof value !== 'string') {
+                var styleObj_1 = value;
+                Object.keys(styleObj_1).forEach(function (prop) {
+                    var val = styleObj_1[prop];
+                    if (val.length > 1) {
+                        val = interpolateParams(val, combinedParams, errors);
+                    }
+                    finalStyles[prop] = val;
+                });
+            }
+        });
+        return finalStyles;
+    };
+    return AnimationStateStyles;
+}());
+
+/**
+ * @experimental Animation support is experimental.
+ */
+function buildTrigger(name, ast) {
+    return new AnimationTrigger(name, ast);
+}
+/**
+* @experimental Animation support is experimental.
+*/
+var AnimationTrigger = /** @class */ (function () {
+    function AnimationTrigger(name, ast) {
+        var _this = this;
+        this.name = name;
+        this.ast = ast;
+        this.transitionFactories = [];
+        this.states = {};
+        ast.states.forEach(function (ast) {
+            var defaultParams = (ast.options && ast.options.params) || {};
+            _this.states[ast.name] = new AnimationStateStyles(ast.style, defaultParams);
+        });
+        balanceProperties(this.states, 'true', '1');
+        balanceProperties(this.states, 'false', '0');
+        ast.transitions.forEach(function (ast) {
+            _this.transitionFactories.push(new AnimationTransitionFactory(name, ast, _this.states));
+        });
+        this.fallbackTransition = createFallbackTransition(name, this.states);
+    }
+    Object.defineProperty(AnimationTrigger.prototype, "containsQueries", {
+        get: function () { return this.ast.queryCount > 0; },
+        enumerable: true,
+        configurable: true
+    });
+    AnimationTrigger.prototype.matchTransition = function (currentState, nextState, element, params) {
+        var entry = this.transitionFactories.find(function (f) { return f.match(currentState, nextState, element, params); });
+        return entry || null;
+    };
+    AnimationTrigger.prototype.matchStyles = function (currentState, params, errors) {
+        return this.fallbackTransition.buildStyles(currentState, params, errors);
+    };
+    return AnimationTrigger;
+}());
+function createFallbackTransition(triggerName, states) {
+    var matchers = [function (fromState, toState) { return true; }];
+    var animation = { type: 2 /* Sequence */, steps: [], options: null };
+    var transition = {
+        type: 1 /* Transition */,
+        animation: animation,
+        matchers: matchers,
+        options: null,
+        queryCount: 0,
+        depCount: 0
+    };
+    return new AnimationTransitionFactory(triggerName, transition, states);
+}
+function balanceProperties(obj, key1, key2) {
+    if (obj.hasOwnProperty(key1)) {
+        if (!obj.hasOwnProperty(key2)) {
+            obj[key2] = obj[key1];
+        }
+    }
+    else if (obj.hasOwnProperty(key2)) {
+        obj[key1] = obj[key2];
+    }
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var EMPTY_INSTRUCTION_MAP = new ElementInstructionMap();
+var TimelineAnimationEngine = /** @class */ (function () {
+    function TimelineAnimationEngine(bodyNode, _driver, _normalizer) {
+        this.bodyNode = bodyNode;
+        this._driver = _driver;
+        this._normalizer = _normalizer;
+        this._animations = {};
+        this._playersById = {};
+        this.players = [];
+    }
+    TimelineAnimationEngine.prototype.register = function (id, metadata) {
+        var errors = [];
+        var ast = buildAnimationAst(this._driver, metadata, errors);
+        if (errors.length) {
+            throw new Error("Unable to build the animation due to the following errors: " + errors.join("\n"));
+        }
+        else {
+            this._animations[id] = ast;
+        }
+    };
+    TimelineAnimationEngine.prototype._buildPlayer = function (i, preStyles, postStyles) {
+        var element = i.element;
+        var keyframes = normalizeKeyframes(this._driver, this._normalizer, element, i.keyframes, preStyles, postStyles);
+        return this._driver.animate(element, keyframes, i.duration, i.delay, i.easing, [], true);
+    };
+    TimelineAnimationEngine.prototype.create = function (id, element, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        var errors = [];
+        var ast = this._animations[id];
+        var instructions;
+        var autoStylesMap = new Map();
+        if (ast) {
+            instructions = buildAnimationTimelines(this._driver, element, ast, ENTER_CLASSNAME, LEAVE_CLASSNAME, {}, {}, options, EMPTY_INSTRUCTION_MAP, errors);
+            instructions.forEach(function (inst) {
+                var styles = getOrSetAsInMap(autoStylesMap, inst.element, {});
+                inst.postStyleProps.forEach(function (prop) { return styles[prop] = null; });
+            });
+        }
+        else {
+            errors.push('The requested animation doesn\'t exist or has already been destroyed');
+            instructions = [];
+        }
+        if (errors.length) {
+            throw new Error("Unable to create the animation due to the following errors: " + errors.join("\n"));
+        }
+        autoStylesMap.forEach(function (styles, element) {
+            Object.keys(styles).forEach(function (prop) { styles[prop] = _this._driver.computeStyle(element, prop, _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]); });
+        });
+        var players = instructions.map(function (i) {
+            var styles = autoStylesMap.get(i.element);
+            return _this._buildPlayer(i, {}, styles);
+        });
+        var player = optimizeGroupPlayer(players);
+        this._playersById[id] = player;
+        player.onDestroy(function () { return _this.destroy(id); });
+        this.players.push(player);
+        return player;
+    };
+    TimelineAnimationEngine.prototype.destroy = function (id) {
+        var player = this._getPlayer(id);
+        player.destroy();
+        delete this._playersById[id];
+        var index = this.players.indexOf(player);
+        if (index >= 0) {
+            this.players.splice(index, 1);
+        }
+    };
+    TimelineAnimationEngine.prototype._getPlayer = function (id) {
+        var player = this._playersById[id];
+        if (!player) {
+            throw new Error("Unable to find the timeline player referenced by " + id);
+        }
+        return player;
+    };
+    TimelineAnimationEngine.prototype.listen = function (id, element, eventName, callback) {
+        // triggerName, fromState, toState are all ignored for timeline animations
+        var baseEvent = makeAnimationEvent(element, '', '', '');
+        listenOnPlayer(this._getPlayer(id), eventName, baseEvent, callback);
+        return function () { };
+    };
+    TimelineAnimationEngine.prototype.command = function (id, element, command, args) {
+        if (command == 'register') {
+            this.register(id, args[0]);
+            return;
+        }
+        if (command == 'create') {
+            var options = (args[0] || {});
+            this.create(id, element, options);
+            return;
+        }
+        var player = this._getPlayer(id);
+        switch (command) {
+            case 'play':
+                player.play();
+                break;
+            case 'pause':
+                player.pause();
+                break;
+            case 'reset':
+                player.reset();
+                break;
+            case 'restart':
+                player.restart();
+                break;
+            case 'finish':
+                player.finish();
+                break;
+            case 'init':
+                player.init();
+                break;
+            case 'setPosition':
+                player.setPosition(parseFloat(args[0]));
+                break;
+            case 'destroy':
+                this.destroy(id);
+                break;
+        }
+    };
+    return TimelineAnimationEngine;
+}());
+
+var QUEUED_CLASSNAME = 'ng-animate-queued';
+var QUEUED_SELECTOR = '.ng-animate-queued';
+var DISABLED_CLASSNAME = 'ng-animate-disabled';
+var DISABLED_SELECTOR = '.ng-animate-disabled';
+var STAR_CLASSNAME = 'ng-star-inserted';
+var STAR_SELECTOR = '.ng-star-inserted';
+var EMPTY_PLAYER_ARRAY = [];
+var NULL_REMOVAL_STATE = {
+    namespaceId: '',
+    setForRemoval: false,
+    setForMove: false,
+    hasAnimation: false,
+    removedBeforeQueried: false
+};
+var NULL_REMOVED_QUERIED_STATE = {
+    namespaceId: '',
+    setForMove: false,
+    setForRemoval: false,
+    hasAnimation: false,
+    removedBeforeQueried: true
+};
+var REMOVAL_FLAG = '__ng_removed';
+var StateValue = /** @class */ (function () {
+    function StateValue(input, namespaceId) {
+        if (namespaceId === void 0) { namespaceId = ''; }
+        this.namespaceId = namespaceId;
+        var isObj = input && input.hasOwnProperty('value');
+        var value = isObj ? input['value'] : input;
+        this.value = normalizeTriggerValue(value);
+        if (isObj) {
+            var options = copyObj(input);
+            delete options['value'];
+            this.options = options;
+        }
+        else {
+            this.options = {};
+        }
+        if (!this.options.params) {
+            this.options.params = {};
+        }
+    }
+    Object.defineProperty(StateValue.prototype, "params", {
+        get: function () { return this.options.params; },
+        enumerable: true,
+        configurable: true
+    });
+    StateValue.prototype.absorbOptions = function (options) {
+        var newParams = options.params;
+        if (newParams) {
+            var oldParams_1 = this.options.params;
+            Object.keys(newParams).forEach(function (prop) {
+                if (oldParams_1[prop] == null) {
+                    oldParams_1[prop] = newParams[prop];
+                }
+            });
+        }
+    };
+    return StateValue;
+}());
+var VOID_VALUE = 'void';
+var DEFAULT_STATE_VALUE = new StateValue(VOID_VALUE);
+var AnimationTransitionNamespace = /** @class */ (function () {
+    function AnimationTransitionNamespace(id, hostElement, _engine) {
+        this.id = id;
+        this.hostElement = hostElement;
+        this._engine = _engine;
+        this.players = [];
+        this._triggers = {};
+        this._queue = [];
+        this._elementListeners = new Map();
+        this._hostClassName = 'ng-tns-' + id;
+        addClass(hostElement, this._hostClassName);
+    }
+    AnimationTransitionNamespace.prototype.listen = function (element, name, phase, callback) {
+        var _this = this;
+        if (!this._triggers.hasOwnProperty(name)) {
+            throw new Error("Unable to listen on the animation trigger event \"" + phase + "\" because the animation trigger \"" + name + "\" doesn't exist!");
+        }
+        if (phase == null || phase.length == 0) {
+            throw new Error("Unable to listen on the animation trigger \"" + name + "\" because the provided event is undefined!");
+        }
+        if (!isTriggerEventValid(phase)) {
+            throw new Error("The provided animation trigger event \"" + phase + "\" for the animation trigger \"" + name + "\" is not supported!");
+        }
+        var listeners = getOrSetAsInMap(this._elementListeners, element, []);
+        var data = { name: name, phase: phase, callback: callback };
+        listeners.push(data);
+        var triggersWithStates = getOrSetAsInMap(this._engine.statesByElement, element, {});
+        if (!triggersWithStates.hasOwnProperty(name)) {
+            addClass(element, NG_TRIGGER_CLASSNAME);
+            addClass(element, NG_TRIGGER_CLASSNAME + '-' + name);
+            triggersWithStates[name] = DEFAULT_STATE_VALUE;
+        }
+        return function () {
+            // the event listener is removed AFTER the flush has occurred such
+            // that leave animations callbacks can fire (otherwise if the node
+            // is removed in between then the listeners would be deregistered)
+            _this._engine.afterFlush(function () {
+                var index = listeners.indexOf(data);
+                if (index >= 0) {
+                    listeners.splice(index, 1);
+                }
+                if (!_this._triggers[name]) {
+                    delete triggersWithStates[name];
+                }
+            });
+        };
+    };
+    AnimationTransitionNamespace.prototype.register = function (name, ast) {
+        if (this._triggers[name]) {
+            // throw
+            return false;
+        }
+        else {
+            this._triggers[name] = ast;
+            return true;
+        }
+    };
+    AnimationTransitionNamespace.prototype._getTrigger = function (name) {
+        var trigger = this._triggers[name];
+        if (!trigger) {
+            throw new Error("The provided animation trigger \"" + name + "\" has not been registered!");
+        }
+        return trigger;
+    };
+    AnimationTransitionNamespace.prototype.trigger = function (element, triggerName, value, defaultToFallback) {
+        var _this = this;
+        if (defaultToFallback === void 0) { defaultToFallback = true; }
+        var trigger = this._getTrigger(triggerName);
+        var player = new TransitionAnimationPlayer(this.id, triggerName, element);
+        var triggersWithStates = this._engine.statesByElement.get(element);
+        if (!triggersWithStates) {
+            addClass(element, NG_TRIGGER_CLASSNAME);
+            addClass(element, NG_TRIGGER_CLASSNAME + '-' + triggerName);
+            this._engine.statesByElement.set(element, triggersWithStates = {});
+        }
+        var fromState = triggersWithStates[triggerName];
+        var toState = new StateValue(value, this.id);
+        var isObj = value && value.hasOwnProperty('value');
+        if (!isObj && fromState) {
+            toState.absorbOptions(fromState.options);
+        }
+        triggersWithStates[triggerName] = toState;
+        if (!fromState) {
+            fromState = DEFAULT_STATE_VALUE;
+        }
+        var isRemoval = toState.value === VOID_VALUE;
+        // normally this isn't reached by here, however, if an object expression
+        // is passed in then it may be a new object each time. Comparing the value
+        // is important since that will stay the same despite there being a new object.
+        // The removal arc here is special cased because the same element is triggered
+        // twice in the event that it contains animations on the outer/inner portions
+        // of the host container
+        if (!isRemoval && fromState.value === toState.value) {
+            // this means that despite the value not changing, some inner params
+            // have changed which means that the animation final styles need to be applied
+            if (!objEquals(fromState.params, toState.params)) {
+                var errors = [];
+                var fromStyles_1 = trigger.matchStyles(fromState.value, fromState.params, errors);
+                var toStyles_1 = trigger.matchStyles(toState.value, toState.params, errors);
+                if (errors.length) {
+                    this._engine.reportError(errors);
+                }
+                else {
+                    this._engine.afterFlush(function () {
+                        eraseStyles(element, fromStyles_1);
+                        setStyles(element, toStyles_1);
+                    });
+                }
+            }
+            return;
+        }
+        var playersOnElement = getOrSetAsInMap(this._engine.playersByElement, element, []);
+        playersOnElement.forEach(function (player) {
+            // only remove the player if it is queued on the EXACT same trigger/namespace
+            // we only also deal with queued players here because if the animation has
+            // started then we want to keep the player alive until the flush happens
+            // (which is where the previousPlayers are passed into the new palyer)
+            if (player.namespaceId == _this.id && player.triggerName == triggerName && player.queued) {
+                player.destroy();
+            }
+        });
+        var transition = trigger.matchTransition(fromState.value, toState.value, element, toState.params);
+        var isFallbackTransition = false;
+        if (!transition) {
+            if (!defaultToFallback)
+                return;
+            transition = trigger.fallbackTransition;
+            isFallbackTransition = true;
+        }
+        this._engine.totalQueuedPlayers++;
+        this._queue.push({ element: element, triggerName: triggerName, transition: transition, fromState: fromState, toState: toState, player: player, isFallbackTransition: isFallbackTransition });
+        if (!isFallbackTransition) {
+            addClass(element, QUEUED_CLASSNAME);
+            player.onStart(function () { removeClass(element, QUEUED_CLASSNAME); });
+        }
+        player.onDone(function () {
+            var index = _this.players.indexOf(player);
+            if (index >= 0) {
+                _this.players.splice(index, 1);
+            }
+            var players = _this._engine.playersByElement.get(element);
+            if (players) {
+                var index_1 = players.indexOf(player);
+                if (index_1 >= 0) {
+                    players.splice(index_1, 1);
+                }
+            }
+        });
+        this.players.push(player);
+        playersOnElement.push(player);
+        return player;
+    };
+    AnimationTransitionNamespace.prototype.deregister = function (name) {
+        var _this = this;
+        delete this._triggers[name];
+        this._engine.statesByElement.forEach(function (stateMap, element) { delete stateMap[name]; });
+        this._elementListeners.forEach(function (listeners, element) {
+            _this._elementListeners.set(element, listeners.filter(function (entry) { return entry.name != name; }));
+        });
+    };
+    AnimationTransitionNamespace.prototype.clearElementCache = function (element) {
+        this._engine.statesByElement.delete(element);
+        this._elementListeners.delete(element);
+        var elementPlayers = this._engine.playersByElement.get(element);
+        if (elementPlayers) {
+            elementPlayers.forEach(function (player) { return player.destroy(); });
+            this._engine.playersByElement.delete(element);
+        }
+    };
+    AnimationTransitionNamespace.prototype._signalRemovalForInnerTriggers = function (rootElement, context, animate) {
+        var _this = this;
+        if (animate === void 0) { animate = false; }
+        // emulate a leave animation for all inner nodes within this node.
+        // If there are no animations found for any of the nodes then clear the cache
+        // for the element.
+        this._engine.driver.query(rootElement, NG_TRIGGER_SELECTOR, true).forEach(function (elm) {
+            // this means that an inner remove() operation has already kicked off
+            // the animation on this element...
+            if (elm[REMOVAL_FLAG])
+                return;
+            var namespaces = _this._engine.fetchNamespacesByElement(elm);
+            if (namespaces.size) {
+                namespaces.forEach(function (ns) { return ns.triggerLeaveAnimation(elm, context, false, true); });
+            }
+            else {
+                _this.clearElementCache(elm);
+            }
+        });
+    };
+    AnimationTransitionNamespace.prototype.triggerLeaveAnimation = function (element, context, destroyAfterComplete, defaultToFallback) {
+        var _this = this;
+        var triggerStates = this._engine.statesByElement.get(element);
+        if (triggerStates) {
+            var players_1 = [];
+            Object.keys(triggerStates).forEach(function (triggerName) {
+                // this check is here in the event that an element is removed
+                // twice (both on the host level and the component level)
+                if (_this._triggers[triggerName]) {
+                    var player = _this.trigger(element, triggerName, VOID_VALUE, defaultToFallback);
+                    if (player) {
+                        players_1.push(player);
+                    }
+                }
+            });
+            if (players_1.length) {
+                this._engine.markElementAsRemoved(this.id, element, true, context);
+                if (destroyAfterComplete) {
+                    optimizeGroupPlayer(players_1).onDone(function () { return _this._engine.processLeaveNode(element); });
+                }
+                return true;
+            }
+        }
+        return false;
+    };
+    AnimationTransitionNamespace.prototype.prepareLeaveAnimationListeners = function (element) {
+        var _this = this;
+        var listeners = this._elementListeners.get(element);
+        if (listeners) {
+            var visitedTriggers_1 = new Set();
+            listeners.forEach(function (listener) {
+                var triggerName = listener.name;
+                if (visitedTriggers_1.has(triggerName))
+                    return;
+                visitedTriggers_1.add(triggerName);
+                var trigger = _this._triggers[triggerName];
+                var transition = trigger.fallbackTransition;
+                var elementStates = _this._engine.statesByElement.get(element);
+                var fromState = elementStates[triggerName] || DEFAULT_STATE_VALUE;
+                var toState = new StateValue(VOID_VALUE);
+                var player = new TransitionAnimationPlayer(_this.id, triggerName, element);
+                _this._engine.totalQueuedPlayers++;
+                _this._queue.push({
+                    element: element,
+                    triggerName: triggerName,
+                    transition: transition,
+                    fromState: fromState,
+                    toState: toState,
+                    player: player,
+                    isFallbackTransition: true
+                });
+            });
+        }
+    };
+    AnimationTransitionNamespace.prototype.removeNode = function (element, context) {
+        var _this = this;
+        var engine = this._engine;
+        if (element.childElementCount) {
+            this._signalRemovalForInnerTriggers(element, context, true);
+        }
+        // this means that a * => VOID animation was detected and kicked off
+        if (this.triggerLeaveAnimation(element, context, true))
+            return;
+        // find the player that is animating and make sure that the
+        // removal is delayed until that player has completed
+        var containsPotentialParentTransition = false;
+        if (engine.totalAnimations) {
+            var currentPlayers = engine.players.length ? engine.playersByQueriedElement.get(element) : [];
+            // when this `if statement` does not continue forward it means that
+            // a previous animation query has selected the current element and
+            // is animating it. In this situation want to continue forwards and
+            // allow the element to be queued up for animation later.
+            if (currentPlayers && currentPlayers.length) {
+                containsPotentialParentTransition = true;
+            }
+            else {
+                var parent_1 = element;
+                while (parent_1 = parent_1.parentNode) {
+                    var triggers = engine.statesByElement.get(parent_1);
+                    if (triggers) {
+                        containsPotentialParentTransition = true;
+                        break;
+                    }
+                }
+            }
+        }
+        // at this stage we know that the element will either get removed
+        // during flush or will be picked up by a parent query. Either way
+        // we need to fire the listeners for this element when it DOES get
+        // removed (once the query parent animation is done or after flush)
+        this.prepareLeaveAnimationListeners(element);
+        // whether or not a parent has an animation we need to delay the deferral of the leave
+        // operation until we have more information (which we do after flush() has been called)
+        if (containsPotentialParentTransition) {
+            engine.markElementAsRemoved(this.id, element, false, context);
+        }
+        else {
+            // we do this after the flush has occurred such
+            // that the callbacks can be fired
+            engine.afterFlush(function () { return _this.clearElementCache(element); });
+            engine.destroyInnerAnimations(element);
+            engine._onRemovalComplete(element, context);
+        }
+    };
+    AnimationTransitionNamespace.prototype.insertNode = function (element, parent) { addClass(element, this._hostClassName); };
+    AnimationTransitionNamespace.prototype.drainQueuedTransitions = function (microtaskId) {
+        var _this = this;
+        var instructions = [];
+        this._queue.forEach(function (entry) {
+            var player = entry.player;
+            if (player.destroyed)
+                return;
+            var element = entry.element;
+            var listeners = _this._elementListeners.get(element);
+            if (listeners) {
+                listeners.forEach(function (listener) {
+                    if (listener.name == entry.triggerName) {
+                        var baseEvent = makeAnimationEvent(element, entry.triggerName, entry.fromState.value, entry.toState.value);
+                        baseEvent['_data'] = microtaskId;
+                        listenOnPlayer(entry.player, listener.phase, baseEvent, listener.callback);
+                    }
+                });
+            }
+            if (player.markedForDestroy) {
+                _this._engine.afterFlush(function () {
+                    // now we can destroy the element properly since the event listeners have
+                    // been bound to the player
+                    player.destroy();
+                });
+            }
+            else {
+                instructions.push(entry);
+            }
+        });
+        this._queue = [];
+        return instructions.sort(function (a, b) {
+            // if depCount == 0 them move to front
+            // otherwise if a contains b then move back
+            var d0 = a.transition.ast.depCount;
+            var d1 = b.transition.ast.depCount;
+            if (d0 == 0 || d1 == 0) {
+                return d0 - d1;
+            }
+            return _this._engine.driver.containsElement(a.element, b.element) ? 1 : -1;
+        });
+    };
+    AnimationTransitionNamespace.prototype.destroy = function (context) {
+        this.players.forEach(function (p) { return p.destroy(); });
+        this._signalRemovalForInnerTriggers(this.hostElement, context);
+    };
+    AnimationTransitionNamespace.prototype.elementContainsData = function (element) {
+        var containsData = false;
+        if (this._elementListeners.has(element))
+            containsData = true;
+        containsData =
+            (this._queue.find(function (entry) { return entry.element === element; }) ? true : false) || containsData;
+        return containsData;
+    };
+    return AnimationTransitionNamespace;
+}());
+var TransitionAnimationEngine = /** @class */ (function () {
+    function TransitionAnimationEngine(bodyNode, driver, _normalizer) {
+        this.bodyNode = bodyNode;
+        this.driver = driver;
+        this._normalizer = _normalizer;
+        this.players = [];
+        this.newHostElements = new Map();
+        this.playersByElement = new Map();
+        this.playersByQueriedElement = new Map();
+        this.statesByElement = new Map();
+        this.disabledNodes = new Set();
+        this.totalAnimations = 0;
+        this.totalQueuedPlayers = 0;
+        this._namespaceLookup = {};
+        this._namespaceList = [];
+        this._flushFns = [];
+        this._whenQuietFns = [];
+        this.namespacesByHostElement = new Map();
+        this.collectedEnterElements = [];
+        this.collectedLeaveElements = [];
+        // this method is designed to be overridden by the code that uses this engine
+        this.onRemovalComplete = function (element, context) { };
+    }
+    /** @internal */
+    TransitionAnimationEngine.prototype._onRemovalComplete = function (element, context) { this.onRemovalComplete(element, context); };
+    Object.defineProperty(TransitionAnimationEngine.prototype, "queuedPlayers", {
+        get: function () {
+            var players = [];
+            this._namespaceList.forEach(function (ns) {
+                ns.players.forEach(function (player) {
+                    if (player.queued) {
+                        players.push(player);
+                    }
+                });
+            });
+            return players;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    TransitionAnimationEngine.prototype.createNamespace = function (namespaceId, hostElement) {
+        var ns = new AnimationTransitionNamespace(namespaceId, hostElement, this);
+        if (hostElement.parentNode) {
+            this._balanceNamespaceList(ns, hostElement);
+        }
+        else {
+            // defer this later until flush during when the host element has
+            // been inserted so that we know exactly where to place it in
+            // the namespace list
+            this.newHostElements.set(hostElement, ns);
+            // given that this host element is apart of the animation code, it
+            // may or may not be inserted by a parent node that is an of an
+            // animation renderer type. If this happens then we can still have
+            // access to this item when we query for :enter nodes. If the parent
+            // is a renderer then the set data-structure will normalize the entry
+            this.collectEnterElement(hostElement);
+        }
+        return this._namespaceLookup[namespaceId] = ns;
+    };
+    TransitionAnimationEngine.prototype._balanceNamespaceList = function (ns, hostElement) {
+        var limit = this._namespaceList.length - 1;
+        if (limit >= 0) {
+            var found = false;
+            for (var i = limit; i >= 0; i--) {
+                var nextNamespace = this._namespaceList[i];
+                if (this.driver.containsElement(nextNamespace.hostElement, hostElement)) {
+                    this._namespaceList.splice(i + 1, 0, ns);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                this._namespaceList.splice(0, 0, ns);
+            }
+        }
+        else {
+            this._namespaceList.push(ns);
+        }
+        this.namespacesByHostElement.set(hostElement, ns);
+        return ns;
+    };
+    TransitionAnimationEngine.prototype.register = function (namespaceId, hostElement) {
+        var ns = this._namespaceLookup[namespaceId];
+        if (!ns) {
+            ns = this.createNamespace(namespaceId, hostElement);
+        }
+        return ns;
+    };
+    TransitionAnimationEngine.prototype.registerTrigger = function (namespaceId, name, trigger) {
+        var ns = this._namespaceLookup[namespaceId];
+        if (ns && ns.register(name, trigger)) {
+            this.totalAnimations++;
+        }
+    };
+    TransitionAnimationEngine.prototype.destroy = function (namespaceId, context) {
+        var _this = this;
+        if (!namespaceId)
+            return;
+        var ns = this._fetchNamespace(namespaceId);
+        this.afterFlush(function () {
+            _this.namespacesByHostElement.delete(ns.hostElement);
+            delete _this._namespaceLookup[namespaceId];
+            var index = _this._namespaceList.indexOf(ns);
+            if (index >= 0) {
+                _this._namespaceList.splice(index, 1);
+            }
+        });
+        this.afterFlushAnimationsDone(function () { return ns.destroy(context); });
+    };
+    TransitionAnimationEngine.prototype._fetchNamespace = function (id) { return this._namespaceLookup[id]; };
+    TransitionAnimationEngine.prototype.fetchNamespacesByElement = function (element) {
+        // normally there should only be one namespace per element, however
+        // if @triggers are placed on both the component element and then
+        // its host element (within the component code) then there will be
+        // two namespaces returned. We use a set here to simply the dedupe
+        // of namespaces incase there are multiple triggers both the elm and host
+        var namespaces = new Set();
+        var elementStates = this.statesByElement.get(element);
+        if (elementStates) {
+            var keys = Object.keys(elementStates);
+            for (var i = 0; i < keys.length; i++) {
+                var nsId = elementStates[keys[i]].namespaceId;
+                if (nsId) {
+                    var ns = this._fetchNamespace(nsId);
+                    if (ns) {
+                        namespaces.add(ns);
+                    }
+                }
+            }
+        }
+        return namespaces;
+    };
+    TransitionAnimationEngine.prototype.trigger = function (namespaceId, element, name, value) {
+        if (isElementNode(element)) {
+            var ns = this._fetchNamespace(namespaceId);
+            if (ns) {
+                ns.trigger(element, name, value);
+                return true;
+            }
+        }
+        return false;
+    };
+    TransitionAnimationEngine.prototype.insertNode = function (namespaceId, element, parent, insertBefore) {
+        if (!isElementNode(element))
+            return;
+        // special case for when an element is removed and reinserted (move operation)
+        // when this occurs we do not want to use the element for deletion later
+        var details = element[REMOVAL_FLAG];
+        if (details && details.setForRemoval) {
+            details.setForRemoval = false;
+            details.setForMove = true;
+            var index = this.collectedLeaveElements.indexOf(element);
+            if (index >= 0) {
+                this.collectedLeaveElements.splice(index, 1);
+            }
+        }
+        // in the event that the namespaceId is blank then the caller
+        // code does not contain any animation code in it, but it is
+        // just being called so that the node is marked as being inserted
+        if (namespaceId) {
+            var ns = this._fetchNamespace(namespaceId);
+            // This if-statement is a workaround for router issue #21947.
+            // The router sometimes hits a race condition where while a route
+            // is being instantiated a new navigation arrives, triggering leave
+            // animation of DOM that has not been fully initialized, until this
+            // is resolved, we need to handle the scenario when DOM is not in a
+            // consistent state during the animation.
+            if (ns) {
+                ns.insertNode(element, parent);
+            }
+        }
+        // only *directives and host elements are inserted before
+        if (insertBefore) {
+            this.collectEnterElement(element);
+        }
+    };
+    TransitionAnimationEngine.prototype.collectEnterElement = function (element) { this.collectedEnterElements.push(element); };
+    TransitionAnimationEngine.prototype.markElementAsDisabled = function (element, value) {
+        if (value) {
+            if (!this.disabledNodes.has(element)) {
+                this.disabledNodes.add(element);
+                addClass(element, DISABLED_CLASSNAME);
+            }
+        }
+        else if (this.disabledNodes.has(element)) {
+            this.disabledNodes.delete(element);
+            removeClass(element, DISABLED_CLASSNAME);
+        }
+    };
+    TransitionAnimationEngine.prototype.removeNode = function (namespaceId, element, context) {
+        if (!isElementNode(element)) {
+            this._onRemovalComplete(element, context);
+            return;
+        }
+        var ns = namespaceId ? this._fetchNamespace(namespaceId) : null;
+        if (ns) {
+            ns.removeNode(element, context);
+        }
+        else {
+            this.markElementAsRemoved(namespaceId, element, false, context);
+        }
+    };
+    TransitionAnimationEngine.prototype.markElementAsRemoved = function (namespaceId, element, hasAnimation, context) {
+        this.collectedLeaveElements.push(element);
+        element[REMOVAL_FLAG] = {
+            namespaceId: namespaceId,
+            setForRemoval: context, hasAnimation: hasAnimation,
+            removedBeforeQueried: false
+        };
+    };
+    TransitionAnimationEngine.prototype.listen = function (namespaceId, element, name, phase, callback) {
+        if (isElementNode(element)) {
+            return this._fetchNamespace(namespaceId).listen(element, name, phase, callback);
+        }
+        return function () { };
+    };
+    TransitionAnimationEngine.prototype._buildInstruction = function (entry, subTimelines, enterClassName, leaveClassName, skipBuildAst) {
+        return entry.transition.build(this.driver, entry.element, entry.fromState.value, entry.toState.value, enterClassName, leaveClassName, entry.fromState.options, entry.toState.options, subTimelines, skipBuildAst);
+    };
+    TransitionAnimationEngine.prototype.destroyInnerAnimations = function (containerElement) {
+        var _this = this;
+        var elements = this.driver.query(containerElement, NG_TRIGGER_SELECTOR, true);
+        elements.forEach(function (element) { return _this.destroyActiveAnimationsForElement(element); });
+        if (this.playersByQueriedElement.size == 0)
+            return;
+        elements = this.driver.query(containerElement, NG_ANIMATING_SELECTOR, true);
+        elements.forEach(function (element) { return _this.finishActiveQueriedAnimationOnElement(element); });
+    };
+    TransitionAnimationEngine.prototype.destroyActiveAnimationsForElement = function (element) {
+        var players = this.playersByElement.get(element);
+        if (players) {
+            players.forEach(function (player) {
+                // special case for when an element is set for destruction, but hasn't started.
+                // in this situation we want to delay the destruction until the flush occurs
+                // so that any event listeners attached to the player are triggered.
+                if (player.queued) {
+                    player.markedForDestroy = true;
+                }
+                else {
+                    player.destroy();
+                }
+            });
+        }
+    };
+    TransitionAnimationEngine.prototype.finishActiveQueriedAnimationOnElement = function (element) {
+        var players = this.playersByQueriedElement.get(element);
+        if (players) {
+            players.forEach(function (player) { return player.finish(); });
+        }
+    };
+    TransitionAnimationEngine.prototype.whenRenderingDone = function () {
+        var _this = this;
+        return new Promise(function (resolve) {
+            if (_this.players.length) {
+                return optimizeGroupPlayer(_this.players).onDone(function () { return resolve(); });
+            }
+            else {
+                resolve();
+            }
+        });
+    };
+    TransitionAnimationEngine.prototype.processLeaveNode = function (element) {
+        var _this = this;
+        var details = element[REMOVAL_FLAG];
+        if (details && details.setForRemoval) {
+            // this will prevent it from removing it twice
+            element[REMOVAL_FLAG] = NULL_REMOVAL_STATE;
+            if (details.namespaceId) {
+                this.destroyInnerAnimations(element);
+                var ns = this._fetchNamespace(details.namespaceId);
+                if (ns) {
+                    ns.clearElementCache(element);
+                }
+            }
+            this._onRemovalComplete(element, details.setForRemoval);
+        }
+        if (this.driver.matchesElement(element, DISABLED_SELECTOR)) {
+            this.markElementAsDisabled(element, false);
+        }
+        this.driver.query(element, DISABLED_SELECTOR, true).forEach(function (node) {
+            _this.markElementAsDisabled(element, false);
+        });
+    };
+    TransitionAnimationEngine.prototype.flush = function (microtaskId) {
+        var _this = this;
+        if (microtaskId === void 0) { microtaskId = -1; }
+        var players = [];
+        if (this.newHostElements.size) {
+            this.newHostElements.forEach(function (ns, element) { return _this._balanceNamespaceList(ns, element); });
+            this.newHostElements.clear();
+        }
+        if (this.totalAnimations && this.collectedEnterElements.length) {
+            for (var i = 0; i < this.collectedEnterElements.length; i++) {
+                var elm = this.collectedEnterElements[i];
+                addClass(elm, STAR_CLASSNAME);
+            }
+        }
+        if (this._namespaceList.length &&
+            (this.totalQueuedPlayers || this.collectedLeaveElements.length)) {
+            var cleanupFns = [];
+            try {
+                players = this._flushAnimations(cleanupFns, microtaskId);
+            }
+            finally {
+                for (var i = 0; i < cleanupFns.length; i++) {
+                    cleanupFns[i]();
+                }
+            }
+        }
+        else {
+            for (var i = 0; i < this.collectedLeaveElements.length; i++) {
+                var element = this.collectedLeaveElements[i];
+                this.processLeaveNode(element);
+            }
+        }
+        this.totalQueuedPlayers = 0;
+        this.collectedEnterElements.length = 0;
+        this.collectedLeaveElements.length = 0;
+        this._flushFns.forEach(function (fn) { return fn(); });
+        this._flushFns = [];
+        if (this._whenQuietFns.length) {
+            // we move these over to a variable so that
+            // if any new callbacks are registered in another
+            // flush they do not populate the existing set
+            var quietFns_1 = this._whenQuietFns;
+            this._whenQuietFns = [];
+            if (players.length) {
+                optimizeGroupPlayer(players).onDone(function () { quietFns_1.forEach(function (fn) { return fn(); }); });
+            }
+            else {
+                quietFns_1.forEach(function (fn) { return fn(); });
+            }
+        }
+    };
+    TransitionAnimationEngine.prototype.reportError = function (errors) {
+        throw new Error("Unable to process animations due to the following failed trigger transitions\n " + errors.join('\n'));
+    };
+    TransitionAnimationEngine.prototype._flushAnimations = function (cleanupFns, microtaskId) {
+        var _this = this;
+        var subTimelines = new ElementInstructionMap();
+        var skippedPlayers = [];
+        var skippedPlayersMap = new Map();
+        var queuedInstructions = [];
+        var queriedElements = new Map();
+        var allPreStyleElements = new Map();
+        var allPostStyleElements = new Map();
+        var disabledElementsSet = new Set();
+        this.disabledNodes.forEach(function (node) {
+            disabledElementsSet.add(node);
+            var nodesThatAreDisabled = _this.driver.query(node, QUEUED_SELECTOR, true);
+            for (var i_1 = 0; i_1 < nodesThatAreDisabled.length; i_1++) {
+                disabledElementsSet.add(nodesThatAreDisabled[i_1]);
+            }
+        });
+        var bodyNode = this.bodyNode;
+        var allTriggerElements = Array.from(this.statesByElement.keys());
+        var enterNodeMap = buildRootMap(allTriggerElements, this.collectedEnterElements);
+        // this must occur before the instructions are built below such that
+        // the :enter queries match the elements (since the timeline queries
+        // are fired during instruction building).
+        var enterNodeMapIds = new Map();
+        var i = 0;
+        enterNodeMap.forEach(function (nodes, root) {
+            var className = ENTER_CLASSNAME + i++;
+            enterNodeMapIds.set(root, className);
+            nodes.forEach(function (node) { return addClass(node, className); });
+        });
+        var allLeaveNodes = [];
+        var mergedLeaveNodes = new Set();
+        var leaveNodesWithoutAnimations = new Set();
+        for (var i_2 = 0; i_2 < this.collectedLeaveElements.length; i_2++) {
+            var element = this.collectedLeaveElements[i_2];
+            var details = element[REMOVAL_FLAG];
+            if (details && details.setForRemoval) {
+                allLeaveNodes.push(element);
+                mergedLeaveNodes.add(element);
+                if (details.hasAnimation) {
+                    this.driver.query(element, STAR_SELECTOR, true).forEach(function (elm) { return mergedLeaveNodes.add(elm); });
+                }
+                else {
+                    leaveNodesWithoutAnimations.add(element);
+                }
+            }
+        }
+        var leaveNodeMapIds = new Map();
+        var leaveNodeMap = buildRootMap(allTriggerElements, Array.from(mergedLeaveNodes));
+        leaveNodeMap.forEach(function (nodes, root) {
+            var className = LEAVE_CLASSNAME + i++;
+            leaveNodeMapIds.set(root, className);
+            nodes.forEach(function (node) { return addClass(node, className); });
+        });
+        cleanupFns.push(function () {
+            enterNodeMap.forEach(function (nodes, root) {
+                var className = enterNodeMapIds.get(root);
+                nodes.forEach(function (node) { return removeClass(node, className); });
+            });
+            leaveNodeMap.forEach(function (nodes, root) {
+                var className = leaveNodeMapIds.get(root);
+                nodes.forEach(function (node) { return removeClass(node, className); });
+            });
+            allLeaveNodes.forEach(function (element) { _this.processLeaveNode(element); });
+        });
+        var allPlayers = [];
+        var erroneousTransitions = [];
+        for (var i_3 = this._namespaceList.length - 1; i_3 >= 0; i_3--) {
+            var ns = this._namespaceList[i_3];
+            ns.drainQueuedTransitions(microtaskId).forEach(function (entry) {
+                var player = entry.player;
+                var element = entry.element;
+                allPlayers.push(player);
+                if (_this.collectedEnterElements.length) {
+                    var details = element[REMOVAL_FLAG];
+                    // move animations are currently not supported...
+                    if (details && details.setForMove) {
+                        player.destroy();
+                        return;
+                    }
+                }
+                var nodeIsOrphaned = !bodyNode || !_this.driver.containsElement(bodyNode, element);
+                var leaveClassName = leaveNodeMapIds.get(element);
+                var enterClassName = enterNodeMapIds.get(element);
+                var instruction = _this._buildInstruction(entry, subTimelines, enterClassName, leaveClassName, nodeIsOrphaned);
+                if (instruction.errors && instruction.errors.length) {
+                    erroneousTransitions.push(instruction);
+                    return;
+                }
+                // even though the element may not be apart of the DOM, it may
+                // still be added at a later point (due to the mechanics of content
+                // projection and/or dynamic component insertion) therefore it's
+                // important we still style the element.
+                if (nodeIsOrphaned) {
+                    player.onStart(function () { return eraseStyles(element, instruction.fromStyles); });
+                    player.onDestroy(function () { return setStyles(element, instruction.toStyles); });
+                    skippedPlayers.push(player);
+                    return;
+                }
+                // if a unmatched transition is queued to go then it SHOULD NOT render
+                // an animation and cancel the previously running animations.
+                if (entry.isFallbackTransition) {
+                    player.onStart(function () { return eraseStyles(element, instruction.fromStyles); });
+                    player.onDestroy(function () { return setStyles(element, instruction.toStyles); });
+                    skippedPlayers.push(player);
+                    return;
+                }
+                // this means that if a parent animation uses this animation as a sub trigger
+                // then it will instruct the timeline builder to not add a player delay, but
+                // instead stretch the first keyframe gap up until the animation starts. The
+                // reason this is important is to prevent extra initialization styles from being
+                // required by the user in the animation.
+                instruction.timelines.forEach(function (tl) { return tl.stretchStartingKeyframe = true; });
+                subTimelines.append(element, instruction.timelines);
+                var tuple = { instruction: instruction, player: player, element: element };
+                queuedInstructions.push(tuple);
+                instruction.queriedElements.forEach(function (element) { return getOrSetAsInMap(queriedElements, element, []).push(player); });
+                instruction.preStyleProps.forEach(function (stringMap, element) {
+                    var props = Object.keys(stringMap);
+                    if (props.length) {
+                        var setVal_1 = allPreStyleElements.get(element);
+                        if (!setVal_1) {
+                            allPreStyleElements.set(element, setVal_1 = new Set());
+                        }
+                        props.forEach(function (prop) { return setVal_1.add(prop); });
+                    }
+                });
+                instruction.postStyleProps.forEach(function (stringMap, element) {
+                    var props = Object.keys(stringMap);
+                    var setVal = allPostStyleElements.get(element);
+                    if (!setVal) {
+                        allPostStyleElements.set(element, setVal = new Set());
+                    }
+                    props.forEach(function (prop) { return setVal.add(prop); });
+                });
+            });
+        }
+        if (erroneousTransitions.length) {
+            var errors_1 = [];
+            erroneousTransitions.forEach(function (instruction) {
+                errors_1.push("@" + instruction.triggerName + " has failed due to:\n");
+                instruction.errors.forEach(function (error) { return errors_1.push("- " + error + "\n"); });
+            });
+            allPlayers.forEach(function (player) { return player.destroy(); });
+            this.reportError(errors_1);
+        }
+        var allPreviousPlayersMap = new Map();
+        // this map works to tell which element in the DOM tree is contained by
+        // which animation. Further down below this map will get populated once
+        // the players are built and in doing so it can efficiently figure out
+        // if a sub player is skipped due to a parent player having priority.
+        var animationElementMap = new Map();
+        queuedInstructions.forEach(function (entry) {
+            var element = entry.element;
+            if (subTimelines.has(element)) {
+                animationElementMap.set(element, element);
+                _this._beforeAnimationBuild(entry.player.namespaceId, entry.instruction, allPreviousPlayersMap);
+            }
+        });
+        skippedPlayers.forEach(function (player) {
+            var element = player.element;
+            var previousPlayers = _this._getPreviousPlayers(element, false, player.namespaceId, player.triggerName, null);
+            previousPlayers.forEach(function (prevPlayer) {
+                getOrSetAsInMap(allPreviousPlayersMap, element, []).push(prevPlayer);
+                prevPlayer.destroy();
+            });
+        });
+        // this is a special case for nodes that will be removed (either by)
+        // having their own leave animations or by being queried in a container
+        // that will be removed once a parent animation is complete. The idea
+        // here is that * styles must be identical to ! styles because of
+        // backwards compatibility (* is also filled in by default in many places).
+        // Otherwise * styles will return an empty value or auto since the element
+        // that is being getComputedStyle'd will not be visible (since * = destination)
+        var replaceNodes = allLeaveNodes.filter(function (node) {
+            return replacePostStylesAsPre(node, allPreStyleElements, allPostStyleElements);
+        });
+        // POST STAGE: fill the * styles
+        var postStylesMap = new Map();
+        var allLeaveQueriedNodes = cloakAndComputeStyles(postStylesMap, this.driver, leaveNodesWithoutAnimations, allPostStyleElements, _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]);
+        allLeaveQueriedNodes.forEach(function (node) {
+            if (replacePostStylesAsPre(node, allPreStyleElements, allPostStyleElements)) {
+                replaceNodes.push(node);
+            }
+        });
+        // PRE STAGE: fill the ! styles
+        var preStylesMap = new Map();
+        enterNodeMap.forEach(function (nodes, root) {
+            cloakAndComputeStyles(preStylesMap, _this.driver, new Set(nodes), allPreStyleElements, _angular_animations__WEBPACK_IMPORTED_MODULE_1__["ɵPRE_STYLE"]);
+        });
+        replaceNodes.forEach(function (node) {
+            var post = postStylesMap.get(node);
+            var pre = preStylesMap.get(node);
+            postStylesMap.set(node, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, post, pre));
+        });
+        var rootPlayers = [];
+        var subPlayers = [];
+        var NO_PARENT_ANIMATION_ELEMENT_DETECTED = {};
+        queuedInstructions.forEach(function (entry) {
+            var element = entry.element, player = entry.player, instruction = entry.instruction;
+            // this means that it was never consumed by a parent animation which
+            // means that it is independent and therefore should be set for animation
+            if (subTimelines.has(element)) {
+                if (disabledElementsSet.has(element)) {
+                    player.onDestroy(function () { return setStyles(element, instruction.toStyles); });
+                    player.disabled = true;
+                    player.overrideTotalTime(instruction.totalTime);
+                    skippedPlayers.push(player);
+                    return;
+                }
+                // this will flow up the DOM and query the map to figure out
+                // if a parent animation has priority over it. In the situation
+                // that a parent is detected then it will cancel the loop. If
+                // nothing is detected, or it takes a few hops to find a parent,
+                // then it will fill in the missing nodes and signal them as having
+                // a detected parent (or a NO_PARENT value via a special constant).
+                var parentWithAnimation_1 = NO_PARENT_ANIMATION_ELEMENT_DETECTED;
+                if (animationElementMap.size > 1) {
+                    var elm = element;
+                    var parentsToAdd = [];
+                    while (elm = elm.parentNode) {
+                        var detectedParent = animationElementMap.get(elm);
+                        if (detectedParent) {
+                            parentWithAnimation_1 = detectedParent;
+                            break;
+                        }
+                        parentsToAdd.push(elm);
+                    }
+                    parentsToAdd.forEach(function (parent) { return animationElementMap.set(parent, parentWithAnimation_1); });
+                }
+                var innerPlayer = _this._buildAnimation(player.namespaceId, instruction, allPreviousPlayersMap, skippedPlayersMap, preStylesMap, postStylesMap);
+                player.setRealPlayer(innerPlayer);
+                if (parentWithAnimation_1 === NO_PARENT_ANIMATION_ELEMENT_DETECTED) {
+                    rootPlayers.push(player);
+                }
+                else {
+                    var parentPlayers = _this.playersByElement.get(parentWithAnimation_1);
+                    if (parentPlayers && parentPlayers.length) {
+                        player.parentPlayer = optimizeGroupPlayer(parentPlayers);
+                    }
+                    skippedPlayers.push(player);
+                }
+            }
+            else {
+                eraseStyles(element, instruction.fromStyles);
+                player.onDestroy(function () { return setStyles(element, instruction.toStyles); });
+                // there still might be a ancestor player animating this
+                // element therefore we will still add it as a sub player
+                // even if its animation may be disabled
+                subPlayers.push(player);
+                if (disabledElementsSet.has(element)) {
+                    skippedPlayers.push(player);
+                }
+            }
+        });
+        // find all of the sub players' corresponding inner animation player
+        subPlayers.forEach(function (player) {
+            // even if any players are not found for a sub animation then it
+            // will still complete itself after the next tick since it's Noop
+            var playersForElement = skippedPlayersMap.get(player.element);
+            if (playersForElement && playersForElement.length) {
+                var innerPlayer = optimizeGroupPlayer(playersForElement);
+                player.setRealPlayer(innerPlayer);
+            }
+        });
+        // the reason why we don't actually play the animation is
+        // because all that a skipped player is designed to do is to
+        // fire the start/done transition callback events
+        skippedPlayers.forEach(function (player) {
+            if (player.parentPlayer) {
+                player.syncPlayerEvents(player.parentPlayer);
+            }
+            else {
+                player.destroy();
+            }
+        });
+        // run through all of the queued removals and see if they
+        // were picked up by a query. If not then perform the removal
+        // operation right away unless a parent animation is ongoing.
+        for (var i_4 = 0; i_4 < allLeaveNodes.length; i_4++) {
+            var element = allLeaveNodes[i_4];
+            var details = element[REMOVAL_FLAG];
+            removeClass(element, LEAVE_CLASSNAME);
+            // this means the element has a removal animation that is being
+            // taken care of and therefore the inner elements will hang around
+            // until that animation is over (or the parent queried animation)
+            if (details && details.hasAnimation)
+                continue;
+            var players = [];
+            // if this element is queried or if it contains queried children
+            // then we want for the element not to be removed from the page
+            // until the queried animations have finished
+            if (queriedElements.size) {
+                var queriedPlayerResults = queriedElements.get(element);
+                if (queriedPlayerResults && queriedPlayerResults.length) {
+                    players.push.apply(players, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(queriedPlayerResults));
+                }
+                var queriedInnerElements = this.driver.query(element, NG_ANIMATING_SELECTOR, true);
+                for (var j = 0; j < queriedInnerElements.length; j++) {
+                    var queriedPlayers = queriedElements.get(queriedInnerElements[j]);
+                    if (queriedPlayers && queriedPlayers.length) {
+                        players.push.apply(players, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(queriedPlayers));
+                    }
+                }
+            }
+            var activePlayers = players.filter(function (p) { return !p.destroyed; });
+            if (activePlayers.length) {
+                removeNodesAfterAnimationDone(this, element, activePlayers);
+            }
+            else {
+                this.processLeaveNode(element);
+            }
+        }
+        // this is required so the cleanup method doesn't remove them
+        allLeaveNodes.length = 0;
+        rootPlayers.forEach(function (player) {
+            _this.players.push(player);
+            player.onDone(function () {
+                player.destroy();
+                var index = _this.players.indexOf(player);
+                _this.players.splice(index, 1);
+            });
+            player.play();
+        });
+        return rootPlayers;
+    };
+    TransitionAnimationEngine.prototype.elementContainsData = function (namespaceId, element) {
+        var containsData = false;
+        var details = element[REMOVAL_FLAG];
+        if (details && details.setForRemoval)
+            containsData = true;
+        if (this.playersByElement.has(element))
+            containsData = true;
+        if (this.playersByQueriedElement.has(element))
+            containsData = true;
+        if (this.statesByElement.has(element))
+            containsData = true;
+        return this._fetchNamespace(namespaceId).elementContainsData(element) || containsData;
+    };
+    TransitionAnimationEngine.prototype.afterFlush = function (callback) { this._flushFns.push(callback); };
+    TransitionAnimationEngine.prototype.afterFlushAnimationsDone = function (callback) { this._whenQuietFns.push(callback); };
+    TransitionAnimationEngine.prototype._getPreviousPlayers = function (element, isQueriedElement, namespaceId, triggerName, toStateValue) {
+        var players = [];
+        if (isQueriedElement) {
+            var queriedElementPlayers = this.playersByQueriedElement.get(element);
+            if (queriedElementPlayers) {
+                players = queriedElementPlayers;
+            }
+        }
+        else {
+            var elementPlayers = this.playersByElement.get(element);
+            if (elementPlayers) {
+                var isRemovalAnimation_1 = !toStateValue || toStateValue == VOID_VALUE;
+                elementPlayers.forEach(function (player) {
+                    if (player.queued)
+                        return;
+                    if (!isRemovalAnimation_1 && player.triggerName != triggerName)
+                        return;
+                    players.push(player);
+                });
+            }
+        }
+        if (namespaceId || triggerName) {
+            players = players.filter(function (player) {
+                if (namespaceId && namespaceId != player.namespaceId)
+                    return false;
+                if (triggerName && triggerName != player.triggerName)
+                    return false;
+                return true;
+            });
+        }
+        return players;
+    };
+    TransitionAnimationEngine.prototype._beforeAnimationBuild = function (namespaceId, instruction, allPreviousPlayersMap) {
+        var triggerName = instruction.triggerName;
+        var rootElement = instruction.element;
+        // when a removal animation occurs, ALL previous players are collected
+        // and destroyed (even if they are outside of the current namespace)
+        var targetNameSpaceId = instruction.isRemovalTransition ? undefined : namespaceId;
+        var targetTriggerName = instruction.isRemovalTransition ? undefined : triggerName;
+        var _loop_1 = function (timelineInstruction) {
+            var element = timelineInstruction.element;
+            var isQueriedElement = element !== rootElement;
+            var players = getOrSetAsInMap(allPreviousPlayersMap, element, []);
+            var previousPlayers = this_1._getPreviousPlayers(element, isQueriedElement, targetNameSpaceId, targetTriggerName, instruction.toState);
+            previousPlayers.forEach(function (player) {
+                var realPlayer = player.getRealPlayer();
+                if (realPlayer.beforeDestroy) {
+                    realPlayer.beforeDestroy();
+                }
+                player.destroy();
+                players.push(player);
+            });
+        };
+        var this_1 = this;
+        try {
+            for (var _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__values"])(instruction.timelines), _b = _a.next(); !_b.done; _b = _a.next()) {
+                var timelineInstruction = _b.value;
+                _loop_1(timelineInstruction);
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_b && !_b.done && (_c = _a.return)) _c.call(_a);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
+        // this needs to be done so that the PRE/POST styles can be
+        // computed properly without interfering with the previous animation
+        eraseStyles(rootElement, instruction.fromStyles);
+        var e_1, _c;
+    };
+    TransitionAnimationEngine.prototype._buildAnimation = function (namespaceId, instruction, allPreviousPlayersMap, skippedPlayersMap, preStylesMap, postStylesMap) {
+        var _this = this;
+        var triggerName = instruction.triggerName;
+        var rootElement = instruction.element;
+        // we first run this so that the previous animation player
+        // data can be passed into the successive animation players
+        var allQueriedPlayers = [];
+        var allConsumedElements = new Set();
+        var allSubElements = new Set();
+        var allNewPlayers = instruction.timelines.map(function (timelineInstruction) {
+            var element = timelineInstruction.element;
+            allConsumedElements.add(element);
+            // FIXME (matsko): make sure to-be-removed animations are removed properly
+            var details = element[REMOVAL_FLAG];
+            if (details && details.removedBeforeQueried)
+                return new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"](timelineInstruction.duration, timelineInstruction.delay);
+            var isQueriedElement = element !== rootElement;
+            var previousPlayers = flattenGroupPlayers((allPreviousPlayersMap.get(element) || EMPTY_PLAYER_ARRAY)
+                .map(function (p) { return p.getRealPlayer(); }))
+                .filter(function (p) {
+                // the `element` is not apart of the AnimationPlayer definition, but
+                // Mock/WebAnimations
+                // use the element within their implementation. This will be added in Angular5 to
+                // AnimationPlayer
+                var pp = p;
+                return pp.element ? pp.element === element : false;
+            });
+            var preStyles = preStylesMap.get(element);
+            var postStyles = postStylesMap.get(element);
+            var keyframes = normalizeKeyframes(_this.driver, _this._normalizer, element, timelineInstruction.keyframes, preStyles, postStyles);
+            var player = _this._buildPlayer(timelineInstruction, keyframes, previousPlayers);
+            // this means that this particular player belongs to a sub trigger. It is
+            // important that we match this player up with the corresponding (@trigger.listener)
+            if (timelineInstruction.subTimeline && skippedPlayersMap) {
+                allSubElements.add(element);
+            }
+            if (isQueriedElement) {
+                var wrappedPlayer = new TransitionAnimationPlayer(namespaceId, triggerName, element);
+                wrappedPlayer.setRealPlayer(player);
+                allQueriedPlayers.push(wrappedPlayer);
+            }
+            return player;
+        });
+        allQueriedPlayers.forEach(function (player) {
+            getOrSetAsInMap(_this.playersByQueriedElement, player.element, []).push(player);
+            player.onDone(function () { return deleteOrUnsetInMap(_this.playersByQueriedElement, player.element, player); });
+        });
+        allConsumedElements.forEach(function (element) { return addClass(element, NG_ANIMATING_CLASSNAME); });
+        var player = optimizeGroupPlayer(allNewPlayers);
+        player.onDestroy(function () {
+            allConsumedElements.forEach(function (element) { return removeClass(element, NG_ANIMATING_CLASSNAME); });
+            setStyles(rootElement, instruction.toStyles);
+        });
+        // this basically makes all of the callbacks for sub element animations
+        // be dependent on the upper players for when they finish
+        allSubElements.forEach(function (element) { getOrSetAsInMap(skippedPlayersMap, element, []).push(player); });
+        return player;
+    };
+    TransitionAnimationEngine.prototype._buildPlayer = function (instruction, keyframes, previousPlayers) {
+        if (keyframes.length > 0) {
+            return this.driver.animate(instruction.element, keyframes, instruction.duration, instruction.delay, instruction.easing, previousPlayers);
+        }
+        // special case for when an empty transition|definition is provided
+        // ... there is no point in rendering an empty animation
+        return new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"](instruction.duration, instruction.delay);
+    };
+    return TransitionAnimationEngine;
+}());
+var TransitionAnimationPlayer = /** @class */ (function () {
+    function TransitionAnimationPlayer(namespaceId, triggerName, element) {
+        this.namespaceId = namespaceId;
+        this.triggerName = triggerName;
+        this.element = element;
+        this._player = new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"]();
+        this._containsRealPlayer = false;
+        this._queuedCallbacks = {};
+        this.destroyed = false;
+        this.markedForDestroy = false;
+        this.disabled = false;
+        this.queued = true;
+        this.totalTime = 0;
+    }
+    TransitionAnimationPlayer.prototype.setRealPlayer = function (player) {
+        var _this = this;
+        if (this._containsRealPlayer)
+            return;
+        this._player = player;
+        Object.keys(this._queuedCallbacks).forEach(function (phase) {
+            _this._queuedCallbacks[phase].forEach(function (callback) { return listenOnPlayer(player, phase, undefined, callback); });
+        });
+        this._queuedCallbacks = {};
+        this._containsRealPlayer = true;
+        this.overrideTotalTime(player.totalTime);
+        this.queued = false;
+    };
+    TransitionAnimationPlayer.prototype.getRealPlayer = function () { return this._player; };
+    TransitionAnimationPlayer.prototype.overrideTotalTime = function (totalTime) { this.totalTime = totalTime; };
+    TransitionAnimationPlayer.prototype.syncPlayerEvents = function (player) {
+        var _this = this;
+        var p = this._player;
+        if (p.triggerCallback) {
+            player.onStart(function () { return p.triggerCallback('start'); });
+        }
+        player.onDone(function () { return _this.finish(); });
+        player.onDestroy(function () { return _this.destroy(); });
+    };
+    TransitionAnimationPlayer.prototype._queueEvent = function (name, callback) {
+        getOrSetAsInMap(this._queuedCallbacks, name, []).push(callback);
+    };
+    TransitionAnimationPlayer.prototype.onDone = function (fn) {
+        if (this.queued) {
+            this._queueEvent('done', fn);
+        }
+        this._player.onDone(fn);
+    };
+    TransitionAnimationPlayer.prototype.onStart = function (fn) {
+        if (this.queued) {
+            this._queueEvent('start', fn);
+        }
+        this._player.onStart(fn);
+    };
+    TransitionAnimationPlayer.prototype.onDestroy = function (fn) {
+        if (this.queued) {
+            this._queueEvent('destroy', fn);
+        }
+        this._player.onDestroy(fn);
+    };
+    TransitionAnimationPlayer.prototype.init = function () { this._player.init(); };
+    TransitionAnimationPlayer.prototype.hasStarted = function () { return this.queued ? false : this._player.hasStarted(); };
+    TransitionAnimationPlayer.prototype.play = function () { !this.queued && this._player.play(); };
+    TransitionAnimationPlayer.prototype.pause = function () { !this.queued && this._player.pause(); };
+    TransitionAnimationPlayer.prototype.restart = function () { !this.queued && this._player.restart(); };
+    TransitionAnimationPlayer.prototype.finish = function () { this._player.finish(); };
+    TransitionAnimationPlayer.prototype.destroy = function () {
+        this.destroyed = true;
+        this._player.destroy();
+    };
+    TransitionAnimationPlayer.prototype.reset = function () { !this.queued && this._player.reset(); };
+    TransitionAnimationPlayer.prototype.setPosition = function (p) {
+        if (!this.queued) {
+            this._player.setPosition(p);
+        }
+    };
+    TransitionAnimationPlayer.prototype.getPosition = function () { return this.queued ? 0 : this._player.getPosition(); };
+    /* @internal */
+    TransitionAnimationPlayer.prototype.triggerCallback = function (phaseName) {
+        var p = this._player;
+        if (p.triggerCallback) {
+            p.triggerCallback(phaseName);
+        }
+    };
+    return TransitionAnimationPlayer;
+}());
+function deleteOrUnsetInMap(map, key, value) {
+    var currentValues;
+    if (map instanceof Map) {
+        currentValues = map.get(key);
+        if (currentValues) {
+            if (currentValues.length) {
+                var index = currentValues.indexOf(value);
+                currentValues.splice(index, 1);
+            }
+            if (currentValues.length == 0) {
+                map.delete(key);
+            }
+        }
+    }
+    else {
+        currentValues = map[key];
+        if (currentValues) {
+            if (currentValues.length) {
+                var index = currentValues.indexOf(value);
+                currentValues.splice(index, 1);
+            }
+            if (currentValues.length == 0) {
+                delete map[key];
+            }
+        }
+    }
+    return currentValues;
+}
+function normalizeTriggerValue(value) {
+    // we use `!= null` here because it's the most simple
+    // way to test against a "falsy" value without mixing
+    // in empty strings or a zero value. DO NOT OPTIMIZE.
+    return value != null ? value : null;
+}
+function isElementNode(node) {
+    return node && node['nodeType'] === 1;
+}
+function isTriggerEventValid(eventName) {
+    return eventName == 'start' || eventName == 'done';
+}
+function cloakElement(element, value) {
+    var oldValue = element.style.display;
+    element.style.display = value != null ? value : 'none';
+    return oldValue;
+}
+function cloakAndComputeStyles(valuesMap, driver, elements, elementPropsMap, defaultStyle) {
+    var cloakVals = [];
+    elements.forEach(function (element) { return cloakVals.push(cloakElement(element)); });
+    var failedElements = [];
+    elementPropsMap.forEach(function (props, element) {
+        var styles = {};
+        props.forEach(function (prop) {
+            var value = styles[prop] = driver.computeStyle(element, prop, defaultStyle);
+            // there is no easy way to detect this because a sub element could be removed
+            // by a parent animation element being detached.
+            if (!value || value.length == 0) {
+                element[REMOVAL_FLAG] = NULL_REMOVED_QUERIED_STATE;
+                failedElements.push(element);
+            }
+        });
+        valuesMap.set(element, styles);
+    });
+    // we use a index variable here since Set.forEach(a, i) does not return
+    // an index value for the closure (but instead just the value)
+    var i = 0;
+    elements.forEach(function (element) { return cloakElement(element, cloakVals[i++]); });
+    return failedElements;
+}
+/*
+Since the Angular renderer code will return a collection of inserted
+nodes in all areas of a DOM tree, it's up to this algorithm to figure
+out which nodes are roots for each animation @trigger.
+
+By placing each inserted node into a Set and traversing upwards, it
+is possible to find the @trigger elements and well any direct *star
+insertion nodes, if a @trigger root is found then the enter element
+is placed into the Map[@trigger] spot.
+ */
+function buildRootMap(roots, nodes) {
+    var rootMap = new Map();
+    roots.forEach(function (root) { return rootMap.set(root, []); });
+    if (nodes.length == 0)
+        return rootMap;
+    var NULL_NODE = 1;
+    var nodeSet = new Set(nodes);
+    var localRootMap = new Map();
+    function getRoot(node) {
+        if (!node)
+            return NULL_NODE;
+        var root = localRootMap.get(node);
+        if (root)
+            return root;
+        var parent = node.parentNode;
+        if (rootMap.has(parent)) {
+            root = parent;
+        }
+        else if (nodeSet.has(parent)) {
+            root = NULL_NODE;
+        }
+        else {
+            root = getRoot(parent);
+        }
+        localRootMap.set(node, root);
+        return root;
+    }
+    nodes.forEach(function (node) {
+        var root = getRoot(node);
+        if (root !== NULL_NODE) {
+            rootMap.get(root).push(node);
+        }
+    });
+    return rootMap;
+}
+var CLASSES_CACHE_KEY = '$$classes';
+function addClass(element, className) {
+    if (element.classList) {
+        element.classList.add(className);
+    }
+    else {
+        var classes = element[CLASSES_CACHE_KEY];
+        if (!classes) {
+            classes = element[CLASSES_CACHE_KEY] = {};
+        }
+        classes[className] = true;
+    }
+}
+function removeClass(element, className) {
+    if (element.classList) {
+        element.classList.remove(className);
+    }
+    else {
+        var classes = element[CLASSES_CACHE_KEY];
+        if (classes) {
+            delete classes[className];
+        }
+    }
+}
+function removeNodesAfterAnimationDone(engine, element, players) {
+    optimizeGroupPlayer(players).onDone(function () { return engine.processLeaveNode(element); });
+}
+function flattenGroupPlayers(players) {
+    var finalPlayers = [];
+    _flattenGroupPlayersRecur(players, finalPlayers);
+    return finalPlayers;
+}
+function _flattenGroupPlayersRecur(players, finalPlayers) {
+    for (var i = 0; i < players.length; i++) {
+        var player = players[i];
+        if (player instanceof _angular_animations__WEBPACK_IMPORTED_MODULE_1__["ɵAnimationGroupPlayer"]) {
+            _flattenGroupPlayersRecur(player.players, finalPlayers);
+        }
+        else {
+            finalPlayers.push(player);
+        }
+    }
+}
+function objEquals(a, b) {
+    var k1 = Object.keys(a);
+    var k2 = Object.keys(b);
+    if (k1.length != k2.length)
+        return false;
+    for (var i = 0; i < k1.length; i++) {
+        var prop = k1[i];
+        if (!b.hasOwnProperty(prop) || a[prop] !== b[prop])
+            return false;
+    }
+    return true;
+}
+function replacePostStylesAsPre(element, allPreStyleElements, allPostStyleElements) {
+    var postEntry = allPostStyleElements.get(element);
+    if (!postEntry)
+        return false;
+    var preEntry = allPreStyleElements.get(element);
+    if (preEntry) {
+        postEntry.forEach(function (data) { return preEntry.add(data); });
+    }
+    else {
+        allPreStyleElements.set(element, postEntry);
+    }
+    allPostStyleElements.delete(element);
+    return true;
+}
+
+var AnimationEngine = /** @class */ (function () {
+    function AnimationEngine(bodyNode, _driver, normalizer) {
+        var _this = this;
+        this.bodyNode = bodyNode;
+        this._driver = _driver;
+        this._triggerCache = {};
+        // this method is designed to be overridden by the code that uses this engine
+        this.onRemovalComplete = function (element, context) { };
+        this._transitionEngine = new TransitionAnimationEngine(bodyNode, _driver, normalizer);
+        this._timelineEngine = new TimelineAnimationEngine(bodyNode, _driver, normalizer);
+        this._transitionEngine.onRemovalComplete = function (element, context) {
+            return _this.onRemovalComplete(element, context);
+        };
+    }
+    AnimationEngine.prototype.registerTrigger = function (componentId, namespaceId, hostElement, name, metadata) {
+        var cacheKey = componentId + '-' + name;
+        var trigger = this._triggerCache[cacheKey];
+        if (!trigger) {
+            var errors = [];
+            var ast = buildAnimationAst(this._driver, metadata, errors);
+            if (errors.length) {
+                throw new Error("The animation trigger \"" + name + "\" has failed to build due to the following errors:\n - " + errors.join("\n - "));
+            }
+            trigger = buildTrigger(name, ast);
+            this._triggerCache[cacheKey] = trigger;
+        }
+        this._transitionEngine.registerTrigger(namespaceId, name, trigger);
+    };
+    AnimationEngine.prototype.register = function (namespaceId, hostElement) {
+        this._transitionEngine.register(namespaceId, hostElement);
+    };
+    AnimationEngine.prototype.destroy = function (namespaceId, context) {
+        this._transitionEngine.destroy(namespaceId, context);
+    };
+    AnimationEngine.prototype.onInsert = function (namespaceId, element, parent, insertBefore) {
+        this._transitionEngine.insertNode(namespaceId, element, parent, insertBefore);
+    };
+    AnimationEngine.prototype.onRemove = function (namespaceId, element, context) {
+        this._transitionEngine.removeNode(namespaceId, element, context);
+    };
+    AnimationEngine.prototype.disableAnimations = function (element, disable) {
+        this._transitionEngine.markElementAsDisabled(element, disable);
+    };
+    AnimationEngine.prototype.process = function (namespaceId, element, property, value) {
+        if (property.charAt(0) == '@') {
+            var _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])(parseTimelineCommand(property), 2), id = _a[0], action = _a[1];
+            var args = value;
+            this._timelineEngine.command(id, element, action, args);
+        }
+        else {
+            this._transitionEngine.trigger(namespaceId, element, property, value);
+        }
+    };
+    AnimationEngine.prototype.listen = function (namespaceId, element, eventName, eventPhase, callback) {
+        // @@listen
+        if (eventName.charAt(0) == '@') {
+            var _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])(parseTimelineCommand(eventName), 2), id = _a[0], action = _a[1];
+            return this._timelineEngine.listen(id, element, action, callback);
+        }
+        return this._transitionEngine.listen(namespaceId, element, eventName, eventPhase, callback);
+    };
+    AnimationEngine.prototype.flush = function (microtaskId) {
+        if (microtaskId === void 0) { microtaskId = -1; }
+        this._transitionEngine.flush(microtaskId);
+    };
+    Object.defineProperty(AnimationEngine.prototype, "players", {
+        get: function () {
+            return this._transitionEngine.players
+                .concat(this._timelineEngine.players);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    AnimationEngine.prototype.whenRenderingDone = function () { return this._transitionEngine.whenRenderingDone(); };
+    return AnimationEngine;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var ELAPSED_TIME_MAX_DECIMAL_PLACES = 3;
+var ANIMATION_PROP = 'animation';
+var ANIMATIONEND_EVENT = 'animationend';
+var ONE_SECOND$1 = 1000;
+var ElementAnimationStyleHandler = /** @class */ (function () {
+    function ElementAnimationStyleHandler(_element, _name, _duration, _delay, _easing, _fillMode, _onDoneFn) {
+        var _this = this;
+        this._element = _element;
+        this._name = _name;
+        this._duration = _duration;
+        this._delay = _delay;
+        this._easing = _easing;
+        this._fillMode = _fillMode;
+        this._onDoneFn = _onDoneFn;
+        this._finished = false;
+        this._destroyed = false;
+        this._startTime = 0;
+        this._position = 0;
+        this._eventFn = function (e) { return _this._handleCallback(e); };
+    }
+    ElementAnimationStyleHandler.prototype.apply = function () {
+        applyKeyframeAnimation(this._element, this._duration + "ms " + this._easing + " " + this._delay + "ms 1 normal " + this._fillMode + " " + this._name);
+        addRemoveAnimationEvent(this._element, this._eventFn, false);
+        this._startTime = Date.now();
+    };
+    ElementAnimationStyleHandler.prototype.pause = function () { playPauseAnimation(this._element, this._name, 'paused'); };
+    ElementAnimationStyleHandler.prototype.resume = function () { playPauseAnimation(this._element, this._name, 'running'); };
+    ElementAnimationStyleHandler.prototype.setPosition = function (position) {
+        var index = findIndexForAnimation(this._element, this._name);
+        this._position = position * this._duration;
+        setAnimationStyle(this._element, 'Delay', "-" + this._position + "ms", index);
+    };
+    ElementAnimationStyleHandler.prototype.getPosition = function () { return this._position; };
+    ElementAnimationStyleHandler.prototype._handleCallback = function (event) {
+        var timestamp = event._ngTestManualTimestamp || Date.now();
+        var elapsedTime = parseFloat(event.elapsedTime.toFixed(ELAPSED_TIME_MAX_DECIMAL_PLACES)) * ONE_SECOND$1;
+        if (event.animationName == this._name &&
+            Math.max(timestamp - this._startTime, 0) >= this._delay && elapsedTime >= this._duration) {
+            this.finish();
+        }
+    };
+    ElementAnimationStyleHandler.prototype.finish = function () {
+        if (this._finished)
+            return;
+        this._finished = true;
+        this._onDoneFn();
+        addRemoveAnimationEvent(this._element, this._eventFn, true);
+    };
+    ElementAnimationStyleHandler.prototype.destroy = function () {
+        if (this._destroyed)
+            return;
+        this._destroyed = true;
+        this.finish();
+        removeKeyframeAnimation(this._element, this._name);
+    };
+    return ElementAnimationStyleHandler;
+}());
+function playPauseAnimation(element, name, status) {
+    var index = findIndexForAnimation(element, name);
+    setAnimationStyle(element, 'PlayState', status, index);
+}
+function applyKeyframeAnimation(element, value) {
+    var anim = getAnimationStyle(element, '').trim();
+    var index = 0;
+    if (anim.length) {
+        index = countChars(anim, ',') + 1;
+        value = anim + ", " + value;
+    }
+    setAnimationStyle(element, '', value);
+    return index;
+}
+function removeKeyframeAnimation(element, name) {
+    var anim = getAnimationStyle(element, '');
+    var tokens = anim.split(',');
+    var index = findMatchingTokenIndex(tokens, name);
+    if (index >= 0) {
+        tokens.splice(index, 1);
+        var newValue = tokens.join(',');
+        setAnimationStyle(element, '', newValue);
+    }
+}
+function findIndexForAnimation(element, value) {
+    var anim = getAnimationStyle(element, '');
+    if (anim.indexOf(',') > 0) {
+        var tokens = anim.split(',');
+        return findMatchingTokenIndex(tokens, value);
+    }
+    return findMatchingTokenIndex([anim], value);
+}
+function findMatchingTokenIndex(tokens, searchToken) {
+    for (var i = 0; i < tokens.length; i++) {
+        if (tokens[i].indexOf(searchToken) >= 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+function addRemoveAnimationEvent(element, fn, doRemove) {
+    doRemove ? element.removeEventListener(ANIMATIONEND_EVENT, fn) :
+        element.addEventListener(ANIMATIONEND_EVENT, fn);
+}
+function setAnimationStyle(element, name, value, index) {
+    var prop = ANIMATION_PROP + name;
+    if (index != null) {
+        var oldValue = element.style[prop];
+        if (oldValue.length) {
+            var tokens = oldValue.split(',');
+            tokens[index] = value;
+            value = tokens.join(',');
+        }
+    }
+    element.style[prop] = value;
+}
+function getAnimationStyle(element, name) {
+    return element.style[ANIMATION_PROP + name];
+}
+function countChars(value, char) {
+    var count = 0;
+    for (var i = 0; i < value.length; i++) {
+        var c = value.charAt(i);
+        if (c === char)
+            count++;
+    }
+    return count;
+}
+
+var DEFAULT_FILL_MODE = 'forwards';
+var DEFAULT_EASING = 'linear';
+var AnimatorControlState;
+(function (AnimatorControlState) {
+    AnimatorControlState[AnimatorControlState["INITIALIZED"] = 1] = "INITIALIZED";
+    AnimatorControlState[AnimatorControlState["STARTED"] = 2] = "STARTED";
+    AnimatorControlState[AnimatorControlState["FINISHED"] = 3] = "FINISHED";
+    AnimatorControlState[AnimatorControlState["DESTROYED"] = 4] = "DESTROYED";
+})(AnimatorControlState || (AnimatorControlState = {}));
+var CssKeyframesPlayer = /** @class */ (function () {
+    function CssKeyframesPlayer(element, keyframes, animationName, _duration, _delay, easing, _finalStyles) {
+        this.element = element;
+        this.keyframes = keyframes;
+        this.animationName = animationName;
+        this._duration = _duration;
+        this._delay = _delay;
+        this._finalStyles = _finalStyles;
+        this._onDoneFns = [];
+        this._onStartFns = [];
+        this._onDestroyFns = [];
+        this._started = false;
+        this.currentSnapshot = {};
+        this.state = 0;
+        this.easing = easing || DEFAULT_EASING;
+        this.totalTime = _duration + _delay;
+        this._buildStyler();
+    }
+    CssKeyframesPlayer.prototype.onStart = function (fn) { this._onStartFns.push(fn); };
+    CssKeyframesPlayer.prototype.onDone = function (fn) { this._onDoneFns.push(fn); };
+    CssKeyframesPlayer.prototype.onDestroy = function (fn) { this._onDestroyFns.push(fn); };
+    CssKeyframesPlayer.prototype.destroy = function () {
+        this.init();
+        if (this.state >= AnimatorControlState.DESTROYED)
+            return;
+        this.state = AnimatorControlState.DESTROYED;
+        this._styler.destroy();
+        this._flushStartFns();
+        this._flushDoneFns();
+        this._onDestroyFns.forEach(function (fn) { return fn(); });
+        this._onDestroyFns = [];
+    };
+    CssKeyframesPlayer.prototype._flushDoneFns = function () {
+        this._onDoneFns.forEach(function (fn) { return fn(); });
+        this._onDoneFns = [];
+    };
+    CssKeyframesPlayer.prototype._flushStartFns = function () {
+        this._onStartFns.forEach(function (fn) { return fn(); });
+        this._onStartFns = [];
+    };
+    CssKeyframesPlayer.prototype.finish = function () {
+        this.init();
+        if (this.state >= AnimatorControlState.FINISHED)
+            return;
+        this.state = AnimatorControlState.FINISHED;
+        this._styler.finish();
+        this._flushStartFns();
+        this._flushDoneFns();
+    };
+    CssKeyframesPlayer.prototype.setPosition = function (value) { this._styler.setPosition(value); };
+    CssKeyframesPlayer.prototype.getPosition = function () { return this._styler.getPosition(); };
+    CssKeyframesPlayer.prototype.hasStarted = function () { return this.state >= AnimatorControlState.STARTED; };
+    CssKeyframesPlayer.prototype.init = function () {
+        if (this.state >= AnimatorControlState.INITIALIZED)
+            return;
+        this.state = AnimatorControlState.INITIALIZED;
+        var elm = this.element;
+        this._styler.apply();
+        if (this._delay) {
+            this._styler.pause();
+        }
+    };
+    CssKeyframesPlayer.prototype.play = function () {
+        this.init();
+        if (!this.hasStarted()) {
+            this._flushStartFns();
+            this.state = AnimatorControlState.STARTED;
+        }
+        this._styler.resume();
+    };
+    CssKeyframesPlayer.prototype.pause = function () {
+        this.init();
+        this._styler.pause();
+    };
+    CssKeyframesPlayer.prototype.restart = function () {
+        this.reset();
+        this.play();
+    };
+    CssKeyframesPlayer.prototype.reset = function () {
+        this._styler.destroy();
+        this._buildStyler();
+        this._styler.apply();
+    };
+    CssKeyframesPlayer.prototype._buildStyler = function () {
+        var _this = this;
+        this._styler = new ElementAnimationStyleHandler(this.element, this.animationName, this._duration, this._delay, this.easing, DEFAULT_FILL_MODE, function () { return _this.finish(); });
+    };
+    /* @internal */
+    CssKeyframesPlayer.prototype.triggerCallback = function (phaseName) {
+        var methods = phaseName == 'start' ? this._onStartFns : this._onDoneFns;
+        methods.forEach(function (fn) { return fn(); });
+        methods.length = 0;
+    };
+    CssKeyframesPlayer.prototype.beforeDestroy = function () {
+        var _this = this;
+        this.init();
+        var styles = {};
+        if (this.hasStarted()) {
+            var finished_1 = this.state >= AnimatorControlState.FINISHED;
+            Object.keys(this._finalStyles).forEach(function (prop) {
+                if (prop != 'offset') {
+                    styles[prop] = finished_1 ? _this._finalStyles[prop] : computeStyle(_this.element, prop);
+                }
+            });
+        }
+        this.currentSnapshot = styles;
+    };
+    return CssKeyframesPlayer;
+}());
+
+var DirectStylePlayer = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(DirectStylePlayer, _super);
+    function DirectStylePlayer(element, styles) {
+        var _this = _super.call(this) || this;
+        _this.element = element;
+        _this._startingStyles = {};
+        _this.__initialized = false;
+        _this._styles = hypenatePropsObject(styles);
+        return _this;
+    }
+    DirectStylePlayer.prototype.init = function () {
+        var _this = this;
+        if (this.__initialized || !this._startingStyles)
+            return;
+        this.__initialized = true;
+        Object.keys(this._styles).forEach(function (prop) {
+            _this._startingStyles[prop] = _this.element.style[prop];
+        });
+        _super.prototype.init.call(this);
+    };
+    DirectStylePlayer.prototype.play = function () {
+        var _this = this;
+        if (!this._startingStyles)
+            return;
+        this.init();
+        Object.keys(this._styles)
+            .forEach(function (prop) { return _this.element.style.setProperty(prop, _this._styles[prop]); });
+        _super.prototype.play.call(this);
+    };
+    DirectStylePlayer.prototype.destroy = function () {
+        var _this = this;
+        if (!this._startingStyles)
+            return;
+        Object.keys(this._startingStyles).forEach(function (prop) {
+            var value = _this._startingStyles[prop];
+            if (value) {
+                _this.element.style.setProperty(prop, value);
+            }
+            else {
+                _this.element.style.removeProperty(prop);
+            }
+        });
+        this._startingStyles = null;
+        _super.prototype.destroy.call(this);
+    };
+    return DirectStylePlayer;
+}(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"]));
+
+var KEYFRAMES_NAME_PREFIX = 'gen_css_kf_';
+var TAB_SPACE = ' ';
+var CssKeyframesDriver = /** @class */ (function () {
+    function CssKeyframesDriver() {
+        this._count = 0;
+        this._head = document.querySelector('head');
+        this._warningIssued = false;
+    }
+    CssKeyframesDriver.prototype.validateStyleProperty = function (prop) { return validateStyleProperty(prop); };
+    CssKeyframesDriver.prototype.matchesElement = function (element, selector) {
+        return matchesElement(element, selector);
+    };
+    CssKeyframesDriver.prototype.containsElement = function (elm1, elm2) { return containsElement(elm1, elm2); };
+    CssKeyframesDriver.prototype.query = function (element, selector, multi) {
+        return invokeQuery(element, selector, multi);
+    };
+    CssKeyframesDriver.prototype.computeStyle = function (element, prop, defaultValue) {
+        return window.getComputedStyle(element)[prop];
+    };
+    CssKeyframesDriver.prototype.buildKeyframeElement = function (element, name, keyframes) {
+        keyframes = keyframes.map(function (kf) { return hypenatePropsObject(kf); });
+        var keyframeStr = "@keyframes " + name + " {\n";
+        var tab = '';
+        keyframes.forEach(function (kf) {
+            tab = TAB_SPACE;
+            var offset = parseFloat(kf.offset);
+            keyframeStr += "" + tab + offset * 100 + "% {\n";
+            tab += TAB_SPACE;
+            Object.keys(kf).forEach(function (prop) {
+                var value = kf[prop];
+                switch (prop) {
+                    case 'offset':
+                        return;
+                    case 'easing':
+                        if (value) {
+                            keyframeStr += tab + "animation-timing-function: " + value + ";\n";
+                        }
+                        return;
+                    default:
+                        keyframeStr += "" + tab + prop + ": " + value + ";\n";
+                        return;
+                }
+            });
+            keyframeStr += tab + "}\n";
+        });
+        keyframeStr += "}\n";
+        var kfElm = document.createElement('style');
+        kfElm.innerHTML = keyframeStr;
+        return kfElm;
+    };
+    CssKeyframesDriver.prototype.animate = function (element, keyframes, duration, delay, easing, previousPlayers, scrubberAccessRequested) {
+        if (previousPlayers === void 0) { previousPlayers = []; }
+        if (scrubberAccessRequested) {
+            this._notifyFaultyScrubber();
+        }
+        var previousCssKeyframePlayers = previousPlayers.filter(function (player) { return player instanceof CssKeyframesPlayer; });
+        var previousStyles = {};
+        if (allowPreviousPlayerStylesMerge(duration, delay)) {
+            previousCssKeyframePlayers.forEach(function (player) {
+                var styles = player.currentSnapshot;
+                Object.keys(styles).forEach(function (prop) { return previousStyles[prop] = styles[prop]; });
+            });
+        }
+        keyframes = balancePreviousStylesIntoKeyframes(element, keyframes, previousStyles);
+        var finalStyles = flattenKeyframesIntoStyles(keyframes);
+        // if there is no animation then there is no point in applying
+        // styles and waiting for an event to get fired. This causes lag.
+        // It's better to just directly apply the styles to the element
+        // via the direct styling animation player.
+        if (duration == 0) {
+            return new DirectStylePlayer(element, finalStyles);
+        }
+        var animationName = "" + KEYFRAMES_NAME_PREFIX + this._count++;
+        var kfElm = this.buildKeyframeElement(element, animationName, keyframes);
+        document.querySelector('head').appendChild(kfElm);
+        var player = new CssKeyframesPlayer(element, keyframes, animationName, duration, delay, easing, finalStyles);
+        player.onDestroy(function () { return removeElement(kfElm); });
+        return player;
+    };
+    CssKeyframesDriver.prototype._notifyFaultyScrubber = function () {
+        if (!this._warningIssued) {
+            console.warn('@angular/animations: please load the web-animations.js polyfill to allow programmatic access...\n', '  visit http://bit.ly/IWukam to learn more about using the web-animation-js polyfill.');
+            this._warningIssued = true;
+        }
+    };
+    return CssKeyframesDriver;
+}());
+function flattenKeyframesIntoStyles(keyframes) {
+    var flatKeyframes = {};
+    if (keyframes) {
+        var kfs = Array.isArray(keyframes) ? keyframes : [keyframes];
+        kfs.forEach(function (kf) {
+            Object.keys(kf).forEach(function (prop) {
+                if (prop == 'offset' || prop == 'easing')
+                    return;
+                flatKeyframes[prop] = kf[prop];
+            });
+        });
+    }
+    return flatKeyframes;
+}
+function removeElement(node) {
+    node.parentNode.removeChild(node);
+}
+
+var WebAnimationsPlayer = /** @class */ (function () {
+    function WebAnimationsPlayer(element, keyframes, options) {
+        this.element = element;
+        this.keyframes = keyframes;
+        this.options = options;
+        this._onDoneFns = [];
+        this._onStartFns = [];
+        this._onDestroyFns = [];
+        this._initialized = false;
+        this._finished = false;
+        this._started = false;
+        this._destroyed = false;
+        this.time = 0;
+        this.parentPlayer = null;
+        this.currentSnapshot = {};
+        this._duration = options['duration'];
+        this._delay = options['delay'] || 0;
+        this.time = this._duration + this._delay;
+    }
+    WebAnimationsPlayer.prototype._onFinish = function () {
+        if (!this._finished) {
+            this._finished = true;
+            this._onDoneFns.forEach(function (fn) { return fn(); });
+            this._onDoneFns = [];
+        }
+    };
+    WebAnimationsPlayer.prototype.init = function () {
+        this._buildPlayer();
+        this._preparePlayerBeforeStart();
+    };
+    WebAnimationsPlayer.prototype._buildPlayer = function () {
+        var _this = this;
+        if (this._initialized)
+            return;
+        this._initialized = true;
+        var keyframes = this.keyframes;
+        this.domPlayer =
+            this._triggerWebAnimation(this.element, keyframes, this.options);
+        this._finalKeyframe = keyframes.length ? keyframes[keyframes.length - 1] : {};
+        this.domPlayer.addEventListener('finish', function () { return _this._onFinish(); });
+    };
+    WebAnimationsPlayer.prototype._preparePlayerBeforeStart = function () {
+        // this is required so that the player doesn't start to animate right away
+        if (this._delay) {
+            this._resetDomPlayerState();
+        }
+        else {
+            this.domPlayer.pause();
+        }
+    };
+    /** @internal */
+    WebAnimationsPlayer.prototype._triggerWebAnimation = function (element, keyframes, options) {
+        // jscompiler doesn't seem to know animate is a native property because it's not fully
+        // supported yet across common browsers (we polyfill it for Edge/Safari) [CL #143630929]
+        return element['animate'](keyframes, options);
+    };
+    WebAnimationsPlayer.prototype.onStart = function (fn) { this._onStartFns.push(fn); };
+    WebAnimationsPlayer.prototype.onDone = function (fn) { this._onDoneFns.push(fn); };
+    WebAnimationsPlayer.prototype.onDestroy = function (fn) { this._onDestroyFns.push(fn); };
+    WebAnimationsPlayer.prototype.play = function () {
+        this._buildPlayer();
+        if (!this.hasStarted()) {
+            this._onStartFns.forEach(function (fn) { return fn(); });
+            this._onStartFns = [];
+            this._started = true;
+        }
+        this.domPlayer.play();
+    };
+    WebAnimationsPlayer.prototype.pause = function () {
+        this.init();
+        this.domPlayer.pause();
+    };
+    WebAnimationsPlayer.prototype.finish = function () {
+        this.init();
+        this._onFinish();
+        this.domPlayer.finish();
+    };
+    WebAnimationsPlayer.prototype.reset = function () {
+        this._resetDomPlayerState();
+        this._destroyed = false;
+        this._finished = false;
+        this._started = false;
+    };
+    WebAnimationsPlayer.prototype._resetDomPlayerState = function () {
+        if (this.domPlayer) {
+            this.domPlayer.cancel();
+        }
+    };
+    WebAnimationsPlayer.prototype.restart = function () {
+        this.reset();
+        this.play();
+    };
+    WebAnimationsPlayer.prototype.hasStarted = function () { return this._started; };
+    WebAnimationsPlayer.prototype.destroy = function () {
+        if (!this._destroyed) {
+            this._destroyed = true;
+            this._resetDomPlayerState();
+            this._onFinish();
+            this._onDestroyFns.forEach(function (fn) { return fn(); });
+            this._onDestroyFns = [];
+        }
+    };
+    WebAnimationsPlayer.prototype.setPosition = function (p) { this.domPlayer.currentTime = p * this.time; };
+    WebAnimationsPlayer.prototype.getPosition = function () { return this.domPlayer.currentTime / this.time; };
+    Object.defineProperty(WebAnimationsPlayer.prototype, "totalTime", {
+        get: function () { return this._delay + this._duration; },
+        enumerable: true,
+        configurable: true
+    });
+    WebAnimationsPlayer.prototype.beforeDestroy = function () {
+        var _this = this;
+        var styles = {};
+        if (this.hasStarted()) {
+            Object.keys(this._finalKeyframe).forEach(function (prop) {
+                if (prop != 'offset') {
+                    styles[prop] =
+                        _this._finished ? _this._finalKeyframe[prop] : computeStyle(_this.element, prop);
+                }
+            });
+        }
+        this.currentSnapshot = styles;
+    };
+    /* @internal */
+    WebAnimationsPlayer.prototype.triggerCallback = function (phaseName) {
+        var methods = phaseName == 'start' ? this._onStartFns : this._onDoneFns;
+        methods.forEach(function (fn) { return fn(); });
+        methods.length = 0;
+    };
+    return WebAnimationsPlayer;
+}());
+
+var WebAnimationsDriver = /** @class */ (function () {
+    function WebAnimationsDriver() {
+        this._isNativeImpl = /\{\s*\[native\s+code\]\s*\}/.test(getElementAnimateFn().toString());
+        this._cssKeyframesDriver = new CssKeyframesDriver();
+    }
+    WebAnimationsDriver.prototype.validateStyleProperty = function (prop) { return validateStyleProperty(prop); };
+    WebAnimationsDriver.prototype.matchesElement = function (element, selector) {
+        return matchesElement(element, selector);
+    };
+    WebAnimationsDriver.prototype.containsElement = function (elm1, elm2) { return containsElement(elm1, elm2); };
+    WebAnimationsDriver.prototype.query = function (element, selector, multi) {
+        return invokeQuery(element, selector, multi);
+    };
+    WebAnimationsDriver.prototype.computeStyle = function (element, prop, defaultValue) {
+        return window.getComputedStyle(element)[prop];
+    };
+    WebAnimationsDriver.prototype.overrideWebAnimationsSupport = function (supported) { this._isNativeImpl = supported; };
+    WebAnimationsDriver.prototype.animate = function (element, keyframes, duration, delay, easing, previousPlayers, scrubberAccessRequested) {
+        if (previousPlayers === void 0) { previousPlayers = []; }
+        var useKeyframes = !scrubberAccessRequested && !this._isNativeImpl;
+        if (useKeyframes) {
+            return this._cssKeyframesDriver.animate(element, keyframes, duration, delay, easing, previousPlayers);
+        }
+        var fill = delay == 0 ? 'both' : 'forwards';
+        var playerOptions = { duration: duration, delay: delay, fill: fill };
+        // we check for this to avoid having a null|undefined value be present
+        // for the easing (which results in an error for certain browsers #9752)
+        if (easing) {
+            playerOptions['easing'] = easing;
+        }
+        var previousStyles = {};
+        var previousWebAnimationPlayers = previousPlayers.filter(function (player) { return player instanceof WebAnimationsPlayer; });
+        if (allowPreviousPlayerStylesMerge(duration, delay)) {
+            previousWebAnimationPlayers.forEach(function (player) {
+                var styles = player.currentSnapshot;
+                Object.keys(styles).forEach(function (prop) { return previousStyles[prop] = styles[prop]; });
+            });
+        }
+        keyframes = keyframes.map(function (styles) { return copyStyles(styles, false); });
+        keyframes = balancePreviousStylesIntoKeyframes(element, keyframes, previousStyles);
+        return new WebAnimationsPlayer(element, keyframes, playerOptions);
+    };
+    return WebAnimationsDriver;
+}());
+function supportsWebAnimations() {
+    return typeof getElementAnimateFn() === 'function';
+}
+function getElementAnimateFn() {
+    return (isBrowser() && Element.prototype['animate']) || {};
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+//# sourceMappingURL=browser.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@angular/common/fesm5/common.js":
 /*!******************************************************!*\
   !*** ./node_modules/@angular/common/fesm5/common.js ***!
@@ -51521,6 +57228,506 @@ var platformBrowserDynamic = Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["
 
 /***/ }),
 
+/***/ "./node_modules/@angular/platform-browser/fesm5/animations.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@angular/platform-browser/fesm5/animations.js ***!
+  \********************************************************************/
+/*! exports provided: ɵangular_packages_platform_browser_animations_animations_g, ɵangular_packages_platform_browser_animations_animations_e, ɵangular_packages_platform_browser_animations_animations_f, ɵangular_packages_platform_browser_animations_animations_a, ɵangular_packages_platform_browser_animations_animations_c, ɵangular_packages_platform_browser_animations_animations_d, ɵangular_packages_platform_browser_animations_animations_b, BrowserAnimationsModule, NoopAnimationsModule, ANIMATION_MODULE_TYPE, ɵBrowserAnimationBuilder, ɵBrowserAnimationFactory, ɵAnimationRenderer, ɵAnimationRendererFactory */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_g", function() { return BaseAnimationRenderer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_e", function() { return BROWSER_ANIMATIONS_PROVIDERS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_f", function() { return BROWSER_NOOP_ANIMATIONS_PROVIDERS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_a", function() { return InjectableAnimationEngine; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_c", function() { return instantiateDefaultStyleNormalizer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_d", function() { return instantiateRendererFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_b", function() { return instantiateSupportedAnimationDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BrowserAnimationsModule", function() { return BrowserAnimationsModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NoopAnimationsModule", function() { return NoopAnimationsModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ANIMATION_MODULE_TYPE", function() { return ANIMATION_MODULE_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵBrowserAnimationBuilder", function() { return BrowserAnimationBuilder; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵBrowserAnimationFactory", function() { return BrowserAnimationFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationRenderer", function() { return AnimationRenderer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationRendererFactory", function() { return AnimationRendererFactory; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_animations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/animations */ "./node_modules/@angular/animations/fesm5/animations.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/fesm5/platform-browser.js");
+/* harmony import */ var _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/animations/browser */ "./node_modules/@angular/animations/fesm5/browser.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/**
+ * @license Angular v6.0.9
+ * (c) 2010-2018 Google, Inc. https://angular.io/
+ * License: MIT
+ */
+
+
+
+
+
+
+
+
+var BrowserAnimationBuilder = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(BrowserAnimationBuilder, _super);
+    function BrowserAnimationBuilder(rootRenderer, doc) {
+        var _this = _super.call(this) || this;
+        _this._nextAnimationId = 0;
+        var typeData = {
+            id: '0',
+            encapsulation: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewEncapsulation"].None,
+            styles: [],
+            data: { animation: [] }
+        };
+        _this._renderer = rootRenderer.createRenderer(doc.body, typeData);
+        return _this;
+    }
+    BrowserAnimationBuilder.prototype.build = function (animation) {
+        var id = this._nextAnimationId.toString();
+        this._nextAnimationId++;
+        var entry = Array.isArray(animation) ? Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["sequence"])(animation) : animation;
+        issueAnimationCommand(this._renderer, null, id, 'register', [entry]);
+        return new BrowserAnimationFactory(id, this._renderer);
+    };
+    BrowserAnimationBuilder.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"] }
+    ];
+    /** @nocollapse */
+    BrowserAnimationBuilder.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["RendererFactory2"] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Inject"], args: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["DOCUMENT"],] }] }
+    ]; };
+    return BrowserAnimationBuilder;
+}(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["AnimationBuilder"]));
+var BrowserAnimationFactory = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(BrowserAnimationFactory, _super);
+    function BrowserAnimationFactory(_id, _renderer) {
+        var _this = _super.call(this) || this;
+        _this._id = _id;
+        _this._renderer = _renderer;
+        return _this;
+    }
+    BrowserAnimationFactory.prototype.create = function (element, options) {
+        return new RendererAnimationPlayer(this._id, element, options || {}, this._renderer);
+    };
+    return BrowserAnimationFactory;
+}(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["AnimationFactory"]));
+var RendererAnimationPlayer = /** @class */ (function () {
+    function RendererAnimationPlayer(id, element, options, _renderer) {
+        this.id = id;
+        this.element = element;
+        this._renderer = _renderer;
+        this.parentPlayer = null;
+        this._started = false;
+        this.totalTime = 0;
+        this._command('create', options);
+    }
+    RendererAnimationPlayer.prototype._listen = function (eventName, callback) {
+        return this._renderer.listen(this.element, "@@" + this.id + ":" + eventName, callback);
+    };
+    RendererAnimationPlayer.prototype._command = function (command) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        return issueAnimationCommand(this._renderer, this.element, this.id, command, args);
+    };
+    RendererAnimationPlayer.prototype.onDone = function (fn) { this._listen('done', fn); };
+    RendererAnimationPlayer.prototype.onStart = function (fn) { this._listen('start', fn); };
+    RendererAnimationPlayer.prototype.onDestroy = function (fn) { this._listen('destroy', fn); };
+    RendererAnimationPlayer.prototype.init = function () { this._command('init'); };
+    RendererAnimationPlayer.prototype.hasStarted = function () { return this._started; };
+    RendererAnimationPlayer.prototype.play = function () {
+        this._command('play');
+        this._started = true;
+    };
+    RendererAnimationPlayer.prototype.pause = function () { this._command('pause'); };
+    RendererAnimationPlayer.prototype.restart = function () { this._command('restart'); };
+    RendererAnimationPlayer.prototype.finish = function () { this._command('finish'); };
+    RendererAnimationPlayer.prototype.destroy = function () { this._command('destroy'); };
+    RendererAnimationPlayer.prototype.reset = function () { this._command('reset'); };
+    RendererAnimationPlayer.prototype.setPosition = function (p) { this._command('setPosition', p); };
+    RendererAnimationPlayer.prototype.getPosition = function () { return 0; };
+    return RendererAnimationPlayer;
+}());
+function issueAnimationCommand(renderer, element, id, command, args) {
+    return renderer.setProperty(element, "@@" + id + ":" + command, args);
+}
+
+var ANIMATION_PREFIX = '@';
+var DISABLE_ANIMATIONS_FLAG = '@.disabled';
+var AnimationRendererFactory = /** @class */ (function () {
+    function AnimationRendererFactory(delegate, engine, _zone) {
+        this.delegate = delegate;
+        this.engine = engine;
+        this._zone = _zone;
+        this._currentId = 0;
+        this._microtaskId = 1;
+        this._animationCallbacksBuffer = [];
+        this._rendererCache = new Map();
+        this._cdRecurDepth = 0;
+        this.promise = Promise.resolve(0);
+        engine.onRemovalComplete = function (element, delegate) {
+            // Note: if an component element has a leave animation, and the component
+            // a host leave animation, the view engine will call `removeChild` for the parent
+            // component renderer as well as for the child component renderer.
+            // Therefore, we need to check if we already removed the element.
+            if (delegate && delegate.parentNode(element)) {
+                delegate.removeChild(element.parentNode, element);
+            }
+        };
+    }
+    AnimationRendererFactory.prototype.createRenderer = function (hostElement, type) {
+        var _this = this;
+        var EMPTY_NAMESPACE_ID = '';
+        // cache the delegates to find out which cached delegate can
+        // be used by which cached renderer
+        var delegate = this.delegate.createRenderer(hostElement, type);
+        if (!hostElement || !type || !type.data || !type.data['animation']) {
+            var renderer = this._rendererCache.get(delegate);
+            if (!renderer) {
+                renderer = new BaseAnimationRenderer(EMPTY_NAMESPACE_ID, delegate, this.engine);
+                // only cache this result when the base renderer is used
+                this._rendererCache.set(delegate, renderer);
+            }
+            return renderer;
+        }
+        var componentId = type.id;
+        var namespaceId = type.id + '-' + this._currentId;
+        this._currentId++;
+        this.engine.register(namespaceId, hostElement);
+        var animationTriggers = type.data['animation'];
+        animationTriggers.forEach(function (trigger) { return _this.engine.registerTrigger(componentId, namespaceId, hostElement, trigger.name, trigger); });
+        return new AnimationRenderer(this, namespaceId, delegate, this.engine);
+    };
+    AnimationRendererFactory.prototype.begin = function () {
+        this._cdRecurDepth++;
+        if (this.delegate.begin) {
+            this.delegate.begin();
+        }
+    };
+    AnimationRendererFactory.prototype._scheduleCountTask = function () {
+        var _this = this;
+        // always use promise to schedule microtask instead of use Zone
+        this.promise.then(function () { _this._microtaskId++; });
+    };
+    /* @internal */
+    AnimationRendererFactory.prototype.scheduleListenerCallback = function (count, fn, data) {
+        var _this = this;
+        if (count >= 0 && count < this._microtaskId) {
+            this._zone.run(function () { return fn(data); });
+            return;
+        }
+        if (this._animationCallbacksBuffer.length == 0) {
+            Promise.resolve(null).then(function () {
+                _this._zone.run(function () {
+                    _this._animationCallbacksBuffer.forEach(function (tuple) {
+                        var _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])(tuple, 2), fn = _a[0], data = _a[1];
+                        fn(data);
+                    });
+                    _this._animationCallbacksBuffer = [];
+                });
+            });
+        }
+        this._animationCallbacksBuffer.push([fn, data]);
+    };
+    AnimationRendererFactory.prototype.end = function () {
+        var _this = this;
+        this._cdRecurDepth--;
+        // this is to prevent animations from running twice when an inner
+        // component does CD when a parent component insted has inserted it
+        if (this._cdRecurDepth == 0) {
+            this._zone.runOutsideAngular(function () {
+                _this._scheduleCountTask();
+                _this.engine.flush(_this._microtaskId);
+            });
+        }
+        if (this.delegate.end) {
+            this.delegate.end();
+        }
+    };
+    AnimationRendererFactory.prototype.whenRenderingDone = function () { return this.engine.whenRenderingDone(); };
+    AnimationRendererFactory.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"] }
+    ];
+    /** @nocollapse */
+    AnimationRendererFactory.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["RendererFactory2"] },
+        { type: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationEngine"] },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["NgZone"] }
+    ]; };
+    return AnimationRendererFactory;
+}());
+var BaseAnimationRenderer = /** @class */ (function () {
+    function BaseAnimationRenderer(namespaceId, delegate, engine) {
+        this.namespaceId = namespaceId;
+        this.delegate = delegate;
+        this.engine = engine;
+        this.destroyNode = this.delegate.destroyNode ? function (n) { return delegate.destroyNode(n); } : null;
+    }
+    Object.defineProperty(BaseAnimationRenderer.prototype, "data", {
+        get: function () { return this.delegate.data; },
+        enumerable: true,
+        configurable: true
+    });
+    BaseAnimationRenderer.prototype.destroy = function () {
+        this.engine.destroy(this.namespaceId, this.delegate);
+        this.delegate.destroy();
+    };
+    BaseAnimationRenderer.prototype.createElement = function (name, namespace) {
+        return this.delegate.createElement(name, namespace);
+    };
+    BaseAnimationRenderer.prototype.createComment = function (value) { return this.delegate.createComment(value); };
+    BaseAnimationRenderer.prototype.createText = function (value) { return this.delegate.createText(value); };
+    BaseAnimationRenderer.prototype.appendChild = function (parent, newChild) {
+        this.delegate.appendChild(parent, newChild);
+        this.engine.onInsert(this.namespaceId, newChild, parent, false);
+    };
+    BaseAnimationRenderer.prototype.insertBefore = function (parent, newChild, refChild) {
+        this.delegate.insertBefore(parent, newChild, refChild);
+        this.engine.onInsert(this.namespaceId, newChild, parent, true);
+    };
+    BaseAnimationRenderer.prototype.removeChild = function (parent, oldChild) {
+        this.engine.onRemove(this.namespaceId, oldChild, this.delegate);
+    };
+    BaseAnimationRenderer.prototype.selectRootElement = function (selectorOrNode) { return this.delegate.selectRootElement(selectorOrNode); };
+    BaseAnimationRenderer.prototype.parentNode = function (node) { return this.delegate.parentNode(node); };
+    BaseAnimationRenderer.prototype.nextSibling = function (node) { return this.delegate.nextSibling(node); };
+    BaseAnimationRenderer.prototype.setAttribute = function (el, name, value, namespace) {
+        this.delegate.setAttribute(el, name, value, namespace);
+    };
+    BaseAnimationRenderer.prototype.removeAttribute = function (el, name, namespace) {
+        this.delegate.removeAttribute(el, name, namespace);
+    };
+    BaseAnimationRenderer.prototype.addClass = function (el, name) { this.delegate.addClass(el, name); };
+    BaseAnimationRenderer.prototype.removeClass = function (el, name) { this.delegate.removeClass(el, name); };
+    BaseAnimationRenderer.prototype.setStyle = function (el, style, value, flags) {
+        this.delegate.setStyle(el, style, value, flags);
+    };
+    BaseAnimationRenderer.prototype.removeStyle = function (el, style, flags) {
+        this.delegate.removeStyle(el, style, flags);
+    };
+    BaseAnimationRenderer.prototype.setProperty = function (el, name, value) {
+        if (name.charAt(0) == ANIMATION_PREFIX && name == DISABLE_ANIMATIONS_FLAG) {
+            this.disableAnimations(el, !!value);
+        }
+        else {
+            this.delegate.setProperty(el, name, value);
+        }
+    };
+    BaseAnimationRenderer.prototype.setValue = function (node, value) { this.delegate.setValue(node, value); };
+    BaseAnimationRenderer.prototype.listen = function (target, eventName, callback) {
+        return this.delegate.listen(target, eventName, callback);
+    };
+    BaseAnimationRenderer.prototype.disableAnimations = function (element, value) {
+        this.engine.disableAnimations(element, value);
+    };
+    return BaseAnimationRenderer;
+}());
+var AnimationRenderer = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(AnimationRenderer, _super);
+    function AnimationRenderer(factory, namespaceId, delegate, engine) {
+        var _this = _super.call(this, namespaceId, delegate, engine) || this;
+        _this.factory = factory;
+        _this.namespaceId = namespaceId;
+        return _this;
+    }
+    AnimationRenderer.prototype.setProperty = function (el, name, value) {
+        if (name.charAt(0) == ANIMATION_PREFIX) {
+            if (name.charAt(1) == '.' && name == DISABLE_ANIMATIONS_FLAG) {
+                value = value === undefined ? true : !!value;
+                this.disableAnimations(el, value);
+            }
+            else {
+                this.engine.process(this.namespaceId, el, name.substr(1), value);
+            }
+        }
+        else {
+            this.delegate.setProperty(el, name, value);
+        }
+    };
+    AnimationRenderer.prototype.listen = function (target, eventName, callback) {
+        var _this = this;
+        if (eventName.charAt(0) == ANIMATION_PREFIX) {
+            var element = resolveElementFromTarget(target);
+            var name_1 = eventName.substr(1);
+            var phase = '';
+            // @listener.phase is for trigger animation callbacks
+            // @@listener is for animation builder callbacks
+            if (name_1.charAt(0) != ANIMATION_PREFIX) {
+                _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])(parseTriggerCallbackName(name_1), 2), name_1 = _a[0], phase = _a[1];
+            }
+            return this.engine.listen(this.namespaceId, element, name_1, phase, function (event) {
+                var countId = event['_data'] || -1;
+                _this.factory.scheduleListenerCallback(countId, callback, event);
+            });
+        }
+        return this.delegate.listen(target, eventName, callback);
+        var _a;
+    };
+    return AnimationRenderer;
+}(BaseAnimationRenderer));
+function resolveElementFromTarget(target) {
+    switch (target) {
+        case 'body':
+            return document.body;
+        case 'document':
+            return document;
+        case 'window':
+            return window;
+        default:
+            return target;
+    }
+}
+function parseTriggerCallbackName(triggerName) {
+    var dotIndex = triggerName.indexOf('.');
+    var trigger = triggerName.substring(0, dotIndex);
+    var phase = triggerName.substr(dotIndex + 1);
+    return [trigger, phase];
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var InjectableAnimationEngine = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(InjectableAnimationEngine, _super);
+    function InjectableAnimationEngine(doc, driver, normalizer) {
+        return _super.call(this, doc.body, driver, normalizer) || this;
+    }
+    InjectableAnimationEngine.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"] }
+    ];
+    /** @nocollapse */
+    InjectableAnimationEngine.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_5__["DOCUMENT"],] }] },
+        { type: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["AnimationDriver"] },
+        { type: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationStyleNormalizer"] }
+    ]; };
+    return InjectableAnimationEngine;
+}(_angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationEngine"]));
+function instantiateSupportedAnimationDriver() {
+    return Object(_angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵsupportsWebAnimations"])() ? new _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵWebAnimationsDriver"]() : new _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵCssKeyframesDriver"]();
+}
+function instantiateDefaultStyleNormalizer() {
+    return new _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵWebAnimationsStyleNormalizer"]();
+}
+function instantiateRendererFactory(renderer, engine, zone) {
+    return new AnimationRendererFactory(renderer, engine, zone);
+}
+/**
+ * @experimental Animation support is experimental.
+ */
+var ANIMATION_MODULE_TYPE = new _angular_core__WEBPACK_IMPORTED_MODULE_2__["InjectionToken"]('AnimationModuleType');
+var SHARED_ANIMATION_PROVIDERS = [
+    { provide: _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AnimationBuilder"], useClass: BrowserAnimationBuilder },
+    { provide: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationStyleNormalizer"], useFactory: instantiateDefaultStyleNormalizer },
+    { provide: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationEngine"], useClass: InjectableAnimationEngine }, {
+        provide: _angular_core__WEBPACK_IMPORTED_MODULE_2__["RendererFactory2"],
+        useFactory: instantiateRendererFactory,
+        deps: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["ɵDomRendererFactory2"], _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationEngine"], _angular_core__WEBPACK_IMPORTED_MODULE_2__["NgZone"]]
+    }
+];
+/**
+ * Separate providers from the actual module so that we can do a local modification in Google3 to
+ * include them in the BrowserModule.
+ */
+var BROWSER_ANIMATIONS_PROVIDERS = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])([
+    { provide: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["AnimationDriver"], useFactory: instantiateSupportedAnimationDriver },
+    { provide: ANIMATION_MODULE_TYPE, useValue: 'BrowserAnimations' }
+], SHARED_ANIMATION_PROVIDERS);
+/**
+ * Separate providers from the actual module so that we can do a local modification in Google3 to
+ * include them in the BrowserTestingModule.
+ */
+var BROWSER_NOOP_ANIMATIONS_PROVIDERS = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])([
+    { provide: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["AnimationDriver"], useClass: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵNoopAnimationDriver"] },
+    { provide: ANIMATION_MODULE_TYPE, useValue: 'NoopAnimations' }
+], SHARED_ANIMATION_PROVIDERS);
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @experimental Animation support is experimental.
+ */
+var BrowserAnimationsModule = /** @class */ (function () {
+    function BrowserAnimationsModule() {
+    }
+    BrowserAnimationsModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"], args: [{
+                    exports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["BrowserModule"]],
+                    providers: BROWSER_ANIMATIONS_PROVIDERS,
+                },] }
+    ];
+    return BrowserAnimationsModule;
+}());
+/**
+ * @experimental Animation support is experimental.
+ */
+var NoopAnimationsModule = /** @class */ (function () {
+    function NoopAnimationsModule() {
+    }
+    NoopAnimationsModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"], args: [{
+                    exports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["BrowserModule"]],
+                    providers: BROWSER_NOOP_ANIMATIONS_PROVIDERS,
+                },] }
+    ];
+    return NoopAnimationsModule;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+//# sourceMappingURL=animations.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@angular/platform-browser/fesm5/platform-browser.js":
 /*!**************************************************************************!*\
   !*** ./node_modules/@angular/platform-browser/fesm5/platform-browser.js ***!
@@ -54036,6 +60243,13283 @@ var VERSION = new _angular_core__WEBPACK_IMPORTED_MODULE_2__["Version"]('6.0.9')
 
 //# sourceMappingURL=platform-browser.js.map
 
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.directive.js":
+/*!*****************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.directive.js ***!
+  \*****************************************************************************************/
+/*! exports provided: ButtonDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ButtonDirective", function() { return ButtonDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _button_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./button.service */ "./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.service.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util */ "./node_modules/@progress/kendo-angular-buttons/dist/es/util.js");
+/* harmony import */ var _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @progress/kendo-angular-l10n */ "./node_modules/@progress/kendo-angular-l10n/dist/es/index.js");
+
+
+
+
+/**
+ * Represents the Kendo UI Button component for Angular.
+ */
+var ButtonDirective = /** @class */ (function () {
+    function ButtonDirective(element, renderer, service, localization) {
+        var _this = this;
+        this.service = service;
+        /**
+         * Provides visual styling that indicates if the Button is active.
+         * By default, `togglable` is set to `false`.
+         */
+        this.togglable = false;
+        /**
+         * Adds visual weight to the Button and makes it primary.
+         */
+        this.primary = false;
+        /**
+         * Changes the visual appearance by using alternative styling options.
+         *
+         * The available values are:
+         * * `bare`
+         * * `flat`
+         * * `outline`
+         */
+        this.look = 'default';
+        this.isDisabled = false;
+        this.isIcon = false;
+        this.isIconClass = false;
+        /**
+         * Sets the selected state of the Button.
+         */
+        this.selected = false;
+        /**
+         * Specifies the [`tabIndex`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) of the component.
+         */
+        this.tabIndex = 0;
+        /**
+         * Fires each time the selected state of a togglable button is changed.
+         *
+         * The event argument is the new selected state (boolean).
+         */
+        this.selectedChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.direction = localization.rtl ? 'rtl' : 'ltr';
+        this.localizationChangeSubscription = localization.changes
+            .subscribe(function (_a) {
+            var rtl = _a.rtl;
+            return _this.direction = rtl ? 'rtl' : 'ltr';
+        });
+        this.element = element.nativeElement;
+        this.renderer = renderer;
+    }
+    Object.defineProperty(ButtonDirective.prototype, "icon", {
+        /**
+         * Defines the name for an existing icon in a Kendo UI theme.
+         * The icon is rendered inside the Button by a `span.k-icon` element.
+         */
+        set: function (icon) {
+            var _this = this;
+            if (icon) {
+                this.iconSetter(icon, function () {
+                    _this.isIcon = true;
+                    var classes = 'k-icon k-i-' + icon;
+                    _this.addIcon(classes);
+                });
+            }
+            else {
+                this.isIcon = false;
+                this.updateIconNode();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonDirective.prototype, "iconClass", {
+        /**
+         * Defines a CSS class&mdash;or multiple classes separated by spaces&mdash;
+         * which are applied to a `span` element inside the Button. Allows the usage of custom icons.
+         */
+        set: function (iconClassName) {
+            var _this = this;
+            if (iconClassName) {
+                this.iconSetter(iconClassName, function () {
+                    _this.isIconClass = true;
+                    _this.addIcon(iconClassName);
+                });
+            }
+            else {
+                this.isIconClass = false;
+                this.updateIconNode();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonDirective.prototype, "imageUrl", {
+        /**
+         * Defines a URL which is used for an `img` element inside the Button.
+         * The URL can be relative or absolute. If relative, it is evaluated with relation to the web page URL.
+         */
+        set: function (imageUrl) {
+            if (imageUrl) {
+                this.iconSetter(imageUrl, this.addImgIcon.bind(this));
+            }
+            else {
+                this.removeImageNode();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonDirective.prototype, "disabled", {
+        /**
+         * If set to `true`, it disables the Button.
+         */
+        set: function (disabled) {
+            this.isDisabled = disabled;
+            this.renderer.setProperty(this.element, 'disabled', disabled);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonDirective.prototype, "classButton", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonDirective.prototype, "classDisabled", {
+        get: function () {
+            return this.isDisabled;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonDirective.prototype, "classPrimary", {
+        get: function () {
+            return this.primary;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonDirective.prototype, "isBare", {
+        get: function () {
+            return this.look === 'bare';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonDirective.prototype, "isFlat", {
+        get: function () {
+            return this.look === 'flat';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonDirective.prototype, "isOutline", {
+        get: function () {
+            return this.look === 'outline';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonDirective.prototype, "classActive", {
+        get: function () {
+            return this.selected;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @hidden
+     */
+    ButtonDirective.prototype.onClick = function () {
+        if (!this.togglable) {
+            return;
+        }
+        if (!this.disabled && this.service) {
+            this.service.click(this);
+        }
+        if (!this.service) {
+            this.setSelected(!this.selected);
+        }
+    };
+    Object.defineProperty(ButtonDirective.prototype, "dir", {
+        get: function () {
+            return this.direction;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ButtonDirective.prototype.ngAfterViewChecked = function () {
+        this.setIconTextClasses();
+    };
+    ButtonDirective.prototype.ngOnDestroy = function () {
+        this.imageNode = null;
+        this.iconNode = null;
+        this.renderer = null;
+        this.localizationChangeSubscription.unsubscribe();
+    };
+    /**
+     * Focuses the Button component.
+     */
+    ButtonDirective.prototype.focus = function () {
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_2__["isDocumentAvailable"])()) {
+            this.element.focus();
+        }
+    };
+    /**
+     * Blurs the Button component.
+     */
+    ButtonDirective.prototype.blur = function () {
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_2__["isDocumentAvailable"])()) {
+            this.element.blur();
+        }
+    };
+    /**
+     * @hidden
+     */
+    ButtonDirective.prototype.setAttribute = function (attribute, value) {
+        this.renderer.setAttribute(this.element, attribute, value);
+    };
+    /**
+     * @hidden
+     *
+     * Internal setter that triggers selectedChange
+     */
+    ButtonDirective.prototype.setSelected = function (value) {
+        var changed = this.selected !== value;
+        this.selected = value;
+        if (changed) {
+            this.selectedChange.emit(value);
+        }
+    };
+    ButtonDirective.prototype.hasText = function () {
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_2__["isDocumentAvailable"])()) {
+            return String(this.element.textContent).trim().length > 0;
+        }
+        else {
+            return false;
+        }
+    };
+    ButtonDirective.prototype.addImgIcon = function (imageUrl) {
+        var renderer = this.renderer;
+        if (this.imageNode) {
+            renderer.setProperty(this.imageNode, 'src', imageUrl);
+        }
+        else if (Object(_util__WEBPACK_IMPORTED_MODULE_2__["isDocumentAvailable"])()) {
+            this.imageNode = renderer.createElement('img');
+            renderer.setProperty(this.imageNode, 'src', imageUrl);
+            renderer.setProperty(this.imageNode, 'className', 'k-image');
+            renderer.setAttribute(this.imageNode, 'role', 'presentation');
+            this.prependChild(this.imageNode);
+        }
+    };
+    ButtonDirective.prototype.addIcon = function (classNames) {
+        var renderer = this.renderer;
+        if (this.iconNode) {
+            renderer.setProperty(this.iconNode, 'className', classNames);
+        }
+        else if (Object(_util__WEBPACK_IMPORTED_MODULE_2__["isDocumentAvailable"])()) {
+            this.iconNode = renderer.createElement('span');
+            renderer.setProperty(this.iconNode, 'className', classNames);
+            renderer.setAttribute(this.iconNode, 'role', 'presentation');
+            this.prependChild(this.iconNode);
+        }
+    };
+    ButtonDirective.prototype.prependChild = function (node) {
+        var _this = this;
+        setTimeout(function () {
+            if (_this.renderer && node !== _this.element.firstChild) {
+                _this.renderer.insertBefore(_this.element, node, _this.element.firstChild);
+            }
+        });
+    };
+    ButtonDirective.prototype.iconSetter = function (icon, insertIcon) {
+        if (icon) {
+            insertIcon(icon);
+        }
+        this.setIconTextClasses();
+    };
+    ButtonDirective.prototype.removeImageNode = function () {
+        if (this.imageNode && this.renderer.parentNode(this.imageNode)) {
+            this.renderer.removeChild(this.element, this.imageNode);
+            this.imageNode = null;
+        }
+    };
+    ButtonDirective.prototype.removeIconNode = function () {
+        if (this.iconNode && this.renderer.parentNode(this.iconNode)) {
+            this.renderer.removeChild(this.element, this.iconNode);
+            this.iconNode = null;
+        }
+    };
+    ButtonDirective.prototype.updateIconNode = function () {
+        if (!this.isIcon && !this.isIconClass) {
+            this.removeIconNode();
+        }
+    };
+    ButtonDirective.prototype.setIconTextClasses = function () {
+        var hasIcon = this.isIcon || this.isIconClass || this.imageNode;
+        var hasText = this.hasText();
+        this.toggleClass('k-button-icon', hasIcon && !hasText);
+        this.toggleClass('k-button-icontext', hasIcon && hasText);
+    };
+    ButtonDirective.prototype.toggleClass = function (className, add) {
+        if (add) {
+            this.renderer.addClass(this.element, className);
+        }
+        else {
+            this.renderer.removeClass(this.element, className);
+        }
+    };
+    ButtonDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    exportAs: 'kendoButton',
+                    providers: [
+                        _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_3__["LocalizationService"],
+                        {
+                            provide: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_3__["L10N_PREFIX"],
+                            useValue: 'kendo.button'
+                        }
+                    ],
+                    selector: 'button[kendoButton]' // tslint:disable-line
+                },] },
+    ];
+    /** @nocollapse */
+    ButtonDirective.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Renderer2"], },
+        { type: _button_service__WEBPACK_IMPORTED_MODULE_1__["KendoButtonService"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+        { type: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_3__["LocalizationService"], },
+    ]; };
+    ButtonDirective.propDecorators = {
+        'togglable': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'primary': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'look': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'selected': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'tabIndex': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'icon': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'iconClass': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'imageUrl': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'disabled': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'selectedChange': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'classButton': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-button',] },],
+        'classDisabled': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-state-disabled',] },],
+        'classPrimary': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-primary',] },],
+        'isBare': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-bare',] },],
+        'isFlat': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-flat',] },],
+        'isOutline': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-outline',] },],
+        'classActive': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-state-active',] },],
+        'onClick': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"], args: ['click',] },],
+        'dir': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['attr.dir',] },],
+    };
+    return ButtonDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.module.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.module.js ***!
+  \**************************************************************************************/
+/*! exports provided: ButtonModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ButtonModule", function() { return ButtonModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _button_directive__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./button.directive */ "./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.directive.js");
+
+
+/**
+ * Represents the [NgModule](https://angular.io/docs/ts/latest/guide/ngmodule.html)
+ * definition for the Button directive.
+ *
+ * @example
+ *
+ * ```ts-no-run
+ * // Import the Buttons module
+ * import { ButtonModule } from '@progress/kendo-angular-buttons';
+ *
+ * // The browser platform with a compiler
+ * import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+ *
+ * import { NgModule } from '@angular/core';
+ *
+ * // Import the app component
+ * import { AppComponent } from './app.component';
+ *
+ * // Define the app module
+ * _@NgModule({
+ *     declarations: [AppComponent], // declare app component
+ *     imports:      [BrowserModule, ButtonModule], // import Button module
+ *     bootstrap:    [AppComponent]
+ * })
+ * export class AppModule {}
+ *
+ * // Compile and launch the module
+ * platformBrowserDynamic().bootstrapModule(AppModule);
+ *
+ * ```
+ */
+var ButtonModule = /** @class */ (function () {
+    function ButtonModule() {
+    }
+    ButtonModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    declarations: [_button_directive__WEBPACK_IMPORTED_MODULE_1__["ButtonDirective"]],
+                    exports: [_button_directive__WEBPACK_IMPORTED_MODULE_1__["ButtonDirective"]]
+                },] },
+    ];
+    /** @nocollapse */
+    ButtonModule.ctorParameters = function () { return []; };
+    return ButtonModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.service.js":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.service.js ***!
+  \***************************************************************************************/
+/*! exports provided: KendoButtonService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "KendoButtonService", function() { return KendoButtonService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_Subject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/Subject */ "./node_modules/rxjs-compat/_esm5/Subject.js");
+
+
+/**
+ * @hidden
+ */
+var KendoButtonService = /** @class */ (function () {
+    function KendoButtonService() {
+        this.buttonClicked = new rxjs_Subject__WEBPACK_IMPORTED_MODULE_1__["Subject"]();
+        this.buttonClicked$ = this.buttonClicked.asObservable();
+    }
+    KendoButtonService.prototype.click = function (button) {
+        this.buttonClicked.next(button);
+    };
+    KendoButtonService.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    KendoButtonService.ctorParameters = function () { return []; };
+    return KendoButtonService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/buttongroup/buttongroup.component.js":
+/*!***************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/buttongroup/buttongroup.component.js ***!
+  \***************************************************************************************************/
+/*! exports provided: ButtonGroupComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ButtonGroupComponent", function() { return ButtonGroupComponent; });
+/* harmony import */ var _button_button_directive__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../button/button.directive */ "./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.directive.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @progress/kendo-angular-l10n */ "./node_modules/@progress/kendo-angular-l10n/dist/es/index.js");
+/* harmony import */ var _button_button_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../button/button.service */ "./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.service.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../util */ "./node_modules/@progress/kendo-angular-buttons/dist/es/util.js");
+/* harmony import */ var _navigation_keys__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../navigation/keys */ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/keys.js");
+
+
+
+
+
+
+/**
+ * @hidden
+ */
+var ariaChecked = 'aria-checked';
+/**
+ * @hidden
+ */
+var role = 'role';
+/**
+ * @hidden
+ */
+var tabindex = 'tabindex';
+/**
+ * Represents the Kendo UI ButtonGroup component for Angular.
+ */
+var ButtonGroupComponent = /** @class */ (function () {
+    function ButtonGroupComponent(service, localization, element) {
+        var _this = this;
+        this.service = service;
+        this.element = element;
+        /**
+         * By default, the selection mode of the ButtonGroup is set to `multiple`.
+         */
+        this.selection = 'multiple';
+        /**
+         * Changes the visual appearance by using alternative styling options.
+         *
+         * The available values are:
+         * * `bare`
+         * * `flat`
+         * * `outline`
+         *
+         * The `look` property of the ButtonGroup takes precedence over the `look` property
+         * of the individual buttons that are part of the group.
+         */
+        this.look = 'default';
+        /**
+         * Specifies the [`tabIndex`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) of the component.
+         */
+        this.tabIndex = 0;
+        this.localizationChangeSubscription = localization.changes.subscribe(function (_a) {
+            var rtl = _a.rtl;
+            return _this.direction = rtl ? 'rtl' : 'ltr';
+        });
+    }
+    Object.defineProperty(ButtonGroupComponent.prototype, "wrapperClass", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonGroupComponent.prototype, "disabledClass", {
+        get: function () {
+            return this.disabled;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonGroupComponent.prototype, "stretchedClass", {
+        get: function () {
+            return !!this.width;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonGroupComponent.prototype, "isBare", {
+        get: function () {
+            return this.look === 'bare';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonGroupComponent.prototype, "isFlat", {
+        get: function () {
+            return this.look === 'flat';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonGroupComponent.prototype, "isOutline", {
+        get: function () {
+            return this.look === 'outline';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonGroupComponent.prototype, "getRole", {
+        get: function () {
+            return this.isSelectionSingle() ? 'radiogroup' : 'group';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonGroupComponent.prototype, "dir", {
+        get: function () {
+            return this.direction;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonGroupComponent.prototype, "ariaDisabled", {
+        get: function () {
+            return this.disabled;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonGroupComponent.prototype, "wrapperWidth", {
+        get: function () {
+            return this.width;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonGroupComponent.prototype, "wrapperTabIndex", {
+        get: function () {
+            return this.tabIndex;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @hidden
+     */
+    ButtonGroupComponent.prototype.keydown = function (event) {
+        if (this.isSelectionSingle()) {
+            this.navigateSelection(event);
+        }
+        else {
+            this.navigateFocus(event);
+        }
+    };
+    /**
+     * @hidden
+     */
+    ButtonGroupComponent.prototype.focusout = function (event) {
+        if (event.relatedTarget && event.relatedTarget.parentNode !== this.element.nativeElement) {
+            this.defocus(this.buttons.toArray());
+        }
+    };
+    ButtonGroupComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.subscription = this.service.buttonClicked$.subscribe(function (button) {
+            if (_this.isSelectionSingle()) {
+                _this.deactivate(_this.buttons.filter(function (current) { return current !== button; }));
+                button.setSelected(true);
+                button.setAttribute(ariaChecked, button.selected.toString());
+                button.setAttribute(tabindex, "0");
+            }
+            else {
+                _this.defocus(_this.buttons.toArray());
+                button.setSelected(!button.selected);
+                button.setAttribute(ariaChecked, (!button.selected).toString());
+                button.setAttribute(tabindex, "0");
+            }
+        });
+    };
+    ButtonGroupComponent.prototype.ngAfterContentInit = function () {
+        var _this = this;
+        var isRadioGroup = this.isSelectionSingle();
+        var buttonsRole = isRadioGroup ? 'radio' : 'checkbox';
+        var anyChecked = false;
+        this.buttons.forEach(function (button) {
+            button.setAttribute(ariaChecked, button.selected.toString());
+            button.setAttribute(role, buttonsRole);
+            if (Object(_util__WEBPACK_IMPORTED_MODULE_4__["isPresent"])(_this.disabled)) {
+                button.disabled = _this.disabled;
+            }
+            if (_this.look !== 'default') {
+                button.look = _this.look;
+            }
+            // if (!isRadioGroup || button.selected) {
+            //     button.setAttribute(tabindex, button.tabIndex.toString());
+            // } else if (isRadioGroup && !button.selected) {
+            //     button.setAttribute(tabindex, "-1");
+            // }
+            if (!button.selected) {
+                button.setAttribute(tabindex, "-1");
+            }
+            else {
+                button.setAttribute(tabindex, "0");
+            }
+            anyChecked = anyChecked || button.selected;
+        });
+        if (isRadioGroup && !anyChecked) {
+            this.buttons.first.setAttribute(tabindex, "0");
+            this.buttons.last.setAttribute(tabindex, "0");
+        }
+    };
+    ButtonGroupComponent.prototype.ngAfterViewChecked = function () {
+        if (this.buttons.length) {
+            this.buttons.first.renderer.addClass(this.buttons.first.element, 'k-group-start');
+            this.buttons.last.renderer.addClass(this.buttons.last.element, 'k-group-end');
+        }
+    };
+    ButtonGroupComponent.prototype.ngOnDestroy = function () {
+        this.subscription.unsubscribe();
+        this.localizationChangeSubscription.unsubscribe();
+    };
+    ButtonGroupComponent.prototype.ngAfterContentChecked = function () {
+        this.verifySettings();
+    };
+    ButtonGroupComponent.prototype.navigateSelection = function (event) {
+        var selectedIndex = this.buttons.toArray().findIndex(function (current) { return current.selected; });
+        var firstIndex = 0;
+        var lastIndex = this.buttons.length - 1;
+        if (selectedIndex !== undefined) {
+            if (event.keyCode === _navigation_keys__WEBPACK_IMPORTED_MODULE_5__["Keys"].right && selectedIndex < lastIndex) {
+                this.deactivate(this.buttons.filter(function (current) { return current.selected; }));
+                this.activate(this.buttons.filter(function (_current, index) {
+                    return index === selectedIndex + 1;
+                }));
+            }
+            if (event.keyCode === _navigation_keys__WEBPACK_IMPORTED_MODULE_5__["Keys"].left && selectedIndex > firstIndex) {
+                this.deactivate(this.buttons.filter(function (current) { return current.selected; }));
+                this.activate(this.buttons.filter(function (_current, index) {
+                    return index === selectedIndex - 1;
+                }));
+            }
+        }
+    };
+    ButtonGroupComponent.prototype.navigateFocus = function (event) {
+        var focusedIndex = this.buttons.toArray().findIndex(function (current) { return current.element.tabIndex !== -1; });
+        var firstIndex = 0;
+        var lastIndex = this.buttons.length - 1;
+        if (event.keyCode === _navigation_keys__WEBPACK_IMPORTED_MODULE_5__["Keys"].right && focusedIndex < lastIndex) {
+            this.defocus(this.buttons.toArray());
+            this.focus(this.buttons.filter(function (_current, index) {
+                return index === focusedIndex + 1;
+            }));
+        }
+        if (event.keyCode === _navigation_keys__WEBPACK_IMPORTED_MODULE_5__["Keys"].left && focusedIndex > firstIndex) {
+            this.defocus(this.buttons.toArray());
+            this.focus(this.buttons.filter(function (_current, index) {
+                return index === focusedIndex - 1;
+            }));
+        }
+    };
+    ButtonGroupComponent.prototype.deactivate = function (buttons) {
+        buttons.forEach(function (button) {
+            button.setSelected(false);
+            button.setAttribute(ariaChecked, button.selected.toString());
+            button.setAttribute(tabindex, "-1");
+        });
+    };
+    ButtonGroupComponent.prototype.activate = function (buttons) {
+        buttons.forEach(function (button) {
+            button.setSelected(true);
+            button.setAttribute(ariaChecked, button.selected.toString());
+            button.setAttribute(tabindex, "0");
+            button.focus();
+        });
+    };
+    ButtonGroupComponent.prototype.defocus = function (buttons) {
+        buttons.forEach(function (button) {
+            button.setAttribute(tabindex, "-1");
+        });
+    };
+    ButtonGroupComponent.prototype.focus = function (buttons) {
+        buttons.forEach(function (button) {
+            button.setAttribute(tabindex, "0");
+            button.focus();
+        });
+    };
+    ButtonGroupComponent.prototype.verifySettings = function () {
+        if (Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["isDevMode"])()) {
+            if (this.isSelectionSingle() && this.buttons.filter(function (button) { return button.selected; }).length > 1) {
+                throw new Error('Having multiple selected buttons with single selection mode is not supported');
+            }
+        }
+    };
+    ButtonGroupComponent.prototype.isSelectionSingle = function () {
+        return this.selection === 'single';
+    };
+    ButtonGroupComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"], args: [{
+                    exportAs: 'kendoButtonGroup',
+                    providers: [
+                        _button_button_service__WEBPACK_IMPORTED_MODULE_3__["KendoButtonService"],
+                        _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_2__["LocalizationService"],
+                        {
+                            provide: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_2__["L10N_PREFIX"],
+                            useValue: 'kendo.buttongroup'
+                        }
+                    ],
+                    selector: 'kendo-buttongroup',
+                    template: "\n        <ng-content select=\"[kendoButton]\"></ng-content>\n    "
+                },] },
+    ];
+    /** @nocollapse */
+    ButtonGroupComponent.ctorParameters = function () { return [
+        { type: _button_button_service__WEBPACK_IMPORTED_MODULE_3__["KendoButtonService"], },
+        { type: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_2__["LocalizationService"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"], },
+    ]; };
+    ButtonGroupComponent.propDecorators = {
+        'disabled': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"], args: ['disabled',] },],
+        'selection': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"], args: ['selection',] },],
+        'width': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"], args: ['width',] },],
+        'look': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'tabIndex': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'buttons': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ContentChildren"], args: [_button_button_directive__WEBPACK_IMPORTED_MODULE_0__["ButtonDirective"],] },],
+        'wrapperClass': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['class.k-button-group',] },],
+        'disabledClass': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['class.k-state-disabled',] },],
+        'stretchedClass': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['class.k-button-group-stretched',] },],
+        'isBare': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['class.k-button-group-bare',] },],
+        'isFlat': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['class.k-button-group-flat',] },],
+        'isOutline': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['class.k-button-group-outline',] },],
+        'getRole': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['attr.role',] },],
+        'dir': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['attr.dir',] },],
+        'ariaDisabled': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['attr.aria-disalbed',] },],
+        'wrapperWidth': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['style.width',] },],
+        'wrapperTabIndex': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['attr.tabindex',] },],
+        'keydown': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"], args: ['keydown', ['$event'],] },],
+        'focusout': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"], args: ['focusout', ['$event'],] },],
+    };
+    return ButtonGroupComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/buttongroup/buttongroup.module.js":
+/*!************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/buttongroup/buttongroup.module.js ***!
+  \************************************************************************************************/
+/*! exports provided: ButtonGroupModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ButtonGroupModule", function() { return ButtonGroupModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _button_button_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../button/button.module */ "./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.module.js");
+/* harmony import */ var _buttongroup_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./buttongroup.component */ "./node_modules/@progress/kendo-angular-buttons/dist/es/buttongroup/buttongroup.component.js");
+
+
+
+
+/**
+ * @hidden
+ *
+ * The exported package module.
+ *
+ * The package exports:
+ * - `ButtonGroupComponent`&mdash;The ButtonGroupComponent component class.
+ */
+var ButtonGroupModule = /** @class */ (function () {
+    function ButtonGroupModule() {
+    }
+    ButtonGroupModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    declarations: [_buttongroup_component__WEBPACK_IMPORTED_MODULE_3__["ButtonGroupComponent"]],
+                    exports: [_buttongroup_component__WEBPACK_IMPORTED_MODULE_3__["ButtonGroupComponent"]],
+                    imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], _button_button_module__WEBPACK_IMPORTED_MODULE_2__["ButtonModule"]]
+                },] },
+    ];
+    /** @nocollapse */
+    ButtonGroupModule.ctorParameters = function () { return []; };
+    return ButtonGroupModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/buttons.module.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/buttons.module.js ***!
+  \********************************************************************************/
+/*! exports provided: ButtonsModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ButtonsModule", function() { return ButtonsModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _button_button_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./button/button.module */ "./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.module.js");
+/* harmony import */ var _buttongroup_buttongroup_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./buttongroup/buttongroup.module */ "./node_modules/@progress/kendo-angular-buttons/dist/es/buttongroup/buttongroup.module.js");
+/* harmony import */ var _splitbutton_splitbutton_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./splitbutton/splitbutton.module */ "./node_modules/@progress/kendo-angular-buttons/dist/es/splitbutton/splitbutton.module.js");
+/* harmony import */ var _dropdownbutton_dropdownbutton_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./dropdownbutton/dropdownbutton.module */ "./node_modules/@progress/kendo-angular-buttons/dist/es/dropdownbutton/dropdownbutton.module.js");
+
+
+
+
+
+/**
+ * Represents the [NgModule](https://angular.io/docs/ts/latest/guide/ngmodule.html)
+ * definition for the Buttons components.
+ *
+ * @example
+ *
+ * ```ts-no-run
+ * // Import the Buttons module
+ * import { ButtonsModule } from '@progress/kendo-angular-buttons';
+ *
+ * // The browser platform with a compiler
+ * import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+ *
+ * import { NgModule } from '@angular/core';
+ *
+ * // Import the app component
+ * import { AppComponent } from './app.component';
+ *
+ * // Define the app module
+ * _@NgModule({
+ *     declarations: [AppComponent], // declare app component
+ *     imports:      [BrowserModule, ButtonsModule], // import Buttons module
+ *     bootstrap:    [AppComponent]
+ * })
+ * export class AppModule {}
+ *
+ * // Compile and launch the module
+ * platformBrowserDynamic().bootstrapModule(AppModule);
+ *
+ * ```
+ */
+var ButtonsModule = /** @class */ (function () {
+    function ButtonsModule() {
+    }
+    ButtonsModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    exports: [_buttongroup_buttongroup_module__WEBPACK_IMPORTED_MODULE_2__["ButtonGroupModule"], _button_button_module__WEBPACK_IMPORTED_MODULE_1__["ButtonModule"], _splitbutton_splitbutton_module__WEBPACK_IMPORTED_MODULE_3__["SplitButtonModule"], _dropdownbutton_dropdownbutton_module__WEBPACK_IMPORTED_MODULE_4__["DropDownButtonModule"]]
+                },] },
+    ];
+    /** @nocollapse */
+    ButtonsModule.ctorParameters = function () { return []; };
+    return ButtonsModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/dropdownbutton/dropdownbutton.component.js":
+/*!*********************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/dropdownbutton/dropdownbutton.component.js ***!
+  \*********************************************************************************************************/
+/*! exports provided: DropDownButtonComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DropDownButtonComponent", function() { return DropDownButtonComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @progress/kendo-angular-l10n */ "./node_modules/@progress/kendo-angular-l10n/dist/es/index.js");
+/* harmony import */ var _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @progress/kendo-angular-popup */ "./node_modules/@progress/kendo-angular-popup/dist/es/index.js");
+/* harmony import */ var _listbutton_button_item_template_directive__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../listbutton/button-item-template.directive */ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/button-item-template.directive.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../util */ "./node_modules/@progress/kendo-angular-buttons/dist/es/util.js");
+/* harmony import */ var _listbutton_list_button__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../listbutton/list-button */ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/list-button.js");
+/* harmony import */ var _focusable_focus_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../focusable/focus.service */ "./node_modules/@progress/kendo-angular-buttons/dist/es/focusable/focus.service.js");
+/* harmony import */ var _navigation_navigation_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../navigation/navigation.service */ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/navigation.service.js");
+/* harmony import */ var _navigation_navigation_config__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../navigation/navigation-config */ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/navigation-config.js");
+/* harmony import */ var _preventable_event__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../preventable-event */ "./node_modules/@progress/kendo-angular-buttons/dist/es/preventable-event.js");
+/* harmony import */ var rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! rxjs/observable/merge */ "./node_modules/rxjs-compat/_esm5/observable/merge.js");
+
+/* tslint:disable:no-access-missing-member */
+
+
+
+
+
+
+
+
+
+
+
+var NAVIGATION_SETTINGS = {
+    useLeftRightArrows: true
+};
+var NAVIGATION_SETTINGS_PROVIDER = {
+    provide: _navigation_navigation_config__WEBPACK_IMPORTED_MODULE_9__["NAVIGATION_CONFIG"],
+    useValue: NAVIGATION_SETTINGS
+};
+/**
+ * Represents the Kendo UI DropDownButton component for Angular.
+ *
+ * @example
+ * ```ts
+ * _@Component({
+ * selector: 'my-app',
+ * template: `
+ *  <kendo-dropdownbutton [data]="data">
+ *    User Settings
+ *  </kendo-dropdownbutton>
+ * `
+ * })
+ * class AppComponent {
+ *   public data: Array<any> = [{
+ *       text: 'My Profile'
+ *   }, {
+ *       text: 'Friend Requests'
+ *   }, {
+ *       text: 'Account Settings'
+ *   }, {
+ *       text: 'Support'
+ *   }, {
+ *       text: 'Log Out'
+ *   }];
+ * }
+ * ```
+ */
+var DropDownButtonComponent = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](DropDownButtonComponent, _super);
+    function DropDownButtonComponent(focusService, navigationService, wrapperRef, zone, popupService, localization) {
+        var _this = _super.call(this, focusService, navigationService, wrapperRef, zone, localization) || this;
+        _this.popupService = popupService;
+        /**
+         * Defines the name of an existing icon in a Kendo UI theme.
+         */
+        _this.icon = '';
+        /**
+         * Defines the list of CSS classes which are used for styling the Button with custom icons.
+         */
+        _this.iconClass = '';
+        /**
+         * Defines a URL for styling the button with a custom image.
+         */
+        _this.imageUrl = '';
+        /**
+         * Specifies the [`tabIndex`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) of the component.
+         */
+        _this.tabIndex = 0;
+        /**
+         * Fires each time the user clicks on a drop-down list item. The event data contains the data item bound to the clicked list item.
+         */
+        _this.itemClick = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires each time the popup is about to open.
+         * This event is preventable. If you cancel the event, the popup will remain closed.
+         */
+        _this.open = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires each time the popup is about to close.
+         * This event is preventable. If you cancel the event, the popup will remain open.
+         */
+        _this.close = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires each time the DropDownButton gets focused.
+         */
+        _this.onFocus = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"](); //tslint:disable-line:no-output-rename
+        /**
+         * Fires each time the DropDownButton gets blurred.
+         */
+        _this.onBlur = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"](); //tslint:disable-line:no-output-rename
+        _this.listId = Object(_util__WEBPACK_IMPORTED_MODULE_5__["guid"])();
+        _this._itemClick = _this.itemClick;
+        _this._blur = _this.onBlur;
+        return _this;
+    }
+    Object.defineProperty(DropDownButtonComponent.prototype, "popupSettings", {
+        get: function () {
+            return this._popupSettings;
+        },
+        /**
+         * Configures the popup of the DropDownButton.
+         *
+         * The available options are:
+         * - `animate:Boolean`&mdash;Controls the popup animation. By default, the open and close animations are enabled.
+         * - `popupClass:String`&mdash;Specifies a list of CSS classes that are used to style the popup.
+         */
+        set: function (settings) {
+            this._popupSettings = Object.assign({ animate: true, popupClass: '' }, settings);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownButtonComponent.prototype, "disabled", {
+        get: function () {
+            return this._disabled;
+        },
+        /**
+         * Sets the disabled state of the DropDownButton.
+         */
+        set: function (value) {
+            if (value && this.openState) {
+                this.openState = false;
+            }
+            this._disabled = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownButtonComponent.prototype, "data", {
+        get: function () {
+            return this._data;
+        },
+        /**
+         * Sets or gets the data of the DropDownButton.
+         *
+         * > The data has to be provided in an array-like list.
+         */
+        set: function (data) {
+            this._data = data || [];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownButtonComponent.prototype, "openState", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            return this._open;
+        },
+        /**
+         * @hidden
+         */
+        set: function (open) {
+            if (this.disabled) {
+                return;
+            }
+            var eventArgs = new _preventable_event__WEBPACK_IMPORTED_MODULE_10__["PreventableEvent"]();
+            if (open) {
+                this.open.emit(eventArgs);
+            }
+            else {
+                this.close.emit(eventArgs);
+            }
+            if (eventArgs.isDefaultPrevented()) {
+                return;
+            }
+            this._toggle(open);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownButtonComponent.prototype, "componentTabIndex", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            return this.disabled ? (-1) : this.tabIndex;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownButtonComponent.prototype, "focused", {
+        get: function () {
+            return this._isFocused && !this._disabled;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownButtonComponent.prototype, "widgetClasses", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownButtonComponent.prototype, "dir", {
+        get: function () {
+            return this.direction;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownButtonComponent.prototype, "active", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            return this._active;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @hidden
+     */
+    DropDownButtonComponent.prototype.keydown = function (event) {
+        this.keyDownHandler(event);
+    };
+    /**
+     * @hidden
+     */
+    DropDownButtonComponent.prototype.keypress = function (event) {
+        this.keyPressHandler(event);
+    };
+    /**
+     * @hidden
+     */
+    DropDownButtonComponent.prototype.keyup = function (event) {
+        this.keyUpHandler(event);
+    };
+    /**
+     * @hidden
+     */
+    DropDownButtonComponent.prototype.mousedown = function (event) {
+        if (this._disabled) {
+            event.preventDefault();
+        }
+    };
+    /**
+     * @hidden
+     */
+    DropDownButtonComponent.prototype.openPopup = function () {
+        this.togglePopupVisibility();
+    };
+    Object.defineProperty(DropDownButtonComponent.prototype, "anchorAlign", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            var align = { horizontal: 'left', vertical: 'bottom' };
+            if (this.direction === 'rtl') {
+                align.horizontal = 'right';
+            }
+            return align;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownButtonComponent.prototype, "popupAlign", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            var align = { horizontal: 'left', vertical: 'top' };
+            if (this.direction === 'rtl') {
+                align.horizontal = 'right';
+            }
+            return align;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Focuses the DropDownButton component.
+     */
+    DropDownButtonComponent.prototype.focus = function () {
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_5__["isDocumentAvailable"])()) {
+            this.button.nativeElement.focus();
+        }
+    };
+    /**
+     * Blurs the DropDownButton component.
+     */
+    DropDownButtonComponent.prototype.blur = function () {
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_5__["isDocumentAvailable"])()) {
+            this.button.nativeElement.blur();
+        }
+    };
+    /**
+     * Toggles the visibility of the popup.
+     * If the `toggle` method is used to open or close the popup, the `open` and `close` events will not be fired.
+     *
+     * @param open - The state of the popup.
+     */
+    DropDownButtonComponent.prototype.toggle = function (open) {
+        var _this = this;
+        if (this.disabled) {
+            return;
+        }
+        Object(_util__WEBPACK_IMPORTED_MODULE_5__["tick"])(function () { return (_this._toggle((open === undefined) ? !_this._open : open)); });
+    };
+    Object.defineProperty(DropDownButtonComponent.prototype, "isOpen", {
+        /**
+         * Returns the current open state of the popup.
+         */
+        get: function () {
+            return this.openState;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @hidden
+     */
+    DropDownButtonComponent.prototype.handleFocus = function () {
+        if (!this._disabled && !this._isFocused) {
+            this._isFocused = true;
+            this.onFocus.emit();
+        }
+    };
+    /**
+     * @hidden
+     */
+    DropDownButtonComponent.prototype.wrapperContains = function (element) {
+        return this.wrapper === element
+            || this.wrapper.contains(element)
+            || (this.popupRef && this.popupRef.popupElement.contains(element));
+    };
+    DropDownButtonComponent.prototype.subscribeNavigationEvents = function () {
+        this.navigationSubscription = this.navigationService.navigate
+            .subscribe(this.onArrowKeyNavigate.bind(this));
+        this.enterPressSubscription = this.navigationService.enterpress.subscribe(this.onNavigationEnterPress.bind(this));
+        this.enterUpSubscription = this.navigationService.enterup.subscribe(this.onNavigationEnterUp.bind(this));
+        this.openSubscription = this.navigationService.open.subscribe(this.onNavigationOpen.bind(this));
+        this.closeSubscription = Object(rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_11__["merge"])(this.navigationService.close, this.navigationService.esc).subscribe(this.onNavigationClose.bind(this));
+    };
+    DropDownButtonComponent.prototype.onNavigationEnterPress = function () {
+        if (!this._disabled && !this.openState) {
+            this._active = true;
+        }
+    };
+    DropDownButtonComponent.prototype.onNavigationEnterUp = function () {
+        if (!this._disabled && !this.openState) {
+            this._active = false;
+        }
+        if (this.openState) {
+            var focused = this.focusService.focused;
+            if (Object(_util__WEBPACK_IMPORTED_MODULE_5__["isPresent"])(focused) && focused !== -1) {
+                this.emitItemClickHandler(focused);
+            }
+        }
+        this.togglePopupVisibility();
+        if (!this.openState && Object(_util__WEBPACK_IMPORTED_MODULE_5__["isDocumentAvailable"])()) {
+            this.button.nativeElement.focus();
+        }
+    };
+    DropDownButtonComponent.prototype.onNavigationOpen = function () {
+        if (!this._disabled && !this.openState) {
+            this.togglePopupVisibility();
+        }
+    };
+    DropDownButtonComponent.prototype.onNavigationClose = function () {
+        if (this.openState) {
+            this.togglePopupVisibility();
+            if (Object(_util__WEBPACK_IMPORTED_MODULE_5__["isDocumentAvailable"])()) {
+                this.button.nativeElement.focus();
+            }
+        }
+    };
+    DropDownButtonComponent.prototype.onArrowKeyNavigate = function (index) {
+        this.focusService.focus(index);
+    };
+    DropDownButtonComponent.prototype._toggle = function (open) {
+        var _this = this;
+        if (this._open === open) {
+            return;
+        }
+        this._open = open;
+        if (this.popupRef) {
+            this.popupRef.close();
+            this.popupRef = null;
+        }
+        if (this._open) {
+            this.popupRef = this.popupService.open({
+                anchor: this.button,
+                anchorAlign: this.anchorAlign,
+                animate: this.popupSettings.animate,
+                content: this.popupTemplate,
+                popupAlign: this.popupAlign,
+                popupClass: this.popupClasses
+            });
+            this.popupRef.popupAnchorViewportLeave.subscribe(function () { return _this.openState = false; });
+            this.popupRef.popupOpen.subscribe(this.focusFirstItem.bind(this));
+        }
+    };
+    DropDownButtonComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"], args: [{
+                    exportAs: 'kendoDropDownButton',
+                    providers: [
+                        _focusable_focus_service__WEBPACK_IMPORTED_MODULE_7__["FocusService"],
+                        _navigation_navigation_service__WEBPACK_IMPORTED_MODULE_8__["NavigationService"],
+                        NAVIGATION_SETTINGS_PROVIDER,
+                        _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_2__["LocalizationService"],
+                        {
+                            provide: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_2__["L10N_PREFIX"],
+                            useValue: 'kendo.dropdownbutton'
+                        }
+                    ],
+                    selector: 'kendo-dropdownbutton',
+                    template: "\n        <button kendoButton #button\n            role=\"menu\"\n            type=\"button\"\n            [tabindex]=\"componentTabIndex\"\n            [class.k-state-active]=\"active\"\n            [disabled]=\"disabled\"\n            [icon]=\"icon\"\n            [iconClass]=\"iconClass\"\n            [imageUrl]=\"imageUrl\"\n            (click)=\"openPopup()\"\n            (focus)=\"handleFocus()\"\n            [attr.aria-disabled]=\"disabled\"\n            [attr.aria-expanded]=\"openState\"\n            [attr.aria-haspopup]=\"true\"\n            [attr.aria-owns]=\"listId\"\n            >\n            <ng-content></ng-content>\n        </button>\n        <ng-template #popupTemplate>\n            <kendo-button-list\n                #buttonList\n                [id]=\"listId\"\n                [data]=\"data\"\n                [textField]=\"textField\"\n                [itemTemplate]=\"itemTemplate\"\n                (onItemClick)=\"onItemClick($event)\"\n                (keydown)=\"keyDownHandler($event)\"\n                (keypress)=\"keyPressHandler($event)\"\n                (keyup)=\"keyUpHandler($event)\"\n            >\n            </kendo-button-list>\n        </ng-template>\n    "
+                },] },
+    ];
+    /** @nocollapse */
+    DropDownButtonComponent.ctorParameters = function () { return [
+        { type: _focusable_focus_service__WEBPACK_IMPORTED_MODULE_7__["FocusService"], },
+        { type: _navigation_navigation_service__WEBPACK_IMPORTED_MODULE_8__["NavigationService"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"], },
+        { type: _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_3__["PopupService"], },
+        { type: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_2__["LocalizationService"], },
+    ]; };
+    DropDownButtonComponent.propDecorators = {
+        'icon': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'iconClass': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'imageUrl': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'popupSettings': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'textField': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'disabled': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'data': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'tabIndex': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'itemClick': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"] },],
+        'open': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"] },],
+        'close': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"] },],
+        'onFocus': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"], args: ['focus',] },],
+        'onBlur': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"], args: ['blur',] },],
+        'focused': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['class.k-state-focused',] },],
+        'widgetClasses': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['class.k-widget',] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['class.k-dropdown-button',] },],
+        'dir': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['attr.dir',] },],
+        'itemTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ContentChild"], args: [_listbutton_button_item_template_directive__WEBPACK_IMPORTED_MODULE_4__["ButtonItemTemplateDirective"],] },],
+        'button': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"], args: ['button',] },],
+        'buttonList': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"], args: ['buttonList',] },],
+        'popupTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"], args: ['popupTemplate',] },],
+        'keydown': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"], args: ['keydown', ['$event'],] },],
+        'keypress': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"], args: ['keypress', ['$event'],] },],
+        'keyup': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"], args: ['keyup', ['$event'],] },],
+        'mousedown': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"], args: ['mousedown', ['$event'],] },],
+    };
+    return DropDownButtonComponent;
+}(_listbutton_list_button__WEBPACK_IMPORTED_MODULE_6__["ListButton"]));
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/dropdownbutton/dropdownbutton.module.js":
+/*!******************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/dropdownbutton/dropdownbutton.module.js ***!
+  \******************************************************************************************************/
+/*! exports provided: DropDownButtonModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DropDownButtonModule", function() { return DropDownButtonModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @progress/kendo-angular-popup */ "./node_modules/@progress/kendo-angular-popup/dist/es/index.js");
+/* harmony import */ var _listbutton_list_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../listbutton/list.module */ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/list.module.js");
+/* harmony import */ var _button_button_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../button/button.module */ "./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.module.js");
+/* harmony import */ var _dropdownbutton_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./dropdownbutton.component */ "./node_modules/@progress/kendo-angular-buttons/dist/es/dropdownbutton/dropdownbutton.component.js");
+
+
+
+
+
+
+/**
+ * @hidden
+ *
+ * The exported package module.
+ *
+ * The package exports:
+ * - `DropDownButtonComponent`&mdash;The DropDownButtonComponent component class.
+ */
+var DropDownButtonModule = /** @class */ (function () {
+    function DropDownButtonModule() {
+    }
+    DropDownButtonModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    declarations: [_dropdownbutton_component__WEBPACK_IMPORTED_MODULE_5__["DropDownButtonComponent"]],
+                    exports: [_dropdownbutton_component__WEBPACK_IMPORTED_MODULE_5__["DropDownButtonComponent"], _listbutton_list_module__WEBPACK_IMPORTED_MODULE_3__["ListModule"]],
+                    imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_2__["PopupModule"], _listbutton_list_module__WEBPACK_IMPORTED_MODULE_3__["ListModule"], _button_button_module__WEBPACK_IMPORTED_MODULE_4__["ButtonModule"]]
+                },] },
+    ];
+    /** @nocollapse */
+    DropDownButtonModule.ctorParameters = function () { return []; };
+    return DropDownButtonModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/focusable/focus.service.js":
+/*!*****************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/focusable/focus.service.js ***!
+  \*****************************************************************************************/
+/*! exports provided: FocusService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FocusService", function() { return FocusService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+/**
+ * @hidden
+ */
+var FocusService = /** @class */ (function () {
+    function FocusService() {
+        this.onFocus = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+    }
+    FocusService.prototype.isFocused = function (index) {
+        return index === this.focused;
+    };
+    FocusService.prototype.focus = function (index) {
+        if (this.isFocused(index)) {
+            return;
+        }
+        this.focused = index;
+        this.onFocus.emit(index);
+    };
+    FocusService.prototype.resetFocus = function () {
+        this.focused = -1;
+    };
+    Object.defineProperty(FocusService.prototype, "focused", {
+        get: function () {
+            return this.focusedIndex;
+        },
+        set: function (index) {
+            this.focusedIndex = index;
+            this.onFocus.emit(index);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    FocusService.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    FocusService.ctorParameters = function () { return []; };
+    return FocusService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/focusable/focusable.directive.js":
+/*!***********************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/focusable/focusable.directive.js ***!
+  \***********************************************************************************************/
+/*! exports provided: FocusableDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FocusableDirective", function() { return FocusableDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _focus_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./focus.service */ "./node_modules/@progress/kendo-angular-buttons/dist/es/focusable/focus.service.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../util */ "./node_modules/@progress/kendo-angular-buttons/dist/es/util.js");
+
+
+
+/**
+ * @hidden
+ */
+var FocusableDirective = /** @class */ (function () {
+    function FocusableDirective(focusService, elementRef) {
+        this.focusService = focusService;
+        this.element = elementRef.nativeElement;
+        this.subscribeEvents();
+    }
+    Object.defineProperty(FocusableDirective.prototype, "focusedClassName", {
+        get: function () {
+            return this.focusService.isFocused(this.index);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @hidden
+     */
+    FocusableDirective.prototype.ngOnDestroy = function () {
+        this.unsubscribeEvents();
+    };
+    FocusableDirective.prototype.subscribeEvents = function () {
+        var _this = this;
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_2__["isDocumentAvailable"])()) {
+            return;
+        }
+        this.focusSubscription = this.focusService.onFocus.subscribe(function (index) {
+            if (_this.index === index) {
+                _this.element.focus();
+            }
+        });
+    };
+    FocusableDirective.prototype.unsubscribeEvents = function () {
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_2__["isDocumentAvailable"])()) {
+            return;
+        }
+        if (this.focusSubscription) {
+            this.focusSubscription.unsubscribe();
+        }
+    };
+    FocusableDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[kendoButtonFocusable]'
+                },] },
+    ];
+    /** @nocollapse */
+    FocusableDirective.ctorParameters = function () { return [
+        { type: _focus_service__WEBPACK_IMPORTED_MODULE_1__["FocusService"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], },
+    ]; };
+    FocusableDirective.propDecorators = {
+        'index': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'focusedClassName': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-state-focused',] },],
+    };
+    return FocusableDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/index.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/index.js ***!
+  \***********************************************************************/
+/*! exports provided: ɵa, ɵc, ɵj, ɵg, ɵb, ɵi, ɵh, ɵk, ɵf, ɵd, Button, ButtonGroup, ButtonGroupModule, ButtonModule, ButtonsModule, SplitButton, SplitButtonModule, DropDownButton, DropDownButtonModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./main */ "./node_modules/@progress/kendo-angular-buttons/dist/es/main.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Button", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["Button"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ButtonGroup", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["ButtonGroup"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ButtonGroupModule", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["ButtonGroupModule"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ButtonModule", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["ButtonModule"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ButtonsModule", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["ButtonsModule"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SplitButton", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["SplitButton"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SplitButtonModule", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["SplitButtonModule"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DropDownButton", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["DropDownButton"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DropDownButtonModule", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["DropDownButtonModule"]; });
+
+/* harmony import */ var _button_button_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./button/button.service */ "./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.service.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵa", function() { return _button_button_service__WEBPACK_IMPORTED_MODULE_1__["KendoButtonService"]; });
+
+/* harmony import */ var _focusable_focus_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./focusable/focus.service */ "./node_modules/@progress/kendo-angular-buttons/dist/es/focusable/focus.service.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵc", function() { return _focusable_focus_service__WEBPACK_IMPORTED_MODULE_2__["FocusService"]; });
+
+/* harmony import */ var _focusable_focusable_directive__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./focusable/focusable.directive */ "./node_modules/@progress/kendo-angular-buttons/dist/es/focusable/focusable.directive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵj", function() { return _focusable_focusable_directive__WEBPACK_IMPORTED_MODULE_3__["FocusableDirective"]; });
+
+/* harmony import */ var _listbutton_button_item_template_directive__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./listbutton/button-item-template.directive */ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/button-item-template.directive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵg", function() { return _listbutton_button_item_template_directive__WEBPACK_IMPORTED_MODULE_4__["ButtonItemTemplateDirective"]; });
+
+/* harmony import */ var _listbutton_list_button__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./listbutton/list-button */ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/list-button.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵb", function() { return _listbutton_list_button__WEBPACK_IMPORTED_MODULE_5__["ListButton"]; });
+
+/* harmony import */ var _listbutton_list_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./listbutton/list.component */ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/list.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵi", function() { return _listbutton_list_component__WEBPACK_IMPORTED_MODULE_6__["ListComponent"]; });
+
+/* harmony import */ var _listbutton_list_module__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./listbutton/list.module */ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/list.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵh", function() { return _listbutton_list_module__WEBPACK_IMPORTED_MODULE_7__["ListModule"]; });
+
+/* harmony import */ var _listbutton_template_context_directive__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./listbutton/template-context.directive */ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/template-context.directive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵk", function() { return _listbutton_template_context_directive__WEBPACK_IMPORTED_MODULE_8__["TemplateContextDirective"]; });
+
+/* harmony import */ var _navigation_navigation_config__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./navigation/navigation-config */ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/navigation-config.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵf", function() { return _navigation_navigation_config__WEBPACK_IMPORTED_MODULE_9__["NAVIGATION_CONFIG"]; });
+
+/* harmony import */ var _navigation_navigation_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./navigation/navigation.service */ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/navigation.service.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵd", function() { return _navigation_navigation_service__WEBPACK_IMPORTED_MODULE_10__["NavigationService"]; });
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/button-item-template.directive.js":
+/*!***********************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/button-item-template.directive.js ***!
+  \***********************************************************************************************************/
+/*! exports provided: ButtonItemTemplateDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ButtonItemTemplateDirective", function() { return ButtonItemTemplateDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* tslint:disable:directive-selector-name */
+
+/**
+ * Used for rendering the list item content.
+ *
+ * To define the item template, nest a `<ng-template>` tag with the `kendo<ComponentName>ItemTemplate` directive inside the component tag.
+ *
+ * For the DropDownButton, use the `kendoDropDownButtonItemTemplate` directive.
+ * For the SplitButton, use the `kendoSplitButtonItemTemplate` directive.
+ *
+ * The template context is set to the current component. To get a reference to the current data item, use the `let-dataItem` directive.
+ *
+ * @example
+ * ```ts
+ * _@Component({
+ * selector: 'my-app',
+ * template: `
+ *  <kendo-splitbutton [data]="listItems">
+ *    <ng-template kendoSplitButtonItemTemplate let-dataItem>
+ *      <span>{{dataItem}} option</span>
+ *    </ng-template>
+ *  </kendo-splitbutton>
+ *  <kendo-dropdownbutton [data]="listItems">
+ *    <ng-template kendoDropDownButtonItemTemplate let-dataItem>
+ *      <span>{{dataItem}} option</span>
+ *    </ng-template>
+ *  </kendo-dropdownbutton>
+ * `
+ * })
+ * class AppComponent {
+ *   public listItems: Array<any> = [{
+ *      text: 'item1',
+ *      icon: 'refresh',
+ *      disabled: false,
+ *      click: (dataItem: any) => {
+ *          //action
+ *      }
+ *  }, {
+ *      text: 'item2',
+ *      icon: 'refresh',
+ *      disabled: false,
+ *      click: (dataItem: any) => {
+ *          //action
+ *      }
+ *  }]
+ * }
+ * ```
+ *
+ * For more examples, refer to the article on the [DropDownList templates]({% slug overview_ddl %}#templates).
+ */
+var ButtonItemTemplateDirective = /** @class */ (function () {
+    function ButtonItemTemplateDirective(templateRef) {
+        this.templateRef = templateRef;
+    }
+    ButtonItemTemplateDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[kendoDropDownButtonItemTemplate],[kendoSplitButtonItemTemplate]'
+                },] },
+    ];
+    /** @nocollapse */
+    ButtonItemTemplateDirective.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["TemplateRef"], },
+    ]; };
+    return ButtonItemTemplateDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/list-button.js":
+/*!****************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/list-button.js ***!
+  \****************************************************************************************/
+/*! exports provided: ListButton */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ListButton", function() { return ListButton; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_observable_fromEvent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/observable/fromEvent */ "./node_modules/rxjs-compat/_esm5/observable/fromEvent.js");
+/* harmony import */ var rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators/filter */ "./node_modules/rxjs-compat/_esm5/operators/filter.js");
+/* harmony import */ var rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/observable/merge */ "./node_modules/rxjs-compat/_esm5/observable/merge.js");
+/* harmony import */ var _navigation_key_events__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../navigation/key-events */ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/key-events.js");
+/* harmony import */ var _navigation_navigation_action__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../navigation/navigation-action */ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/navigation-action.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../util */ "./node_modules/@progress/kendo-angular-buttons/dist/es/util.js");
+
+
+
+
+
+
+
+/**
+ * @hidden
+ */
+var ListButton = /** @class */ (function () {
+    function ListButton(focusService, navigationService, wrapperRef, _zone, localization) {
+        var _this = this;
+        this.focusService = focusService;
+        this.navigationService = navigationService;
+        this.wrapperRef = wrapperRef;
+        this._zone = _zone;
+        this._open = false;
+        this._disabled = false;
+        this._active = false;
+        this._popupSettings = { animate: true, popupClass: '' };
+        this.listId = Object(_util__WEBPACK_IMPORTED_MODULE_6__["guid"])();
+        this._isFocused = false;
+        this.wrapperBlurred = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.focusService = focusService;
+        this.navigationService = navigationService;
+        this.wrapper = wrapperRef.nativeElement;
+        this.localizationChangeSubscription = localization.changes.subscribe(function (_a) {
+            var rtl = _a.rtl;
+            return _this.direction = rtl ? 'rtl' : 'ltr';
+        });
+        this.subscribeEvents();
+    }
+    Object.defineProperty(ListButton.prototype, "popupClasses", {
+        get: function () {
+            var popupClasses = [
+                'k-list-container',
+                'k-reset',
+                'k-group'
+            ];
+            if (this._popupSettings.popupClass) {
+                popupClasses.push(this._popupSettings.popupClass);
+            }
+            return popupClasses.join(' ');
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ListButton.prototype, "openState", {
+        get: function () {
+            return this._open;
+        },
+        set: function (open) {
+            this._open = open;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @hidden
+     */
+    ListButton.prototype.togglePopupVisibility = function () {
+        if (this._disabled) {
+            return;
+        }
+        this.openState = !this.openState;
+        if (!this.openState) {
+            this.focusService.focus(-1);
+        }
+    };
+    /**
+     * @hidden
+     */
+    ListButton.prototype.onItemClick = function (index) {
+        var _this = this;
+        this.emitItemClickHandler(index);
+        setTimeout(function () { _this.focusWrapper(); }, 1);
+    };
+    ListButton.prototype.ngOnDestroy = function () {
+        this.openState = false;
+        this.unsubscribeEvents();
+        if (this.localizationChangeSubscription) {
+            this.localizationChangeSubscription.unsubscribe();
+        }
+    };
+    ListButton.prototype.subscribeEvents = function () {
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_6__["isDocumentAvailable"])()) {
+            return;
+        }
+        this.subscribeListItemFocusEvent();
+        this.subscribeComponentBlurredEvent();
+        this.subscribeNavigationEvents();
+    };
+    ListButton.prototype.subscribeListItemFocusEvent = function () {
+        var _this = this;
+        this.focusSubscription = this.focusService.onFocus.subscribe(function () {
+            _this._isFocused = true;
+        });
+    };
+    ListButton.prototype.subscribeComponentBlurredEvent = function () {
+        var _this = this;
+        this._zone.runOutsideAngular(function () {
+            _this.documentClick = Object(rxjs_observable_fromEvent__WEBPACK_IMPORTED_MODULE_1__["fromEvent"])(document, 'click').pipe(Object(rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_2__["filter"])(function (event) {
+                return !_this.wrapperContains(event.target);
+            }));
+            _this.componentBlurredSubscription = Object(rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_3__["merge"])(_this.navigationService.tab, _this.documentClick, _this.wrapperBlurred).pipe(Object(rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_2__["filter"])(function () { return _this._isFocused; })).subscribe(function () { return _this._zone.run(function () { return _this.blurWrapper(); }); });
+        });
+    };
+    ListButton.prototype.subscribeNavigationEvents = function () {
+        var _this = this;
+        this.navigationSubscription = this.navigationService.navigate
+            .subscribe(this.focusService.focus.bind(this.focusService));
+        this.enterPressSubscription = this.navigationService.enterpress.subscribe(function () {
+            if (!_this._disabled && !_this._open) {
+                _this._active = true;
+            }
+        });
+        this.enterUpSubscription = this.navigationService.enterup.subscribe(function () {
+            if (!_this._open) {
+                _this._active = false;
+            }
+            _this.enterHandler();
+            _this.focusWrapper();
+        });
+        this.openSubscription = this.navigationService.open.subscribe(function () {
+            if (!_this._open) {
+                _this.togglePopupVisibility();
+                _this.focusFirstItem();
+            }
+            else {
+                _this.focusWrapper();
+            }
+        });
+        this.closeSubscription = Object(rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_3__["merge"])(this.navigationService.close, this.navigationService.esc).subscribe(function () { return _this.focusWrapper(); });
+    };
+    ListButton.prototype.enterHandler = function () { }; // tslint:disable-line
+    ListButton.prototype.unsubscribeEvents = function () {
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_6__["isDocumentAvailable"])()) {
+            return;
+        }
+        this.unsubscribe(this.componentBlurredSubscription);
+        this.unsubscribe(this.focusSubscription);
+        this.unsubscribe(this.navigationSubscription);
+        this.unsubscribe(this.enterPressSubscription);
+        this.unsubscribe(this.enterUpSubscription);
+        this.unsubscribe(this.openSubscription);
+        this.unsubscribe(this.closeSubscription);
+    };
+    ListButton.prototype.unsubscribe = function (subscription) {
+        if (subscription) {
+            subscription.unsubscribe();
+        }
+    };
+    /**
+     * @hidden
+     */
+    ListButton.prototype.keyDownHandler = function (event) {
+        this.keyHandler(event);
+    };
+    /**
+     * @hidden
+     */
+    ListButton.prototype.keyPressHandler = function (event) {
+        this.keyHandler(event, _navigation_key_events__WEBPACK_IMPORTED_MODULE_4__["KeyEvents"].keypress);
+    };
+    /**
+     * @hidden
+     */
+    ListButton.prototype.keyUpHandler = function (event) {
+        this.keyHandler(event, _navigation_key_events__WEBPACK_IMPORTED_MODULE_4__["KeyEvents"].keyup);
+    };
+    /**
+     * @hidden
+     */
+    ListButton.prototype.keyHandler = function (event, keyEvent) {
+        if (this._disabled) {
+            return;
+        }
+        var focused = this.focusService.focused || 0;
+        var eventData = event;
+        var action = this.navigationService.process({
+            altKey: eventData.altKey,
+            current: focused,
+            keyCode: eventData.keyCode,
+            keyEvent: keyEvent,
+            max: this._data ? this._data.length - 1 : 0,
+            min: 0
+        });
+        if (action !== _navigation_navigation_action__WEBPACK_IMPORTED_MODULE_5__["NavigationAction"].Undefined &&
+            action !== _navigation_navigation_action__WEBPACK_IMPORTED_MODULE_5__["NavigationAction"].Tab &&
+            (action !== _navigation_navigation_action__WEBPACK_IMPORTED_MODULE_5__["NavigationAction"].Enter || (action === _navigation_navigation_action__WEBPACK_IMPORTED_MODULE_5__["NavigationAction"].Enter && this._open))) {
+            eventData.preventDefault();
+        }
+    };
+    ListButton.prototype.emitItemClickHandler = function (index) {
+        var dataItem = this._data[index];
+        if (this._itemClick) {
+            this._itemClick.emit(dataItem);
+        }
+        if (dataItem && dataItem.click && !dataItem.disabled) {
+            dataItem.click(dataItem);
+        }
+    };
+    ListButton.prototype.focusFirstItem = function () {
+        var _this = this;
+        if (this._data && Object(_util__WEBPACK_IMPORTED_MODULE_6__["isPresent"])(this._data[0])) {
+            setTimeout(function () { _this.focusService.focus(0); }, 1);
+        }
+    };
+    ListButton.prototype.focusWrapper = function () {
+        if (this._open) {
+            this.togglePopupVisibility();
+            if (this.button && Object(_util__WEBPACK_IMPORTED_MODULE_6__["isDocumentAvailable"])()) {
+                this.button.nativeElement.focus();
+            }
+        }
+    };
+    /**
+     * @hidden
+     */
+    ListButton.prototype.blurHandler = function () {
+        var _this = this;
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_6__["isDocumentAvailable"])()) {
+            return;
+        }
+        setTimeout(function () {
+            if (!_this.wrapperContains(document.activeElement)) {
+                _this.blurWrapper();
+            }
+        });
+    };
+    ListButton.prototype.wrapperContains = function (element) {
+        return this.wrapper === element || this.wrapper.contains(element);
+    };
+    ListButton.prototype.blurWrapper = function () {
+        if (this._open) {
+            this.togglePopupVisibility();
+        }
+        this._isFocused = false;
+        this._blur.emit();
+    };
+    return ListButton;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/list.component.js":
+/*!*******************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/list.component.js ***!
+  \*******************************************************************************************/
+/*! exports provided: ListComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ListComponent", function() { return ListComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+/**
+ * @hidden
+ */
+var ListComponent = /** @class */ (function () {
+    function ListComponent() {
+        this.onItemClick = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onItemBlur = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+    }
+    ListComponent.prototype.getText = function (dataItem) {
+        if (dataItem) {
+            return this.textField ? dataItem[this.textField] : dataItem.text || dataItem;
+        }
+        return undefined;
+    };
+    ListComponent.prototype.getIconClasses = function (dataItem) {
+        var icon = dataItem.icon ? 'k-icon k-i-' + dataItem.icon : undefined;
+        var classes = {};
+        classes[icon || dataItem.iconClass] = true;
+        return classes;
+    };
+    ListComponent.prototype.onClick = function (index) {
+        this.onItemClick.emit(index);
+    };
+    ListComponent.prototype.onBlur = function () {
+        this.onItemBlur.emit();
+    };
+    ListComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    selector: 'kendo-button-list',
+                    template: "\n        <ul class=\"k-list k-reset\" unselectable=\"on\">\n            <li role=\"menuItem\" unselectable=\"on\" tabindex=\"-1\"\n                kendoButtonFocusable\n                *ngFor=\"let dataItem of data; let index = index;\"\n                [index]=\"index\"\n                [ngClass]=\"{'k-item': true, 'k-state-disabled': dataItem.disabled}\"\n                (click)=\"onClick(index)\"\n                (blur)=\"onBlur()\"\n                [attr.aria-disabled]=\"dataItem.disabled ? true : false\">\n                <ng-template *ngIf=\"itemTemplate?.templateRef\"\n                    [templateContext]=\"{\n                        templateRef: itemTemplate?.templateRef,\n                        $implicit: dataItem\n                    }\">\n                </ng-template>\n                <ng-template [ngIf]=\"!itemTemplate?.templateRef\">\n                    <span\n                        *ngIf=\"dataItem.icon || dataItem.iconClass\"\n                        [ngClass]=\"getIconClasses(dataItem)\"\n                    ></span>\n                    <img\n                        *ngIf=\"dataItem.imageUrl\"\n                        class=\"k-image\"\n                        [src]=\"dataItem.imageUrl\"\n                        alt=\"\"\n                    >\n                    {{ getText(dataItem) }}\n                </ng-template>\n            </li>\n        </ul>\n      "
+                },] },
+    ];
+    /** @nocollapse */
+    ListComponent.ctorParameters = function () { return []; };
+    ListComponent.propDecorators = {
+        'data': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'textField': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'itemTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'onItemClick': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'onItemBlur': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+    };
+    return ListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/list.module.js":
+/*!****************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/list.module.js ***!
+  \****************************************************************************************/
+/*! exports provided: ListModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ListModule", function() { return ListModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _list_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./list.component */ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/list.component.js");
+/* harmony import */ var _focusable_focusable_directive__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../focusable/focusable.directive */ "./node_modules/@progress/kendo-angular-buttons/dist/es/focusable/focusable.directive.js");
+/* harmony import */ var _button_item_template_directive__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./button-item-template.directive */ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/button-item-template.directive.js");
+/* harmony import */ var _template_context_directive__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./template-context.directive */ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/template-context.directive.js");
+
+
+
+
+
+
+var EXPORTED_DIRECTIVES = [
+    _list_component__WEBPACK_IMPORTED_MODULE_2__["ListComponent"],
+    _focusable_focusable_directive__WEBPACK_IMPORTED_MODULE_3__["FocusableDirective"],
+    _button_item_template_directive__WEBPACK_IMPORTED_MODULE_4__["ButtonItemTemplateDirective"],
+    _template_context_directive__WEBPACK_IMPORTED_MODULE_5__["TemplateContextDirective"]
+];
+/**
+ * @hidden
+ */
+var ListModule = /** @class */ (function () {
+    function ListModule() {
+    }
+    ListModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    declarations: [EXPORTED_DIRECTIVES],
+                    exports: [EXPORTED_DIRECTIVES],
+                    imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"]]
+                },] },
+    ];
+    /** @nocollapse */
+    ListModule.ctorParameters = function () { return []; };
+    return ListModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/template-context.directive.js":
+/*!*******************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/template-context.directive.js ***!
+  \*******************************************************************************************************/
+/*! exports provided: TemplateContextDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TemplateContextDirective", function() { return TemplateContextDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+/**
+ * @hidden
+ */
+var TemplateContextDirective = /** @class */ (function () {
+    function TemplateContextDirective(viewContainerRef) {
+        this.viewContainerRef = viewContainerRef;
+    }
+    Object.defineProperty(TemplateContextDirective.prototype, "templateContext", {
+        set: function (context) {
+            if (this.insertedViewRef) {
+                this.viewContainerRef.remove(this.viewContainerRef.indexOf(this.insertedViewRef));
+                this.insertedViewRef = undefined;
+            }
+            if (context.templateRef) {
+                this.insertedViewRef = this.viewContainerRef.createEmbeddedView(context.templateRef, context);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    TemplateContextDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[templateContext]' // tslint:disable-line:directive-selector
+                },] },
+    ];
+    /** @nocollapse */
+    TemplateContextDirective.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"], },
+    ]; };
+    TemplateContextDirective.propDecorators = {
+        'templateContext': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+    };
+    return TemplateContextDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/main.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/main.js ***!
+  \**********************************************************************/
+/*! exports provided: Button, ButtonGroup, ButtonGroupModule, ButtonModule, ButtonsModule, SplitButton, SplitButtonModule, DropDownButton, DropDownButtonModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _button_button_directive__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./button/button.directive */ "./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.directive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Button", function() { return _button_button_directive__WEBPACK_IMPORTED_MODULE_0__["ButtonDirective"]; });
+
+/* harmony import */ var _buttongroup_buttongroup_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./buttongroup/buttongroup.component */ "./node_modules/@progress/kendo-angular-buttons/dist/es/buttongroup/buttongroup.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ButtonGroup", function() { return _buttongroup_buttongroup_component__WEBPACK_IMPORTED_MODULE_1__["ButtonGroupComponent"]; });
+
+/* harmony import */ var _buttongroup_buttongroup_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./buttongroup/buttongroup.module */ "./node_modules/@progress/kendo-angular-buttons/dist/es/buttongroup/buttongroup.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ButtonGroupModule", function() { return _buttongroup_buttongroup_module__WEBPACK_IMPORTED_MODULE_2__["ButtonGroupModule"]; });
+
+/* harmony import */ var _button_button_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./button/button.module */ "./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ButtonModule", function() { return _button_button_module__WEBPACK_IMPORTED_MODULE_3__["ButtonModule"]; });
+
+/* harmony import */ var _buttons_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./buttons.module */ "./node_modules/@progress/kendo-angular-buttons/dist/es/buttons.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ButtonsModule", function() { return _buttons_module__WEBPACK_IMPORTED_MODULE_4__["ButtonsModule"]; });
+
+/* harmony import */ var _splitbutton_splitbutton_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./splitbutton/splitbutton.component */ "./node_modules/@progress/kendo-angular-buttons/dist/es/splitbutton/splitbutton.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SplitButton", function() { return _splitbutton_splitbutton_component__WEBPACK_IMPORTED_MODULE_5__["SplitButtonComponent"]; });
+
+/* harmony import */ var _splitbutton_splitbutton_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./splitbutton/splitbutton.module */ "./node_modules/@progress/kendo-angular-buttons/dist/es/splitbutton/splitbutton.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SplitButtonModule", function() { return _splitbutton_splitbutton_module__WEBPACK_IMPORTED_MODULE_6__["SplitButtonModule"]; });
+
+/* harmony import */ var _dropdownbutton_dropdownbutton_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./dropdownbutton/dropdownbutton.component */ "./node_modules/@progress/kendo-angular-buttons/dist/es/dropdownbutton/dropdownbutton.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DropDownButton", function() { return _dropdownbutton_dropdownbutton_component__WEBPACK_IMPORTED_MODULE_7__["DropDownButtonComponent"]; });
+
+/* harmony import */ var _dropdownbutton_dropdownbutton_module__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./dropdownbutton/dropdownbutton.module */ "./node_modules/@progress/kendo-angular-buttons/dist/es/dropdownbutton/dropdownbutton.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DropDownButtonModule", function() { return _dropdownbutton_dropdownbutton_module__WEBPACK_IMPORTED_MODULE_8__["DropDownButtonModule"]; });
+
+
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/key-events.js":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/key-events.js ***!
+  \***************************************************************************************/
+/*! exports provided: KeyEvents */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "KeyEvents", function() { return KeyEvents; });
+/**
+ * @hidden
+ */
+var KeyEvents;
+(function (KeyEvents) {
+    KeyEvents[KeyEvents["keydown"] = 0] = "keydown";
+    KeyEvents[KeyEvents["keypress"] = 1] = "keypress";
+    KeyEvents[KeyEvents["keyup"] = 2] = "keyup";
+})(KeyEvents || (KeyEvents = {}));
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/keys.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/keys.js ***!
+  \*********************************************************************************/
+/*! exports provided: Keys */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Keys", function() { return Keys; });
+/**
+ * @hidden
+ */
+var Keys;
+(function (Keys) {
+    Keys[Keys["backspace"] = 8] = "backspace";
+    Keys[Keys["tab"] = 9] = "tab";
+    Keys[Keys["enter"] = 13] = "enter";
+    Keys[Keys["shift"] = 16] = "shift";
+    Keys[Keys["ctrl"] = 17] = "ctrl";
+    Keys[Keys["alt"] = 18] = "alt";
+    Keys[Keys["pause/break"] = 19] = "pause/break";
+    Keys[Keys["caps lock"] = 20] = "caps lock";
+    Keys[Keys["esc"] = 27] = "esc";
+    Keys[Keys["space"] = 32] = "space";
+    Keys[Keys["page up"] = 33] = "page up";
+    Keys[Keys["page down"] = 34] = "page down";
+    Keys[Keys["end"] = 35] = "end";
+    Keys[Keys["home"] = 36] = "home";
+    Keys[Keys["left"] = 37] = "left";
+    Keys[Keys["up"] = 38] = "up";
+    Keys[Keys["right"] = 39] = "right";
+    Keys[Keys["down"] = 40] = "down";
+    Keys[Keys["insert"] = 45] = "insert";
+    Keys[Keys["delete"] = 46] = "delete";
+    Keys[Keys["command"] = 91] = "command";
+    Keys[Keys["left command"] = 91] = "left command";
+    Keys[Keys["right command"] = 93] = "right command";
+    Keys[Keys["numpad *"] = 106] = "numpad *";
+    Keys[Keys["numpad +"] = 107] = "numpad +";
+    Keys[Keys["numpad -"] = 109] = "numpad -";
+    Keys[Keys["numpad ."] = 110] = "numpad .";
+    Keys[Keys["numpad /"] = 111] = "numpad /";
+    Keys[Keys["num lock"] = 144] = "num lock";
+    Keys[Keys["scroll lock"] = 145] = "scroll lock";
+    Keys[Keys["my computer"] = 182] = "my computer";
+    Keys[Keys["my calculator"] = 183] = "my calculator";
+    Keys[Keys[";"] = 186] = ";";
+    Keys[Keys["="] = 187] = "=";
+    Keys[Keys[","] = 188] = ",";
+    Keys[Keys["-"] = 189] = "-";
+    Keys[Keys["."] = 190] = ".";
+    Keys[Keys["/"] = 191] = "/";
+    Keys[Keys["`"] = 192] = "`";
+    Keys[Keys["["] = 219] = "[";
+    Keys[Keys["\\"] = 220] = "\\";
+    Keys[Keys["]"] = 221] = "]";
+    Keys[Keys["'"] = 222] = "'";
+})(Keys || (Keys = {}));
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/navigation-action.js":
+/*!**********************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/navigation-action.js ***!
+  \**********************************************************************************************/
+/*! exports provided: NavigationAction */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NavigationAction", function() { return NavigationAction; });
+/**
+ * @hidden
+ */
+var NavigationAction;
+(function (NavigationAction) {
+    NavigationAction[NavigationAction["Undefined"] = 0] = "Undefined";
+    NavigationAction[NavigationAction["Open"] = 1] = "Open";
+    NavigationAction[NavigationAction["Close"] = 2] = "Close";
+    NavigationAction[NavigationAction["Enter"] = 3] = "Enter";
+    NavigationAction[NavigationAction["EnterPress"] = 4] = "EnterPress";
+    NavigationAction[NavigationAction["EnterUp"] = 5] = "EnterUp";
+    NavigationAction[NavigationAction["Tab"] = 6] = "Tab";
+    NavigationAction[NavigationAction["Esc"] = 7] = "Esc";
+    NavigationAction[NavigationAction["Navigate"] = 8] = "Navigate";
+})(NavigationAction || (NavigationAction = {}));
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/navigation-config.js":
+/*!**********************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/navigation-config.js ***!
+  \**********************************************************************************************/
+/*! exports provided: NAVIGATION_CONFIG */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NAVIGATION_CONFIG", function() { return NAVIGATION_CONFIG; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+/**
+ * @hidden
+ */
+var NAVIGATION_CONFIG = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]('navigation.config');
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/navigation.service.js":
+/*!***********************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/navigation.service.js ***!
+  \***********************************************************************************************/
+/*! exports provided: NavigationService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NavigationService", function() { return NavigationService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../util */ "./node_modules/@progress/kendo-angular-buttons/dist/es/util.js");
+/* harmony import */ var _key_events__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./key-events */ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/key-events.js");
+/* harmony import */ var _keys__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./keys */ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/keys.js");
+/* harmony import */ var _navigation_action__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./navigation-action */ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/navigation-action.js");
+/* harmony import */ var _navigation_config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./navigation-config */ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/navigation-config.js");
+
+
+
+
+
+
+/**
+ * @hidden
+ */
+var NavigationService = /** @class */ (function () {
+    function NavigationService(config) {
+        this.navigate = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.open = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.close = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.enter = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.enterpress = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.enterup = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.tab = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.esc = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.useLeftRightArrows = config.useLeftRightArrows;
+    }
+    NavigationService.prototype.process = function (args) {
+        var keyCode = args.keyCode;
+        var keyEvent = args.keyEvent;
+        var index;
+        var action = _navigation_action__WEBPACK_IMPORTED_MODULE_4__["NavigationAction"].Undefined;
+        if (keyEvent === _key_events__WEBPACK_IMPORTED_MODULE_2__["KeyEvents"].keypress) {
+            if (this.isEnter(keyCode)) {
+                action = _navigation_action__WEBPACK_IMPORTED_MODULE_4__["NavigationAction"].EnterPress;
+            }
+        }
+        else if (keyEvent === _key_events__WEBPACK_IMPORTED_MODULE_2__["KeyEvents"].keyup) {
+            if (this.isEnter(keyCode)) {
+                action = _navigation_action__WEBPACK_IMPORTED_MODULE_4__["NavigationAction"].EnterUp;
+            }
+        }
+        else {
+            if (args.altKey && keyCode === _keys__WEBPACK_IMPORTED_MODULE_3__["Keys"].down) {
+                action = _navigation_action__WEBPACK_IMPORTED_MODULE_4__["NavigationAction"].Open;
+            }
+            else if (args.altKey && keyCode === _keys__WEBPACK_IMPORTED_MODULE_3__["Keys"].up) {
+                action = _navigation_action__WEBPACK_IMPORTED_MODULE_4__["NavigationAction"].Close;
+            }
+            else if (this.isEnter(keyCode)) {
+                action = _navigation_action__WEBPACK_IMPORTED_MODULE_4__["NavigationAction"].Enter;
+            }
+            else if (keyCode === _keys__WEBPACK_IMPORTED_MODULE_3__["Keys"].esc) {
+                action = _navigation_action__WEBPACK_IMPORTED_MODULE_4__["NavigationAction"].Esc;
+            }
+            else if (keyCode === _keys__WEBPACK_IMPORTED_MODULE_3__["Keys"].tab) {
+                action = _navigation_action__WEBPACK_IMPORTED_MODULE_4__["NavigationAction"].Tab;
+            }
+            else if (keyCode === _keys__WEBPACK_IMPORTED_MODULE_3__["Keys"].up || (this.useLeftRightArrows && keyCode === _keys__WEBPACK_IMPORTED_MODULE_3__["Keys"].left)) {
+                index = this.next({
+                    current: args.current,
+                    start: args.max,
+                    end: args.min,
+                    step: -1
+                });
+                action = _navigation_action__WEBPACK_IMPORTED_MODULE_4__["NavigationAction"].Navigate;
+            }
+            else if (keyCode === _keys__WEBPACK_IMPORTED_MODULE_3__["Keys"].down || (this.useLeftRightArrows && keyCode === _keys__WEBPACK_IMPORTED_MODULE_3__["Keys"].right)) {
+                index = this.next({
+                    current: args.current,
+                    start: args.min,
+                    end: args.max,
+                    step: 1
+                });
+                action = _navigation_action__WEBPACK_IMPORTED_MODULE_4__["NavigationAction"].Navigate;
+            }
+        }
+        if (action !== _navigation_action__WEBPACK_IMPORTED_MODULE_4__["NavigationAction"].Undefined) {
+            this[_navigation_action__WEBPACK_IMPORTED_MODULE_4__["NavigationAction"][action].toLowerCase()].emit(index);
+        }
+        return action;
+    };
+    NavigationService.prototype.isEnter = function (keyCode) {
+        return keyCode === _keys__WEBPACK_IMPORTED_MODULE_3__["Keys"].enter || keyCode === _keys__WEBPACK_IMPORTED_MODULE_3__["Keys"].space;
+    };
+    NavigationService.prototype.next = function (args) {
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_1__["isPresent"])(args.current)) {
+            return args.start;
+        }
+        else {
+            return args.current !== args.end ? args.current + args.step : args.end;
+        }
+    };
+    NavigationService.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    NavigationService.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_navigation_config__WEBPACK_IMPORTED_MODULE_5__["NAVIGATION_CONFIG"],] },] },
+    ]; };
+    return NavigationService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/preventable-event.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/preventable-event.js ***!
+  \***********************************************************************************/
+/*! exports provided: PreventableEvent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PreventableEvent", function() { return PreventableEvent; });
+/**
+ * @hidden
+ */
+var PreventableEvent = /** @class */ (function () {
+    function PreventableEvent() {
+        this.prevented = false;
+    }
+    /**
+     * Prevents the default action for a specified event.
+     * In this way, the source component suppresses the built-in behavior that follows the event.
+     */
+    PreventableEvent.prototype.preventDefault = function () {
+        this.prevented = true;
+    };
+    /**
+     * If the event is prevented by any of its subscribers, returns `true`.
+     *
+     * @returns `true` if the default action was prevented. Otherwise, returns `false`.
+     */
+    PreventableEvent.prototype.isDefaultPrevented = function () {
+        return this.prevented;
+    };
+    return PreventableEvent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/splitbutton/splitbutton.component.js":
+/*!***************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/splitbutton/splitbutton.component.js ***!
+  \***************************************************************************************************/
+/*! exports provided: SplitButtonComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SplitButtonComponent", function() { return SplitButtonComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @progress/kendo-angular-l10n */ "./node_modules/@progress/kendo-angular-l10n/dist/es/index.js");
+/* harmony import */ var _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @progress/kendo-angular-popup */ "./node_modules/@progress/kendo-angular-popup/dist/es/index.js");
+/* harmony import */ var _listbutton_list_button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../listbutton/list-button */ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/list-button.js");
+/* harmony import */ var _listbutton_button_item_template_directive__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../listbutton/button-item-template.directive */ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/button-item-template.directive.js");
+/* harmony import */ var _focusable_focus_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../focusable/focus.service */ "./node_modules/@progress/kendo-angular-buttons/dist/es/focusable/focus.service.js");
+/* harmony import */ var _navigation_navigation_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./../navigation/navigation.service */ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/navigation.service.js");
+/* harmony import */ var _navigation_navigation_config__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./../navigation/navigation-config */ "./node_modules/@progress/kendo-angular-buttons/dist/es/navigation/navigation-config.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./../util */ "./node_modules/@progress/kendo-angular-buttons/dist/es/util.js");
+/* harmony import */ var _preventable_event__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../preventable-event */ "./node_modules/@progress/kendo-angular-buttons/dist/es/preventable-event.js");
+
+/* tslint:disable:no-access-missing-member */
+
+
+
+
+
+
+
+
+
+
+var NAVIGATION_SETTINGS = {
+    useLeftRightArrows: true
+};
+var NAVIGATION_SETTINGS_PROVIDER = {
+    provide: _navigation_navigation_config__WEBPACK_IMPORTED_MODULE_8__["NAVIGATION_CONFIG"],
+    useValue: NAVIGATION_SETTINGS
+};
+/**
+ * Represents the Kendo UI SplitButton component for Angular.
+ *
+ * @example
+ * ```ts
+ * _@Component({
+ * selector: 'my-app',
+ * template: `
+ *  <kendo-splitbutton [data]="data" [icon]="'paste'"
+ *      (itemClick)="onSplitButtonItemClick($event)"
+ *      (buttonClick)="onSplitButtonClick()">Paste</kendo-splitbutton>
+ * `
+ * })
+ *
+ * class AppComponent {
+ *   public data: Array<any> = [{
+ *       text: 'Keep Text Only',
+ *       icon: 'paste-plain-text',
+ *       click: () => { console.log('Keep Text Only click handler'); }
+ *   }, {
+ *       text: 'Paste as HTML',
+ *       icon: 'paste-as-html'
+ *   }, {
+ *       text: 'Paste Markdown',
+ *       icon: 'paste-markdown'
+ *   }, {
+ *       text: 'Set Default Paste'
+ *   }];
+ *
+ *   public onSplitButtonClick(dataItem: any): void {
+ *       console.log('Paste');
+ *   }
+ *
+ *   public onSplitButtonItemClick(dataItem: any): void {
+ *       if (dataItem) {
+ *           console.log(dataItem.text);
+ *       }
+ *   }
+ * }
+ * ```
+ */
+var SplitButtonComponent = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](SplitButtonComponent, _super);
+    function SplitButtonComponent(focusService, navigationService, wrapperRef, zone, popupService, localization) {
+        var _this = _super.call(this, focusService, navigationService, wrapperRef, zone, localization) || this;
+        _this.popupService = popupService;
+        /**
+         * Sets the text of the SplitButton.
+         */
+        _this.text = '';
+        /**
+         * Defines an icon to be rendered next to the button text.
+         */
+        _this.icon = '';
+        /**
+         * Defines an icon with a custom CSS class to be rendered next to the button text.
+         */
+        _this.iconClass = '';
+        /**
+         * Defines the location of an image to be displayed next to the button text.
+         */
+        _this.imageUrl = '';
+        /**
+         * Specifies the [`tabIndex`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) of the component.
+         */
+        _this.tabIndex = 0;
+        /**
+         * Fires each time the user clicks the main button.
+         *
+         * @example
+         * ```ts
+         * _@Component({
+         *    selector: 'my-app',
+         *    template: `
+         *        <kendo-splitbutton (buttonClick)="onSplitButtonClick()" [data]="data">
+         *            Reply
+         *        </kendo-splitbutton>
+         *    `
+         * })
+         * class AppComponent {
+         *    public data: Array<any> = ['Reply All', 'Forward', 'Reply & Delete'];
+         *
+         *    public onSplitButtonClick(): void {
+         *      console.log('SplitButton click');
+         *    }
+         * }
+         * ```
+         *
+         */
+        _this.buttonClick = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires each time the user clicks on the drop-down list. The event data contains the data item bound to the clicked list item.
+         *
+         * @example
+         * ```ts
+         * _@Component({
+         *     selector: 'my-app',
+         *    template: `
+         *        <kendo-splitbutton (itemClick)="onSplitButtonItemClick($event)" [data]="data">
+         *          Reply
+         *      </kendo-splitbutton>
+         *    `
+         * })
+         * class AppComponent {
+         *    public data: Array<any> = ['Reply All', 'Forward', 'Reply & Delete'];
+         *
+         *   public onSplitButtonItemClick(dataItem?: string): void {
+         *        if (dataItem) {
+         *            console.log(dataItem);
+         *       }
+         *    }
+         * }
+         * ```
+         *
+         */
+        _this.itemClick = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires each time the SplitButton gets focused.
+         */
+        _this.onFocus = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"](); //tslint:disable-line:no-output-rename
+        /**
+         * Fires each time the SplitButton gets blurred.
+         */
+        _this.onBlur = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"](); //tslint:disable-line:no-output-rename
+        /**
+         * Fires each time the popup is about to open.
+         * This event is preventable. If you cancel the event, the popup will remain closed.
+         */
+        _this.open = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        /**
+         * Fires each time the popup is about to close.
+         * This event is preventable. If you cancel the event, the popup will remain open.
+         */
+        _this.close = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        _this.listId = Object(_util__WEBPACK_IMPORTED_MODULE_9__["guid"])();
+        _this.buttonText = '';
+        _this._itemClick = _this.itemClick;
+        _this._blur = _this.onBlur;
+        return _this;
+    }
+    Object.defineProperty(SplitButtonComponent.prototype, "disabled", {
+        get: function () {
+            return this._disabled;
+        },
+        /**
+         * When set to `true`, disables a SplitButton item.
+         */
+        set: function (value) {
+            this._disabled = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitButtonComponent.prototype, "popupSettings", {
+        get: function () {
+            if (!this._popupSettings) {
+                this._popupSettings = { animate: true, popupClass: '' };
+            }
+            return this._popupSettings;
+        },
+        /**
+         * Configures the popup of the SplitButton.
+         *
+         * The available options are:
+         * - `animate:Boolean`&mdash;Controls the popup animation. By default, the open and close animations are enabled.
+         * - `popupClass:String`&mdash;Specifies a list of CSS classes that are used to style the popup.
+         */
+        set: function (value) {
+            this._popupSettings = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitButtonComponent.prototype, "data", {
+        get: function () {
+            if (!this._data) {
+                this.data = [];
+            }
+            return this._data;
+        },
+        /**
+         * Sets the data of the SplitButton.
+         *
+         * > The data has to be provided in an array-like list.
+         */
+        set: function (data) {
+            this._data = data || [];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitButtonComponent.prototype, "openState", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            return this._open;
+        },
+        /**
+         * @hidden
+         */
+        set: function (open) {
+            if (this.disabled) {
+                return;
+            }
+            var eventArgs = new _preventable_event__WEBPACK_IMPORTED_MODULE_10__["PreventableEvent"]();
+            if (open) {
+                this.open.emit(eventArgs);
+            }
+            else {
+                this.close.emit(eventArgs);
+            }
+            if (eventArgs.isDefaultPrevented()) {
+                return;
+            }
+            this._toggle(open);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitButtonComponent.prototype, "active", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            return this._active;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitButtonComponent.prototype, "componentTabIndex", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            return this.disabled ? (-1) : this.tabIndex;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitButtonComponent.prototype, "isFocused", {
+        get: function () {
+            return this._isFocused && !this._disabled;
+        },
+        set: function (value) {
+            this._isFocused = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitButtonComponent.prototype, "widgetClasses", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitButtonComponent.prototype, "dir", {
+        get: function () {
+            return this.direction;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitButtonComponent.prototype, "ariaLabel", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            return this.buttonText + " splitbutton";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @hidden
+     */
+    SplitButtonComponent.prototype.onButtonFocus = function () {
+        if (!this.isFocused) {
+            this._isFocused = true;
+            this.onFocus.emit();
+        }
+    };
+    /**
+     * @hidden
+     */
+    SplitButtonComponent.prototype.onButtonClick = function () {
+        this.buttonClick.emit();
+    };
+    /**
+     * @hidden
+     */
+    SplitButtonComponent.prototype.keydown = function (event) {
+        this.keyDownHandler(event);
+    };
+    /**
+     * @hidden
+     */
+    SplitButtonComponent.prototype.keypress = function (event) {
+        this.keyPressHandler(event);
+    };
+    /**
+     * @hidden
+     */
+    SplitButtonComponent.prototype.keyup = function (event) {
+        this.keyUpHandler(event);
+    };
+    /**
+     * @hidden
+     */
+    SplitButtonComponent.prototype.ngAfterViewInit = function () {
+        this.updateButtonText();
+    };
+    /**
+     * @hidden
+     */
+    SplitButtonComponent.prototype.ngOnChanges = function (changes) {
+        if (changes.hasOwnProperty('text')) {
+            this.updateButtonText();
+        }
+    };
+    /**
+     * @hidden
+     */
+    SplitButtonComponent.prototype.togglePopupVisibility = function () {
+        _super.prototype.togglePopupVisibility.call(this);
+        //XXX: call local openState setter to open the popup
+        this.openState = this._open;
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_9__["isDocumentAvailable"])()) {
+            this.button.nativeElement.focus();
+        }
+    };
+    /**
+     * @hidden
+     */
+    SplitButtonComponent.prototype.wrapperContains = function (element) {
+        return this.wrapper === element
+            || this.wrapper.contains(element)
+            || (this.popupRef && this.popupRef.popupElement.contains(element));
+    };
+    Object.defineProperty(SplitButtonComponent.prototype, "anchorAlign", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            var align = { horizontal: 'left', vertical: 'bottom' };
+            if (this.direction === 'rtl') {
+                align.horizontal = 'right';
+            }
+            return align;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitButtonComponent.prototype, "popupAlign", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            var align = { horizontal: 'left', vertical: 'top' };
+            if (this.direction === 'rtl') {
+                align.horizontal = 'right';
+            }
+            return align;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Focuses the SplitButton component.
+     */
+    SplitButtonComponent.prototype.focus = function () {
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_9__["isDocumentAvailable"])()) {
+            this.button.nativeElement.focus();
+        }
+    };
+    /**
+     * Blurs the SplitButton component.
+     */
+    SplitButtonComponent.prototype.blur = function () {
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_9__["isDocumentAvailable"])()) {
+            this.button.nativeElement.blur();
+        }
+    };
+    /**
+     * Toggles the visibility of the popup.
+     * If the `toggle` method is used to open or close the popup, the `open` and `close` events will not be fired.
+     *
+     * @param open - The state of the popup.
+     */
+    SplitButtonComponent.prototype.toggle = function (open) {
+        var _this = this;
+        if (this.disabled) {
+            return;
+        }
+        Object(_util__WEBPACK_IMPORTED_MODULE_9__["tick"])(function () { return (_this._toggle((open === undefined) ? !_this._open : open)); });
+    };
+    Object.defineProperty(SplitButtonComponent.prototype, "isOpen", {
+        /**
+         * Returns the current open state of the popup.
+         */
+        get: function () {
+            return this.openState;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SplitButtonComponent.prototype.enterHandler = function () {
+        if (this.disabled) {
+            return;
+        }
+        if (this.openState) {
+            var focused = this.focusService.focused;
+            if (Object(_util__WEBPACK_IMPORTED_MODULE_9__["isPresent"])(focused) && focused !== -1) {
+                this.emitItemClickHandler(focused);
+            }
+        }
+        else {
+            this.buttonClick.emit();
+        }
+    };
+    SplitButtonComponent.prototype.updateButtonText = function () {
+        var _this = this;
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_9__["isDocumentAvailable"])()) {
+            var innerText_1 = this.wrapper.innerText.split('\n').join('').trim();
+            //setTimout is needed because of `Expression has changed after it was checked.` error;
+            setTimeout(function () { _this.buttonText = innerText_1; }, 0);
+        }
+    };
+    SplitButtonComponent.prototype._toggle = function (open) {
+        var _this = this;
+        this._open = open;
+        if (this.popupRef) {
+            this.popupRef.close();
+            this.popupRef = null;
+        }
+        if (this._open) {
+            this.popupRef = this.popupService.open({
+                anchor: this.button,
+                anchorAlign: this.anchorAlign,
+                animate: this.popupSettings.animate,
+                content: this.popupTemplate,
+                popupAlign: this.popupAlign,
+                popupClass: this.popupClasses
+            });
+            this.popupRef.popupAnchorViewportLeave.subscribe(function () { return _this.openState = false; });
+            this.popupRef.popupOpen.subscribe(this.focusFirstItem.bind(this));
+        }
+    };
+    SplitButtonComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"], args: [{
+                    exportAs: 'kendoSplitButton',
+                    providers: [
+                        _focusable_focus_service__WEBPACK_IMPORTED_MODULE_6__["FocusService"],
+                        _navigation_navigation_service__WEBPACK_IMPORTED_MODULE_7__["NavigationService"],
+                        NAVIGATION_SETTINGS_PROVIDER,
+                        _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_2__["LocalizationService"],
+                        {
+                            provide: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_2__["L10N_PREFIX"],
+                            useValue: 'kendo.splitbutton'
+                        }
+                    ],
+                    selector: 'kendo-splitbutton',
+                    template: "\n        <button kendoButton\n            #button\n            role=\"listbox\"\n            [tabindex]=\"componentTabIndex\"\n            [disabled]=\"disabled\"\n            [icon]=\"icon\"\n            [class.k-state-active]=\"active\"\n            [iconClass]=\"iconClass\"\n            [imageUrl]=\"imageUrl\"\n            (focus)=\"onButtonFocus()\"\n            (click)=\"onButtonClick()\"\n            [attr.aria-disabled]=\"disabled\"\n            [attr.aria-expanded]=\"openState\"\n            [attr.aria-haspopup]=\"true\"\n            [attr.aria-owns]=\"listId\"\n            [attr.aria-label]=\"ariaLabel\"\n            >\n            {{text}}<ng-content></ng-content>\n        </button>\n        <button kendoButton\n            [disabled]=\"disabled\"\n            [icon]=\"'arrow-s'\"\n            [tabindex]=\"-1\"\n            (click)=\"togglePopupVisibility()\">\n        </button>\n        <ng-template #popupTemplate>\n            <kendo-button-list\n                [id]=\"listId\"\n                [data]=\"data\"\n                [textField]=\"textField\"\n                [itemTemplate]=\"itemTemplate\"\n                (onItemBlur)=\"blurHandler()\"\n                (onItemClick)=\"onItemClick($event)\"\n                (keydown)=\"keyDownHandler($event)\"\n                (keypress)=\"keyPressHandler($event)\"\n                (keyup)=\"keyUpHandler($event)\"\n            >\n            </kendo-button-list>\n        <ng-template>\n    "
+                },] },
+    ];
+    /** @nocollapse */
+    SplitButtonComponent.ctorParameters = function () { return [
+        { type: _focusable_focus_service__WEBPACK_IMPORTED_MODULE_6__["FocusService"], },
+        { type: _navigation_navigation_service__WEBPACK_IMPORTED_MODULE_7__["NavigationService"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"], },
+        { type: _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_3__["PopupService"], },
+        { type: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_2__["LocalizationService"], },
+    ]; };
+    SplitButtonComponent.propDecorators = {
+        'text': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'icon': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'iconClass': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'imageUrl': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'disabled': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'popupSettings': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'tabIndex': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'textField': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'data': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+        'buttonClick': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"] },],
+        'itemClick': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"] },],
+        'onFocus': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"], args: ['focus',] },],
+        'onBlur': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"], args: ['blur',] },],
+        'open': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"] },],
+        'close': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"] },],
+        'itemTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ContentChild"], args: [_listbutton_button_item_template_directive__WEBPACK_IMPORTED_MODULE_5__["ButtonItemTemplateDirective"],] },],
+        'button': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"], args: ['button',] },],
+        'popupTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"], args: ['popupTemplate',] },],
+        'isFocused': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['class.k-state-focused',] },],
+        'widgetClasses': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['class.k-widget',] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['class.k-split-button',] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['class.k-button-group',] },],
+        'dir': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostBinding"], args: ['attr.dir',] },],
+        'keydown': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"], args: ['keydown', ['$event'],] },],
+        'keypress': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"], args: ['keypress', ['$event'],] },],
+        'keyup': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"], args: ['keyup', ['$event'],] },],
+    };
+    return SplitButtonComponent;
+}(_listbutton_list_button__WEBPACK_IMPORTED_MODULE_4__["ListButton"]));
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/splitbutton/splitbutton.module.js":
+/*!************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/splitbutton/splitbutton.module.js ***!
+  \************************************************************************************************/
+/*! exports provided: SplitButtonModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SplitButtonModule", function() { return SplitButtonModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @progress/kendo-angular-popup */ "./node_modules/@progress/kendo-angular-popup/dist/es/index.js");
+/* harmony import */ var _button_button_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../button/button.module */ "./node_modules/@progress/kendo-angular-buttons/dist/es/button/button.module.js");
+/* harmony import */ var _listbutton_list_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../listbutton/list.module */ "./node_modules/@progress/kendo-angular-buttons/dist/es/listbutton/list.module.js");
+/* harmony import */ var _splitbutton_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./splitbutton.component */ "./node_modules/@progress/kendo-angular-buttons/dist/es/splitbutton/splitbutton.component.js");
+
+
+
+
+
+
+/**
+ * @hidden
+ *
+ * The exported package module.
+ *
+ * The package exports:
+ * - `SplitButtonComponent`&mdash;The SplitButtonComponent component class.
+ */
+var SplitButtonModule = /** @class */ (function () {
+    function SplitButtonModule() {
+    }
+    SplitButtonModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    declarations: [_splitbutton_component__WEBPACK_IMPORTED_MODULE_5__["SplitButtonComponent"]],
+                    exports: [_splitbutton_component__WEBPACK_IMPORTED_MODULE_5__["SplitButtonComponent"], _listbutton_list_module__WEBPACK_IMPORTED_MODULE_4__["ListModule"]],
+                    imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_2__["PopupModule"], _button_button_module__WEBPACK_IMPORTED_MODULE_3__["ButtonModule"], _listbutton_list_module__WEBPACK_IMPORTED_MODULE_4__["ListModule"]]
+                },] },
+    ];
+    /** @nocollapse */
+    SplitButtonModule.ctorParameters = function () { return []; };
+    return SplitButtonModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-buttons/dist/es/util.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-buttons/dist/es/util.js ***!
+  \**********************************************************************/
+/*! exports provided: isDocumentAvailable, isPresent, guid, tick */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDocumentAvailable", function() { return isDocumentAvailable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isPresent", function() { return isPresent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "guid", function() { return guid; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "tick", function() { return tick; });
+/* tslint:disable:no-null-keyword */
+/* tslint:disable:no-bitwise */
+var resolvedPromise = Promise.resolve(null);
+/**
+ * @hidden
+ */
+var isDocumentAvailable = function () {
+    return typeof document !== 'undefined';
+};
+/**
+ * @hidden
+ */
+var isPresent = function (value) { return value !== null && value !== undefined; };
+/**
+ * @hidden
+ */
+var guid = function () {
+    var id = "";
+    var i;
+    var random;
+    for (i = 0; i < 32; i++) {
+        random = Math.random() * 16 | 0;
+        if (i === 8 || i === 12 || i === 16 || i === 20) {
+            id += "-";
+        }
+        id += (i === 12 ? 4 : (i === 16 ? (random & 3 | 8) : random)).toString(16);
+    }
+    return id;
+};
+/**
+ * @hidden
+ */
+var tick = function (f) { return (resolvedPromise.then(f)); };
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/autocomplete.component.js":
+/*!******************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/autocomplete.component.js ***!
+  \******************************************************************************************/
+/*! exports provided: AUTOCOMPLETE_VALUE_ACCESSOR, AutoCompleteComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AUTOCOMPLETE_VALUE_ACCESSOR", function() { return AUTOCOMPLETE_VALUE_ACCESSOR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AutoCompleteComponent", function() { return AutoCompleteComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _searchbar_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./searchbar.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/searchbar.component.js");
+/* harmony import */ var _templates_item_template_directive__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./templates/item-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/item-template.directive.js");
+/* harmony import */ var _templates_header_template_directive__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./templates/header-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/header-template.directive.js");
+/* harmony import */ var _templates_footer_template_directive__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./templates/footer-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/footer-template.directive.js");
+/* harmony import */ var _selection_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./selection.service */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/selection.service.js");
+/* harmony import */ var _navigation_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./navigation.service */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/navigation.service.js");
+/* harmony import */ var rxjs_Subject__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/Subject */ "./node_modules/rxjs-compat/_esm5/Subject.js");
+/* harmony import */ var rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs/observable/merge */ "./node_modules/rxjs-compat/_esm5/observable/merge.js");
+/* harmony import */ var rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs/operators/filter */ "./node_modules/rxjs-compat/_esm5/operators/filter.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./util */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/util.js");
+/* harmony import */ var _navigation_action__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./navigation-action */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/navigation-action.js");
+/* harmony import */ var _templates_no_data_template_directive__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./templates/no-data-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/no-data-template.directive.js");
+/* harmony import */ var _common_keys__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./common/keys */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/keys.js");
+/* harmony import */ var _common_preventable_event__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./common/preventable-event */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/preventable-event.js");
+/* harmony import */ var _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @progress/kendo-angular-l10n */ "./node_modules/@progress/kendo-angular-l10n/dist/es/index.js");
+/* harmony import */ var _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @progress/kendo-angular-popup */ "./node_modules/@progress/kendo-angular-popup/dist/es/index.js");
+/* tslint:disable:no-null-keyword */
+/* tslint:disable:max-line-length */
+/* tslint:disable:no-bitwise */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var InternalState;
+(function (InternalState) {
+    InternalState[InternalState["None"] = 0] = "None";
+    InternalState[InternalState["SetInitial"] = 1] = "SetInitial";
+    InternalState[InternalState["UseInitial"] = 2] = "UseInitial";
+})(InternalState || (InternalState = {}));
+var NO_VALUE = "";
+/**
+ * @hidden
+ */
+var AUTOCOMPLETE_VALUE_ACCESSOR = {
+    multi: true,
+    provide: _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NG_VALUE_ACCESSOR"],
+    // tslint:disable-next-line:no-use-before-declare
+    useExisting: Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["forwardRef"])(function () { return AutoCompleteComponent; })
+};
+/**
+ * Represents the Kendo UI AutoComplete component for Angular.
+ *
+ * @example
+ * ```ts
+ * _@Component({
+ * selector: 'my-app',
+ * template: `
+ *  <kendo-autocomplete
+ *      [data]="listItems"
+ *      [placeholder]="placeholder"
+ *  >
+ * `
+ * })
+ * class AppComponent {
+ *   public placeholder: string = 'Type "it" for suggestions';
+ *   public listItems: Array<string> = ["Item 1", "Item 2", "Item 3", "Item 4"];
+ * }
+ * ```
+ */
+var AutoCompleteComponent = /** @class */ (function () {
+    function AutoCompleteComponent(localization, popupService, selectionService, navigationService, cdr, renderer, wrapper) {
+        this.localization = localization;
+        this.popupService = popupService;
+        this.selectionService = selectionService;
+        this.navigationService = navigationService;
+        this.cdr = cdr;
+        this.renderer = renderer;
+        /**
+         * @hidden
+         */
+        this.focusableId = "k-" + Object(_util__WEBPACK_IMPORTED_MODULE_11__["guid"])();
+        /**
+         * The hint displayed when the component is empty.
+         *
+         */
+        this.placeholder = "";
+        /**
+         * Sets the height of the suggestions list. By default, `listHeight` is 200px.
+         *
+         * > The `listHeight` property affects only the list of suggestions and not the whole popup container.
+         * > To set the height of the popup container, use `popupSettings.height`.
+         */
+        this.listHeight = 200;
+        /**
+         * @hidden
+         *
+         * If set to `true`, renders a button on hovering over the component. Clicking this button resets the value of the component to `undefined` and triggers the `change` event.
+         */
+        this.clearButton = true;
+        /**
+         * Sets the disabled state of the component.
+         */
+        this.disabled = false;
+        /**
+         * Sets the read-only state of the component.
+         */
+        this.readonly = false;
+        /**
+         * Specifies the [`tabindex`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) of the component.
+         */
+        this.tabindex = 0;
+        /**
+         * Enables the filter functionality. If set to `true`, the component emits the `filterChange` event.
+         */
+        this.filterable = false;
+        /**
+         * Fires each time the value is changed&mdash;
+         * when the component is blurred or the value is cleared through the **Clear** button.
+         * For more details, refer to the example on [events]({% slug overview_autocomplete %}#toc-events).
+         *
+         * When the value of the component is programmatically changed through its API or form binding
+         * to `ngModel` or `formControl`, the `valueChange` event is not triggered because it
+         * might cause a mix-up with the built-in `valueChange` mechanisms of the `ngModel` or `formControl` bindings.
+         */
+        this.valueChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires each time the user types in the input field.
+         * You can filter the source based on the passed filtration value.
+         * For more details, refer to the example on [events]({% slug overview_autocomplete %}#toc-events).
+         */
+        this.filterChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires each time the popup is about to open.
+         * This event is preventable. If you cancel it, the popup will remain closed.
+         */
+        this.open = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires each time the popup is about to close.
+         * This event is preventable. If you cancel it, the popup will remain open.
+         */
+        this.close = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires each time the user focuses the AutoComplete.
+         */
+        this.onFocus = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"](); //tslint:disable-line:no-output-rename
+        /**
+         * Fires each time the AutoComplete gets blurred.
+         */
+        this.onBlur = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"](); //tslint:disable-line:no-output-rename
+        this.listBoxId = Object(_util__WEBPACK_IMPORTED_MODULE_11__["guid"])();
+        this.optionPrefix = Object(_util__WEBPACK_IMPORTED_MODULE_11__["guid"])();
+        this.onChangeCallback = function (_value) { };
+        this.onTouchedCallback = function (_) { };
+        this.popupMouseDownHandler = function (event) { return event.preventDefault(); };
+        this._popupSettings = { animate: true };
+        this._open = false;
+        this._modelValue = "";
+        this._value = "";
+        this._previousValue = NO_VALUE;
+        this._state = InternalState.SetInitial;
+        this._filtering = false;
+        this.valueChangeSubject = new rxjs_Subject__WEBPACK_IMPORTED_MODULE_8__["Subject"]();
+        this._isFocused = false;
+        this.direction = localization.rtl ? 'rtl' : 'ltr';
+        this.wrapper = wrapper.nativeElement;
+        this.data = [];
+        this.subscribeEvents();
+        this.selectionService.resetSelection([-1]);
+    }
+    Object.defineProperty(AutoCompleteComponent.prototype, "width", {
+        get: function () {
+            var wrapperOffsetWidth = 0;
+            if (Object(_util__WEBPACK_IMPORTED_MODULE_11__["isDocumentAvailable"])()) {
+                wrapperOffsetWidth = this.wrapper.offsetWidth;
+            }
+            var width = this.popupSettings.width || wrapperOffsetWidth;
+            var minWidth = isNaN(wrapperOffsetWidth) ? wrapperOffsetWidth : wrapperOffsetWidth + "px";
+            var maxWidth = isNaN(width) ? width : width + "px";
+            return { min: minWidth, max: maxWidth };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AutoCompleteComponent.prototype, "height", {
+        get: function () {
+            var popupHeight = this.popupSettings.height;
+            return Object(_util__WEBPACK_IMPORTED_MODULE_11__["isPresent"])(popupHeight) ? popupHeight + "px" : 'auto';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AutoCompleteComponent.prototype, "listContainerClasses", {
+        get: function () {
+            var containerClasses = ['k-list-container', 'k-reset'];
+            if (this.popupSettings.popupClass) {
+                containerClasses.push(this.popupSettings.popupClass);
+            }
+            return containerClasses;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AutoCompleteComponent.prototype, "suggestion", {
+        get: function () {
+            if (!this.text || !this.suggestedText) {
+                this.suggestedText = undefined;
+                return;
+            }
+            var hasMatch = this.suggestedText.toLowerCase().startsWith(this.text.toLowerCase());
+            var shouldSuggest = this.suggest && !this.backspacePressed;
+            if (shouldSuggest && hasMatch) {
+                return this.suggestedText;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AutoCompleteComponent.prototype, "appendTo", {
+        get: function () {
+            var appendTo = this.popupSettings.appendTo;
+            if (!appendTo || appendTo === 'root') {
+                return undefined;
+            }
+            return appendTo === 'component' ? this.container : appendTo;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AutoCompleteComponent.prototype, "popupOpen", {
+        get: function () {
+            return this._open;
+        },
+        set: function (open) {
+            if (this.disabled || this.readonly || this.popupOpen === open) {
+                return;
+            }
+            var eventArgs = new _common_preventable_event__WEBPACK_IMPORTED_MODULE_15__["PreventableEvent"]();
+            if (open && !this.popupOpen) {
+                this.open.emit(eventArgs);
+            }
+            if (!open && this.popupOpen) {
+                this.close.emit(eventArgs);
+            }
+            if (eventArgs.isDefaultPrevented()) {
+                return;
+            }
+            this._toggle(open);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AutoCompleteComponent.prototype, "activeDescendant", {
+        get: function () {
+            return this.optionPrefix + "-" + this.value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AutoCompleteComponent.prototype, "data", {
+        get: function () {
+            return this._data;
+        },
+        /**
+         * Sets the data of the AutoComplete.
+         *
+         * > The data has to be provided in an array-like list.
+         */
+        set: function (data) {
+            this._data = data || [];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AutoCompleteComponent.prototype, "value", {
+        get: function () {
+            return this._value || NO_VALUE;
+        },
+        /**
+         * Sets the value of the AutoComplete.
+         *
+         */
+        set: function (newValue) {
+            this.verifySettings(newValue);
+            this._value = newValue || NO_VALUE;
+            this.cdr.markForCheck();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AutoCompleteComponent.prototype, "popupSettings", {
+        get: function () {
+            return this._popupSettings;
+        },
+        /**
+         * Configures the popup of the AutoComplete.
+         *
+         * The available options are:
+         * - `animate: Boolean`&mdash;Controls the popup animation. By default, the open and close animations are enabled.
+         * - `width: Number | String`&mdash;Sets the width of the popup container. By default, the width of the host element is used  If set to `auto`, the component automatically adjusts the width of the popup, so no item labels are wrapped.
+         * - `height: Number`&mdash;Sets the height of the popup container.
+         * - `popupClass: String`&mdash;Specifies a list of CSS classes that are used to style the popup.
+         */
+        set: function (settings) {
+            this._popupSettings = Object.assign({ animate: true }, settings);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AutoCompleteComponent.prototype, "tabIndex", {
+        get: function () {
+            return this.tabindex;
+        },
+        /**
+         * @hidden
+         */
+        set: function (tabIndex) {
+            this.tabindex = tabIndex;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AutoCompleteComponent.prototype, "widgetClasses", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AutoCompleteComponent.prototype, "isFocused", {
+        get: function () {
+            return this._isFocused;
+        },
+        set: function (isFocused) {
+            this._isFocused = isFocused;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AutoCompleteComponent.prototype, "isDisabled", {
+        get: function () {
+            return this.disabled;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AutoCompleteComponent.prototype, "dir", {
+        get: function () {
+            return this.direction;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    AutoCompleteComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.renderer.removeAttribute(this.wrapper, "tabindex");
+        this.localizationChangeSubscription = this.localization
+            .changes
+            .subscribe(function (_a) {
+            var rtl = _a.rtl;
+            return _this.direction = rtl ? 'rtl' : 'ltr';
+        });
+    };
+    AutoCompleteComponent.prototype.ngOnDestroy = function () {
+        this._toggle(false);
+        this.unsubscribeEvents();
+        if (this.localizationChangeSubscription) {
+            this.localizationChangeSubscription.unsubscribe();
+        }
+    };
+    AutoCompleteComponent.prototype.ngOnChanges = function (changes) {
+        var isInitial = Boolean(changes.value && changes.value.firstChange || (Object(_util__WEBPACK_IMPORTED_MODULE_11__["isChanged"])("value", changes) && (this._state & InternalState.SetInitial)));
+        if (isInitial) {
+            this._state |= InternalState.UseInitial;
+        }
+        if (changes.hasOwnProperty("value")) {
+            this._modelValue = changes.value.currentValue;
+        }
+        var STATE_PROPS = /(data|value|textField|valueField|valuePrimitive)/g;
+        if (STATE_PROPS.test(Object.keys(changes).join())) {
+            this.setState();
+        }
+        var shouldSuggest = this.suggest && this.data && this.data.length && this.value;
+        if (shouldSuggest) {
+            this.suggestedText = Object(_util__WEBPACK_IMPORTED_MODULE_11__["getter"])(this.data[0], this.valueField);
+        }
+    };
+    /**
+     * Toggles the visibility of the popup. If you use the `toggle` method to open or close the popup, the `open` and `close` events will not be fired.
+     *
+     * @param open - The state of the popup.
+     */
+    AutoCompleteComponent.prototype.toggle = function (open) {
+        var _this = this;
+        Promise.resolve(null).then(function () {
+            _this._toggle((open === undefined) ? !_this._open : open);
+            _this.cdr.markForCheck();
+        });
+    };
+    Object.defineProperty(AutoCompleteComponent.prototype, "isOpen", {
+        /**
+         * Returns the current open state of the popup.
+         */
+        get: function () {
+            return this.popupOpen;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Resets the value of the AutoComplete.
+     * If you use the `reset` method to clear the value of the component,
+     * the model will not update automatically and the `selectionChange` and `valueChange` events will not be fired.
+     */
+    AutoCompleteComponent.prototype.reset = function () {
+        this._modelValue = NO_VALUE;
+        this.setState();
+    };
+    /**
+     * @hidden
+     */
+    AutoCompleteComponent.prototype.clearValue = function (event) {
+        event.stopImmediatePropagation();
+        this.focus();
+        this._filtering = true;
+        this.change(NO_VALUE);
+        this._filtering = false;
+        this.selectionService.resetSelection([]);
+    };
+    /**
+     * @hidden
+     */
+    AutoCompleteComponent.prototype.writeValue = function (value) {
+        var isInitial = Boolean(value !== null && this._state & InternalState.SetInitial);
+        if (value === null && this._state & InternalState.SetInitial) {
+            return;
+        }
+        if (isInitial) {
+            this._state |= InternalState.UseInitial;
+        }
+        this._modelValue = value;
+        this.setState();
+    };
+    /**
+     * @hidden
+     */
+    AutoCompleteComponent.prototype.registerOnChange = function (fn) {
+        this.onChangeCallback = fn;
+    };
+    /**
+     * @hidden
+     */
+    AutoCompleteComponent.prototype.registerOnTouched = function (fn) {
+        this.onTouchedCallback = fn;
+    };
+    /**
+     * @hidden
+     */
+    AutoCompleteComponent.prototype.setDisabledState = function (isDisabled) {
+        this.disabled = isDisabled;
+    };
+    /**
+     * @hidden
+     */
+    AutoCompleteComponent.prototype.popupOpened = function () {
+        this.popupWidth = this.width.max;
+        this.popupMinWidth = this.width.min;
+    };
+    /**
+     * Focuses the AutoComplete.
+     */
+    AutoCompleteComponent.prototype.focus = function () {
+        if (!this.disabled) {
+            this.searchbar.focus();
+        }
+    };
+    /**
+     * Blurs the AutoComplete.
+     */
+    AutoCompleteComponent.prototype.blur = function () {
+        if (!this.disabled) {
+            this.searchbar.blur();
+        }
+    };
+    /**
+     * @hidden
+     */
+    AutoCompleteComponent.prototype.onResize = function () {
+        if (this._open) {
+            var popupWrapper = this.popupRef.popupElement;
+            var _a = this.width, min = _a.min, max = _a.max;
+            popupWrapper.style.minWidth = min;
+            popupWrapper.style.width = max;
+        }
+    };
+    AutoCompleteComponent.prototype.emitChange = function () {
+        if (this.value === this._previousValue) {
+            return;
+        }
+        this._modelValue = this.value;
+        this._previousValue = this.value;
+        this.onChangeCallback(this.value);
+        this.valueChange.emit(this.value);
+    };
+    AutoCompleteComponent.prototype.verifySettings = function (newValue) {
+        if (!Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])()) {
+            return;
+        }
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_11__["isPresent"])(newValue) && typeof newValue !== "string") {
+            throw new Error("Expected value of type string. See http://www.telerik.com/kendo-angular-ui/components/dropdowns/autocomplete/#toc-value");
+        }
+    };
+    AutoCompleteComponent.prototype.search = function (text) {
+        var index = text.length ? this.data.findIndex(this.findIndexPredicate(text)) : -1;
+        this.selectionService.focus(index);
+        if (this.suggest) {
+            this.suggestedText = Object(_util__WEBPACK_IMPORTED_MODULE_11__["getter"])(this.data[index], this.valueField);
+        }
+    };
+    AutoCompleteComponent.prototype.navigate = function (index) {
+        if (!this.popupOpen) {
+            return;
+        }
+        if (index < 0 || index > this.data.length) {
+            index = 0;
+        }
+        this.selectionService.focus(index);
+    };
+    /**
+     * @hidden
+     */
+    AutoCompleteComponent.prototype.handleNavigate = function (event) {
+        var focused = isNaN(this.selectionService.focused) ? 0 : this.selectionService.focused;
+        var hasFocused = Object(_util__WEBPACK_IMPORTED_MODULE_11__["isPresent"])(focused);
+        var offset = 0;
+        if (this.disabled || this.readonly) {
+            return;
+        }
+        if (!hasFocused) {
+            if (event.keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_14__["Keys"].down) {
+                offset = -1;
+            }
+            else if (event.keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_14__["Keys"].up) {
+                offset = 1;
+            }
+        }
+        var action = this.navigationService.process({
+            current: focused + offset,
+            max: this.data.length - 1,
+            min: 0,
+            originalEvent: event
+        });
+        if (action !== _navigation_action__WEBPACK_IMPORTED_MODULE_12__["NavigationAction"].Undefined &&
+            action !== _navigation_action__WEBPACK_IMPORTED_MODULE_12__["NavigationAction"].Backspace &&
+            action !== _navigation_action__WEBPACK_IMPORTED_MODULE_12__["NavigationAction"].Delete &&
+            action !== _navigation_action__WEBPACK_IMPORTED_MODULE_12__["NavigationAction"].Home &&
+            action !== _navigation_action__WEBPACK_IMPORTED_MODULE_12__["NavigationAction"].End &&
+            action !== _navigation_action__WEBPACK_IMPORTED_MODULE_12__["NavigationAction"].Left &&
+            action !== _navigation_action__WEBPACK_IMPORTED_MODULE_12__["NavigationAction"].Right &&
+            ((action === _navigation_action__WEBPACK_IMPORTED_MODULE_12__["NavigationAction"].Enter && this.popupOpen) || action !== _navigation_action__WEBPACK_IMPORTED_MODULE_12__["NavigationAction"].Enter)) {
+            event.preventDefault();
+        }
+    };
+    AutoCompleteComponent.prototype.handleEnter = function (event) {
+        var focused = this.selectionService.focused;
+        var value;
+        this._filtering = false;
+        if (this.popupOpen) {
+            event.originalEvent.preventDefault();
+        }
+        if (focused >= 0) {
+            value = Object(_util__WEBPACK_IMPORTED_MODULE_11__["getter"])(this.data[focused], this.valueField);
+        }
+        else {
+            var match = this.suggest && this.suggestedText && this.data.length &&
+                Object(_util__WEBPACK_IMPORTED_MODULE_11__["getter"])(this.data[0], this.valueField, true).toLowerCase() === this.searchbar.value.toLowerCase();
+            if (this.popupOpen && match) {
+                value = this.suggestedText;
+            }
+            else {
+                value = this.searchbar.value;
+            }
+        }
+        this.change(value);
+    };
+    /**
+     * @hidden
+     */
+    AutoCompleteComponent.prototype.searchBarChange = function (text) {
+        var currentTextLength = this.text.length;
+        this.backspacePressed = (text.length < currentTextLength) ? true : false;
+        this.text = text;
+        this.popupOpen = text.length > 0;
+        this._filtering = true;
+        if (this.filterable) {
+            this.selectionService.focused = -1;
+            this.filterChange.emit(text);
+        }
+        else {
+            this.search(text);
+        }
+    };
+    /**
+     * @hidden
+     */
+    AutoCompleteComponent.prototype.handleFocus = function () {
+        this.isFocused = true;
+        this.onFocus.emit();
+    };
+    /**
+     * @hidden
+     */
+    AutoCompleteComponent.prototype.handleBlur = function () {
+        this._filtering = false;
+        var focused = this.filterable ? this.selectionService.focused : -1;
+        var dataItem;
+        var text;
+        var value = this.value;
+        if (focused !== -1) {
+            dataItem = this.data[focused];
+            text = Object(_util__WEBPACK_IMPORTED_MODULE_11__["getter"])(dataItem, this.valueField, true) || "";
+        }
+        else {
+            text = this.searchbar.value;
+        }
+        if (text === this.searchbar.value) {
+            value = text;
+        }
+        else if (text && text.toLowerCase() === this.searchbar.value.toLowerCase()) {
+            this.selectionService.resetSelection([]);
+            value = this.searchbar.value;
+        }
+        this.change(value);
+        this.popupOpen = false;
+        this.isFocused = false;
+        this.onBlur.emit();
+        this.onTouchedCallback();
+    };
+    AutoCompleteComponent.prototype.setState = function () {
+        if (this._filtering) {
+            return;
+        }
+        if (this._state & InternalState.UseInitial) {
+            this._state &= ~InternalState.UseInitial;
+            this._state &= ~InternalState.SetInitial;
+            this._previousValue = this._modelValue;
+        }
+        else {
+            this._previousValue = this.value;
+        }
+        this.value = this._modelValue;
+        this.text = this.value;
+    };
+    AutoCompleteComponent.prototype.change = function (value) {
+        this.popupOpen = false;
+        this.valueChangeSubject.next(value);
+    };
+    AutoCompleteComponent.prototype.subscribeEvents = function () {
+        var _this = this;
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_11__["isDocumentAvailable"])()) {
+            return;
+        }
+        this.valueChangeSubscription = this.valueChangeSubject.pipe(Object(rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_10__["filter"])(function (candidate) {
+            return !(_this.value === candidate && _this.text === candidate);
+        }))
+            .subscribe(function (value) {
+            _this.value = value;
+            _this.text = value;
+            if (_this.filterable && !_this.value && !_this.text) {
+                _this.filterChange.emit("");
+            }
+            _this.emitChange();
+        });
+        this.changeSubscription = this.selectionService.onChange.subscribe(this.handleItemChange.bind(this));
+        this.focusSubscription = this.selectionService.onFocus.subscribe(this.handleItemFocus.bind(this));
+        this.navigationSubscription = Object(rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_9__["merge"])(this.navigationService.up, this.navigationService.down).subscribe(function (event) { return _this.navigate(event.index); });
+        this.closeSubscription = this.navigationService.close.subscribe(function () { return _this.popupOpen = false; });
+        this.enterSubscription = this.navigationService.enter.subscribe(this.handleEnter.bind(this));
+        this.escSubscription = this.navigationService.esc.subscribe(this.handleBlur.bind(this));
+    };
+    AutoCompleteComponent.prototype.unsubscribeEvents = function () {
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_11__["isDocumentAvailable"])()) {
+            return;
+        }
+        this.changeSubscription.unsubscribe();
+        this.navigationSubscription.unsubscribe();
+        this.closeSubscription.unsubscribe();
+        this.enterSubscription.unsubscribe();
+        this.escSubscription.unsubscribe();
+        this.valueChangeSubscription.unsubscribe();
+        this.focusSubscription.unsubscribe();
+    };
+    AutoCompleteComponent.prototype.handleItemChange = function (event) {
+        var index = event.indices.length ? event.indices[0] : undefined;
+        this._filtering = false;
+        this.selectionService.resetSelection([-1]);
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_11__["isPresent"])(index)) {
+            return;
+        }
+        var text = Object(_util__WEBPACK_IMPORTED_MODULE_11__["getter"])(this.data[index], this.valueField);
+        this.change(text);
+    };
+    AutoCompleteComponent.prototype.handleItemFocus = function (_event) {
+        var focused = this.selectionService.focused;
+        var shouldSuggest = Boolean(this.suggest && this.data && this.data.length && focused >= 0);
+        if (shouldSuggest) {
+            this.suggestedText = Object(_util__WEBPACK_IMPORTED_MODULE_11__["getter"])(this.data[focused], this.valueField);
+        }
+    };
+    AutoCompleteComponent.prototype._toggle = function (open) {
+        var _this = this;
+        this._open = open;
+        if (this.popupRef) {
+            this.popupRef.popupElement
+                .removeEventListener('mousedown', this.popupMouseDownHandler);
+            this.popupRef.close();
+            this.popupRef = null;
+        }
+        if (this._open) {
+            this.popupRef = this.popupService.open({
+                anchor: this.wrapper,
+                animate: this.popupSettings.animate,
+                appendTo: this.appendTo,
+                content: this.popupTemplate,
+                popupClass: this.listContainerClasses,
+                positionMode: 'absolute'
+            });
+            var popupWrapper = this.popupRef.popupElement;
+            var _a = this.width, min = _a.min, max = _a.max;
+            popupWrapper.addEventListener('mousedown', this.popupMouseDownHandler);
+            popupWrapper.style.minWidth = min;
+            popupWrapper.style.width = max;
+            popupWrapper.style.height = this.height;
+            popupWrapper.setAttribute("dir", this.direction);
+            this.popupRef.popupAnchorViewportLeave.subscribe(function () { return _this.popupOpen = false; });
+        }
+    };
+    AutoCompleteComponent.prototype.findIndexPredicate = function (text) {
+        var _this = this;
+        return function (item) {
+            var itemText = Object(_util__WEBPACK_IMPORTED_MODULE_11__["getter"])(item, _this.valueField);
+            itemText = itemText === undefined ? "" : itemText.toString().toLowerCase();
+            return itemText.startsWith(text.toLowerCase());
+        };
+    };
+    AutoCompleteComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    exportAs: 'kendoAutoComplete',
+                    providers: [
+                        AUTOCOMPLETE_VALUE_ACCESSOR,
+                        _selection_service__WEBPACK_IMPORTED_MODULE_6__["SelectionService"],
+                        _navigation_service__WEBPACK_IMPORTED_MODULE_7__["NavigationService"],
+                        _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_16__["LocalizationService"],
+                        {
+                            provide: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_16__["L10N_PREFIX"],
+                            useValue: 'kendo.autocomplete'
+                        }
+                    ],
+                    selector: 'kendo-autocomplete',
+                    template: "\n        <kendo-searchbar #searchbar\n            [role]=\"'textbox'\"\n            [id]=\"focusableId\"\n            [listId]=\"listBoxId\"\n            [activeDescendant]=\"activeDescendant\"\n            [userInput]=\"text\"\n            [suggestedText]=\"suggestion\"\n            [disabled]=\"disabled\"\n            [readonly]=\"readonly\"\n            [tabIndex]=\"tabIndex\"\n            [popupOpen]=\"popupOpen\"\n            [placeholder]=\"placeholder\"\n            (onNavigate)=\"handleNavigate($event)\"\n            (valueChange)=\"searchBarChange($event)\"\n            (onBlur)=\"handleBlur()\"\n            (onFocus)=\"handleFocus()\"\n        ></kendo-searchbar>\n        <span *ngIf=\"!loading && !readonly && (clearButton && text?.length)\" class=\"k-icon k-clear-value k-i-close\" title=\"clear\" role=\"button\" tabindex=\"-1\" (click)=\"clearValue($event)\" (mousedown)=\"$event.preventDefault()\">\n</span>\n        <span *ngIf=\"loading\" class=\"k-icon k-i-loading\"></span>\n        <ng-template #popupTemplate>\n            <!--header template-->\n            <ng-template *ngIf=\"headerTemplate\"\n                [templateContext]=\"{\n                    templateRef: headerTemplate.templateRef\n                }\">\n            </ng-template>\n            <!--list-->\n            <kendo-list\n                [id]=\"listBoxId\"\n                [optionPrefix]=\"optionPrefix\"\n                [data]=\"data\"\n                [textField]=\"valueField\"\n                [valueField]=\"valueField\"\n                [template]=\"template\"\n                [height]=\"listHeight\"\n                [show]=\"popupOpen\"\n            >\n            </kendo-list>\n            <!--no-data template-->\n            <div class=\"k-nodata\" *ngIf=\"data.length === 0\">\n                <ng-template [ngIf]=\"noDataTemplate\"\n                    [templateContext]=\"{\n                        templateRef: noDataTemplate?.templateRef\n                    }\">\n                </ng-template>\n                <ng-template [ngIf]=\"!noDataTemplate\">\n                    <div>NO DATA FOUND.</div>\n                </ng-template>\n            </div>\n            <!--footer template-->\n            <ng-template *ngIf=\"footerTemplate\"\n                [templateContext]=\"{\n                    templateRef: footerTemplate.templateRef\n                }\">\n            </ng-template>\n        </ng-template>\n        <ng-template [ngIf]=\"popupOpen\">\n            <kendo-resize-sensor (resize)=\"onResize()\"></kendo-resize-sensor>\n        </ng-template>\n        <ng-container #container></ng-container>\n  "
+                },] },
+    ];
+    /** @nocollapse */
+    AutoCompleteComponent.ctorParameters = function () { return [
+        { type: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_16__["LocalizationService"], },
+        { type: _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_17__["PopupService"], },
+        { type: _selection_service__WEBPACK_IMPORTED_MODULE_6__["SelectionService"], },
+        { type: _navigation_service__WEBPACK_IMPORTED_MODULE_7__["NavigationService"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Renderer2"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], },
+    ]; };
+    AutoCompleteComponent.propDecorators = {
+        'focusableId': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'data': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'value': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'valueField': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'placeholder': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'popupSettings': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'listHeight': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'loading': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'clearButton': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'suggest': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'disabled': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'readonly': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'tabindex': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'tabIndex': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ["tabIndex",] },],
+        'filterable': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'valueChange': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'filterChange': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'open': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'close': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'onFocus': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"], args: ['focus',] },],
+        'onBlur': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"], args: ['blur',] },],
+        'template': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ContentChild"], args: [_templates_item_template_directive__WEBPACK_IMPORTED_MODULE_3__["ItemTemplateDirective"],] },],
+        'headerTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ContentChild"], args: [_templates_header_template_directive__WEBPACK_IMPORTED_MODULE_4__["HeaderTemplateDirective"],] },],
+        'footerTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ContentChild"], args: [_templates_footer_template_directive__WEBPACK_IMPORTED_MODULE_5__["FooterTemplateDirective"],] },],
+        'noDataTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ContentChild"], args: [_templates_no_data_template_directive__WEBPACK_IMPORTED_MODULE_13__["NoDataTemplateDirective"],] },],
+        'container': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['container', { read: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"] },] },],
+        'popupTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['popupTemplate',] },],
+        'searchbar': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: [_searchbar_component__WEBPACK_IMPORTED_MODULE_2__["SearchBarComponent"],] },],
+        'widgetClasses': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-widget',] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-autocomplete',] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-header',] },],
+        'isFocused': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-state-focused',] },],
+        'isDisabled': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-state-disabled',] },],
+        'dir': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['attr.dir',] },],
+    };
+    return AutoCompleteComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/autocomplete.module.js":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/autocomplete.module.js ***!
+  \***************************************************************************************/
+/*! exports provided: AutoCompleteModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AutoCompleteModule", function() { return AutoCompleteModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _autocomplete_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./autocomplete.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/autocomplete.component.js");
+/* harmony import */ var _shared_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./shared.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/shared.module.js");
+/* harmony import */ var _shared_directives_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./shared-directives.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/shared-directives.module.js");
+
+
+
+
+var AUTOCOMPLETE_DIRECTIVES = [
+    _autocomplete_component__WEBPACK_IMPORTED_MODULE_1__["AutoCompleteComponent"]
+];
+/**
+ * @hidden
+ *
+ * The exported package module.
+ *
+ * The package exports:
+ * - `AutoCompleteComponent`&mdash;The AutoComplete component class.
+ * - `ItemTemplateDirective`&mdash;The item template directive.
+ * - `HeaderTemplateDirective`&mdash;The header template directive.
+ * - `FooterTemplateDirective`&mdash;The footer template directive.
+ */
+var AutoCompleteModule = /** @class */ (function () {
+    function AutoCompleteModule() {
+    }
+    AutoCompleteModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    declarations: [AUTOCOMPLETE_DIRECTIVES],
+                    exports: [AUTOCOMPLETE_DIRECTIVES, _shared_directives_module__WEBPACK_IMPORTED_MODULE_3__["SharedDirectivesModule"]],
+                    imports: [_shared_module__WEBPACK_IMPORTED_MODULE_2__["SharedModule"]]
+                },] },
+    ];
+    /** @nocollapse */
+    AutoCompleteModule.ctorParameters = function () { return []; };
+    return AutoCompleteModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/combobox.component.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/combobox.component.js ***!
+  \**************************************************************************************/
+/*! exports provided: COMBOBOX_VALUE_ACCESSOR, ComboBoxComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "COMBOBOX_VALUE_ACCESSOR", function() { return COMBOBOX_VALUE_ACCESSOR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ComboBoxComponent", function() { return ComboBoxComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _searchbar_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./searchbar.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/searchbar.component.js");
+/* harmony import */ var _templates_item_template_directive__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./templates/item-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/item-template.directive.js");
+/* harmony import */ var _templates_header_template_directive__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./templates/header-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/header-template.directive.js");
+/* harmony import */ var _templates_footer_template_directive__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./templates/footer-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/footer-template.directive.js");
+/* harmony import */ var _templates_no_data_template_directive__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./templates/no-data-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/no-data-template.directive.js");
+/* harmony import */ var _selection_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./selection.service */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/selection.service.js");
+/* harmony import */ var _navigation_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./navigation.service */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/navigation.service.js");
+/* harmony import */ var rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs/observable/merge */ "./node_modules/rxjs-compat/_esm5/observable/merge.js");
+/* harmony import */ var rxjs_operators_catchError__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs/operators/catchError */ "./node_modules/rxjs-compat/_esm5/operators/catchError.js");
+/* harmony import */ var rxjs_operators_distinctUntilChanged__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! rxjs/operators/distinctUntilChanged */ "./node_modules/rxjs-compat/_esm5/operators/distinctUntilChanged.js");
+/* harmony import */ var rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! rxjs/operators/filter */ "./node_modules/rxjs-compat/_esm5/operators/filter.js");
+/* harmony import */ var rxjs_operators_map__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! rxjs/operators/map */ "./node_modules/rxjs-compat/_esm5/operators/map.js");
+/* harmony import */ var rxjs_operators_partition__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! rxjs/operators/partition */ "./node_modules/rxjs-compat/_esm5/operators/partition.js");
+/* harmony import */ var rxjs_operators_tap__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! rxjs/operators/tap */ "./node_modules/rxjs-compat/_esm5/operators/tap.js");
+/* harmony import */ var rxjs_operators_throttleTime__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! rxjs/operators/throttleTime */ "./node_modules/rxjs-compat/_esm5/operators/throttleTime.js");
+/* harmony import */ var rxjs_Subject__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! rxjs/Subject */ "./node_modules/rxjs-compat/_esm5/Subject.js");
+/* harmony import */ var rxjs_Subscription__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! rxjs/Subscription */ "./node_modules/rxjs-compat/_esm5/Subscription.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./util */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/util.js");
+/* harmony import */ var _navigation_action__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./navigation-action */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/navigation-action.js");
+/* harmony import */ var _common_keys__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./common/keys */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/keys.js");
+/* harmony import */ var _common_preventable_event__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./common/preventable-event */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/preventable-event.js");
+/* harmony import */ var _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @progress/kendo-angular-l10n */ "./node_modules/@progress/kendo-angular-l10n/dist/es/index.js");
+/* harmony import */ var _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @progress/kendo-angular-popup */ "./node_modules/@progress/kendo-angular-popup/dist/es/index.js");
+/* harmony import */ var _touch_enabled__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./touch-enabled */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/touch-enabled.js");
+/* harmony import */ var _error_messages__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./error-messages */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/error-messages.js");
+/* tslint:disable:no-null-keyword */
+/* tslint:disable:max-line-length */
+/* tslint:disable:no-bitwise */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var InternalState;
+(function (InternalState) {
+    InternalState[InternalState["None"] = 0] = "None";
+    InternalState[InternalState["SetInitial"] = 1] = "SetInitial";
+    InternalState[InternalState["UseModel"] = 2] = "UseModel";
+    InternalState[InternalState["UseExisting"] = 4] = "UseExisting";
+    InternalState[InternalState["UseCustom"] = 8] = "UseCustom";
+    InternalState[InternalState["UseFilter"] = 16] = "UseFilter";
+    InternalState[InternalState["UseEmpty"] = 32] = "UseEmpty";
+})(InternalState || (InternalState = {}));
+/**
+ * @hidden
+ */
+var COMBOBOX_VALUE_ACCESSOR = {
+    multi: true,
+    provide: _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NG_VALUE_ACCESSOR"],
+    // tslint:disable-next-line:no-use-before-declare
+    useExisting: Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["forwardRef"])(function () { return ComboBoxComponent; })
+};
+/**
+ * Represents the Kendo UI ComboBox component for Angular.
+ *
+ * @example
+ * ```ts
+ * _@Component({
+ * selector: 'my-app',
+ * template: `
+ *  <kendo-combobox [data]="listItems">
+ *  </kendo-combobox>
+ * `
+ * })
+ * class AppComponent {
+ *   public listItems: Array<string> = ["Item 1", "Item 2", "Item 3", "Item 4"];
+ * }
+ * ```
+ */
+var ComboBoxComponent = /** @class */ (function () {
+    function ComboBoxComponent(localization, popupService, selectionService, navigationService, cdr, renderer, wrapper, touchEnabled) {
+        this.localization = localization;
+        this.popupService = popupService;
+        this.selectionService = selectionService;
+        this.navigationService = navigationService;
+        this.cdr = cdr;
+        this.renderer = renderer;
+        this.touchEnabled = touchEnabled;
+        this.selected = [];
+        /**
+         * @hidden
+         */
+        this.focusableId = "k-" + Object(_util__WEBPACK_IMPORTED_MODULE_19__["guid"])();
+        /**
+         * Specifies whether the ComboBox allows user-defined values that are not present in the dataset.
+         * The default value is `false`.
+         *
+         * For more information, refer to the article on [custom values]({% slug custom_values_combobox %}).
+         */
+        this.allowCustom = false;
+        /**
+         * A user-defined callback which returns normalized custom values. Typically used when the data items are different from type `string`.
+         * @param { Any } value - The custom value defined by the user.
+         * @returns { Any }
+         *
+         * @example
+         * ```ts
+         * import { map } from 'rxjs/operators/map';
+         *
+         * _@Component({
+         * selector: 'my-app',
+         * template: `
+         *   <kendo-combobox
+         *       [allowCustom]="true"
+         *       [data]="listItems"
+         *       [textField]="'text'"
+         *       [valueField]="'value'"
+         *       [valueNormalizer]="valueNormalizer"
+         *       (valueChange)="onValueChange($event)"
+         *   >
+         *   </kendo-combobox>
+         * `
+         * })
+         *
+         * class AppComponent {
+         *   public listItems: Array<{ text: string, value: number }> = [
+         *       { text: "Small", value: 1 },
+         *       { text: "Medium", value: 2 },
+         *       { text: "Large", value: 3 }
+         *   ];
+         *
+         *   public onValueChange(value) {
+         *       console.log("valueChange : ", value);
+         *   }
+         *
+         *   public valueNormalizer = (text$: Observable<string>) => text$.pipe(map((text: string) => {
+         *      return { ProductID: null, ProductName: text };
+         *   }));
+         *
+         * }
+         * ```
+         */
+        this.valueNormalizer = function (text) {
+            return text.pipe(Object(rxjs_operators_map__WEBPACK_IMPORTED_MODULE_13__["map"])(function (userInput) { return userInput; }));
+        };
+        /**
+         * The hint displayed when the component is empty.
+         *
+         */
+        this.placeholder = "";
+        /**
+         * Sets the height of the suggestions list. By default, `listHeight` is 200px.
+         *
+         * > The `listHeight` property affects only the list of suggestions and not the whole popup container.
+         * > To set the height of the popup container, use `popupSettings.height`.
+         */
+        this.listHeight = 200;
+        /**
+         * @hidden
+         *
+         * Enables the auto-completion of the text based on the first data item.
+         */
+        this.suggest = false;
+        /**
+         * If set to `true`, renders a button on hovering over the component. Clicking this button resets the value of the component to `undefined` and triggers the `change` event.
+         */
+        this.clearButton = true;
+        /**
+         * Sets the disabled state of the component.
+         */
+        this.disabled = false;
+        /**
+         * Sets the readonly state of the component.
+         */
+        this.readonly = false;
+        /**
+         * Specifies the [`tabindex`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) of the component.
+         */
+        this.tabindex = 0;
+        /**
+         * Enables the filtering functionality. If set to `true`, the component emits the `filterChange` event.
+         */
+        this.filterable = false;
+        /**
+         * Fires each time the value is changed&mdash;
+         * when the component is blurred or the value is cleared through the **Clear** button.
+         * For more details, refer to the example on [events]({% slug overview_combobox %}#toc-events).
+         *
+         * When the value of the component is programmatically changed through its API or form binding
+         * to `ngModel` or `formControl`, the `valueChange` event is not triggered because it
+         * might cause a mix-up with the built-in `valueChange` mechanisms of the `ngModel` or `formControl` bindings.
+         */
+        this.valueChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires each time an item selection is changed.
+         * For more details, refer to the example on [events]({% slug overview_combobox %}#toc-events).
+         */
+        this.selectionChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires each time the user types in the input field.
+         * You can filter the source based on the passed filtration value.
+         * For more details, refer to the example on [events]({% slug overview_combobox %}#toc-events).
+         */
+        this.filterChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires each time the popup is about to open.
+         * This event is preventable. If you cancel it, the popup will remain closed.
+         */
+        this.open = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires each time the popup is about to close.
+         * This event is preventable. If you cancel it, the popup will remain open.
+         */
+        this.close = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires each time the user focuses the ComboBox.
+         */
+        this.onFocus = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"](); //tslint:disable-line:no-output-rename
+        /**
+         * Fires each time the ComboBox gets blurred.
+         */
+        this.onBlur = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"](); //tslint:disable-line:no-output-rename
+        this.isFocused = false;
+        this.listBoxId = Object(_util__WEBPACK_IMPORTED_MODULE_19__["guid"])();
+        this.optionPrefix = Object(_util__WEBPACK_IMPORTED_MODULE_19__["guid"])();
+        this.onChangeCallback = function (_) { };
+        this.onTouchedCallback = function (_) { };
+        this.observableSubscriptions = new rxjs_Subscription__WEBPACK_IMPORTED_MODULE_18__["Subscription"]();
+        this._state = InternalState.SetInitial;
+        this._filtering = false;
+        this._text = "";
+        this._open = false;
+        this._popupSettings = { animate: true };
+        this.popupMouseDownHandler = function (event) { return event.preventDefault(); };
+        this.customValueSubject = new rxjs_Subject__WEBPACK_IMPORTED_MODULE_17__["Subject"]();
+        this.valueSubject = new rxjs_Subject__WEBPACK_IMPORTED_MODULE_17__["Subject"]();
+        this.selectionSubject = new rxjs_Subject__WEBPACK_IMPORTED_MODULE_17__["Subject"]();
+        this.direction = localization.rtl ? 'rtl' : 'ltr';
+        this.wrapper = wrapper.nativeElement;
+        this.data = [];
+        this.subscribeEvents();
+    }
+    Object.defineProperty(ComboBoxComponent.prototype, "width", {
+        get: function () {
+            var wrapperOffsetWidth = 0;
+            if (Object(_util__WEBPACK_IMPORTED_MODULE_19__["isDocumentAvailable"])()) {
+                wrapperOffsetWidth = this.wrapper.offsetWidth;
+            }
+            var width = this.popupSettings.width || wrapperOffsetWidth;
+            var minWidth = isNaN(wrapperOffsetWidth) ? wrapperOffsetWidth : wrapperOffsetWidth + "px";
+            var maxWidth = isNaN(width) ? width : width + "px";
+            return { min: minWidth, max: maxWidth };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ComboBoxComponent.prototype, "height", {
+        get: function () {
+            var popupHeight = this.popupSettings.height;
+            return Object(_util__WEBPACK_IMPORTED_MODULE_19__["isPresent"])(popupHeight) ? popupHeight + "px" : 'auto';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ComboBoxComponent.prototype, "text", {
+        get: function () {
+            return this._text;
+        },
+        set: function (text) {
+            var textCandidate = Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(text, this.textField, true);
+            this._text = Object(_util__WEBPACK_IMPORTED_MODULE_19__["isPresent"])(textCandidate) ? textCandidate.toString() : "";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ComboBoxComponent.prototype, "popupOpen", {
+        get: function () {
+            return this._open;
+        },
+        set: function (open) {
+            if (this.disabled || this.readonly || this.popupOpen === open) {
+                return;
+            }
+            var eventArgs = new _common_preventable_event__WEBPACK_IMPORTED_MODULE_22__["PreventableEvent"]();
+            if (open) {
+                this.open.emit(eventArgs);
+            }
+            else {
+                this.close.emit(eventArgs);
+            }
+            if (eventArgs.isDefaultPrevented()) {
+                return;
+            }
+            this._toggle(open);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ComboBoxComponent.prototype, "activeDescendant", {
+        get: function () {
+            return this.optionPrefix + "-" + Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(this.value, this.valueField);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ComboBoxComponent.prototype, "appendTo", {
+        get: function () {
+            var appendTo = this.popupSettings.appendTo;
+            if (!appendTo || appendTo === 'root') {
+                return undefined;
+            }
+            return appendTo === 'component' ? this.container : appendTo;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ComboBoxComponent.prototype, "data", {
+        get: function () {
+            return this._data;
+        },
+        /**
+         * Sets the data of the ComboBox.
+         *
+         * > The data has to be provided in an array-like list.
+         */
+        set: function (data) {
+            this._data = data || [];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ComboBoxComponent.prototype, "value", {
+        get: function () {
+            return this._value;
+        },
+        /**
+         * Sets the value of the ComboBox. It can either be of the primitive (string, numbers) or of the complex (objects) type. To define the type, use the `valuePrimitive` option.
+         *
+         * > All selected values which are not present in the dataset are considered custom values. When the `Enter` key is pressed or the component loses focus, custom values get dismissed unless `allowCustom` is set to `true`.
+         */
+        set: function (newValue) {
+            this.verifySettings(newValue);
+            this._value = newValue;
+            this.cdr.markForCheck();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ComboBoxComponent.prototype, "popupSettings", {
+        get: function () {
+            return this._popupSettings;
+        },
+        /**
+         * Configures the popup of the ComboBox.
+         *
+         * The available options are:
+         * - `animate: Boolean`&mdash;Controls the popup animation. By default, the open and close animations are enabled.
+         * - `width: Number | String`&mdash;Sets the width of the popup container. By default, the width of the host element is used  If set to `auto`, the component automatically adjusts the width of the popup, so no item labels are wrapped.
+         * - `height: Number`&mdash;Sets the height of the popup container.
+         * - `popupClass: String`&mdash;Specifies a list of CSS classes that are used to style the popup.
+         */
+        set: function (settings) {
+            this._popupSettings = Object.assign({ animate: true }, settings);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ComboBoxComponent.prototype, "tabIndex", {
+        get: function () {
+            return this.tabindex;
+        },
+        /**
+         * @hidden
+         */
+        set: function (tabIndex) {
+            this.tabindex = tabIndex;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ComboBoxComponent.prototype, "widgetClasses", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @hidden
+     */
+    ComboBoxComponent.prototype.wrapperClasses = function () {
+        return {
+            'k-dropdown-wrap': true,
+            'k-state-default': !this.disabled,
+            'k-state-disabled': this.disabled,
+            'k-state-focused': this.isFocused
+        };
+    };
+    Object.defineProperty(ComboBoxComponent.prototype, "clearable", {
+        get: function () {
+            return this.clearButton;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ComboBoxComponent.prototype, "dir", {
+        get: function () {
+            return this.direction;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ComboBoxComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.renderer.removeAttribute(this.wrapper, "tabindex");
+        this.createSelectionStream();
+        this.createValueStream();
+        this.localizationChangeSubscription = this.localization
+            .changes.subscribe(function (_a) {
+            var rtl = _a.rtl;
+            return _this.direction = rtl ? 'rtl' : 'ltr';
+        });
+    };
+    ComboBoxComponent.prototype.createSelectionStream = function () {
+        var _this = this;
+        if (this.selectionSubscription) {
+            this.selectionSubscription.unsubscribe();
+        }
+        this.selectionSubscription =
+            this.selectionSubject.pipe(Object(rxjs_operators_map__WEBPACK_IMPORTED_MODULE_13__["map"])(function (index) {
+                return {
+                    dataItem: _this.data[index],
+                    value: Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(_this.data[index], _this.valueField)
+                };
+            }), Object(rxjs_operators_distinctUntilChanged__WEBPACK_IMPORTED_MODULE_11__["distinctUntilChanged"])(function (prev, next) {
+                return prev.value === next.value;
+            }))
+                .subscribe(function (args) {
+                _this.selectionChange.emit(args.dataItem);
+            });
+    };
+    ComboBoxComponent.prototype.createValueStream = function () {
+        var _this = this;
+        var valueStream = this.valueSubject.pipe(Object(rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_12__["filter"])(function (candidate) {
+            var current = _this.valuePrimitive ? _this.value : Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(_this.value, _this.valueField);
+            var newValue = Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(candidate, _this.valueField);
+            var newText = Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(candidate, _this.textField);
+            if (Object(_util__WEBPACK_IMPORTED_MODULE_19__["isPresent"])(newText)) {
+                newText = newText.toString();
+            }
+            if (current === newValue && _this.text === newText) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }), Object(rxjs_operators_map__WEBPACK_IMPORTED_MODULE_13__["map"])(function (candidate) {
+            var newValue = Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(candidate, _this.valueField);
+            var newText = Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(candidate, _this.textField);
+            return {
+                dataItem: candidate,
+                text: newText,
+                value: _this.valuePrimitive ? newValue : candidate
+            };
+        }));
+        var customValueStreams = Object(rxjs_operators_partition__WEBPACK_IMPORTED_MODULE_14__["partition"])(function () { return _this.allowCustom; })(this.customValueSubject.pipe(Object(rxjs_operators_throttleTime__WEBPACK_IMPORTED_MODULE_16__["throttleTime"])(300)));
+        var allowCustomValueStream = customValueStreams[0].pipe(Object(rxjs_operators_tap__WEBPACK_IMPORTED_MODULE_15__["tap"])(function () {
+            _this.loading = true;
+            _this.disabled = true;
+        }), Object(rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_12__["filter"])(function () {
+            var hasChange = _this.text !== Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(_this.value, _this.textField);
+            _this.loading = hasChange;
+            _this.disabled = hasChange;
+            return hasChange;
+        }), this.valueNormalizer, Object(rxjs_operators_map__WEBPACK_IMPORTED_MODULE_13__["map"])(function (normalizedValue) {
+            return {
+                dataItem: normalizedValue,
+                text: _this.text,
+                value: normalizedValue
+            };
+        }));
+        var disableCustomValueStream = customValueStreams[1].pipe(Object(rxjs_operators_map__WEBPACK_IMPORTED_MODULE_13__["map"])(function () {
+            return {
+                dataItem: undefined,
+                text: undefined,
+                value: undefined
+            };
+        }));
+        if (this.valueSubscription) {
+            this.valueSubscription.unsubscribe();
+        }
+        var merged = Object(rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_9__["merge"])(valueStream, allowCustomValueStream, disableCustomValueStream);
+        this.valueSubscription = merged.pipe(Object(rxjs_operators_catchError__WEBPACK_IMPORTED_MODULE_10__["catchError"])(function () {
+            _this.dataItem = undefined;
+            _this.value = undefined;
+            _this.text = undefined;
+            _this.loading = false;
+            _this.disabled = false;
+            _this.emitChange();
+            return merged;
+        }))
+            .subscribe(function (state) {
+            _this.dataItem = state.dataItem;
+            _this.value = state.value;
+            _this.text = state.text;
+            _this.loading = false;
+            _this.disabled = false;
+            if (_this.filterable && !Object(_util__WEBPACK_IMPORTED_MODULE_19__["isPresent"])(state.value) && !Object(_util__WEBPACK_IMPORTED_MODULE_19__["isPresent"])(state.text) && !Object(_util__WEBPACK_IMPORTED_MODULE_19__["isPresent"])(_this._previousValue)) {
+                _this.filterChange.emit("");
+            }
+            _this.emitChange();
+        });
+    };
+    ComboBoxComponent.prototype.subscribeEvents = function () {
+        var _this = this;
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_19__["isDocumentAvailable"])()) {
+            return;
+        }
+        [
+            this.selectionService.onChange.pipe(Object(rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_12__["filter"])(function (event) { return Object(_util__WEBPACK_IMPORTED_MODULE_19__["isPresent"])(event.indices[0]); }), Object(rxjs_operators_map__WEBPACK_IMPORTED_MODULE_13__["map"])(function (event) { return event.indices[0]; }))
+                .subscribe(this.handleItemChange.bind(this)),
+            this.selectionService.onSelect.pipe(Object(rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_12__["filter"])(function (event) { return Object(_util__WEBPACK_IMPORTED_MODULE_19__["isPresent"])(event.indices[0]); }), Object(rxjs_operators_map__WEBPACK_IMPORTED_MODULE_13__["map"])(function (event) { return event.indices[0]; }))
+                .subscribe(this.handleItemSelect.bind(this)),
+            Object(rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_9__["merge"])(this.navigationService.up, this.navigationService.down, this.navigationService.home, this.navigationService.end).subscribe(function (event) { return _this.navigate(event.index); }),
+            this.navigationService.open.subscribe(function () { return _this.popupOpen = true; }),
+            this.navigationService.close.subscribe(function () { return _this.popupOpen = false; }),
+            this.navigationService.enter.subscribe(function (event) {
+                if (_this.popupOpen) {
+                    event.originalEvent.preventDefault();
+                }
+                _this.confirmSelection();
+            }),
+            this.navigationService.esc.subscribe(this.handleBlur.bind(this))
+        ].forEach(function (s) { return _this.observableSubscriptions.add(s); });
+    };
+    ComboBoxComponent.prototype.unsubscribeEvents = function () {
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_19__["isDocumentAvailable"])()) {
+            return;
+        }
+        this.observableSubscriptions.unsubscribe();
+        if (this.valueSubscription) {
+            this.valueSubscription.unsubscribe();
+        }
+        if (this.selectionSubscription) {
+            this.selectionSubscription.unsubscribe();
+        }
+    };
+    ComboBoxComponent.prototype.handleItemChange = function (index) {
+        this._filtering = false;
+        this.change(this.data[index]);
+    };
+    ComboBoxComponent.prototype.handleItemSelect = function (index) {
+        this._filtering = false;
+        if (!this.popupOpen) {
+            this.change(this.data[index]);
+        }
+        else {
+            this.selectionSubject.next(index);
+        }
+    };
+    ComboBoxComponent.prototype.ngOnDestroy = function () {
+        this._toggle(false);
+        this.unsubscribeEvents();
+        if (this.localizationChangeSubscription) {
+            this.localizationChangeSubscription.unsubscribe();
+        }
+    };
+    ComboBoxComponent.prototype.ngOnChanges = function (changes) {
+        if (changes.hasOwnProperty("value")) {
+            this._state |= InternalState.UseModel;
+            this._modelValue = changes.value.currentValue;
+        }
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_19__["isChanged"])("valueNormalizer", changes)) {
+            this.createSelectionStream();
+            this.createValueStream();
+        }
+        if (this.valuePrimitive === undefined) {
+            this.valuePrimitive = this.valueField ? false : true;
+        }
+        var STATE_PROPS = /(data|value|textField|valueField|valuePrimitive)/g;
+        if (STATE_PROPS.test(Object.keys(changes).join())) {
+            this.setState();
+        }
+        var wasFiltered = Object(_util__WEBPACK_IMPORTED_MODULE_19__["isChanged"])("data", changes) && this._filtering;
+        if (wasFiltered) {
+            if (this.text.length > 0) {
+                this.search(this.text);
+                if (this.selectionService.focused === -1) {
+                    this.selectionService.focused = 0;
+                }
+            }
+            else {
+                this.selectionService.focused = -1;
+            }
+        }
+        if (this.suggest && this.data && this.data.length && this.text) {
+            this.suggestedText = Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(this.data[0], this.textField);
+        }
+    };
+    /**
+     * Focuses the ComboBox.
+     */
+    ComboBoxComponent.prototype.focus = function () {
+        if (!this.disabled) {
+            this.searchbar.focus();
+        }
+    };
+    /**
+     * Blurs the ComboBox.
+     */
+    ComboBoxComponent.prototype.blur = function () {
+        if (!this.disabled) {
+            this.searchbar.blur();
+        }
+    };
+    /**
+     * Toggles the visibility of the popup. If you use the `toggle` method to open or close the popup,
+     * the `open` and `close` events will not be fired.
+     *
+     * @param open - The state of the popup.
+     */
+    ComboBoxComponent.prototype.toggle = function (open) {
+        var _this = this;
+        Promise.resolve(null).then(function () {
+            _this._toggle((open === undefined) ? !_this._open : open);
+            _this.cdr.markForCheck();
+        });
+    };
+    Object.defineProperty(ComboBoxComponent.prototype, "isOpen", {
+        /**
+         * Returns the current open state of the popup.
+         */
+        get: function () {
+            return this.popupOpen;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Resets the value of the ComboBox.
+     * If you use the `reset` method to clear the value of the component,
+     * the model will not update automatically and the `selectionChange` and `valueChange` events will not be fired.
+     */
+    ComboBoxComponent.prototype.reset = function () {
+        this._modelValue = undefined;
+        this.setState();
+    };
+    /**
+     * @hidden
+     */
+    ComboBoxComponent.prototype.clearValue = function (event) {
+        event.stopImmediatePropagation();
+        this.focus();
+        this._filtering = true;
+        this._previousValue = undefined;
+        this.change(undefined);
+        this._filtering = false;
+        this.selectionService.resetSelection([]);
+    };
+    /**
+     * @hidden
+     */
+    ComboBoxComponent.prototype.writeValue = function (value) {
+        if (value === null && this._state & InternalState.SetInitial) {
+            return;
+        }
+        this._state |= InternalState.UseModel;
+        this.text = "";
+        this._modelValue = value;
+        this.setState();
+    };
+    /**
+     * @hidden
+     */
+    ComboBoxComponent.prototype.registerOnChange = function (fn) {
+        this.onChangeCallback = fn;
+    };
+    /**
+     * @hidden
+     */
+    ComboBoxComponent.prototype.registerOnTouched = function (fn) {
+        this.onTouchedCallback = fn;
+    };
+    /**
+     * @hidden
+     */
+    ComboBoxComponent.prototype.setDisabledState = function (isDisabled) {
+        this.disabled = isDisabled;
+    };
+    /**
+     * @hidden
+     */
+    ComboBoxComponent.prototype.popupOpened = function () {
+        this.popupWidth = this.width.max;
+        this.popupMinWidth = this.width.min;
+    };
+    Object.defineProperty(ComboBoxComponent.prototype, "buttonClasses", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            return _a = {},
+                _a[this.iconClass] = !this.loading && this.iconClass,
+                _a['k-i-arrow-s'] = !this.loading && !this.iconClass,
+                _a['k-i-loading'] = this.loading,
+                _a['k-icon'] = true,
+                _a;
+            var _a;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @hidden
+     */
+    ComboBoxComponent.prototype.onResize = function () {
+        if (this._open) {
+            var popupWrapper = this.popupRef.popupElement;
+            var _a = this.width, min = _a.min, max = _a.max;
+            popupWrapper.style.minWidth = min;
+            popupWrapper.style.width = max;
+        }
+    };
+    ComboBoxComponent.prototype.verifySettings = function (newValue) {
+        var valueOrText = !Object(_util__WEBPACK_IMPORTED_MODULE_19__["isPresent"])(this.valueField) !== !Object(_util__WEBPACK_IMPORTED_MODULE_19__["isPresent"])(this.textField);
+        if (!Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])()) {
+            return;
+        }
+        if (this.valuePrimitive === true && Object(_util__WEBPACK_IMPORTED_MODULE_19__["isPresent"])(newValue) && typeof newValue === "object") {
+            throw new Error(_error_messages__WEBPACK_IMPORTED_MODULE_26__["ComboBoxMessages"].primitive);
+        }
+        if (this.valuePrimitive === false && Object(_util__WEBPACK_IMPORTED_MODULE_19__["isPresent"])(newValue) && typeof newValue !== "object") {
+            throw new Error(_error_messages__WEBPACK_IMPORTED_MODULE_26__["ComboBoxMessages"].object);
+        }
+        if (valueOrText) {
+            throw new Error(_error_messages__WEBPACK_IMPORTED_MODULE_26__["ComboBoxMessages"].textAndValue);
+        }
+    };
+    ComboBoxComponent.prototype.resolveState = function () {
+        var primitiveValue = Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(this._modelValue, this.valueField, true);
+        var existing;
+        var state;
+        if (this._filtering) {
+            state = InternalState.UseFilter;
+        }
+        else {
+            state = this.data.length ? InternalState.UseExisting : (this.allowCustom ? InternalState.UseCustom : InternalState.UseEmpty);
+        }
+        if (state === InternalState.UseExisting) {
+            existing = Object(_util__WEBPACK_IMPORTED_MODULE_19__["resolveValue"])({ data: this.data, value: primitiveValue, valueField: this.valueField });
+            if (existing.dataItem !== undefined) {
+                state = InternalState.UseExisting;
+            }
+            else {
+                state = this.allowCustom ? InternalState.UseCustom : InternalState.UseEmpty;
+            }
+        }
+        state |= this._state & InternalState.SetInitial | this._state & InternalState.UseModel;
+        this._state = state;
+        return existing;
+    };
+    ComboBoxComponent.prototype.setState = function () {
+        var resolved = this.resolveState();
+        var newState = { value: undefined, text: undefined, dataItem: undefined, selected: [-1] };
+        if (this._state & InternalState.UseFilter) {
+            return;
+        }
+        else if (this._state & InternalState.UseEmpty) {
+            newState.selected = undefined;
+            newState.value = undefined;
+            newState.text = undefined;
+            newState.dataItem = undefined;
+        }
+        else if (this._state & InternalState.UseExisting) {
+            newState.value = Object(_util__WEBPACK_IMPORTED_MODULE_19__["isPresent"])(this._modelValue) ? this._modelValue : resolved.dataItem;
+            newState.text = resolved.dataItem;
+            newState.dataItem = resolved.dataItem;
+            newState.selected = resolved.selected;
+        }
+        else if (this._state & InternalState.UseCustom) {
+            newState.value = this._modelValue;
+            newState.text = this._modelValue;
+            newState.dataItem = this._modelValue;
+        }
+        if (this._state & InternalState.UseModel) {
+            this._state &= ~InternalState.UseModel;
+            this._previousValue = newState.dataItem;
+        }
+        else {
+            this._previousValue = this.dataItem;
+        }
+        this._state &= ~InternalState.SetInitial;
+        this.text = newState.text;
+        this.value = this.valuePrimitive ? Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(newState.value, this.valueField, true) : newState.value;
+        this.dataItem = newState.dataItem;
+        this.selectionService.resetSelection(newState.selected);
+    };
+    ComboBoxComponent.prototype.search = function (text) {
+        var _this = this;
+        var index = this.data.findIndex(function (item) {
+            var itemText = Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(item, _this.textField);
+            itemText = itemText === undefined ? "" : itemText.toString().toLowerCase();
+            return itemText.startsWith(text.toLowerCase());
+        });
+        this.selectionService.focused = index;
+        this.suggestedText = Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(this.data[index], this.textField);
+    };
+    /**
+     * @hidden
+     */
+    ComboBoxComponent.prototype.getSuggestion = function () {
+        var hasSelected = !!this.selectionService.selected.length;
+        var shouldSuggest = this.suggest && !this.backspacePressed && this.suggestedText && this.text;
+        if (!hasSelected && shouldSuggest && this.suggestedText.toLowerCase().startsWith(this.text.toLowerCase())) {
+            return this.suggestedText;
+        }
+        else {
+            this.suggestedText = undefined;
+        }
+    };
+    ComboBoxComponent.prototype.navigate = function (index) {
+        if (this.data.length === 0) {
+            return;
+        }
+        this.text = this.data[index];
+        this.selectionService.select(index);
+    };
+    /**
+     * @hidden
+     */
+    ComboBoxComponent.prototype.handleNavigate = function (event) {
+        var hasSelected = Object(_util__WEBPACK_IMPORTED_MODULE_19__["isPresent"])(this.selectionService.selected[0]);
+        var focused = isNaN(this.selectionService.focused) ? 0 : this.selectionService.focused;
+        var offset = 0;
+        if (this.disabled || this.readonly) {
+            return;
+        }
+        if (event.keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_21__["Keys"].home || event.keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_21__["Keys"].end) {
+            return;
+        }
+        if (!hasSelected) {
+            if (event.keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_21__["Keys"].down) {
+                offset = -1;
+            }
+            else if (event.keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_21__["Keys"].up) {
+                offset = 1;
+            }
+        }
+        var current = offset + focused;
+        if (current < -1) {
+            current = -1;
+        }
+        var action = this.navigationService.process({
+            current: current,
+            max: this.data.length - 1,
+            min: 0,
+            originalEvent: event
+        });
+        if (action !== _navigation_action__WEBPACK_IMPORTED_MODULE_20__["NavigationAction"].Undefined &&
+            action !== _navigation_action__WEBPACK_IMPORTED_MODULE_20__["NavigationAction"].Left &&
+            action !== _navigation_action__WEBPACK_IMPORTED_MODULE_20__["NavigationAction"].Right &&
+            action !== _navigation_action__WEBPACK_IMPORTED_MODULE_20__["NavigationAction"].Backspace &&
+            action !== _navigation_action__WEBPACK_IMPORTED_MODULE_20__["NavigationAction"].Delete &&
+            ((action === _navigation_action__WEBPACK_IMPORTED_MODULE_20__["NavigationAction"].Enter && this.popupOpen) || action !== _navigation_action__WEBPACK_IMPORTED_MODULE_20__["NavigationAction"].Enter)) {
+            event.preventDefault();
+        }
+    };
+    ComboBoxComponent.prototype.confirmSelection = function () {
+        var focused = this.selectionService.focused;
+        var previousText = Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(this._previousValue, this.textField) || "";
+        var hasChange = this.text !== previousText;
+        var isCustom = false;
+        this._filtering = false;
+        if (this.allowCustom) {
+            isCustom = this.text !== Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(this.data[focused], this.textField);
+        }
+        else {
+            isCustom = focused === -1 || focused === undefined;
+        }
+        if (!isCustom && this.popupOpen) {
+            this.selectionService.select(focused);
+            this.change(this.data[focused] || this.text, isCustom);
+            return;
+        }
+        if (hasChange) {
+            this.change(this.text, isCustom);
+        }
+        else {
+            this.popupOpen = false;
+        }
+    };
+    /**
+     * @hidden
+     */
+    ComboBoxComponent.prototype.handleBlur = function () {
+        this._filtering = false;
+        var currentText = this.searchbar.value; // The value is updated, but the Angular `change` event is not emitted yet and `this.text` is not updated. Fails on suggested text.
+        if (!currentText && !Object(_util__WEBPACK_IMPORTED_MODULE_19__["isPresent"])(this._previousValue)) {
+            this.popupOpen = false;
+            this.isFocused = false;
+            this.onBlur.emit();
+            this.onTouchedCallback();
+            return;
+        }
+        var focused = this.selectionService.focused;
+        var itemText;
+        if (focused !== -1 && focused !== undefined) {
+            itemText = Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(this.data[focused], this.textField);
+            itemText = itemText === undefined ? "" : itemText.toString().toLowerCase();
+        }
+        if (itemText === currentText.toLowerCase()) {
+            this.selectionService.change(focused);
+        }
+        else {
+            this.change(currentText, true);
+        }
+        this.popupOpen = false;
+        this.isFocused = false;
+        this.onBlur.emit();
+        this.onTouchedCallback();
+    };
+    /**
+     * @hidden
+     */
+    ComboBoxComponent.prototype.searchBarChange = function (text) {
+        var currentTextLength = this.text ? this.text.length : 0;
+        this.backspacePressed = (text.length < currentTextLength) ? true : false;
+        this.text = text;
+        // Reset the selection prior to filter. If a match is present, it will be resolved. If a match is not present, it is not needed.
+        this.selectionService.resetSelection([]);
+        this.popupOpen = true;
+        this._filtering = true;
+        if (this.filterable) {
+            this.filterChange.emit(text);
+        }
+        else {
+            this.search(text);
+        }
+    };
+    /**
+     * @hidden
+     */
+    ComboBoxComponent.prototype.handleFocus = function () {
+        this.isFocused = true;
+        this.onFocus.emit();
+    };
+    ComboBoxComponent.prototype.change = function (candidate, isCustom) {
+        if (isCustom === void 0) { isCustom = false; }
+        this.popupOpen = false;
+        if (isCustom) {
+            this.customValueSubject.next(candidate);
+        }
+        else {
+            this.valueSubject.next(candidate);
+        }
+    };
+    ComboBoxComponent.prototype.emitChange = function () {
+        var _this = this;
+        this._modelValue = this.value;
+        this._previousValue = this._state & InternalState.UseCustom ? this.value : this.dataItem;
+        this.selectionSubject.next(this.data.findIndex(function (element) {
+            return Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(element, _this.valueField) === Object(_util__WEBPACK_IMPORTED_MODULE_19__["getter"])(_this.value, _this.valueField, _this.valuePrimitive);
+        }));
+        this.onChangeCallback(this.value);
+        this.valueChange.emit(this.value);
+    };
+    /**
+     * @hidden
+     */
+    ComboBoxComponent.prototype.togglePopup = function () {
+        if (!this.touchEnabled) {
+            this.searchbar.focus();
+        }
+        if (this.popupOpen) {
+            this.confirmSelection();
+            this.popupOpen = false;
+        }
+        else {
+            this.popupOpen = true;
+        }
+    };
+    Object.defineProperty(ComboBoxComponent.prototype, "listContainerClasses", {
+        get: function () {
+            var containerClasses = ['k-list-container', 'k-reset'];
+            if (this.popupSettings.popupClass) {
+                containerClasses.push(this.popupSettings.popupClass);
+            }
+            return containerClasses;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ComboBoxComponent.prototype._toggle = function (open) {
+        var _this = this;
+        this._open = open;
+        if (this.popupRef) {
+            this.popupRef.popupElement
+                .removeEventListener('mousedown', this.popupMouseDownHandler);
+            this.popupRef.close();
+            this.popupRef = null;
+        }
+        if (this._open) {
+            this.popupRef = this.popupService.open({
+                anchor: this.wrapper,
+                animate: this.popupSettings.animate,
+                appendTo: this.appendTo,
+                content: this.popupTemplate,
+                popupClass: this.listContainerClasses,
+                positionMode: 'absolute'
+            });
+            var popupWrapper = this.popupRef.popupElement;
+            var _a = this.width, min = _a.min, max = _a.max;
+            popupWrapper.addEventListener('mousedown', this.popupMouseDownHandler);
+            popupWrapper.style.minWidth = min;
+            popupWrapper.style.width = max;
+            popupWrapper.style.height = this.height;
+            popupWrapper.setAttribute("dir", this.direction);
+            this.popupRef.popupAnchorViewportLeave.subscribe(function () { return _this.popupOpen = false; });
+        }
+    };
+    ComboBoxComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    exportAs: 'kendoComboBox',
+                    providers: [
+                        COMBOBOX_VALUE_ACCESSOR,
+                        _selection_service__WEBPACK_IMPORTED_MODULE_7__["SelectionService"],
+                        _navigation_service__WEBPACK_IMPORTED_MODULE_8__["NavigationService"],
+                        _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_23__["LocalizationService"],
+                        {
+                            provide: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_23__["L10N_PREFIX"],
+                            useValue: 'kendo.combobox'
+                        }
+                    ],
+                    selector: 'kendo-combobox',
+                    template: "\n        <span #wrapper unselectable=\"on\" [ngClass]=\"wrapperClasses()\">\n          <kendo-searchbar #searchbar\n              [role]=\"'listbox'\"\n              [id]=\"focusableId\"\n              [listId]=\"listBoxId\"\n              [activeDescendant]=\"activeDescendant\"\n              [userInput]=\"text\"\n              [suggestedText]=\"getSuggestion()\"\n              [disabled]=\"disabled\"\n              [readonly]=\"readonly\"\n              [tabIndex]=\"tabIndex\"\n              [popupOpen]=\"popupOpen\"\n              [placeholder]=\"placeholder\"\n              (onNavigate)=\"handleNavigate($event)\"\n              (valueChange)=\"searchBarChange($event)\"\n              (onBlur)=\"handleBlur()\"\n              (onFocus)=\"handleFocus()\"\n          ></kendo-searchbar>\n          <span *ngIf=\"!loading && !readonly && (clearButton && text?.length)\" class=\"k-icon k-clear-value k-i-close\" title=\"clear\" role=\"button\" tabindex=\"-1\" (click)=\"clearValue($event)\" (mousedown)=\"$event.preventDefault()\"></span>\n          <span unselectable=\"on\"\n              [ngClass]=\"{ 'k-select': true }\"\n              (click)=\"togglePopup()\"\n              (mousedown)=\"$event.preventDefault()\" >\n              <span [ngClass]=\"buttonClasses\"></span>\n          </span>\n          <ng-template #popupTemplate>\n              <!--header template-->\n              <ng-template *ngIf=\"headerTemplate\"\n                  [templateContext]=\"{\n                      templateRef: headerTemplate.templateRef\n                  }\">\n              </ng-template>\n              <!--list-->\n              <kendo-list\n                  [id]=\"listBoxId\"\n                  [optionPrefix]=\"optionPrefix\"\n                  [data]=\"data\"\n                  [textField]=\"textField\"\n                  [valueField]=\"valueField\"\n                  [template]=\"template\"\n                  [height]=\"listHeight\"\n                  [show]=\"popupOpen\"\n              >\n              </kendo-list>\n              <!--no-data template-->\n              <div class=\"k-nodata\" *ngIf=\"data.length === 0\">\n                  <ng-template [ngIf]=\"noDataTemplate\"\n                      [templateContext]=\"{\n                          templateRef: noDataTemplate ? noDataTemplate.templateRef : undefined\n                      }\">\n                  </ng-template>\n                  <ng-template [ngIf]=\"!noDataTemplate\">\n                      <div>NO DATA FOUND.</div>\n                  </ng-template>\n              </div>\n              <!--footer template-->\n              <ng-template *ngIf=\"footerTemplate\"\n                  [templateContext]=\"{\n                      templateRef: footerTemplate.templateRef\n                  }\">\n              </ng-template>\n          </ng-template>\n        </span>\n        <ng-template [ngIf]=\"popupOpen\">\n            <kendo-resize-sensor (resize)=\"onResize()\"></kendo-resize-sensor>\n        </ng-template>\n        <ng-container #container></ng-container>\n  "
+                },] },
+    ];
+    /** @nocollapse */
+    ComboBoxComponent.ctorParameters = function () { return [
+        { type: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_23__["LocalizationService"], },
+        { type: _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_24__["PopupService"], },
+        { type: _selection_service__WEBPACK_IMPORTED_MODULE_7__["SelectionService"], },
+        { type: _navigation_service__WEBPACK_IMPORTED_MODULE_8__["NavigationService"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Renderer2"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_touch_enabled__WEBPACK_IMPORTED_MODULE_25__["TOUCH_ENABLED"],] },] },
+    ]; };
+    ComboBoxComponent.propDecorators = {
+        'focusableId': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'allowCustom': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'data': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'value': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'textField': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'valueField': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'valuePrimitive': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'valueNormalizer': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'placeholder': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'popupSettings': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'listHeight': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'iconClass': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'loading': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'suggest': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'clearButton': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'disabled': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'readonly': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'tabindex': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'tabIndex': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ["tabIndex",] },],
+        'filterable': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'valueChange': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'selectionChange': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'filterChange': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'open': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'close': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'onFocus': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"], args: ['focus',] },],
+        'onBlur': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"], args: ['blur',] },],
+        'template': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ContentChild"], args: [_templates_item_template_directive__WEBPACK_IMPORTED_MODULE_3__["ItemTemplateDirective"],] },],
+        'headerTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ContentChild"], args: [_templates_header_template_directive__WEBPACK_IMPORTED_MODULE_4__["HeaderTemplateDirective"],] },],
+        'footerTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ContentChild"], args: [_templates_footer_template_directive__WEBPACK_IMPORTED_MODULE_5__["FooterTemplateDirective"],] },],
+        'noDataTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ContentChild"], args: [_templates_no_data_template_directive__WEBPACK_IMPORTED_MODULE_6__["NoDataTemplateDirective"],] },],
+        'container': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['container', { read: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"] },] },],
+        'popupTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['popupTemplate',] },],
+        'searchbar': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: [_searchbar_component__WEBPACK_IMPORTED_MODULE_2__["SearchBarComponent"],] },],
+        'widgetClasses': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-widget',] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-combobox',] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-header',] },],
+        'clearable': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-combobox-clearable',] },],
+        'dir': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['attr.dir',] },],
+    };
+    return ComboBoxComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/combobox.module.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/combobox.module.js ***!
+  \***********************************************************************************/
+/*! exports provided: ComboBoxModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ComboBoxModule", function() { return ComboBoxModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _combobox_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./combobox.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/combobox.component.js");
+/* harmony import */ var _shared_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./shared.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/shared.module.js");
+/* harmony import */ var _shared_directives_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./shared-directives.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/shared-directives.module.js");
+
+
+
+
+var COMBOBOX_DIRECTIVES = [
+    _combobox_component__WEBPACK_IMPORTED_MODULE_1__["ComboBoxComponent"]
+];
+/**
+ * @hidden
+ *
+ * The exported package module.
+ *
+ * The package exports:
+ * - `ComboBoxComponent`&mdash;The ComboBox component class.
+ * - `ItemTemplateDirective`&mdash;The item template directive.
+ * - `HeaderTemplateDirective`&mdash;The header template directive.
+ * - `FooterTemplateDirective`&mdash;The footer template directive.
+ */
+var ComboBoxModule = /** @class */ (function () {
+    function ComboBoxModule() {
+    }
+    ComboBoxModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    declarations: [COMBOBOX_DIRECTIVES],
+                    exports: [COMBOBOX_DIRECTIVES, _shared_directives_module__WEBPACK_IMPORTED_MODULE_3__["SharedDirectivesModule"]],
+                    imports: [_shared_module__WEBPACK_IMPORTED_MODULE_2__["SharedModule"]]
+                },] },
+    ];
+    /** @nocollapse */
+    ComboBoxModule.ctorParameters = function () { return []; };
+    return ComboBoxModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/keys.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/keys.js ***!
+  \*******************************************************************************/
+/*! exports provided: Keys */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Keys", function() { return Keys; });
+/**
+ * @hidden
+ */
+var Keys;
+(function (Keys) {
+    Keys[Keys["backspace"] = 8] = "backspace";
+    Keys[Keys["tab"] = 9] = "tab";
+    Keys[Keys["enter"] = 13] = "enter";
+    Keys[Keys["shift"] = 16] = "shift";
+    Keys[Keys["ctrl"] = 17] = "ctrl";
+    Keys[Keys["alt"] = 18] = "alt";
+    Keys[Keys["pause/break"] = 19] = "pause/break";
+    Keys[Keys["caps lock"] = 20] = "caps lock";
+    Keys[Keys["esc"] = 27] = "esc";
+    Keys[Keys["space"] = 32] = "space";
+    Keys[Keys["page up"] = 33] = "page up";
+    Keys[Keys["page down"] = 34] = "page down";
+    Keys[Keys["end"] = 35] = "end";
+    Keys[Keys["home"] = 36] = "home";
+    Keys[Keys["left"] = 37] = "left";
+    Keys[Keys["up"] = 38] = "up";
+    Keys[Keys["right"] = 39] = "right";
+    Keys[Keys["down"] = 40] = "down";
+    Keys[Keys["insert"] = 45] = "insert";
+    Keys[Keys["delete"] = 46] = "delete";
+    Keys[Keys["command"] = 91] = "command";
+    Keys[Keys["left command"] = 91] = "left command";
+    Keys[Keys["right command"] = 93] = "right command";
+    Keys[Keys["numpad *"] = 106] = "numpad *";
+    Keys[Keys["numpad +"] = 107] = "numpad +";
+    Keys[Keys["numpad -"] = 109] = "numpad -";
+    Keys[Keys["numpad ."] = 110] = "numpad .";
+    Keys[Keys["numpad /"] = 111] = "numpad /";
+    Keys[Keys["num lock"] = 144] = "num lock";
+    Keys[Keys["scroll lock"] = 145] = "scroll lock";
+    Keys[Keys["my computer"] = 182] = "my computer";
+    Keys[Keys["my calculator"] = 183] = "my calculator";
+    Keys[Keys[";"] = 186] = ";";
+    Keys[Keys["="] = 187] = "=";
+    Keys[Keys[","] = 188] = ",";
+    Keys[Keys["-"] = 189] = "-";
+    Keys[Keys["."] = 190] = ".";
+    Keys[Keys["/"] = 191] = "/";
+    Keys[Keys["`"] = 192] = "`";
+    Keys[Keys["["] = 219] = "[";
+    Keys[Keys["\\"] = 220] = "\\";
+    Keys[Keys["]"] = 221] = "]";
+    Keys[Keys["'"] = 222] = "'";
+})(Keys || (Keys = {}));
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/preventable-event.js":
+/*!********************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/preventable-event.js ***!
+  \********************************************************************************************/
+/*! exports provided: PreventableEvent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PreventableEvent", function() { return PreventableEvent; });
+/**
+ * @hidden
+ */
+var PreventableEvent = /** @class */ (function () {
+    function PreventableEvent() {
+        this.prevented = false;
+    }
+    /**
+     * Prevents the default action for a specified event.
+     * In this way, the source component suppresses the built-in behavior that follows the event.
+     */
+    PreventableEvent.prototype.preventDefault = function () {
+        this.prevented = true;
+    };
+    /**
+     * If the event is prevented by any of its subscribers, returns `true`.
+     *
+     * @returns `true` if the default action was prevented. Otherwise, returns `false`.
+     */
+    PreventableEvent.prototype.isDefaultPrevented = function () {
+        return this.prevented;
+    };
+    return PreventableEvent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/remove-tag-event.js":
+/*!*******************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/remove-tag-event.js ***!
+  \*******************************************************************************************/
+/*! exports provided: RemoveTagEvent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RemoveTagEvent", function() { return RemoveTagEvent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _preventable_event__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./preventable-event */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/preventable-event.js");
+
+
+/**
+ * Fires when a tag is about to the removed. If you cancel the event, the removal is prevented.
+ *
+ * Arguments for the `remove` event:
+ */
+var RemoveTagEvent = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](RemoveTagEvent, _super);
+    /**
+     * Constructs the event arguments for the `remove` event.
+     * @param dataItem - The dataItem(s) that will be removed.
+     */
+    function RemoveTagEvent(dataItem) {
+        var _this = _super.call(this) || this;
+        _this.dataItem = dataItem;
+        return _this;
+    }
+    return RemoveTagEvent;
+}(_preventable_event__WEBPACK_IMPORTED_MODULE_1__["PreventableEvent"]));
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/dropdownlist.component.js":
+/*!******************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/dropdownlist.component.js ***!
+  \******************************************************************************************/
+/*! exports provided: DROPDOWNLIST_VALUE_ACCESSOR, DropDownListComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DROPDOWNLIST_VALUE_ACCESSOR", function() { return DROPDOWNLIST_VALUE_ACCESSOR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DropDownListComponent", function() { return DropDownListComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/observable/merge */ "./node_modules/rxjs-compat/_esm5/observable/merge.js");
+/* harmony import */ var rxjs_observable_interval__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/observable/interval */ "./node_modules/rxjs-compat/_esm5/observable/interval.js");
+/* harmony import */ var rxjs_operators_concatMap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators/concatMap */ "./node_modules/rxjs-compat/_esm5/operators/concatMap.js");
+/* harmony import */ var rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators/filter */ "./node_modules/rxjs-compat/_esm5/operators/filter.js");
+/* harmony import */ var rxjs_operators_map__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators/map */ "./node_modules/rxjs-compat/_esm5/operators/map.js");
+/* harmony import */ var rxjs_operators_skipWhile__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators/skipWhile */ "./node_modules/rxjs-compat/_esm5/operators/skipWhile.js");
+/* harmony import */ var rxjs_operators_take__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/operators/take */ "./node_modules/rxjs-compat/_esm5/operators/take.js");
+/* harmony import */ var rxjs_operators_takeUntil__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs/operators/takeUntil */ "./node_modules/rxjs-compat/_esm5/operators/takeUntil.js");
+/* harmony import */ var rxjs_operators_tap__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs/operators/tap */ "./node_modules/rxjs-compat/_esm5/operators/tap.js");
+/* harmony import */ var rxjs_Subscription__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! rxjs/Subscription */ "./node_modules/rxjs-compat/_esm5/Subscription.js");
+/* harmony import */ var _common_keys__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./common/keys */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/keys.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./util */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/util.js");
+/* harmony import */ var _selection_service__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./selection.service */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/selection.service.js");
+/* harmony import */ var _navigation_service__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./navigation.service */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/navigation.service.js");
+/* harmony import */ var _templates_item_template_directive__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./templates/item-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/item-template.directive.js");
+/* harmony import */ var _templates_value_template_directive__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./templates/value-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/value-template.directive.js");
+/* harmony import */ var _templates_header_template_directive__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./templates/header-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/header-template.directive.js");
+/* harmony import */ var _templates_footer_template_directive__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./templates/footer-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/footer-template.directive.js");
+/* harmony import */ var _templates_no_data_template_directive__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./templates/no-data-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/no-data-template.directive.js");
+/* harmony import */ var _navigation_action__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./navigation-action */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/navigation-action.js");
+/* harmony import */ var _common_preventable_event__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./common/preventable-event */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/preventable-event.js");
+/* harmony import */ var _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @progress/kendo-angular-l10n */ "./node_modules/@progress/kendo-angular-l10n/dist/es/index.js");
+/* harmony import */ var _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @progress/kendo-angular-popup */ "./node_modules/@progress/kendo-angular-popup/dist/es/index.js");
+/* harmony import */ var _touch_enabled__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./touch-enabled */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/touch-enabled.js");
+/* harmony import */ var _error_messages__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./error-messages */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/error-messages.js");
+/* tslint:disable:max-line-length */
+/* tslint:disable:no-bitwise */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * @hidden
+ */
+var DROPDOWNLIST_VALUE_ACCESSOR = {
+    multi: true,
+    provide: _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NG_VALUE_ACCESSOR"],
+    // tslint:disable-next-line:no-use-before-declare
+    useExisting: Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["forwardRef"])(function () { return DropDownListComponent; })
+};
+/**
+ * Represents the Kendo UI DropDownList component for Angular.
+ *
+ * @example
+ * ```ts
+ * _@Component({
+ * selector: 'my-app',
+ * template: `
+ *  <kendo-dropdownlist [data]="listItems">
+ *  </kendo-dropdownlist>
+ * `
+ * })
+ * class AppComponent {
+ *   public listItems: Array<string> = ["Item 1", "Item 2", "Item 3", "Item 4"];
+ * }
+ * ```
+ */
+var DropDownListComponent = /** @class */ (function () {
+    function DropDownListComponent(localization, popupService, selectionService, navigationService, _zone, renderer, hostElement, cdr, touchEnabled) {
+        this.localization = localization;
+        this.popupService = popupService;
+        this.selectionService = selectionService;
+        this.navigationService = navigationService;
+        this._zone = _zone;
+        this.renderer = renderer;
+        this.hostElement = hostElement;
+        this.cdr = cdr;
+        this.touchEnabled = touchEnabled;
+        /**
+         * @hidden
+         */
+        this.focusableId = "k-" + Object(_util__WEBPACK_IMPORTED_MODULE_13__["guid"])();
+        /**
+         * Sets the height of the options list. By default, `listHeight` is 200px.
+         *
+         * > The `listHeight` property affects only the list of options and not the whole popup container.
+         * > To set the height of the popup container, use `popupSettings.height`.
+         */
+        this.listHeight = 200;
+        /**
+         * Sets the disabled state of the component.
+         */
+        this.disabled = false;
+        /**
+         * Sets the readonly state of the component.
+         */
+        this.readonly = false;
+        /**
+         * Enables the [filtering]({% slug filtering_ddl %}) functionality of the DropDownList.
+         */
+        this.filterable = false;
+        /**
+         * Enables a case-insensitive search. When filtration is disabled, use this option.
+         */
+        this.ignoreCase = true;
+        /**
+         * Sets the delay before an item search is performed. When filtration is disabled, use this option.
+         */
+        this.delay = 500;
+        /**
+         * Specifies the [`tabindex`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) of the component.
+         */
+        this.tabindex = 0;
+        /**
+         * Fires each time the value is changed&mdash;
+         * when the component is blurred or the value is cleared through the **Clear** button.
+         * For more details, refer to the example on [events]({% slug overview_ddl %}#toc-events).
+         */
+        this.valueChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires each time the user types in the input field.
+         * You can filter the source based on the passed filtration value.
+         * For more details, refer to the example on [events]({% slug overview_ddl %}#toc-events).
+         *
+         * When the value of the component is programmatically changed through its API or form binding
+         * to `ngModel` or `formControl`, the `valueChange` event is not triggered because it
+         * might cause a mix-up with the built-in `valueChange` mechanisms of the `ngModel` or `formControl` bindings.
+         */
+        this.filterChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires each time the item selection is changed.
+         * For more details, refer to the example on [events]({% slug overview_ddl %}#toc-events).
+         */
+        this.selectionChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires each time the popup is about to open.
+         * This event is preventable. If you cancel it, the popup will remain closed.
+         */
+        this.open = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires each time the popup is about to close.
+         * This event is preventable. If you cancel it, the popup will remain open.
+         */
+        this.close = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires each time the user focuses the DropDownList.
+         */
+        this.onFocus = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"](); //tslint:disable-line:no-output-rename
+        /**
+         * Fires each time the DropDownList gets blurred.
+         */
+        this.onBlur = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"](); //tslint:disable-line:no-output-rename
+        this.listBoxId = Object(_util__WEBPACK_IMPORTED_MODULE_13__["guid"])();
+        this.optionPrefix = Object(_util__WEBPACK_IMPORTED_MODULE_13__["guid"])();
+        this.filterText = "";
+        this.isFocused = false;
+        this.onTouchedCallback = function (_) { };
+        this.onChangeCallback = function (_) { };
+        this.word = "";
+        this.last = "";
+        this.filterFocused = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.filterBlurred = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.wrapperFocused = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.wrapperBlurred = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.selectionSubscription = new rxjs_Subscription__WEBPACK_IMPORTED_MODULE_11__["Subscription"]();
+        this._open = false;
+        this._popupSettings = { animate: true };
+        this.direction = localization.rtl ? 'rtl' : 'ltr';
+        this.data = [];
+        this.subscribeEvents();
+        this.hostElement = hostElement.nativeElement;
+        this.popupMouseDownHandler = this.onMouseDown.bind(this);
+    }
+    Object.defineProperty(DropDownListComponent.prototype, "width", {
+        get: function () {
+            var wrapperWidth = Object(_util__WEBPACK_IMPORTED_MODULE_13__["isDocumentAvailable"])() ? this.wrapper.nativeElement.offsetWidth : 0;
+            var width = this.popupSettings.width || wrapperWidth;
+            var minWidth = isNaN(wrapperWidth) ? wrapperWidth : wrapperWidth + "px";
+            var maxWidth = isNaN(width) ? width : width + "px";
+            return { min: minWidth, max: maxWidth };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownListComponent.prototype, "height", {
+        get: function () {
+            var popupHeight = this.popupSettings.height;
+            return Object(_util__WEBPACK_IMPORTED_MODULE_13__["isPresent"])(popupHeight) ? popupHeight + "px" : 'auto';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownListComponent.prototype, "popupOpen", {
+        get: function () {
+            return this._open;
+        },
+        set: function (open) {
+            if (this.disabled || this.readonly || this.popupOpen === open) {
+                return;
+            }
+            var eventArgs = new _common_preventable_event__WEBPACK_IMPORTED_MODULE_22__["PreventableEvent"]();
+            if (open) {
+                this.open.emit(eventArgs);
+            }
+            else {
+                this.close.emit(eventArgs);
+                if (this.filterable && this.isFocused) {
+                    this.focus();
+                }
+            }
+            if (eventArgs.isDefaultPrevented()) {
+                return;
+            }
+            this._toggle(open);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownListComponent.prototype, "widgetTabIndex", {
+        get: function () {
+            return this.disabled ? undefined : this.tabIndex;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownListComponent.prototype, "ariaHasPopup", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownListComponent.prototype, "ariaExpanded", {
+        get: function () {
+            return this.popupOpen;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownListComponent.prototype, "ariaOwns", {
+        get: function () {
+            return this.listBoxId;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownListComponent.prototype, "ariaActivedescendant", {
+        get: function () {
+            return this.optionPrefix + "-" + Object(_util__WEBPACK_IMPORTED_MODULE_13__["getter"])(this.value, this.valueField);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownListComponent.prototype, "appendTo", {
+        get: function () {
+            var appendTo = this.popupSettings.appendTo;
+            if (!appendTo || appendTo === 'root') {
+                return undefined;
+            }
+            return appendTo === 'component' ? this.container : appendTo;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownListComponent.prototype, "data", {
+        get: function () {
+            return this._data;
+        },
+        /**
+         * Sets the data of the DropDownList.
+         *
+         * > The data has to be provided in an array-like list.
+         */
+        set: function (data) {
+            this._data = data || [];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownListComponent.prototype, "value", {
+        get: function () {
+            return this._value;
+        },
+        /**
+         * Sets the value of the DropDownList. It can either be of the primitive (string, numbers) or of the complex (objects) type. To define the type, use the `valuePrimitive` option.
+         *
+         * > All selected values which are not present in the source are ignored.
+         */
+        set: function (newValue) {
+            this._value = newValue;
+            this.cdr.markForCheck();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownListComponent.prototype, "popupSettings", {
+        get: function () {
+            return this._popupSettings;
+        },
+        /**
+         * Configures the popup of the DropDownList.
+         *
+         * The available options are:
+         * - `animate: Boolean`&mdash;Controls the popup animation. By default, the open and close animations are enabled.
+         * - `width: Number`&mdash;Sets the width of the popup container. By default, the width of the host element is used.
+         * - `height: Number`&mdash;Sets the height of the popup container.
+         * - `popupClass: String`&mdash;Specifies a list of CSS classes that are used to style the popup.
+         */
+        set: function (settings) {
+            this._popupSettings = Object.assign({ animate: true }, settings);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownListComponent.prototype, "tabIndex", {
+        get: function () {
+            return this.tabindex;
+        },
+        /**
+         * @hidden
+         */
+        set: function (tabIndex) {
+            this.tabindex = tabIndex;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.blurComponent = function () {
+        this.wrapperBlurred.emit();
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.blurFilterInput = function () {
+        this.filterBlurred.emit();
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.focusComponent = function () {
+        this.wrapperFocused.emit();
+        if (!this.isFocused) {
+            this.isFocused = true;
+            this.onFocus.emit();
+        }
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.keydown = function (event) {
+        var hasSelected = Object(_util__WEBPACK_IMPORTED_MODULE_13__["isPresent"])(this.selectionService.selected[0]);
+        var focused = isNaN(this.selectionService.focused) ? 0 : this.selectionService.focused;
+        var offset = 0;
+        if (this.disabled || this.readonly) {
+            return;
+        }
+        if (this.filterInput && this.filterInput.nativeElement === document.activeElement && (event.keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_12__["Keys"].home || event.keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_12__["Keys"].end)) {
+            return;
+        }
+        if (!hasSelected) {
+            if (event.keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_12__["Keys"].down || event.keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_12__["Keys"].right) {
+                offset = -1;
+            }
+            else if (event.keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_12__["Keys"].up || event.keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_12__["Keys"].left) {
+                offset = 1;
+            }
+        }
+        var eventData = event;
+        var action = this.navigationService.process({
+            current: focused + offset,
+            max: this.data.length - 1,
+            min: this.defaultItem ? -1 : 0,
+            originalEvent: eventData
+        });
+        var leftRightKeys = (action === _navigation_action__WEBPACK_IMPORTED_MODULE_21__["NavigationAction"].Left) || (action === _navigation_action__WEBPACK_IMPORTED_MODULE_21__["NavigationAction"].Right);
+        if (action !== _navigation_action__WEBPACK_IMPORTED_MODULE_21__["NavigationAction"].Undefined &&
+            action !== _navigation_action__WEBPACK_IMPORTED_MODULE_21__["NavigationAction"].Tab &&
+            action !== _navigation_action__WEBPACK_IMPORTED_MODULE_21__["NavigationAction"].Backspace &&
+            action !== _navigation_action__WEBPACK_IMPORTED_MODULE_21__["NavigationAction"].Delete &&
+            !(leftRightKeys && this.filterable) &&
+            action !== _navigation_action__WEBPACK_IMPORTED_MODULE_21__["NavigationAction"].Enter //enter when popup is opened is handled before `handleEnter`
+        ) {
+            eventData.preventDefault();
+        }
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.keypress = function (event) {
+        if (!this.filterable) {
+            this.onKeyPress(event);
+        }
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.click = function () {
+        this.wrapper.nativeElement.focus();
+        this.popupOpen = !this.popupOpen;
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.onResize = function () {
+        if (this._open) {
+            var popupWrapper = this.popupRef.popupElement;
+            var _a = this.width, min = _a.min, max = _a.max;
+            popupWrapper.style.minWidth = min;
+            popupWrapper.style.width = max;
+        }
+    };
+    Object.defineProperty(DropDownListComponent.prototype, "widgetClasses", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownListComponent.prototype, "dir", {
+        get: function () {
+            return this.direction;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    DropDownListComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.renderer.removeAttribute(this.hostElement, "tabindex");
+        this.localizationChangesSubscription = this.localization
+            .changes.subscribe(function (_a) {
+            var rtl = _a.rtl;
+            return _this.direction = rtl ? 'rtl' : 'ltr';
+        });
+    };
+    /**
+     * @hidden
+     * Used by the TextBoxContainer to determine if the component is empty.
+     */
+    DropDownListComponent.prototype.isEmpty = function () {
+        return !this.value && !this.defaultItem;
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.onFilterFocus = function () {
+        this.filterFocused.emit();
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.popupOpened = function () {
+        if (this.filterInput && !this.touchEnabled) {
+            var nativeElement_1 = this.filterInput.nativeElement;
+            var text_1 = this.filterText || nativeElement_1.value;
+            this.nextTick(function () {
+                nativeElement_1.focus();
+                nativeElement_1.setSelectionRange(text_1.length, text_1.length);
+            });
+        }
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.ngOnDestroy = function () {
+        this._toggle(false);
+        this.unsubscribeEvents();
+        if (this.localizationChangesSubscription) {
+            this.localizationChangesSubscription.unsubscribe();
+        }
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.ngOnChanges = function (_changes) {
+        if (this.valuePrimitive === undefined) {
+            this.valuePrimitive = this.valueField ? false : true;
+        }
+        if (_changes.hasOwnProperty("value")) {
+            this.verifySettings(_changes.value.currentValue);
+            if (!Object(_util__WEBPACK_IMPORTED_MODULE_13__["isPresent"])(this.value)) {
+                this._previousDataItem = undefined;
+            }
+        }
+        var STATE_PROPS = /(data|value|textField|valueField|valuePrimitive)/g;
+        if (STATE_PROPS.test(Object.keys(_changes).join())) {
+            this.setState();
+        }
+    };
+    /**
+     * Focuses the DropDownList.
+     */
+    DropDownListComponent.prototype.focus = function () {
+        if (!this.disabled) {
+            this.wrapper.nativeElement.focus();
+        }
+    };
+    /**
+     * Blurs the DropDownList.
+     */
+    DropDownListComponent.prototype.blur = function () {
+        if (!this.disabled) {
+            this.wrapper.nativeElement.blur();
+        }
+    };
+    /**
+     * Toggles the visibility of the popup. If you use the `toggle` method to open or close the popup, the `open` and `close` events will not be fired.
+     *
+     * @param open - The state of the popup.
+     */
+    DropDownListComponent.prototype.toggle = function (open) {
+        var _this = this;
+        Promise.resolve(null).then(function () {
+            _this._toggle((open === undefined) ? !_this._open : open);
+            _this.cdr.markForCheck();
+        });
+    };
+    Object.defineProperty(DropDownListComponent.prototype, "isOpen", {
+        /**
+         * Returns the current open state of the popup.
+         */
+        get: function () {
+            return this.popupOpen;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Resets the value of the DropDownList.
+     * If you use the `reset` method to clear the value of the component,
+     * the model will not update automatically and the `selectionChange` and `valueChange` events will not be fired.
+     */
+    DropDownListComponent.prototype.reset = function () {
+        this.value = undefined;
+        this.setState();
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.writeValue = function (value) {
+        this.verifySettings(value);
+        this.value = value === null ? undefined : value;
+        if (value === null) {
+            this._previousDataItem = undefined;
+        }
+        this.setState();
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.registerOnChange = function (fn) {
+        this.onChangeCallback = fn;
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.registerOnTouched = function (fn) {
+        this.onTouchedCallback = fn;
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.setDisabledState = function (isDisabled) {
+        this.disabled = isDisabled;
+    };
+    Object.defineProperty(DropDownListComponent.prototype, "listContainerClasses", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            var containerClasses = ['k-list-container', 'k-reset'];
+            if (this.popupSettings.popupClass) {
+                containerClasses.push(this.popupSettings.popupClass);
+            }
+            return containerClasses;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DropDownListComponent.prototype, "buttonClasses", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            return _a = {},
+                _a[this.iconClass] = !this.loading && this.iconClass,
+                _a['k-i-arrow-s'] = !this.loading && !this.iconClass,
+                _a['k-i-loading'] = this.loading,
+                _a['k-icon'] = true,
+                _a;
+            var _a;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.setDefaultItemClasses = function () {
+        return {
+            'k-list-optionlabel': true
+        };
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.getText = function () {
+        return this.text;
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.getDefaultItemText = function () {
+        return Object(_util__WEBPACK_IMPORTED_MODULE_13__["getter"])(this.defaultItem, this.textField);
+    };
+    DropDownListComponent.prototype._toggle = function (open) {
+        var _this = this;
+        this._open = open;
+        if (this.popupRef) {
+            this.popupRef.popupElement
+                .removeEventListener('mousedown', this.popupMouseDownHandler);
+            this.popupRef.close();
+            this.popupRef = null;
+        }
+        if (this._open) {
+            var horizontalAlign = this.direction === "rtl" ? "right" : "left";
+            var anchorPosition = { horizontal: horizontalAlign, vertical: "bottom" };
+            var popupPosition = { horizontal: horizontalAlign, vertical: "top" };
+            this.popupRef = this.popupService.open({
+                anchor: this.wrapper,
+                anchorAlign: anchorPosition,
+                animate: this.popupSettings.animate,
+                appendTo: this.appendTo,
+                content: this.popupTemplate,
+                popupAlign: popupPosition,
+                popupClass: this.listContainerClasses,
+                positionMode: 'absolute'
+            });
+            var popupWrapper = this.popupRef.popupElement;
+            var _a = this.width, min = _a.min, max = _a.max;
+            popupWrapper.addEventListener('mousedown', this.popupMouseDownHandler);
+            popupWrapper.style.minWidth = min;
+            popupWrapper.style.width = max;
+            popupWrapper.style.height = this.height;
+            popupWrapper.setAttribute("dir", this.direction);
+            this.popupRef.popupOpen.subscribe(this.popupOpened.bind(this));
+            this.popupRef.popupAnchorViewportLeave.subscribe(function () { return _this.popupOpen = false; });
+        }
+    };
+    DropDownListComponent.prototype.updateState = function (_a) {
+        var dataItem = _a.dataItem, _b = _a.confirm, confirm = _b === void 0 ? false : _b;
+        this.dataItem = dataItem;
+        this.text = this.prop(this.textField, this.valuePrimitive)(dataItem);
+        if (confirm) {
+            this._previousDataItem = dataItem;
+        }
+    };
+    DropDownListComponent.prototype.clearState = function () {
+        this.text = undefined;
+        this.dataItem = undefined;
+    };
+    DropDownListComponent.prototype.resetSelection = function (index) {
+        var clear = !Object(_util__WEBPACK_IMPORTED_MODULE_13__["isPresent"])(index);
+        this.selectionService.resetSelection(clear ? [] : [index]);
+        this.selectionService.focused = clear ? 0 : index;
+    };
+    DropDownListComponent.prototype.onSelectionChange = function (_a) {
+        var dataItem = _a.dataItem;
+        this.updateState({ dataItem: dataItem });
+        this.selectionChange.emit(dataItem);
+    };
+    DropDownListComponent.prototype.subscribeEvents = function () {
+        var _this = this;
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_13__["isDocumentAvailable"])()) {
+            return;
+        }
+        // item selection when popup is open
+        this.selectionSubscription.add(this.selectionService.onSelect.pipe(Object(rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_5__["filter"])(function (_) { return _this.popupOpen; }), Object(rxjs_operators_map__WEBPACK_IMPORTED_MODULE_6__["map"])(this.itemFromEvent.bind(this)))
+            .subscribe(this.onSelectionChange.bind(this)));
+        // item selection when popup is closed | clicked | enter etc.
+        this.selectionSubscription.add(Object(rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_2__["merge"])(this.selectionService.onSelect.pipe(Object(rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_5__["filter"])(function (_) { return !_this.popupOpen; })), this.selectionService.onChange).pipe(Object(rxjs_operators_map__WEBPACK_IMPORTED_MODULE_6__["map"])(this.itemFromEvent.bind(this)), Object(rxjs_operators_tap__WEBPACK_IMPORTED_MODULE_10__["tap"])(function (_) { return _this.popupOpen = false; }))
+            .subscribe(function (_a) {
+            var dataItem = _a.dataItem, index = _a.index, newValue = _a.value;
+            var isIndexSelected = Object(_util__WEBPACK_IMPORTED_MODULE_13__["isPresent"])(index) && !_this.selectionService.isSelected(index);
+            if (isIndexSelected) {
+                _this.onSelectionChange({ dataItem: dataItem });
+            }
+            var shouldUsePrevious = !Object(_util__WEBPACK_IMPORTED_MODULE_13__["isPresent"])(dataItem) && _this._previousDataItem;
+            var shouldUseNewValue = newValue !== _this.prop(_this.valueField, _this.valuePrimitive)(_this.value);
+            if (shouldUsePrevious) {
+                _this.updateState({ dataItem: _this._previousDataItem });
+                _this.resetSelection();
+            }
+            else if (shouldUseNewValue) {
+                _this.value = _this.valuePrimitive ? newValue : dataItem;
+                _this._previousDataItem = dataItem;
+                _this.emitChange(_this.value);
+            }
+            if (_this.filterable && _this.filterText) {
+                _this.filterText = "";
+                _this.cdr.markForCheck();
+                _this.filterChange.emit(_this.filterText);
+            }
+        }));
+        this.navigationSubscription = Object(rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_2__["merge"])(this.navigationService.up, this.navigationService.down, this.navigationService.left.pipe(Object(rxjs_operators_skipWhile__WEBPACK_IMPORTED_MODULE_7__["skipWhile"])(function () { return _this.filterable; })), this.navigationService.right.pipe(Object(rxjs_operators_skipWhile__WEBPACK_IMPORTED_MODULE_7__["skipWhile"])(function () { return _this.filterable; })), this.navigationService.home, this.navigationService.end)
+            .subscribe(function (event) { return _this.selectionService.select(event.index); });
+        this.openSubscription = this.navigationService.open.subscribe(function () { return _this.popupOpen = true; });
+        this.closeSubscription = this.navigationService.close.subscribe(function () {
+            _this.popupOpen = false;
+            _this.wrapper.nativeElement.focus();
+        });
+        this.enterSubscription =
+            Object(rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_2__["merge"])(this.navigationService.enter.pipe(Object(rxjs_operators_tap__WEBPACK_IMPORTED_MODULE_10__["tap"])(function (event) {
+                if (_this.popupOpen) {
+                    event.originalEvent.preventDefault();
+                }
+            })), this.navigationService.esc)
+                .subscribe(this.handleEnter.bind(this));
+        this.filterBlurredSubscription = this.filterBlurred.pipe(Object(rxjs_operators_concatMap__WEBPACK_IMPORTED_MODULE_4__["concatMap"])(function () { return Object(rxjs_observable_interval__WEBPACK_IMPORTED_MODULE_3__["interval"])(10).pipe(Object(rxjs_operators_take__WEBPACK_IMPORTED_MODULE_8__["take"])(1), Object(rxjs_operators_takeUntil__WEBPACK_IMPORTED_MODULE_9__["takeUntil"])(_this.wrapperFocused)); }))
+            .subscribe(function () {
+            _this.wrapperBlurred.emit();
+        });
+        this._zone.runOutsideAngular(function () {
+            _this.componentBlurredSubscription =
+                Object(rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_2__["merge"])(_this.wrapperBlurred.pipe(Object(rxjs_operators_concatMap__WEBPACK_IMPORTED_MODULE_4__["concatMap"])(function () { return Object(rxjs_observable_interval__WEBPACK_IMPORTED_MODULE_3__["interval"])(10).pipe(Object(rxjs_operators_take__WEBPACK_IMPORTED_MODULE_8__["take"])(1), Object(rxjs_operators_takeUntil__WEBPACK_IMPORTED_MODULE_9__["takeUntil"])(_this.filterFocused)); })), _this.navigationService.tab).pipe(Object(rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_5__["filter"])(function () { return _this.isFocused; }))
+                    .subscribe(function () { return _this._zone.run(function () {
+                    _this.componentBlur();
+                }); });
+        });
+    };
+    DropDownListComponent.prototype.unsubscribeEvents = function () {
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_13__["isDocumentAvailable"])()) {
+            return;
+        }
+        this.navigationSubscription.unsubscribe();
+        this.openSubscription.unsubscribe();
+        this.closeSubscription.unsubscribe();
+        this.enterSubscription.unsubscribe();
+        this.componentBlurredSubscription.unsubscribe();
+        this.filterBlurredSubscription.unsubscribe();
+        if (this.selectionSubscription) {
+            this.selectionSubscription.unsubscribe();
+        }
+    };
+    DropDownListComponent.prototype.itemFromEvent = function (event) {
+        var index = event.indices[0];
+        var dataItem = Object(_util__WEBPACK_IMPORTED_MODULE_13__["isPresent"])(this.data[index]) ? this.data[index] : this.defaultItem;
+        var value = this.prop(this.valueField, this.valuePrimitive)(dataItem);
+        return {
+            dataItem: dataItem,
+            index: index,
+            value: value
+        };
+    };
+    DropDownListComponent.prototype.handleEnter = function () {
+        if (this.popupOpen) {
+            this.selectionService.change(this.selectionService.focused);
+            this.wrapper.nativeElement.focus();
+        }
+    };
+    DropDownListComponent.prototype.verifySettings = function (newValue) {
+        var valueOrText = !Object(_util__WEBPACK_IMPORTED_MODULE_13__["isPresent"])(this.valueField) !== !Object(_util__WEBPACK_IMPORTED_MODULE_13__["isPresent"])(this.textField);
+        if (!Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])()) {
+            return;
+        }
+        if (this.defaultItem && this.valueField && typeof this.defaultItem !== "object") {
+            throw new Error(_error_messages__WEBPACK_IMPORTED_MODULE_26__["DropDownListMessages"].defaultItem);
+        }
+        if (this.valuePrimitive === true && Object(_util__WEBPACK_IMPORTED_MODULE_13__["isPresent"])(newValue) && typeof newValue === "object") {
+            throw new Error(_error_messages__WEBPACK_IMPORTED_MODULE_26__["DropDownListMessages"].primitive);
+        }
+        if (this.valuePrimitive === false && Object(_util__WEBPACK_IMPORTED_MODULE_13__["isPresent"])(newValue) && typeof newValue !== "object") {
+            throw new Error(_error_messages__WEBPACK_IMPORTED_MODULE_26__["DropDownListMessages"].object);
+        }
+        if (valueOrText) {
+            throw new Error(_error_messages__WEBPACK_IMPORTED_MODULE_26__["DropDownListMessages"].textAndValue);
+        }
+    };
+    DropDownListComponent.prototype.componentBlur = function () {
+        this.isFocused = false;
+        this.selectionService.change(this.selectionService.selected[0]);
+        this.onBlur.emit();
+        this.onTouchedCallback();
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.onMouseDown = function (event) {
+        var tagName = event.target.tagName.toLowerCase();
+        if (tagName !== "input") {
+            event.preventDefault();
+        }
+    };
+    DropDownListComponent.prototype.onKeyPress = function (event) {
+        if (event.which === 0 || event.keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_12__["Keys"].enter) {
+            return;
+        }
+        var character = String.fromCharCode(event.charCode || event.keyCode);
+        if (this.ignoreCase) {
+            character = character.toLowerCase();
+        }
+        if (character === " ") {
+            event.preventDefault();
+        }
+        this.word += character;
+        this.last = character;
+        this.search();
+    };
+    DropDownListComponent.prototype.search = function () {
+        var _this = this;
+        clearTimeout(this.typingTimeout);
+        if (!this.filterable) {
+            this.typingTimeout = setTimeout(function () { _this.word = ""; }, this.delay);
+            this.selectNext();
+        }
+    };
+    DropDownListComponent.prototype.selectNext = function () {
+        var data = this.data.map(function (item, index) {
+            return { item: item, itemIndex: index };
+        });
+        var isInLoop = Object(_util__WEBPACK_IMPORTED_MODULE_13__["sameCharsOnly"])(this.word, this.last);
+        var dataLength = data.length;
+        var startIndex = isNaN(this.selectionService.selected[0]) ? 0 : this.selectionService.selected[0];
+        var text, index, defaultItem;
+        if (this.defaultItem) {
+            defaultItem = { item: this.defaultItem, itemIndex: -1 };
+            dataLength += 1;
+            startIndex += 1;
+        }
+        startIndex += isInLoop ? 1 : 0;
+        data = Object(_util__WEBPACK_IMPORTED_MODULE_13__["shuffleData"])(data, startIndex, defaultItem);
+        index = 0;
+        for (; index < dataLength; index++) {
+            text = Object(_util__WEBPACK_IMPORTED_MODULE_13__["getter"])(data[index].item, this.textField);
+            var loopMatch = Boolean(isInLoop && Object(_util__WEBPACK_IMPORTED_MODULE_13__["matchText"])(text, this.last, this.ignoreCase));
+            var nextMatch = Boolean(Object(_util__WEBPACK_IMPORTED_MODULE_13__["matchText"])(text, this.word, this.ignoreCase));
+            if (loopMatch || nextMatch) {
+                index = data[index].itemIndex;
+                break;
+            }
+        }
+        if (index !== dataLength) {
+            this.navigate(index);
+        }
+    };
+    DropDownListComponent.prototype.emitChange = function (value) {
+        this.onChangeCallback(value);
+        this.valueChange.emit(value);
+    };
+    DropDownListComponent.prototype.navigate = function (index) {
+        this.selectionService.select(index);
+    };
+    DropDownListComponent.prototype.prop = function (field, usePrimitive) {
+        return function (dataItem) {
+            if (Object(_util__WEBPACK_IMPORTED_MODULE_13__["isPresent"])(dataItem)) {
+                if (usePrimitive) {
+                    return field && dataItem.hasOwnProperty(field) ? dataItem[field] : dataItem;
+                }
+                else {
+                    return dataItem[field];
+                }
+            }
+            return null;
+        };
+    };
+    DropDownListComponent.prototype.findDataItem = function (_a) {
+        var primitive = _a.primitive, valueField = _a.valueField, data = _a.data, value = _a.value;
+        var result = {
+            dataItem: null,
+            index: -1
+        };
+        var prop = this.prop(valueField, primitive);
+        var mappedData = data.map(prop);
+        var index = mappedData.indexOf(prop(value));
+        result.dataItem = data[index];
+        result.index = index;
+        return result;
+    };
+    DropDownListComponent.prototype.setState = function () {
+        var value = this.value;
+        var valueField = this.valueField;
+        var textField = this.textField;
+        var primitive = this.valuePrimitive;
+        var data = this.data;
+        if (this.defaultItem) {
+            var defaultValue = this.prop(valueField, primitive)(this.defaultItem);
+            var currentValue = this.prop(valueField, primitive)(value);
+            if (!Object(_util__WEBPACK_IMPORTED_MODULE_13__["isPresent"])(value) || (currentValue === defaultValue)) {
+                this.updateState({ dataItem: this.defaultItem, confirm: true });
+                this.resetSelection(-1);
+                return;
+            }
+        }
+        var resolved = this.findDataItem({ primitive: primitive, valueField: valueField, data: data, value: value });
+        // the data and value are of same shape
+        // e.g value: 'foo', data: ['foo', 'bar']
+        // or value: { value: 1, text: 'foo' }, data: [{ value: 1, text: 'foo' }]
+        var ofSameType = !(primitive && textField);
+        if (resolved.dataItem) {
+            this.updateState({ dataItem: resolved.dataItem, confirm: true });
+            this.resetSelection(resolved.index);
+        }
+        else if (Object(_util__WEBPACK_IMPORTED_MODULE_13__["isPresent"])(value) && ofSameType) {
+            this.updateState({ dataItem: value });
+            this.resetSelection();
+        }
+        else if (this._previousDataItem) {
+            this.updateState({ dataItem: this._previousDataItem });
+            this.resetSelection();
+        }
+        else {
+            this.clearState();
+            this.resetSelection();
+        }
+    };
+    /**
+     * @hidden
+     */
+    DropDownListComponent.prototype.handleFilter = function (event) {
+        this.filterChange.emit(event.target.value);
+    };
+    DropDownListComponent.prototype.nextTick = function (f) {
+        var _this = this;
+        this._zone.runOutsideAngular(function () {
+            // Use `setTimeout` instead of a resolved promise
+            // because the latter does not wait long enough.
+            setTimeout(function () { return _this._zone.run(f); });
+        });
+    };
+    DropDownListComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    exportAs: 'kendoDropDownList',
+                    providers: [
+                        DROPDOWNLIST_VALUE_ACCESSOR,
+                        _selection_service__WEBPACK_IMPORTED_MODULE_14__["SelectionService"],
+                        _navigation_service__WEBPACK_IMPORTED_MODULE_15__["NavigationService"],
+                        _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_23__["LocalizationService"],
+                        {
+                            provide: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_23__["L10N_PREFIX"],
+                            useValue: 'kendo.dropdownlist'
+                        }
+                    ],
+                    selector: 'kendo-dropdownlist',
+                    template: "\n        <span #wrapper unselectable=\"on\"\n          role=\"listbox\"\n          [id]=\"focusableId\"\n          [ngClass]=\"{\n            'k-dropdown-wrap': true,\n            'k-state-default': !this.disabled,\n            'k-state-disabled': this.disabled,\n            'k-state-focused': this.isFocused\n          }\"\n          [attr.dir]=\"direction\"\n          [attr.readonly]=\"readonly\"\n          [attr.tabindex]=\"widgetTabIndex\"\n          [attr.aria-disabled]=\"disabled\"\n          [attr.aria-readonly]=\"readonly\"\n          [attr.aria-haspopup]=\"ariaHasPopup\"\n          [attr.aria-expanded]=\"ariaExpanded\"\n          [attr.aria-owns]=\"ariaOwns\"\n          [attr.aria-activedescendant]=\"ariaActivedescendant\"\n          (focus)=\"focusComponent()\"\n          (blur)=\"blurComponent()\"\n          (keydown)=\"keydown($event)\"\n          (keypress)=\"keypress($event)\"\n          (click)=\"click()\"\n        >\n            <span [ngClass]=\"{ 'k-input': true }\" unselectable=\"on\">\n               <ng-template *ngIf=\"valueTemplate\"\n                   [templateContext]=\"{\n                       templateRef: valueTemplate.templateRef,\n                       $implicit: dataItem\n                   }\">\n               </ng-template>\n               <ng-template [ngIf]=\"!valueTemplate\">{{ getText() }}</ng-template>\n           </span>\n           <span [ngClass]=\"{ 'k-select': true}\" unselectable=\"on\">\n               <span [ngClass]=\"buttonClasses\"></span>\n           </span>\n           <ng-template #popupTemplate>\n               <!--filterable-->\n\n               <ng-template [ngIf]=\"filterable\">\n                   <span [ngClass]=\"{ 'k-list-filter': true }\" (click)=\"$event.stopImmediatePropagation()\">\n                       <input #filterInput\n                           [dir]=\"direction\"\n                           [(ngModel)]=\"filterText\"\n                           class=\"k-textbox\"\n                           (keydown)=\"keydown($event)\"\n                           (input)=\"handleFilter($event)\"\n                           (focus)=\"onFilterFocus()\"\n                           (blur)=\"blurFilterInput()\" />\n                       <span [ngClass]=\"{ 'k-icon': true, 'k-i-search': true }\" unselectable=\"on\"></span>\n                   </span>\n               </ng-template>\n               <!--default item-->\n               <ng-template [ngIf]=\"defaultItem && !itemTemplate\">\n                   <div [ngClass]=\"setDefaultItemClasses()\" kendoDropDownsSelectable [index]=\"-1\">\n                       {{ getDefaultItemText() }}\n                   </div>\n               </ng-template>\n               <ng-template [ngIf]=\"defaultItem && itemTemplate\">\n                   <div [ngClass]=\"setDefaultItemClasses()\" kendoDropDownsSelectable [index]=\"-1\">\n                       <ng-template\n                           [templateContext]=\"{\n                               templateRef: itemTemplate.templateRef,\n                               $implicit: defaultItem\n                           }\">\n                       </ng-template>\n                   </div>\n               </ng-template>\n               <!--header template-->\n               <ng-template *ngIf=\"headerTemplate\"\n                   [templateContext]=\"{\n                       templateRef: headerTemplate.templateRef\n                   }\">\n               </ng-template>\n               <!--list-->\n               <kendo-list\n                   [id]=\"listBoxId\"\n                   [optionPrefix]=\"optionPrefix\"\n                   [data]=\"data\"\n                   [textField]=\"textField\"\n                   [valueField]=\"valueField\"\n                   [template]=\"itemTemplate\"\n                   [height]=\"listHeight\"\n                   [show]=\"popupOpen\"\n                   >\n               </kendo-list>\n               <!--no-data template-->\n               <div class=\"k-nodata\" *ngIf=\"data.length === 0\">\n                   <ng-template [ngIf]=\"noDataTemplate\"\n                       [templateContext]=\"{\n                           templateRef: noDataTemplate ? noDataTemplate.templateRef : undefined\n                       }\">\n                   </ng-template>\n                   <ng-template [ngIf]=\"!noDataTemplate\">\n                       <div>NO DATA FOUND.</div>\n                   </ng-template>\n               </div>\n               <!--footer template-->\n               <ng-template *ngIf=\"footerTemplate\"\n                   [templateContext]=\"{\n                       templateRef: footerTemplate.templateRef\n                   }\">\n               </ng-template>\n            </ng-template>\n        </span>\n        <ng-template [ngIf]=\"popupOpen\">\n            <kendo-resize-sensor (resize)=\"onResize()\"></kendo-resize-sensor>\n        </ng-template>\n        <ng-container #container></ng-container>\n  "
+                },] },
+    ];
+    /** @nocollapse */
+    DropDownListComponent.ctorParameters = function () { return [
+        { type: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_23__["LocalizationService"], },
+        { type: _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_24__["PopupService"], },
+        { type: _selection_service__WEBPACK_IMPORTED_MODULE_14__["SelectionService"], },
+        { type: _navigation_service__WEBPACK_IMPORTED_MODULE_15__["NavigationService"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Renderer2"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_touch_enabled__WEBPACK_IMPORTED_MODULE_25__["TOUCH_ENABLED"],] },] },
+    ]; };
+    DropDownListComponent.propDecorators = {
+        'focusableId': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'iconClass': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'loading': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'data': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'value': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'textField': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'valueField': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'popupSettings': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'listHeight': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'defaultItem': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'disabled': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'readonly': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'filterable': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'ignoreCase': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'delay': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'valuePrimitive': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'tabindex': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'tabIndex': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ["tabIndex",] },],
+        'valueChange': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'filterChange': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'selectionChange': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'open': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'close': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'onFocus': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"], args: ['focus',] },],
+        'onBlur': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"], args: ['blur',] },],
+        'itemTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ContentChild"], args: [_templates_item_template_directive__WEBPACK_IMPORTED_MODULE_16__["ItemTemplateDirective"],] },],
+        'valueTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ContentChild"], args: [_templates_value_template_directive__WEBPACK_IMPORTED_MODULE_17__["ValueTemplateDirective"],] },],
+        'headerTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ContentChild"], args: [_templates_header_template_directive__WEBPACK_IMPORTED_MODULE_18__["HeaderTemplateDirective"],] },],
+        'footerTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ContentChild"], args: [_templates_footer_template_directive__WEBPACK_IMPORTED_MODULE_19__["FooterTemplateDirective"],] },],
+        'noDataTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ContentChild"], args: [_templates_no_data_template_directive__WEBPACK_IMPORTED_MODULE_20__["NoDataTemplateDirective"],] },],
+        'container': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['container', { read: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"] },] },],
+        'filterInput': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['filterInput',] },],
+        'popupTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['popupTemplate',] },],
+        'wrapper': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['wrapper',] },],
+        'widgetClasses': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-widget',] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-dropdown',] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-header',] },],
+        'dir': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['attr.dir',] },],
+    };
+    return DropDownListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/dropdownlist.module.js":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/dropdownlist.module.js ***!
+  \***************************************************************************************/
+/*! exports provided: DropDownListModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DropDownListModule", function() { return DropDownListModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _dropdownlist_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dropdownlist.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/dropdownlist.component.js");
+/* harmony import */ var _templates_value_template_directive__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates/value-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/value-template.directive.js");
+/* harmony import */ var _shared_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./shared.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/shared.module.js");
+/* harmony import */ var _shared_directives_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./shared-directives.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/shared-directives.module.js");
+
+
+
+
+
+var DROPDOWNLIST_DIRECTIVES = [
+    _dropdownlist_component__WEBPACK_IMPORTED_MODULE_1__["DropDownListComponent"],
+    _templates_value_template_directive__WEBPACK_IMPORTED_MODULE_2__["ValueTemplateDirective"]
+];
+/**
+ * @hidden
+ *
+ * The exported package module.
+ *
+ * The package exports:
+ * - `DropDownListComponent`&mdash;The DropDownList component class.
+ * - `ItemTemplateDirective`&mdash;The item template directive.
+ * - `ValueTemplateDirective`&mdash;The value template directive.
+ * - `HeaderTemplateDirective`&mdash;The header template directive.
+ * - `FooterTemplateDirective`&mdash;The footer template directive.
+ */
+var DropDownListModule = /** @class */ (function () {
+    function DropDownListModule() {
+    }
+    DropDownListModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    declarations: [DROPDOWNLIST_DIRECTIVES],
+                    exports: [DROPDOWNLIST_DIRECTIVES, _shared_directives_module__WEBPACK_IMPORTED_MODULE_4__["SharedDirectivesModule"]],
+                    imports: [_shared_module__WEBPACK_IMPORTED_MODULE_3__["SharedModule"]]
+                },] },
+    ];
+    /** @nocollapse */
+    DropDownListModule.ctorParameters = function () { return []; };
+    return DropDownListModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/dropdowns.module.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/dropdowns.module.js ***!
+  \************************************************************************************/
+/*! exports provided: DropDownsModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DropDownsModule", function() { return DropDownsModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _autocomplete_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./autocomplete.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/autocomplete.module.js");
+/* harmony import */ var _combobox_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./combobox.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/combobox.module.js");
+/* harmony import */ var _dropdownlist_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dropdownlist.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/dropdownlist.module.js");
+/* harmony import */ var _multiselect_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./multiselect.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/multiselect.module.js");
+
+
+
+
+
+/**
+ * Represents the [NgModule](https://angular.io/docs/ts/latest/guide/ngmodule.html)
+ * definition for the DropDowns components.
+ *
+ * @example
+ *
+ * ```ts-no-run
+ * // Import the DropDowns module
+ * import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+ *
+ * // The browser platform with a compiler
+ * import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+ *
+ * import { NgModule } from '@angular/core';
+ *
+ * // Import the app component
+ * import { AppComponent } from './app.component';
+ *
+ * // Define the app module
+ * _@NgModule({
+ *     declarations: [AppComponent], // declare app component
+ *     imports:      [BrowserModule, DropDownsModule], // import DropDowns module
+ *     bootstrap:    [AppComponent]
+ * })
+ * export class AppModule {}
+ *
+ * // Compile and launch the module
+ * platformBrowserDynamic().bootstrapModule(AppModule);
+ *
+ * ```
+ */
+var DropDownsModule = /** @class */ (function () {
+    function DropDownsModule() {
+    }
+    DropDownsModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    exports: [_autocomplete_module__WEBPACK_IMPORTED_MODULE_1__["AutoCompleteModule"], _combobox_module__WEBPACK_IMPORTED_MODULE_2__["ComboBoxModule"], _dropdownlist_module__WEBPACK_IMPORTED_MODULE_3__["DropDownListModule"], _multiselect_module__WEBPACK_IMPORTED_MODULE_4__["MultiSelectModule"]]
+                },] },
+    ];
+    /** @nocollapse */
+    DropDownsModule.ctorParameters = function () { return []; };
+    return DropDownsModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/error-messages.js":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/error-messages.js ***!
+  \**********************************************************************************/
+/*! exports provided: MultiselectMessages, ComboBoxMessages, DropDownListMessages */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MultiselectMessages", function() { return MultiselectMessages; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ComboBoxMessages", function() { return ComboBoxMessages; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DropDownListMessages", function() { return DropDownListMessages; });
+/**
+ * @hidden
+ */
+/* tslint:disable:max-line-length */
+/* tslint:disable:variable-name */
+var MultiselectMessages = {
+    'array': 'Expected values of array type. See http://www.telerik.com/kendo-angular-ui/components/dropdowns/multiselect/#value-selection',
+    'object': 'Expected values of Object type. See http://www.telerik.com/kendo-angular-ui/components/dropdowns/multiselect/#value-selection',
+    'primitive': 'Expected values of primitive type. See http://www.telerik.com/kendo-angular-ui/components/dropdowns/multiselect/#value-selection'
+};
+/**
+ * @hidden
+ */
+/* tslint:disable:max-line-length */
+/* tslint:disable:variable-name */
+var ComboBoxMessages = {
+    'object': 'Expected value of type Object. See http://www.telerik.com/kendo-angular-ui/components/dropdowns/combobox/#toc-value-selection',
+    'primitive': 'Expected value of primitive type. See http://www.telerik.com/kendo-angular-ui/components/dropdowns/combobox/#toc-value-selection',
+    'textAndValue': 'Expected textField and valueField options to be set. See http://www.telerik.com/kendo-angular-ui/components/dropdowns/combobox/#toc-bind-to-arrays-of-complex-data'
+};
+/**
+ * @hidden
+ */
+/* tslint:disable:max-line-length */
+/* tslint:disable:variable-name */
+var DropDownListMessages = {
+    'defaultItem': 'defaultItem and data items must be of same type. See http://www.telerik.com/kendo-angular-ui/components/dropdowns/api/DropDownListComponent/#toc-defaultitem',
+    'object': 'Expected value of type Object. See http://www.telerik.com/kendo-angular-ui/components/dropdowns/dropdownlist/#toc-value-selection',
+    'primitive': 'Expected value of primitive type. See http://www.telerik.com/kendo-angular-ui/components/dropdowns/dropdownlist/#toc-value-selection',
+    'textAndValue': 'Expected textField and valueField options to be set. See http://www.telerik.com/kendo-angular-ui/components/dropdowns/dropdownlist/#toc-bind-to-arrays-of-complex-data'
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/index.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/index.js ***!
+  \*************************************************************************/
+/*! exports provided: ɵa, ɵb, ɵc, ɵk, ɵe, ɵg, ɵd, ɵj, ɵf, ɵi, ɵh, AutoCompleteComponent, ComboBoxComponent, DropDownListComponent, MultiSelectComponent, TagListComponent, ItemTemplateDirective, CustomItemTemplateDirective, HeaderTemplateDirective, FooterTemplateDirective, ValueTemplateDirective, TemplateContextDirective, SelectableDirective, SummaryTagDirective, DropDownsModule, MultiSelectModule, SharedModule, AutoCompleteModule, ComboBoxModule, DropDownListModule, SharedDirectivesModule, ListComponent, PopupComponent, ResizeSensorComponent, PreventableEvent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./main */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/main.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AutoCompleteComponent", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["AutoCompleteComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ComboBoxComponent", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["ComboBoxComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DropDownListComponent", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["DropDownListComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MultiSelectComponent", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["MultiSelectComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TagListComponent", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["TagListComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ItemTemplateDirective", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["ItemTemplateDirective"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CustomItemTemplateDirective", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["CustomItemTemplateDirective"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HeaderTemplateDirective", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["HeaderTemplateDirective"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FooterTemplateDirective", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["FooterTemplateDirective"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ValueTemplateDirective", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["ValueTemplateDirective"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TemplateContextDirective", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["TemplateContextDirective"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SelectableDirective", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["SelectableDirective"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SummaryTagDirective", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["SummaryTagDirective"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DropDownsModule", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["DropDownsModule"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MultiSelectModule", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["MultiSelectModule"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SharedModule", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["SharedModule"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AutoCompleteModule", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["AutoCompleteModule"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ComboBoxModule", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["ComboBoxModule"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DropDownListModule", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["DropDownListModule"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SharedDirectivesModule", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["SharedDirectivesModule"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ListComponent", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["ListComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PopupComponent", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["PopupComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ResizeSensorComponent", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["ResizeSensorComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PreventableEvent", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["PreventableEvent"]; });
+
+/* harmony import */ var _autocomplete_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./autocomplete.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/autocomplete.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵa", function() { return _autocomplete_component__WEBPACK_IMPORTED_MODULE_1__["AUTOCOMPLETE_VALUE_ACCESSOR"]; });
+
+/* harmony import */ var _combobox_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./combobox.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/combobox.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵb", function() { return _combobox_component__WEBPACK_IMPORTED_MODULE_2__["COMBOBOX_VALUE_ACCESSOR"]; });
+
+/* harmony import */ var _dropdownlist_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dropdownlist.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/dropdownlist.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵc", function() { return _dropdownlist_component__WEBPACK_IMPORTED_MODULE_3__["DROPDOWNLIST_VALUE_ACCESSOR"]; });
+
+/* harmony import */ var _list_item_directive__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./list-item.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/list-item.directive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵk", function() { return _list_item_directive__WEBPACK_IMPORTED_MODULE_4__["ListItemDirective"]; });
+
+/* harmony import */ var _navigation_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./navigation.service */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/navigation.service.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵe", function() { return _navigation_service__WEBPACK_IMPORTED_MODULE_5__["NavigationService"]; });
+
+/* harmony import */ var _searchbar_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./searchbar.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/searchbar.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵg", function() { return _searchbar_component__WEBPACK_IMPORTED_MODULE_6__["SearchBarComponent"]; });
+
+/* harmony import */ var _selection_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./selection.service */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/selection.service.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵd", function() { return _selection_service__WEBPACK_IMPORTED_MODULE_7__["SelectionService"]; });
+
+/* harmony import */ var _templates_group_tag_template_directive__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./templates/group-tag-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/group-tag-template.directive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵj", function() { return _templates_group_tag_template_directive__WEBPACK_IMPORTED_MODULE_8__["GroupTagTemplateDirective"]; });
+
+/* harmony import */ var _templates_no_data_template_directive__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./templates/no-data-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/no-data-template.directive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵf", function() { return _templates_no_data_template_directive__WEBPACK_IMPORTED_MODULE_9__["NoDataTemplateDirective"]; });
+
+/* harmony import */ var _templates_tag_template_directive__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./templates/tag-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/tag-template.directive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵi", function() { return _templates_tag_template_directive__WEBPACK_IMPORTED_MODULE_10__["TagTemplateDirective"]; });
+
+/* harmony import */ var _touch_enabled__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./touch-enabled */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/touch-enabled.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵh", function() { return _touch_enabled__WEBPACK_IMPORTED_MODULE_11__["TOUCH_ENABLED"]; });
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/list-item.directive.js":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/list-item.directive.js ***!
+  \***************************************************************************************/
+/*! exports provided: ListItemDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ListItemDirective", function() { return ListItemDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+/**
+ * @hidden
+ */
+var ListItemDirective = /** @class */ (function () {
+    function ListItemDirective(element) {
+        this.element = element;
+    }
+    ListItemDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: 'li' // tslint:disable-line
+                },] },
+    ];
+    /** @nocollapse */
+    ListItemDirective.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], },
+    ]; };
+    return ListItemDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/list.component.js":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/list.component.js ***!
+  \**********************************************************************************/
+/*! exports provided: ListComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ListComponent", function() { return ListComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _list_item_directive__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./list-item.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/list-item.directive.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/util.js");
+/* harmony import */ var _selection_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./selection.service */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/selection.service.js");
+/* harmony import */ var rxjs_operators_map__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators/map */ "./node_modules/rxjs-compat/_esm5/operators/map.js");
+/* harmony import */ var rxjs_operators_merge__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators/merge */ "./node_modules/rxjs-compat/_esm5/operators/merge.js");
+
+
+
+
+
+
+/**
+ * @hidden
+ */
+var ListComponent = /** @class */ (function () {
+    function ListComponent(selectionService) {
+        this.data = [];
+        this.selected = [];
+        this.focused = -1;
+        this.multipleSelection = false;
+        this.onClick = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.selectionService = selectionService;
+        this.scrollSubscription = this.selectionService
+            .onSelect.pipe(Object(rxjs_operators_map__WEBPACK_IMPORTED_MODULE_4__["map"])(function (args) { return args.indices[0]; }), Object(rxjs_operators_merge__WEBPACK_IMPORTED_MODULE_5__["merge"])(this.selectionService.onFocus))
+            .subscribe(this.scrollToItem.bind(this));
+    }
+    ListComponent.prototype.ngAfterViewInit = function () {
+        if (this.show === true) {
+            this.scrollToItem(this.selectionService.focused);
+        }
+    };
+    ListComponent.prototype.ngOnDestroy = function () {
+        this.scrollSubscription.unsubscribe();
+    };
+    ListComponent.prototype.setContainerClasses = function () {
+        return {
+            'k-list-scroller': true
+        };
+    };
+    ListComponent.prototype.getHeight = function () {
+        return this.height + "px";
+    };
+    ListComponent.prototype.getText = function (dataItem) {
+        return Object(_util__WEBPACK_IMPORTED_MODULE_2__["getter"])(dataItem, this.textField);
+    };
+    ListComponent.prototype.getValue = function (dataItem) {
+        return Object(_util__WEBPACK_IMPORTED_MODULE_2__["getter"])(dataItem, this.valueField);
+    };
+    ListComponent.prototype.scrollToItem = function (index) {
+        var items = this.items.toArray();
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_2__["isPresent"])(items[index]) && index !== -1) {
+            this.scroll(items[index].element);
+        }
+    };
+    ListComponent.prototype.scroll = function (item) {
+        if (!item) {
+            return;
+        }
+        var nativeElement = item.nativeElement;
+        var content = this.content.nativeElement, itemOffsetTop = nativeElement.offsetTop, itemOffsetHeight = nativeElement.offsetHeight, contentScrollTop = content.scrollTop, contentOffsetHeight = content.clientHeight, bottomDistance = itemOffsetTop + itemOffsetHeight;
+        if (contentScrollTop > itemOffsetTop) {
+            contentScrollTop = itemOffsetTop;
+        }
+        else if (bottomDistance > (contentScrollTop + contentOffsetHeight)) {
+            contentScrollTop = (bottomDistance - contentOffsetHeight);
+        }
+        content.scrollTop = contentScrollTop;
+    };
+    ListComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    selector: 'kendo-list',
+                    template: "\n    <div #content [ngClass]=\"setContainerClasses()\" [style.maxHeight]=\"getHeight()\" unselectable=\"on\">\n    <ul role=\"listbox\" [attr.id]=\"id\" [attr.aria-hidden]=\"!show\" [ngClass]=\"{ 'k-list': true, 'k-reset': true }\">\n        <li role=\"option\"\n            *ngFor=\"let dataItem of data; let index = index\"\n            kendoDropDownsSelectable\n            [index]=\"index\"\n            [multipleSelection]=\"multipleSelection\"\n            [attr.id]=\"optionPrefix + '-' + getValue(dataItem)\"\n            [attr.tabIndex]=\"-1\"\n            [ngClass]=\"{'k-item': true}\">\n            <ng-template *ngIf=\"template\"\n                [templateContext]=\"{\n                    templateRef: template.templateRef,\n                    $implicit: dataItem\n                }\">\n            </ng-template>\n            <ng-template [ngIf]=\"!template\">{{ getText(dataItem) }}</ng-template>\n        </li>\n    </ul>\n    </div>\n  "
+                },] },
+    ];
+    /** @nocollapse */
+    ListComponent.ctorParameters = function () { return [
+        { type: _selection_service__WEBPACK_IMPORTED_MODULE_3__["SelectionService"], },
+    ]; };
+    ListComponent.propDecorators = {
+        'data': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'selected': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'focused': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'textField': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'valueField': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'height': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'template': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'show': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'id': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'optionPrefix': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'multipleSelection': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'onClick': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'items': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChildren"], args: [_list_item_directive__WEBPACK_IMPORTED_MODULE_1__["ListItemDirective"],] },],
+        'content': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['content',] },],
+    };
+    return ListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/main.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/main.js ***!
+  \************************************************************************/
+/*! exports provided: AutoCompleteComponent, ComboBoxComponent, DropDownListComponent, MultiSelectComponent, TagListComponent, ItemTemplateDirective, CustomItemTemplateDirective, HeaderTemplateDirective, FooterTemplateDirective, ValueTemplateDirective, TemplateContextDirective, SelectableDirective, SummaryTagDirective, DropDownsModule, MultiSelectModule, SharedModule, AutoCompleteModule, ComboBoxModule, DropDownListModule, SharedDirectivesModule, ListComponent, PopupComponent, ResizeSensorComponent, PreventableEvent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _autocomplete_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./autocomplete.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/autocomplete.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AutoCompleteComponent", function() { return _autocomplete_component__WEBPACK_IMPORTED_MODULE_0__["AutoCompleteComponent"]; });
+
+/* harmony import */ var _combobox_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./combobox.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/combobox.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ComboBoxComponent", function() { return _combobox_component__WEBPACK_IMPORTED_MODULE_1__["ComboBoxComponent"]; });
+
+/* harmony import */ var _dropdownlist_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dropdownlist.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/dropdownlist.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DropDownListComponent", function() { return _dropdownlist_component__WEBPACK_IMPORTED_MODULE_2__["DropDownListComponent"]; });
+
+/* harmony import */ var _multiselect_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./multiselect.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/multiselect.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MultiSelectComponent", function() { return _multiselect_component__WEBPACK_IMPORTED_MODULE_3__["MultiSelectComponent"]; });
+
+/* harmony import */ var _taglist_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./taglist.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/taglist.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TagListComponent", function() { return _taglist_component__WEBPACK_IMPORTED_MODULE_4__["TagListComponent"]; });
+
+/* harmony import */ var _templates_item_template_directive__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./templates/item-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/item-template.directive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ItemTemplateDirective", function() { return _templates_item_template_directive__WEBPACK_IMPORTED_MODULE_5__["ItemTemplateDirective"]; });
+
+/* harmony import */ var _templates_custom_item_template_directive__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./templates/custom-item-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/custom-item-template.directive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CustomItemTemplateDirective", function() { return _templates_custom_item_template_directive__WEBPACK_IMPORTED_MODULE_6__["CustomItemTemplateDirective"]; });
+
+/* harmony import */ var _templates_header_template_directive__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./templates/header-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/header-template.directive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HeaderTemplateDirective", function() { return _templates_header_template_directive__WEBPACK_IMPORTED_MODULE_7__["HeaderTemplateDirective"]; });
+
+/* harmony import */ var _templates_footer_template_directive__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./templates/footer-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/footer-template.directive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FooterTemplateDirective", function() { return _templates_footer_template_directive__WEBPACK_IMPORTED_MODULE_8__["FooterTemplateDirective"]; });
+
+/* harmony import */ var _templates_value_template_directive__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./templates/value-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/value-template.directive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ValueTemplateDirective", function() { return _templates_value_template_directive__WEBPACK_IMPORTED_MODULE_9__["ValueTemplateDirective"]; });
+
+/* harmony import */ var _templates_template_context_directive__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./templates/template-context.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/template-context.directive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TemplateContextDirective", function() { return _templates_template_context_directive__WEBPACK_IMPORTED_MODULE_10__["TemplateContextDirective"]; });
+
+/* harmony import */ var _selectable_directive__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./selectable.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/selectable.directive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SelectableDirective", function() { return _selectable_directive__WEBPACK_IMPORTED_MODULE_11__["SelectableDirective"]; });
+
+/* harmony import */ var _summary_tag_directive__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./summary-tag.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/summary-tag.directive.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SummaryTagDirective", function() { return _summary_tag_directive__WEBPACK_IMPORTED_MODULE_12__["SummaryTagDirective"]; });
+
+/* harmony import */ var _dropdowns_module__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./dropdowns.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/dropdowns.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DropDownsModule", function() { return _dropdowns_module__WEBPACK_IMPORTED_MODULE_13__["DropDownsModule"]; });
+
+/* harmony import */ var _multiselect_module__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./multiselect.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/multiselect.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MultiSelectModule", function() { return _multiselect_module__WEBPACK_IMPORTED_MODULE_14__["MultiSelectModule"]; });
+
+/* harmony import */ var _shared_module__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./shared.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/shared.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SharedModule", function() { return _shared_module__WEBPACK_IMPORTED_MODULE_15__["SharedModule"]; });
+
+/* harmony import */ var _autocomplete_module__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./autocomplete.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/autocomplete.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AutoCompleteModule", function() { return _autocomplete_module__WEBPACK_IMPORTED_MODULE_16__["AutoCompleteModule"]; });
+
+/* harmony import */ var _combobox_module__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./combobox.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/combobox.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ComboBoxModule", function() { return _combobox_module__WEBPACK_IMPORTED_MODULE_17__["ComboBoxModule"]; });
+
+/* harmony import */ var _dropdownlist_module__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./dropdownlist.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/dropdownlist.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DropDownListModule", function() { return _dropdownlist_module__WEBPACK_IMPORTED_MODULE_18__["DropDownListModule"]; });
+
+/* harmony import */ var _shared_directives_module__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./shared-directives.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/shared-directives.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SharedDirectivesModule", function() { return _shared_directives_module__WEBPACK_IMPORTED_MODULE_19__["SharedDirectivesModule"]; });
+
+/* harmony import */ var _list_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./list.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/list.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ListComponent", function() { return _list_component__WEBPACK_IMPORTED_MODULE_20__["ListComponent"]; });
+
+/* harmony import */ var _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @progress/kendo-angular-popup */ "./node_modules/@progress/kendo-angular-popup/dist/es/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PopupComponent", function() { return _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_21__["PopupComponent"]; });
+
+/* harmony import */ var _progress_kendo_angular_resize_sensor__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @progress/kendo-angular-resize-sensor */ "./node_modules/@progress/kendo-angular-resize-sensor/dist/es/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ResizeSensorComponent", function() { return _progress_kendo_angular_resize_sensor__WEBPACK_IMPORTED_MODULE_22__["ResizeSensorComponent"]; });
+
+/* harmony import */ var _common_preventable_event__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./common/preventable-event */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/preventable-event.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PreventableEvent", function() { return _common_preventable_event__WEBPACK_IMPORTED_MODULE_23__["PreventableEvent"]; });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/multiselect.component.js":
+/*!*****************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/multiselect.component.js ***!
+  \*****************************************************************************************/
+/*! exports provided: MultiSelectComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MultiSelectComponent", function() { return MultiSelectComponent; });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/util.js");
+/* harmony import */ var _searchbar_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./searchbar.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/searchbar.component.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_Subscription__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/Subscription */ "./node_modules/rxjs-compat/_esm5/Subscription.js");
+/* harmony import */ var rxjs_Subject__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/Subject */ "./node_modules/rxjs-compat/_esm5/Subject.js");
+/* harmony import */ var rxjs_operators_catchError__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators/catchError */ "./node_modules/rxjs-compat/_esm5/operators/catchError.js");
+/* harmony import */ var rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators/filter */ "./node_modules/rxjs-compat/_esm5/operators/filter.js");
+/* harmony import */ var rxjs_operators_map__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators/map */ "./node_modules/rxjs-compat/_esm5/operators/map.js");
+/* harmony import */ var rxjs_operators_tap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/operators/tap */ "./node_modules/rxjs-compat/_esm5/operators/tap.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _selection_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./selection.service */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/selection.service.js");
+/* harmony import */ var _navigation_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./navigation.service */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/navigation.service.js");
+/* harmony import */ var _navigation_action__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./navigation-action */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/navigation-action.js");
+/* harmony import */ var _common_keys__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./common/keys */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/keys.js");
+/* harmony import */ var _templates_item_template_directive__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./templates/item-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/item-template.directive.js");
+/* harmony import */ var _templates_custom_item_template_directive__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./templates/custom-item-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/custom-item-template.directive.js");
+/* harmony import */ var _templates_header_template_directive__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./templates/header-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/header-template.directive.js");
+/* harmony import */ var _templates_footer_template_directive__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./templates/footer-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/footer-template.directive.js");
+/* harmony import */ var _templates_tag_template_directive__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./templates/tag-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/tag-template.directive.js");
+/* harmony import */ var _templates_group_tag_template_directive__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./templates/group-tag-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/group-tag-template.directive.js");
+/* harmony import */ var _templates_no_data_template_directive__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./templates/no-data-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/no-data-template.directive.js");
+/* harmony import */ var _error_messages__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./error-messages */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/error-messages.js");
+/* harmony import */ var _common_preventable_event__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./common/preventable-event */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/preventable-event.js");
+/* harmony import */ var _common_remove_tag_event__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./common/remove-tag-event */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/remove-tag-event.js");
+/* harmony import */ var _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @progress/kendo-angular-l10n */ "./node_modules/@progress/kendo-angular-l10n/dist/es/index.js");
+/* harmony import */ var _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @progress/kendo-angular-popup */ "./node_modules/@progress/kendo-angular-popup/dist/es/index.js");
+/* tslint:disable:max-line-length */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var MULTISELECT_VALUE_ACCESSOR = {
+    multi: true,
+    provide: _angular_forms__WEBPACK_IMPORTED_MODULE_9__["NG_VALUE_ACCESSOR"],
+    // tslint:disable-next-line:no-use-before-declare
+    useExisting: Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["forwardRef"])(function () { return MultiSelectComponent; })
+};
+/**
+ * Represents the Kendo UI MultiSelect component for Angular.
+ *
+ * @example
+ * ```ts
+ * _@Component({
+ * selector: 'my-app',
+ * template: `
+ *  <kendo-multiselect [data]="listItems">
+ *  </kendo-multiselect>
+ * `
+ * })
+ * class AppComponent {
+ *   public listItems: Array<string> = ["Item 1", "Item 2", "Item 3", "Item 4"];
+ * }
+ * ```
+ */
+var MultiSelectComponent = /** @class */ (function () {
+    function MultiSelectComponent(localization, popupService, selectionService, navigationService, cdr, differs, renderer, hostElement, _zone) {
+        var _this = this;
+        this.localization = localization;
+        this.popupService = popupService;
+        this.selectionService = selectionService;
+        this.navigationService = navigationService;
+        this.cdr = cdr;
+        this.differs = differs;
+        this.renderer = renderer;
+        this.hostElement = hostElement;
+        this._zone = _zone;
+        this.activeId = Object(_util__WEBPACK_IMPORTED_MODULE_0__["guid"])();
+        this.listBoxId = Object(_util__WEBPACK_IMPORTED_MODULE_0__["guid"])();
+        this.focusedTagIndex = undefined;
+        /**
+         * @hidden
+         */
+        this.focusableId = "k-" + Object(_util__WEBPACK_IMPORTED_MODULE_0__["guid"])();
+        /**
+         * Controls whether to close the suggestion list of the MultiSelect after the selection of an item.
+         * @default true
+         */
+        this.autoClose = true;
+        /**
+         * Specifies the [`tabindex`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) of the component.
+         */
+        this.tabindex = 0;
+        /**
+         * Sets the disabled state of the component.
+         */
+        this.disabled = false;
+        /**
+         * Sets the readonly state of the component.
+         */
+        this.readonly = false;
+        /**
+         * Enables the [filtering]({% slug filtering_multiselect %}) functionality of the MultiSelect.
+         */
+        this.filterable = false;
+        /**
+         * Sets the height of the suggestions list. By default, `listHeight` is 200px.
+         *
+         * > The `listHeight` property affects only the list of suggestions and not the whole popup container.
+         * > To set the height of the popup container, use `popupSettings.height`.
+         */
+        this.listHeight = 200;
+        /**
+         * If set to `true`, renders a button on hovering over the component.
+         * Clicking this button resets the value of the component to an empty array and triggers the `change` event.
+         */
+        this.clearButton = true;
+        /**
+         * A user-defined callback function which receives an array of selected data items and maps them to an array of tags.
+         *
+         * @param { Any[] } dataItems - The selected data items from the list.
+         * @returns { Any[] } - The tags that will be rendered by the component.
+         */
+        this.tagMapper = function (tags) { return tags || []; };
+        /**
+         * Specifies whether the MultiSelect allows user-defined values that are not present in the dataset.
+         * The default value is `false`.
+         *
+         * For more information, refer to the article on [custom values]({% slug custom_values_multiselect %}).
+         */
+        this.allowCustom = false;
+        /**
+         * A user-defined callback function which returns normalized custom values.
+         * Typically used when the data items are different from type `string`.
+         *
+         * @param { Any } value - The custom value that is defined by the user.
+         * @returns { Any }
+         *
+         * @example
+         * ```ts
+         * import { map } from 'rxjs/operators/map';
+         *
+         * _@Component({
+         * selector: 'my-app',
+         * template: `
+         *   <kendo-multiselect
+         *       [allowCustom]="true"
+         *       [data]="listItems"
+         *       [textField]="'text'"
+         *       [valueField]="'value'"
+         *       [valueNormalizer]="valueNormalizer"
+         *       (valueChange)="onValueChange($event)"
+         *   >
+         *   </kendo-multiselect>
+         * `
+         * })
+         *
+         * class AppComponent {
+         *   public listItems: Array<{ text: string, value: number }> = [
+         *       { text: "Small", value: 1 },
+         *       { text: "Medium", value: 2 },
+         *       { text: "Large", value: 3 }
+         *   ];
+         *
+         *   public onValueChange(value) {
+         *       console.log("valueChange : ", value);
+         *   }
+         *
+         *   public valueNormalizer = (text$: Observable<string>) => text$.pipe(map((text: string) => {
+         *      return {
+         *         ProductID: Math.floor(Math.random() * (1000 - 100) + 1000), //generate unique valueField
+         *         ProductName: text };
+         *   }));
+         *
+         * }
+         * ```
+         */
+        this.valueNormalizer = function (text) { return text.pipe(Object(rxjs_operators_map__WEBPACK_IMPORTED_MODULE_7__["map"])(function (userInput) {
+            var comparer = function (item) { return userInput.toLowerCase() === item.toLowerCase(); };
+            var matchingValue = _this.value.find(comparer);
+            if (matchingValue) {
+                return matchingValue;
+            }
+            var matchingItem = _this.data.find(comparer);
+            return matchingItem ? matchingItem : userInput;
+        })); };
+        /**
+         * Fires each time the user types in the input field.
+         * You can filter the source based on the passed filtration value.
+         */
+        this.filterChange = new _angular_core__WEBPACK_IMPORTED_MODULE_2__["EventEmitter"]();
+        /**
+         * Fires each time the value is changed&mdash;
+         * when the component is blurred or the value is cleared through the **Clear** button.
+         * For more details, refer to the example on [events]({% slug overview_multiselect %}#toc-events).
+         *
+         * When the value of the component is programmatically changed through its API or form binding
+         * to `ngModel` or `formControl`, the `valueChange` event is not triggered because it
+         * might cause a mix-up with the built-in `valueChange` mechanisms of the `ngModel` or `formControl` bindings.
+         */
+        this.valueChange = new _angular_core__WEBPACK_IMPORTED_MODULE_2__["EventEmitter"]();
+        /**
+         * Fires each time the popup is about to open.
+         * This event is preventable. If you cancel it, the popup will remain closed.
+         */
+        this.open = new _angular_core__WEBPACK_IMPORTED_MODULE_2__["EventEmitter"]();
+        /**
+         * Fires each time the popup is about to close.
+         * This event is preventable. If you cancel it, the popup will remain open.
+         */
+        this.close = new _angular_core__WEBPACK_IMPORTED_MODULE_2__["EventEmitter"]();
+        /**
+         * Fires each time the user focuses the MultiSelect.
+         */
+        this.onFocus = new _angular_core__WEBPACK_IMPORTED_MODULE_2__["EventEmitter"](); //tslint:disable-line:no-output-rename
+        /**
+         * Fires each time the MultiSelect gets blurred.
+         */
+        this.onBlur = new _angular_core__WEBPACK_IMPORTED_MODULE_2__["EventEmitter"](); //tslint:disable-line:no-output-rename
+        /**
+         * Fires each time a tag is about to be removed.
+         * This event is preventable. If you cancel it, the tag will not be removed.
+         */
+        this.removeTag = new _angular_core__WEBPACK_IMPORTED_MODULE_2__["EventEmitter"]();
+        this.onChangeCallback = function (_) { };
+        this.onTouchedCallback = function (_) { };
+        this._data = [];
+        this._placeholder = '';
+        this._open = false;
+        this._value = [];
+        this.selectedDataItems = [];
+        this._popupSettings = { animate: true };
+        this.observableSubscriptions = new rxjs_Subscription__WEBPACK_IMPORTED_MODULE_3__["Subscription"]();
+        this.changeSubscription = new rxjs_Subscription__WEBPACK_IMPORTED_MODULE_3__["Subscription"]();
+        this.isFocused = false;
+        this.wrapperBlurred = new _angular_core__WEBPACK_IMPORTED_MODULE_2__["EventEmitter"]();
+        this.customValueSubject = new rxjs_Subject__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
+        this.hostElement = hostElement.nativeElement;
+        this.popupMouseDownHandler = this.onMouseDown.bind(this);
+        this.direction = this.localization.rtl ? 'rtl' : 'ltr';
+        this.subscribeEvents();
+    }
+    Object.defineProperty(MultiSelectComponent.prototype, "popupOpen", {
+        get: function () {
+            return this._open;
+        },
+        set: function (open) {
+            if (this.disabled || this.readonly || this.popupOpen === open) {
+                return;
+            }
+            var eventArgs = new _common_preventable_event__WEBPACK_IMPORTED_MODULE_22__["PreventableEvent"]();
+            if (open) {
+                this.open.emit(eventArgs);
+            }
+            else {
+                this.close.emit(eventArgs);
+            }
+            if (eventArgs.isDefaultPrevented()) {
+                return;
+            }
+            this._toggle(open);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.focusComponent = function () {
+        if (!this.isFocused) {
+            this.isFocused = true;
+            this.onFocus.emit();
+        }
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.blurComponent = function () {
+        if (this.isFocused) {
+            this.closePopup();
+            this.isFocused = false;
+            if (!this.allowCustom) {
+                this.text = "";
+            }
+            this.onBlur.emit();
+            this.onTouchedCallback();
+        }
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.wrapperMousedown = function (event) {
+        if (this.isFocused && event.target === this.searchbar.input.nativeElement) {
+            return;
+        }
+        this.searchbar.focus();
+        this.popupOpen = !this.popupOpen;
+        event.preventDefault();
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.onResize = function () {
+        if (this._open) {
+            var popupWrapper = this.popupRef.popupElement;
+            var _a = this.width, min = _a.min, max = _a.max;
+            popupWrapper.style.minWidth = min;
+            popupWrapper.style.width = max;
+        }
+    };
+    Object.defineProperty(MultiSelectComponent.prototype, "appendTo", {
+        get: function () {
+            var appendTo = this.popupSettings.appendTo;
+            if (!appendTo || appendTo === 'root') {
+                return undefined;
+            }
+            return appendTo === 'component' ? this.container : appendTo;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MultiSelectComponent.prototype, "data", {
+        get: function () {
+            return this._data;
+        },
+        /**
+         * Sets the data of the MultiSelect.
+         *
+         * > The data has to be provided in an array-like list of items.
+         */
+        set: function (data) {
+            this._data = data || [];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MultiSelectComponent.prototype, "value", {
+        get: function () {
+            return this._value;
+        },
+        /**
+         * Sets the value of the MultiSelect. It can be either of the primitive (string, numbers) or of the complex (objects) type.
+         * To define the type, use the `valuePrimitive` option.
+         *
+         * > All selected values which are not present in the source are ignored.
+         */
+        set: function (values) {
+            this._value = values ? values : [];
+            if (!this.differ && this.value) {
+                this.differ = this.differs.find(this.value).create();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MultiSelectComponent.prototype, "tabIndex", {
+        get: function () {
+            return this.tabindex;
+        },
+        /**
+         * @hidden
+         */
+        set: function (tabIndex) {
+            this.tabindex = tabIndex;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MultiSelectComponent.prototype, "placeholder", {
+        get: function () {
+            return this.selectedDataItems.length ? '' : this._placeholder;
+        },
+        /**
+         * The hint which is displayed when the component is empty.
+         * When the values are selected, it disappears.
+         */
+        set: function (text) {
+            this._placeholder = text || '';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MultiSelectComponent.prototype, "popupSettings", {
+        get: function () {
+            return this._popupSettings;
+        },
+        /**
+         * Configures the popup of the MultiSelect.
+         *
+         * The available options are:
+         * - `animate: Boolean`&mdash;Controls the popup animation. By default, the open and close animations are enabled.
+         * - `width: Number`&mdash;Sets the width of the popup container. By default, the width of the host element is used.
+         * - `height: Number`&mdash;Sets the height of the popup container.
+         * - `popupClass: String`&mdash;Specifies a list of CSS classes that are used to style the popup.
+         */
+        set: function (settings) {
+            this._popupSettings = Object.assign({ animate: true }, settings);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MultiSelectComponent.prototype, "widgetClasses", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MultiSelectComponent.prototype, "dir", {
+        get: function () {
+            return this.direction;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MultiSelectComponent.prototype, "focusedClass", {
+        get: function () {
+            return this.isFocused;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MultiSelectComponent.prototype, "disabledClass", {
+        get: function () {
+            return this.disabled;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MultiSelectComponent.prototype, "listContainerClasses", {
+        get: function () {
+            var containerClasses = ['k-list-container', 'k-reset'];
+            if (this.popupSettings.popupClass) {
+                containerClasses.push(this.popupSettings.popupClass);
+            }
+            return containerClasses;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MultiSelectComponent.prototype, "width", {
+        get: function () {
+            var wrapperOffsetWidth = 0;
+            if (Object(_util__WEBPACK_IMPORTED_MODULE_0__["isDocumentAvailable"])()) {
+                wrapperOffsetWidth = this.wrapper.nativeElement.offsetWidth;
+            }
+            var width = this.popupSettings.width || wrapperOffsetWidth;
+            var minWidth = isNaN(wrapperOffsetWidth) ? wrapperOffsetWidth : wrapperOffsetWidth + "px";
+            var maxWidth = isNaN(width) ? width : width + "px";
+            return { min: minWidth, max: maxWidth };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MultiSelectComponent.prototype, "height", {
+        get: function () {
+            var popupHeight = this.popupSettings.height;
+            return Object(_util__WEBPACK_IMPORTED_MODULE_0__["isPresent"])(popupHeight) ? popupHeight + "px" : 'auto';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.popupOpened = function () {
+        this.popupWidth = this.width.max;
+        this.popupMinWidth = this.width.min;
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.onMouseDown = function (event) {
+        var tagName = event.target.tagName.toLowerCase();
+        if (tagName !== "input") {
+            event.preventDefault();
+        }
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.verifySettings = function () {
+        var valueOrText = !Object(_util__WEBPACK_IMPORTED_MODULE_0__["isPresent"])(this.valueField) !== !Object(_util__WEBPACK_IMPORTED_MODULE_0__["isPresent"])(this.textField);
+        if (!Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["isDevMode"])() || this.value.length === 0) {
+            return;
+        }
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_0__["isArray"])(this.value)) {
+            throw new Error(_error_messages__WEBPACK_IMPORTED_MODULE_21__["MultiselectMessages"].array);
+        }
+        if (this.valuePrimitive === true && Object(_util__WEBPACK_IMPORTED_MODULE_0__["isObjectArray"])(this.value)) {
+            throw new Error(_error_messages__WEBPACK_IMPORTED_MODULE_21__["MultiselectMessages"].primitive);
+        }
+        if (this.valuePrimitive === false && !Object(_util__WEBPACK_IMPORTED_MODULE_0__["isObjectArray"])(this.value)) {
+            throw new Error(_error_messages__WEBPACK_IMPORTED_MODULE_21__["MultiselectMessages"].object);
+        }
+        if (valueOrText) {
+            throw new Error("Expected textField and valueField options to be set. See http://www.telerik.com/kendo-angular-ui/components/dropdowns/multiselect/#toc-bind-to-arrays-of-complex-data");
+        }
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.change = function (event) {
+        var _this = this;
+        var isCustomItem = (Object(_util__WEBPACK_IMPORTED_MODULE_0__["isPresent"])(event.added) || Object(_util__WEBPACK_IMPORTED_MODULE_0__["isPresent"])(event.removed)) && (event.added === -1 || event.removed === -1);
+        if (isCustomItem) {
+            this.addCustomValue(this.text);
+            return; //change is emited asynchronosly
+        }
+        //existing items
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_0__["isPresent"])(event.added)) {
+            var dataItem = this.data[event.added];
+            var newItem = (this.valuePrimitive && Object(_util__WEBPACK_IMPORTED_MODULE_0__["isPresent"])(dataItem[this.valueField])) ? dataItem[this.valueField] :
+                dataItem;
+            this.value = this.value.concat([newItem]);
+            this.cdr.markForCheck();
+        }
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_0__["isPresent"])(event.removed)) {
+            var dataItem_1 = this.data[event.removed];
+            if (this.valuePrimitive) {
+                var index = this.value.indexOf(Object(_util__WEBPACK_IMPORTED_MODULE_0__["isPresent"])(dataItem_1[this.valueField]) ? dataItem_1[this.valueField] : dataItem_1);
+                this.value.splice(index, 1);
+            }
+            else {
+                this.value = this.value.filter(function (item) { return item[_this.valueField] !== dataItem_1[_this.valueField]; });
+            }
+            this.cdr.markForCheck();
+        }
+        this.emitValueChange();
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.setState = function (value) {
+        var objectArray = Object(_util__WEBPACK_IMPORTED_MODULE_0__["isObjectArray"])(value);
+        var selection = Object(_util__WEBPACK_IMPORTED_MODULE_0__["selectedIndices"])(this.value, this.data, this.valueField);
+        this.selectionService.resetSelection(selection);
+        if (this.popupOpen && this.selectionService.focused === undefined && this.data.length) {
+            this.selectionService.focused = 0;
+        }
+        if (this.selectedDataItems.length <= 0) {
+            if (this.valuePrimitive && !this.valueField) {
+                this.selectedDataItems = value.slice();
+            }
+            if (objectArray || this.valuePrimitive && this.valueField) {
+                this.selectedDataItems = Object(_util__WEBPACK_IMPORTED_MODULE_0__["resolveAllValues"])(value, this.data, this.valueField);
+            }
+        }
+        this.tags = this.tagMapper(this.selectedDataItems.slice(0));
+        this.cdr.markForCheck();
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.handleBlur = function () {
+        this.wrapperBlurred.emit();
+        // this.closePopup();
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.handleFilter = function (text) {
+        if (this.filterable) {
+            this.filterChange.emit(text);
+        }
+        else {
+            this.searchTextAndFocus(text);
+        }
+        this.text = text;
+        this.searchbar.setInputSize();
+        if (text && !this.popupOpen) {
+            this.openPopup();
+        }
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.clearFilter = function () {
+        if (this.filterable && this.text) {
+            this.filterChange.emit("");
+        }
+        this.text = "";
+        this.searchbar.setInputSize();
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.handleNavigate = function (event) {
+        var navigateInput = this.text && event.keyCode !== _common_keys__WEBPACK_IMPORTED_MODULE_13__["Keys"].down && event.keyCode !== _common_keys__WEBPACK_IMPORTED_MODULE_13__["Keys"].up;
+        var selectValue = this.text && event.keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_13__["Keys"].enter || event.keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_13__["Keys"].esc;
+        var deleteTag = !this.text && event.keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_13__["Keys"].backspace && this.tags.length > 0;
+        if (deleteTag) {
+            this.handleBackspace();
+            return;
+        }
+        if (this.disabled || navigateInput && !selectValue) {
+            return;
+        }
+        var eventData = event;
+        var focused = isNaN(this.selectionService.focused) ? -1 : this.selectionService.focused;
+        var action = this.navigationService.process({
+            current: focused,
+            max: this.data.length - 1,
+            min: this.allowCustom && this.text ? -1 : 0,
+            open: this.popupOpen,
+            originalEvent: eventData
+        });
+        if (action !== _navigation_action__WEBPACK_IMPORTED_MODULE_12__["NavigationAction"].Undefined &&
+            ((action === _navigation_action__WEBPACK_IMPORTED_MODULE_12__["NavigationAction"].Enter && this.popupOpen) || action !== _navigation_action__WEBPACK_IMPORTED_MODULE_12__["NavigationAction"].Enter)) {
+            event.preventDefault();
+        }
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.handleRemoveTag = function (tagData) {
+        var eventArgs = new _common_remove_tag_event__WEBPACK_IMPORTED_MODULE_23__["RemoveTagEvent"](tagData);
+        if (this.disabled || this.readonly) {
+            return;
+        }
+        this.focus();
+        this.removeTag.emit(eventArgs);
+        if (eventArgs.isDefaultPrevented()) {
+            return;
+        }
+        if (tagData instanceof Array) {
+            this.removeGroupTag(tagData);
+        }
+        else {
+            this.removeSingleTag(tagData);
+        }
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.clearAll = function (event) {
+        event.stopImmediatePropagation();
+        if (this.filterable && this.text) {
+            this.text = "";
+            this.filterChange.emit("");
+        }
+        this.value = [];
+        this.selectedDataItems = [];
+        this.cdr.markForCheck();
+        this.emitValueChange();
+        this.setState([]);
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.addCustomValue = function (text) {
+        this.customValueSubject.next(text);
+    };
+    MultiSelectComponent.prototype.ngAfterContentChecked = function () {
+        this.verifySettings();
+    };
+    MultiSelectComponent.prototype.ngDoCheck = function () {
+        if (this.differ) {
+            var valueChanges = this.differ.diff(this.value);
+            if (valueChanges) {
+                this.selectedDataItems = this.getSelectedDataItems(valueChanges);
+                this.tags = this.tagMapper(this.selectedDataItems.slice(0));
+            }
+        }
+    };
+    MultiSelectComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.renderer.removeAttribute(this.hostElement, "tabindex");
+        this.createCustomValueStream();
+        this.localizationChangeSubscription = this.localization
+            .changes.subscribe(function (_a) {
+            var rtl = _a.rtl;
+            return _this.direction = rtl ? 'rtl' : 'ltr';
+        });
+    };
+    MultiSelectComponent.prototype.ngOnChanges = function (changes) {
+        var _this = this;
+        if (this.valuePrimitive === undefined) {
+            this.valuePrimitive = !this.valueField;
+        }
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_0__["isChanged"])("valueNormalizer", changes)) {
+            this.createCustomValueStream();
+        }
+        if (changes.value && this.selectedDataItems.length > 0) {
+            //persisted selected data items when list is filtered
+            this.selectedDataItems = this.selectedDataItems.concat(this.data).filter(function (curr) {
+                return changes.value.currentValue.find(function (item) { return item[_this.valueField] === curr; });
+            }).filter(function (dataItem) { return !!dataItem; }); //filter undefined values
+        }
+        var STATE_PROPS = /(data|textField|valueField|valuePrimitive)/g;
+        if (STATE_PROPS.test(Object.keys(changes).join())) {
+            this.setState(this.value);
+        }
+    };
+    MultiSelectComponent.prototype.ngAfterViewInit = function () {
+        var _this = this;
+        this.searchbar.setInputSize();
+        this.observableSubscriptions.add(this.searchbar.onFocus.subscribe(function (event) {
+            if (!_this.isFocused) {
+                _this.isFocused = true;
+                _this.onFocus.emit(event);
+            }
+        }));
+        this.observableSubscriptions.add(this.searchbar.onBlur.subscribe(function (event) {
+            if (_this.isFocused) {
+                _this.isFocused = false;
+                _this.onBlur.emit(event);
+                _this.onTouchedCallback();
+            }
+        }));
+    };
+    MultiSelectComponent.prototype.ngOnDestroy = function () {
+        this._toggle(false);
+        this.unsubscribeEvents();
+        if (this.localizationChangeSubscription) {
+            this.localizationChangeSubscription.unsubscribe();
+        }
+    };
+    /**
+     * Focuses the MultiSelect.
+     */
+    MultiSelectComponent.prototype.focus = function () {
+        if (!this.disabled) {
+            this.searchbar.focus();
+        }
+    };
+    /**
+     * Blurs the MultiSelect.
+     */
+    MultiSelectComponent.prototype.blur = function () {
+        if (!this.disabled) {
+            this.searchbar.blur();
+        }
+    };
+    /**
+     * Toggles the visibility of the popup.
+     * If you use the `toggle` method to open or close the popup, the respective `open` and `close` events will not be fired.
+     *
+     * @param open - The state of the popup.
+     */
+    MultiSelectComponent.prototype.toggle = function (open) {
+        var _this = this;
+        Promise.resolve(null).then(function () {
+            _this._toggle((open === undefined) ? !_this._open : open);
+            _this.cdr.markForCheck();
+        });
+    };
+    Object.defineProperty(MultiSelectComponent.prototype, "isOpen", {
+        /**
+         * Returns the current open state of the popup.
+         */
+        get: function () {
+            return this.popupOpen;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Resets the value of the MultiSelect.
+     * If you use the `reset` method to clear the value of the component,
+     * the model will not update automatically and the `selectionChange` and `valueChange` events will not be fired.
+     */
+    MultiSelectComponent.prototype.reset = function () {
+        this.text = "";
+        this.value = [];
+        this.selectedDataItems = [];
+        this.setState([]);
+        this.cdr.markForCheck();
+    };
+    // NG MODEL BINDINGS
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.writeValue = function (value) {
+        this.value = value || [];
+        this.selectedDataItems = [];
+        this.setState(this.value);
+        this.verifySettings();
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.registerOnChange = function (fn) {
+        this.onChangeCallback = fn;
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.registerOnTouched = function (fn) {
+        this.onTouchedCallback = fn;
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.setDisabledState = function (isDisabled) {
+        this.disabled = isDisabled;
+    };
+    /**
+     * @hidden
+     */
+    MultiSelectComponent.prototype.onTagMapperChange = function () {
+        this.tags = this.tagMapper(this.selectedDataItems.slice(0));
+        this.cdr.markForCheck();
+    };
+    MultiSelectComponent.prototype.subscribeEvents = function () {
+        var _this = this;
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_0__["isDocumentAvailable"])()) {
+            return;
+        }
+        this.observableSubscriptions = this.changeSubscription = this.selectionService.onChange.subscribe(this.handleItemChange.bind(this));
+        var isOpen = function () { return _this.popupOpen; };
+        var isClosed = function () { return !_this.popupOpen; };
+        var isTagFocused = function () { return !_this.popupOpen && _this.focusedTagIndex !== undefined; };
+        [
+            this.navigationService.esc.subscribe(this.closePopup.bind(this)),
+            this.navigationService.enter.pipe(Object(rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_6__["filter"])(isOpen)).subscribe(this.handleEnter.bind(this)),
+            this.navigationService.open.subscribe(this.openPopup.bind(this)),
+            this.navigationService.close.subscribe(this.handleClose.bind(this)),
+            this.navigationService.up.pipe(Object(rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_6__["filter"])(isOpen)).subscribe(function (event) { return _this.handleUp(event.index); }),
+            this.navigationService.home.pipe(Object(rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_6__["filter"])(function () { return isClosed; })).subscribe(this.handleHome.bind(this)),
+            this.navigationService.end.pipe(Object(rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_6__["filter"])(function () { return isClosed; })).subscribe(this.handleEnd.bind(this)),
+            this.navigationService.backspace.pipe(Object(rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_6__["filter"])(isTagFocused)).subscribe(this.handleBackspace.bind(this)),
+            this.navigationService.delete.pipe(Object(rxjs_operators_filter__WEBPACK_IMPORTED_MODULE_6__["filter"])(isTagFocused)).subscribe(this.handleDelete.bind(this)),
+            this.navigationService.left.subscribe(this.handleLeftKey.bind(this)),
+            this.navigationService.right.subscribe(this.handleRightKey.bind(this)),
+            this.navigationService.down.subscribe(function (event) { return _this.handleDownKey(event.index); })
+        ].forEach(function (s) { return _this.observableSubscriptions.add(s); });
+    };
+    MultiSelectComponent.prototype.unsubscribeEvents = function () {
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_0__["isDocumentAvailable"])()) {
+            return;
+        }
+        this.observableSubscriptions.unsubscribe();
+        if (this.customValueSubscription) {
+            this.customValueSubscription.unsubscribe();
+        }
+    };
+    MultiSelectComponent.prototype.removeGroupTag = function (dataItems) {
+        var _this = this;
+        var indices = dataItems.map(function (dataItem) { return Object(_util__WEBPACK_IMPORTED_MODULE_0__["selectedIndices"])([dataItem], _this.data, _this.valueField)[0]; });
+        var valuesToRemove = [];
+        indices.forEach(function (currentValue, index) {
+            if (Object(_util__WEBPACK_IMPORTED_MODULE_0__["isNumber"])(currentValue)) {
+                _this.selectionService.unselect(currentValue);
+            }
+            else {
+                var filter_1 = function (item) { return Object(_util__WEBPACK_IMPORTED_MODULE_0__["getter"])(item, _this.valueField) !== Object(_util__WEBPACK_IMPORTED_MODULE_0__["getter"])(dataItems[index], _this.valueField); };
+                valuesToRemove.push(_this.value.find(filter_1));
+            }
+        });
+        if (valuesToRemove.length) {
+            var newValue_1 = this.value.slice();
+            var newSelectedDataItems_1 = this.selectedDataItems.slice();
+            valuesToRemove.forEach(function (value) {
+                var filter = function (item) { return Object(_util__WEBPACK_IMPORTED_MODULE_0__["getter"])(item, _this.valueField) !== value; };
+                newValue_1 = newValue_1.filter(filter);
+                newSelectedDataItems_1 = newSelectedDataItems_1.filter(filter);
+            });
+            this.value = newValue_1;
+            this.selectedDataItems = newSelectedDataItems_1;
+        }
+        this.tags = this.tagMapper(this.selectedDataItems.slice(0));
+        this.cdr.markForCheck();
+        this.emitValueChange();
+    };
+    MultiSelectComponent.prototype.removeSingleTag = function (dataItem) {
+        var _this = this;
+        var index = Object(_util__WEBPACK_IMPORTED_MODULE_0__["selectedIndices"])([dataItem], this.data, this.valueField)[0];
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_0__["isNumber"])(index)) {
+            this.selectionService.unselect(index);
+            this.popupOpen = false;
+        }
+        else {
+            var filter_2 = function (item) { return Object(_util__WEBPACK_IMPORTED_MODULE_0__["getter"])(item, _this.valueField) !== Object(_util__WEBPACK_IMPORTED_MODULE_0__["getter"])(dataItem, _this.valueField); };
+            this.value = this.value.filter(filter_2);
+            this.selectedDataItems = this.selectedDataItems.filter(filter_2);
+            this.tags = this.tagMapper(this.selectedDataItems.slice(0));
+            this.cdr.markForCheck();
+            this.emitValueChange();
+        }
+    };
+    MultiSelectComponent.prototype.createCustomValueStream = function () {
+        var _this = this;
+        if (this.customValueSubscription) {
+            this.customValueSubscription.unsubscribe();
+        }
+        this.customValueSubscription = this.customValueSubject.pipe(Object(rxjs_operators_tap__WEBPACK_IMPORTED_MODULE_8__["tap"])(function () {
+            _this.loading = true;
+            _this.disabled = true;
+        }), this.valueNormalizer, Object(rxjs_operators_catchError__WEBPACK_IMPORTED_MODULE_5__["catchError"])(function () {
+            _this.loading = false;
+            _this.disabled = false;
+            _this.text = "";
+            _this.filterChange.emit("");
+            if (_this.autoClose) {
+                _this.popupOpen = false;
+                _this.nextTick(function () {
+                    _this.searchbar.focus();
+                });
+            }
+            return _this.customValueSubject;
+        }))
+            .subscribe(function (normalizedValue) {
+            _this.loading = false;
+            _this.disabled = false;
+            _this.text = "";
+            _this.filterChange.emit("");
+            if (Object(_util__WEBPACK_IMPORTED_MODULE_0__["isPresent"])(normalizedValue)) {
+                var newValue_2 = _this.valuePrimitive ? Object(_util__WEBPACK_IMPORTED_MODULE_0__["getter"])(normalizedValue, _this.valueField) : normalizedValue;
+                if (_this.value.indexOf(newValue_2) === -1) {
+                    _this.value = _this.value.concat([newValue_2]);
+                    _this.selectedDataItems = _this.selectedDataItems.concat([normalizedValue]);
+                }
+                else {
+                    _this.value.splice(_this.value.indexOf(newValue_2), 1);
+                    _this.selectedDataItems = _this.selectedDataItems.filter(function (item) { return Object(_util__WEBPACK_IMPORTED_MODULE_0__["getter"])(item, _this.valueField) !== newValue_2; });
+                }
+                _this.tags = _this.tagMapper(_this.selectedDataItems.slice(0));
+                _this.emitValueChange();
+            }
+            if (_this.autoClose) {
+                _this.popupOpen = false;
+                _this.nextTick(function () {
+                    _this.searchbar.focus();
+                });
+            }
+        });
+    };
+    MultiSelectComponent.prototype.handleItemChange = function (event) {
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_0__["isPresent"])(event.added) && event.added !== -1) {
+            this.clearFilter();
+        }
+        this.change(event);
+        if (this.autoClose) {
+            this.popupOpen = false;
+        }
+    };
+    MultiSelectComponent.prototype.handleEnter = function (event) {
+        var focusedIndex = this.selectionService.focused;
+        if (this.popupOpen) {
+            event.originalEvent.preventDefault();
+        }
+        if (focusedIndex === -1 && !this.allowCustom) {
+            return;
+        }
+        if (focusedIndex === -1 && this.text) {
+            this.addCustomValue(this.text);
+            return; //clear filter & close popup at customValueSubscription due to race conditions
+        }
+        if (this.selectionService.isSelected(focusedIndex)) {
+            this.selectionService.unselect(focusedIndex);
+        }
+        else {
+            this.selectionService.add(focusedIndex);
+        }
+        this.clearFilter();
+        if (this.autoClose) {
+            this.popupOpen = false;
+        }
+    };
+    MultiSelectComponent.prototype.handleClose = function () {
+        this.closePopup();
+        this.searchbar.focus();
+    };
+    MultiSelectComponent.prototype.handleEnd = function () {
+        this.focusedTagIndex = this.tags.length - 1;
+    };
+    MultiSelectComponent.prototype.handleHome = function () {
+        this.focusedTagIndex = 0;
+    };
+    MultiSelectComponent.prototype.handleUp = function (index) {
+        this.selectionService.focused = index;
+    };
+    MultiSelectComponent.prototype.handleBackspace = function () {
+        if (this.focusedTagIndex !== undefined) {
+            this.handleDelete();
+            return;
+        }
+        this.handleRemoveTag(this.tags[this.tags.length - 1]);
+        this.searchbar.focus();
+    };
+    MultiSelectComponent.prototype.handleDelete = function () {
+        this.handleRemoveTag(this.tags[this.focusedTagIndex]);
+        if (this.focusedTagIndex === this.tags.length) {
+            this.focusedTagIndex = undefined;
+        }
+    };
+    MultiSelectComponent.prototype.handleLeftKey = function () {
+        if (this.direction === 'rtl' && this.focusedTagIndex === 0) {
+            this.focusedTagIndex = undefined;
+            return;
+        }
+        if (this.direction === 'rtl' && this.focusedTagIndex === undefined) {
+            return;
+        }
+        if (this.focusedTagIndex === undefined || this.focusedTagIndex < 0) {
+            this.focusedTagIndex = this.tags.length - 1;
+        }
+        else if (this.focusedTagIndex !== 0) {
+            this.focusedTagIndex--;
+        }
+    };
+    MultiSelectComponent.prototype.handleDownKey = function (index) {
+        if (this.popupOpen) {
+            this.selectionService.focused = index || 0;
+        }
+        else {
+            this.openPopup();
+        }
+    };
+    MultiSelectComponent.prototype.handleRightKey = function () {
+        var last = this.tags.length - 1;
+        if (this.direction === 'rtl' && this.focusedTagIndex === undefined) {
+            this.focusedTagIndex = 0;
+            return;
+        }
+        if (this.direction === 'rtl' && this.focusedTagIndex === last) {
+            return;
+        }
+        if (this.focusedTagIndex === last) {
+            this.focusedTagIndex = undefined;
+        }
+        else if (this.focusedTagIndex < last) {
+            this.focusedTagIndex++;
+        }
+    };
+    MultiSelectComponent.prototype.findIndex = function (text) {
+        var _this = this;
+        return this.data.findIndex(function (item) {
+            var itemText = Object(_util__WEBPACK_IMPORTED_MODULE_0__["getter"])(item, _this.textField);
+            itemText = itemText === undefined ? "" : itemText.toString().toLowerCase();
+            return itemText.startsWith(text.toLowerCase());
+        });
+    };
+    MultiSelectComponent.prototype.searchTextAndFocus = function (text) {
+        var index = this.allowCustom && text ? -1 : this.findIndex(text);
+        this.selectionService.focused = index;
+    };
+    MultiSelectComponent.prototype.closePopup = function () {
+        this.popupOpen = false;
+        this.focusedTagIndex = undefined;
+    };
+    MultiSelectComponent.prototype.openPopup = function () {
+        this.popupOpen = true;
+        this.focusedTagIndex = undefined;
+    };
+    MultiSelectComponent.prototype.emitValueChange = function () {
+        this.onChangeCallback(this.value);
+        this.valueChange.emit(this.value);
+    };
+    MultiSelectComponent.prototype._toggle = function (open) {
+        var _this = this;
+        this._open = open;
+        if (this.popupRef) {
+            this.popupRef.popupElement
+                .removeEventListener('mousedown', this.popupMouseDownHandler);
+            this.popupRef.close();
+            this.popupRef = null;
+        }
+        if (this._open) {
+            this.popupRef = this.popupService.open({
+                anchor: this.wrapper,
+                animate: this.popupSettings.animate,
+                appendTo: this.appendTo,
+                content: this.popupTemplate,
+                popupClass: this.listContainerClasses,
+                positionMode: 'absolute'
+            });
+            var popupWrapper = this.popupRef.popupElement;
+            var _a = this.width, min = _a.min, max = _a.max;
+            popupWrapper.addEventListener('mousedown', this.popupMouseDownHandler);
+            popupWrapper.style.minWidth = min;
+            popupWrapper.style.width = max;
+            popupWrapper.style.height = this.height;
+            popupWrapper.setAttribute("dir", this.direction);
+            this.popupRef.popupOpen.subscribe(this.popupOpened.bind(this));
+            this.popupRef.popupAnchorViewportLeave.subscribe(function () { return _this.popupOpen = false; });
+        }
+    };
+    MultiSelectComponent.prototype.getSelectedDataItems = function (valueChanges) {
+        var _this = this;
+        if (!this.data.length && this.valuePrimitive && this.valueField) {
+            return [];
+        }
+        var selectedDataItems = [];
+        valueChanges.forEachItem(function (value) {
+            var currentValue = value.currentValue;
+            var isBoundToComplexData = Object(_util__WEBPACK_IMPORTED_MODULE_0__["isObjectArray"])(_this.data);
+            var index = _this.data.findIndex(function (item) {
+                var value = _this.valuePrimitive ? currentValue : Object(_util__WEBPACK_IMPORTED_MODULE_0__["getter"])(currentValue, _this.valueField);
+                return Object(_util__WEBPACK_IMPORTED_MODULE_0__["getter"])(item, _this.valueField) === value;
+            });
+            if (index !== -1) {
+                _this.selectionService.select(index);
+                selectedDataItems.push(_this.data[index]);
+            }
+            else if (Object(_util__WEBPACK_IMPORTED_MODULE_0__["isPresent"])(value) && !(isBoundToComplexData && _this.valuePrimitive)) {
+                selectedDataItems.push(currentValue);
+            }
+        });
+        return selectedDataItems;
+    };
+    MultiSelectComponent.prototype.nextTick = function (f) {
+        var _this = this;
+        this._zone.runOutsideAngular(function () {
+            // Use `setTimeout` instead of a resolved promise
+            // because the latter does not wait long enough.
+            setTimeout(function () { return _this._zone.run(f); });
+        });
+    };
+    MultiSelectComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Component"], args: [{
+                    exportAs: 'kendoMultiSelect',
+                    providers: [
+                        MULTISELECT_VALUE_ACCESSOR,
+                        _selection_service__WEBPACK_IMPORTED_MODULE_10__["SelectionService"],
+                        _navigation_service__WEBPACK_IMPORTED_MODULE_11__["NavigationService"],
+                        _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_24__["LocalizationService"],
+                        {
+                            provide: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_24__["L10N_PREFIX"],
+                            useValue: 'kendo.multiselect'
+                        }
+                    ],
+                    selector: 'kendo-multiselect',
+                    template: "\n        <div class=\"k-multiselect-wrap k-floatwrap\"\n            #wrapper\n            (mousedown)=\"wrapperMousedown($event)\"\n        >\n            <kendo-taglist\n                [tags]=\"tags\"\n                [textField]=\"textField\"\n                [focused]=\"focusedTagIndex\"\n                [disabled]=\"disabled\"\n                [template]=\"tagTemplate\"\n                [groupTemplate]=\"groupTagTemplate\"\n                [activeId]=\"activeId\"\n                (removeTag)=\"handleRemoveTag($event)\"\n            >\n            </kendo-taglist>\n            <kendo-searchbar\n                #searchbar\n                [id]=\"focusableId\"\n                [role]=\"'listbox'\"\n                [listId]=\"listBoxId\"\n                [activeDescendant]=\"activeId\"\n                [userInput]=\"text\"\n                [disabled]=\"disabled\"\n                [readonly]=\"readonly\"\n                [tabIndex]=\"tabIndex\"\n                [popupOpen]=\"popupOpen\"\n                [placeholder]=\"placeholder\"\n                (onNavigate)=\"handleNavigate($event)\"\n                (valueChange)=\"handleFilter($event)\"\n                (onBlur)=\"blurComponent()\"\n                (onFocus)=\"focusComponent()\"\n            >\n            </kendo-searchbar>\n            <span *ngIf=\"!loading && !readonly && clearButton && (tags?.length || text?.length)\" class=\"k-icon k-clear-value k-i-close\" title=\"clear\" role=\"button\" tabindex=\"-1\" (mousedown)=\"clearAll($event)\"></span>\n            <span *ngIf=\"loading\" class=\"k-icon k-i-loading\"></span>\n        </div>\n        <ng-template #popupTemplate>\n            <!--header template-->\n            <ng-template *ngIf=\"headerTemplate\"\n                [templateContext]=\"{\n                    templateRef: headerTemplate.templateRef\n                }\">\n            </ng-template>\n            <!--custom item template-->\n            <div class=\"k-list\" *ngIf=\"allowCustom && text\">\n                <div class=\"k-item k-custom-item\" kendoDropDownsSelectable [multipleSelection]=\"true\" [index]=\"-1\">\n                    <ng-template *ngIf=\"customItemTemplate;else default_custom_item_template\"\n                        [templateContext]=\"{\n                            templateRef: customItemTemplate.templateRef,\n                            $implicit: text\n                        }\">\n                    </ng-template>\n                    <ng-template #default_custom_item_template>{{ text }}</ng-template>\n                    <span class=\"k-icon k-i-plus\" style=\"float: right\"></span>\n                </div>\n            </div>\n            <!--list-->\n            <kendo-list\n                [id]=\"listBoxId\"\n                [data]=\"data\"\n                [textField]=\"textField\"\n                [valueField]=\"valueField\"\n                [height]=\"listHeight\"\n                [template]=\"template\"\n                [show]=\"popupOpen\"\n                [multipleSelection]=\"true\"\n                >\n            </kendo-list>\n            <!--no data template-->\n            <div class=\"k-nodata\" *ngIf=\"data.length === 0\">\n                <ng-template [ngIf]=\"noDataTemplate\"\n                    [templateContext]=\"{\n                        templateRef: noDataTemplate ? noDataTemplate.templateRef : undefined\n                    }\">\n                </ng-template>\n                <ng-template [ngIf]=\"!noDataTemplate\">\n                    <div>NO DATA FOUND.</div>\n                </ng-template>\n            </div>\n            <!--footer template-->\n            <ng-template *ngIf=\"footerTemplate\"\n                [templateContext]=\"{\n                    templateRef: footerTemplate.templateRef\n                }\">\n            </ng-template>\n        </ng-template>\n        <ng-template [ngIf]=\"popupOpen\">\n            <kendo-resize-sensor (resize)=\"onResize()\"></kendo-resize-sensor>\n        </ng-template>\n        <ng-container #container></ng-container>\n  "
+                },] },
+    ];
+    /** @nocollapse */
+    MultiSelectComponent.ctorParameters = function () { return [
+        { type: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_24__["LocalizationService"], },
+        { type: _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_25__["PopupService"], },
+        { type: _selection_service__WEBPACK_IMPORTED_MODULE_10__["SelectionService"], },
+        { type: _navigation_service__WEBPACK_IMPORTED_MODULE_11__["NavigationService"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ChangeDetectorRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["KeyValueDiffers"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Renderer2"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ElementRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["NgZone"], },
+    ]; };
+    MultiSelectComponent.propDecorators = {
+        'focusableId': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'autoClose': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'loading': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'data': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'value': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'valueField': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'textField': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'tabindex': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'tabIndex': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"], args: ["tabIndex",] },],
+        'placeholder': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'disabled': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'readonly': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'filterable': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'popupSettings': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'listHeight': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'valuePrimitive': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'clearButton': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'tagMapper': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'allowCustom': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'valueNormalizer': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Input"] },],
+        'filterChange': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Output"] },],
+        'valueChange': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Output"] },],
+        'open': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Output"] },],
+        'close': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Output"] },],
+        'onFocus': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Output"], args: ['focus',] },],
+        'onBlur': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Output"], args: ['blur',] },],
+        'removeTag': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Output"] },],
+        'container': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"], args: ['container', { read: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewContainerRef"] },] },],
+        'searchbar': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"], args: [_searchbar_component__WEBPACK_IMPORTED_MODULE_1__["SearchBarComponent"],] },],
+        'popupTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"], args: ['popupTemplate',] },],
+        'wrapper': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"], args: ['wrapper',] },],
+        'template': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ContentChild"], args: [_templates_item_template_directive__WEBPACK_IMPORTED_MODULE_14__["ItemTemplateDirective"],] },],
+        'customItemTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ContentChild"], args: [_templates_custom_item_template_directive__WEBPACK_IMPORTED_MODULE_15__["CustomItemTemplateDirective"],] },],
+        'headerTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ContentChild"], args: [_templates_header_template_directive__WEBPACK_IMPORTED_MODULE_16__["HeaderTemplateDirective"],] },],
+        'footerTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ContentChild"], args: [_templates_footer_template_directive__WEBPACK_IMPORTED_MODULE_17__["FooterTemplateDirective"],] },],
+        'tagTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ContentChild"], args: [_templates_tag_template_directive__WEBPACK_IMPORTED_MODULE_18__["TagTemplateDirective"],] },],
+        'groupTagTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ContentChild"], args: [_templates_group_tag_template_directive__WEBPACK_IMPORTED_MODULE_19__["GroupTagTemplateDirective"],] },],
+        'noDataTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ContentChild"], args: [_templates_no_data_template_directive__WEBPACK_IMPORTED_MODULE_20__["NoDataTemplateDirective"],] },],
+        'widgetClasses': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["HostBinding"], args: ['class.k-widget',] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["HostBinding"], args: ['class.k-multiselect',] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["HostBinding"], args: ['class.k-header',] },],
+        'dir': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["HostBinding"], args: ['attr.dir',] },],
+        'focusedClass': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["HostBinding"], args: ['class.k-state-focused',] },],
+        'disabledClass': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["HostBinding"], args: ['class.k-state-disabled',] },],
+    };
+    return MultiSelectComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/multiselect.module.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/multiselect.module.js ***!
+  \**************************************************************************************/
+/*! exports provided: MultiSelectModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MultiSelectModule", function() { return MultiSelectModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _multiselect_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./multiselect.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/multiselect.component.js");
+/* harmony import */ var _taglist_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./taglist.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/taglist.component.js");
+/* harmony import */ var _templates_tag_template_directive__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./templates/tag-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/tag-template.directive.js");
+/* harmony import */ var _templates_custom_item_template_directive__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./templates/custom-item-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/custom-item-template.directive.js");
+/* harmony import */ var _templates_group_tag_template_directive__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./templates/group-tag-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/group-tag-template.directive.js");
+/* harmony import */ var _summary_tag_directive__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./summary-tag.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/summary-tag.directive.js");
+/* harmony import */ var _shared_module__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./shared.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/shared.module.js");
+/* harmony import */ var _shared_directives_module__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./shared-directives.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/shared-directives.module.js");
+
+
+
+
+
+
+
+
+
+var MULTISELECT_DIRECTIVES = [
+    _multiselect_component__WEBPACK_IMPORTED_MODULE_1__["MultiSelectComponent"],
+    _taglist_component__WEBPACK_IMPORTED_MODULE_2__["TagListComponent"],
+    _templates_tag_template_directive__WEBPACK_IMPORTED_MODULE_3__["TagTemplateDirective"],
+    _templates_group_tag_template_directive__WEBPACK_IMPORTED_MODULE_5__["GroupTagTemplateDirective"],
+    _summary_tag_directive__WEBPACK_IMPORTED_MODULE_6__["SummaryTagDirective"],
+    _templates_custom_item_template_directive__WEBPACK_IMPORTED_MODULE_4__["CustomItemTemplateDirective"]
+];
+/**
+ * @hidden
+ *
+ * The exported package module.
+ *
+ * The package exports:
+ * - `MultiSelectComponent`&mdash;The MultiSelect component class.
+ * - `SummaryTagDirective`&mdash;The MultiSelect summary tag directive.
+ * - `ItemTemplateDirective`&mdash;The item template directive.
+ * - `CustomItemTemplateDirective`&mdash;The custom item template directive.
+ * - `TagTemplateDirective`&mdash;The tag template directive.
+ * - `SummaryTagTemplateDirective`&mdash;The summary tag template directive.
+ * - `HeaderTemplateDirective`&mdash;The header template directive.
+ * - `FooterTemplateDirective`&mdash;The footer template directive.
+ * - `NoDataTemplateDirective`&mdash;The no-data template directive.
+ */
+var MultiSelectModule = /** @class */ (function () {
+    function MultiSelectModule() {
+    }
+    MultiSelectModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    declarations: [MULTISELECT_DIRECTIVES],
+                    exports: [MULTISELECT_DIRECTIVES, _shared_directives_module__WEBPACK_IMPORTED_MODULE_8__["SharedDirectivesModule"]],
+                    imports: [_shared_module__WEBPACK_IMPORTED_MODULE_7__["SharedModule"]]
+                },] },
+    ];
+    /** @nocollapse */
+    MultiSelectModule.ctorParameters = function () { return []; };
+    return MultiSelectModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/navigation-action.js":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/navigation-action.js ***!
+  \*************************************************************************************/
+/*! exports provided: NavigationAction */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NavigationAction", function() { return NavigationAction; });
+/**
+ * @hidden
+ */
+var NavigationAction;
+(function (NavigationAction) {
+    NavigationAction[NavigationAction["Undefined"] = 0] = "Undefined";
+    NavigationAction[NavigationAction["Open"] = 1] = "Open";
+    NavigationAction[NavigationAction["Close"] = 2] = "Close";
+    NavigationAction[NavigationAction["Enter"] = 3] = "Enter";
+    NavigationAction[NavigationAction["Tab"] = 4] = "Tab";
+    NavigationAction[NavigationAction["Esc"] = 5] = "Esc";
+    NavigationAction[NavigationAction["Delete"] = 6] = "Delete";
+    NavigationAction[NavigationAction["Backspace"] = 7] = "Backspace";
+    NavigationAction[NavigationAction["Home"] = 8] = "Home";
+    NavigationAction[NavigationAction["End"] = 9] = "End";
+    NavigationAction[NavigationAction["Up"] = 10] = "Up";
+    NavigationAction[NavigationAction["Down"] = 11] = "Down";
+    NavigationAction[NavigationAction["Left"] = 12] = "Left";
+    NavigationAction[NavigationAction["Right"] = 13] = "Right";
+})(NavigationAction || (NavigationAction = {}));
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/navigation.service.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/navigation.service.js ***!
+  \**************************************************************************************/
+/*! exports provided: NavigationEvent, NavigationService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NavigationEvent", function() { return NavigationEvent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NavigationService", function() { return NavigationService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/util.js");
+/* harmony import */ var _common_keys__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./common/keys */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/keys.js");
+/* harmony import */ var _navigation_action__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./navigation-action */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/navigation-action.js");
+
+
+
+
+var MIN_INDEX = 0;
+/**
+ * @hidden
+ */
+var NavigationEvent = /** @class */ (function () {
+    /**
+     * The index of the item to which the user navigated.
+     */
+    function NavigationEvent(index, originalEvent) {
+        this.index = index;
+        this.originalEvent = originalEvent;
+    }
+    return NavigationEvent;
+}());
+
+/**
+ * @hidden
+ */
+var NavigationService = /** @class */ (function () {
+    function NavigationService() {
+        this.open = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.close = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.enter = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.tab = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.esc = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.up = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.right = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.down = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.left = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.delete = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.backspace = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.home = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.end = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+    }
+    NavigationService.prototype.process = function (args) {
+        var keyCode = args.originalEvent.keyCode;
+        var altKey = args.originalEvent.altKey;
+        var index;
+        var action = _navigation_action__WEBPACK_IMPORTED_MODULE_3__["NavigationAction"].Undefined;
+        if (altKey && keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_2__["Keys"].down) {
+            action = _navigation_action__WEBPACK_IMPORTED_MODULE_3__["NavigationAction"].Open;
+        }
+        else if (altKey && keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_2__["Keys"].up) {
+            action = _navigation_action__WEBPACK_IMPORTED_MODULE_3__["NavigationAction"].Close;
+        }
+        else if (keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_2__["Keys"].enter) {
+            action = _navigation_action__WEBPACK_IMPORTED_MODULE_3__["NavigationAction"].Enter;
+        }
+        else if (keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_2__["Keys"].esc) {
+            action = _navigation_action__WEBPACK_IMPORTED_MODULE_3__["NavigationAction"].Esc;
+        }
+        else if (keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_2__["Keys"].tab) {
+            action = _navigation_action__WEBPACK_IMPORTED_MODULE_3__["NavigationAction"].Tab;
+        }
+        else if (keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_2__["Keys"].up) {
+            index = this.next({ current: args.current, start: args.max, end: args.min, step: -1 });
+            action = _navigation_action__WEBPACK_IMPORTED_MODULE_3__["NavigationAction"].Up;
+        }
+        else if (keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_2__["Keys"].left) {
+            index = this.next({ current: args.current, start: args.max, end: args.min, step: -1 });
+            action = _navigation_action__WEBPACK_IMPORTED_MODULE_3__["NavigationAction"].Left;
+        }
+        else if (keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_2__["Keys"].down) {
+            index = this.next({ current: args.current, start: args.min, end: args.max, step: 1 });
+            action = _navigation_action__WEBPACK_IMPORTED_MODULE_3__["NavigationAction"].Down;
+        }
+        else if (keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_2__["Keys"].right) {
+            index = this.next({ current: args.current, start: args.min, end: args.max, step: 1 });
+            action = _navigation_action__WEBPACK_IMPORTED_MODULE_3__["NavigationAction"].Right;
+        }
+        else if (keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_2__["Keys"].home) {
+            index = MIN_INDEX;
+            action = _navigation_action__WEBPACK_IMPORTED_MODULE_3__["NavigationAction"].Home;
+        }
+        else if (keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_2__["Keys"].end) {
+            index = args.max;
+            action = _navigation_action__WEBPACK_IMPORTED_MODULE_3__["NavigationAction"].End;
+        }
+        else if (keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_2__["Keys"].delete) {
+            action = _navigation_action__WEBPACK_IMPORTED_MODULE_3__["NavigationAction"].Delete;
+        }
+        else if (keyCode === _common_keys__WEBPACK_IMPORTED_MODULE_2__["Keys"].backspace) {
+            action = _navigation_action__WEBPACK_IMPORTED_MODULE_3__["NavigationAction"].Backspace;
+        }
+        var eventData = new NavigationEvent(index, args.originalEvent);
+        if (action !== _navigation_action__WEBPACK_IMPORTED_MODULE_3__["NavigationAction"].Undefined) {
+            this[_navigation_action__WEBPACK_IMPORTED_MODULE_3__["NavigationAction"][action].toLowerCase()].emit(eventData);
+        }
+        return action;
+    };
+    NavigationService.prototype.next = function (args) {
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_1__["isPresent"])(args.current)) {
+            return args.start;
+        }
+        else {
+            return args.current !== args.end ? args.current + args.step : args.end;
+        }
+    };
+    NavigationService.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    NavigationService.ctorParameters = function () { return []; };
+    return NavigationService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/searchbar.component.js":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/searchbar.component.js ***!
+  \***************************************************************************************/
+/*! exports provided: SearchBarComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SearchBarComponent", function() { return SearchBarComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _common_keys__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common/keys */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/common/keys.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/util.js");
+/* harmony import */ var _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @progress/kendo-angular-l10n */ "./node_modules/@progress/kendo-angular-l10n/dist/es/index.js");
+/* tslint:disable:member-ordering */
+
+
+
+
+/**
+ * @hidden
+ */
+var SearchBarComponent = /** @class */ (function () {
+    function SearchBarComponent(localization, renderer) {
+        this.localization = localization;
+        this.valueChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onBlur = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onFocus = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onClick = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onNavigate = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this._userInput = "";
+        this._previousValue = "";
+        this._placeholder = "";
+        this._composing = false;
+        this.direction = localization.rtl ? 'rtl' : 'ltr';
+        this.renderer = renderer;
+    }
+    Object.defineProperty(SearchBarComponent.prototype, "userInput", {
+        get: function () {
+            return this._userInput;
+        },
+        set: function (userInput) {
+            this._userInput = userInput || "";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchBarComponent.prototype, "searchBarClass", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchBarComponent.prototype, "value", {
+        get: function () {
+            return this.input.nativeElement.value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SearchBarComponent.prototype, "placeholder", {
+        get: function () {
+            return this._placeholder;
+        },
+        set: function (text) {
+            this._placeholder = text || '';
+            this.setInputSize();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SearchBarComponent.prototype.compositionStart = function () {
+        this._composing = true;
+    };
+    SearchBarComponent.prototype.compositionUpdate = function () {
+        this._composing = true;
+    };
+    SearchBarComponent.prototype.compositionEnd = function () {
+        this._composing = false;
+        this._previousValue = this.value;
+        this.valueChange.emit(this.value);
+    };
+    SearchBarComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.localizationChangeSubscription = this.localization
+            .changes.subscribe(function (_a) {
+            var rtl = _a.rtl;
+            return _this.direction = rtl ? 'rtl' : 'ltr';
+        });
+    };
+    SearchBarComponent.prototype.ngOnChanges = function (changes) {
+        var previousUserInput;
+        if (this.input && (changes.userInput || changes.suggestedText)) {
+            if (changes.userInput && changes.userInput.previousValue) {
+                if (this._previousValue === changes.userInput.previousValue) {
+                    previousUserInput = this._previousValue;
+                }
+                else {
+                    previousUserInput = changes.userInput.currentValue || "";
+                }
+            }
+            else {
+                previousUserInput = this._previousValue;
+            }
+            var caretIndex = this.input.nativeElement.selectionStart;
+            var caretAtEnd = previousUserInput.length === caretIndex;
+            this.writeInputValue(this.suggestedText ? Object(_util__WEBPACK_IMPORTED_MODULE_2__["combineStr"])(this.userInput, this.suggestedText) : this.userInput);
+            if (this.suggestedText) {
+                this.setInputSelection(this.userInput.length, this.suggestedText.length);
+            }
+            else if (caretAtEnd) {
+                this.setInputSelection(this.userInput.length, this.userInput.length);
+            }
+            else {
+                this.setInputSelection(caretIndex, caretIndex);
+            }
+            this._previousValue = this.userInput;
+        }
+    };
+    SearchBarComponent.prototype.ngOnDestroy = function () {
+        if (this.localizationChangeSubscription) {
+            this.localizationChangeSubscription.unsubscribe();
+        }
+    };
+    SearchBarComponent.prototype.writeInputValue = function (text) {
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_2__["isDocumentAvailable"])()) {
+            this.renderer.setProperty(this.input.nativeElement, 'value', text);
+        }
+    };
+    SearchBarComponent.prototype.setInputSelection = function (start, end) {
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_2__["isDocumentAvailable"])() && this.input.nativeElement === document.activeElement) {
+            try {
+                this.input.nativeElement.setSelectionRange(start, end);
+            }
+            catch (e) {
+                //Make sure element is in the DOM before invoking its methods
+            }
+        }
+    };
+    SearchBarComponent.prototype.handleInput = function (event) {
+        var value = event.target.value;
+        if (value !== this.userInput && !this._composing) {
+            this._previousValue = value;
+            this.valueChange.emit(value);
+        }
+    };
+    SearchBarComponent.prototype.handleFocus = function (event) {
+        this.onFocus.emit(event);
+    };
+    SearchBarComponent.prototype.handleBlur = function (event) {
+        this.onBlur.emit(event);
+    };
+    SearchBarComponent.prototype.handleKeydown = function (event) {
+        var keyCode = event.keyCode;
+        var keys = [_common_keys__WEBPACK_IMPORTED_MODULE_1__["Keys"].up, _common_keys__WEBPACK_IMPORTED_MODULE_1__["Keys"].down, _common_keys__WEBPACK_IMPORTED_MODULE_1__["Keys"].left, _common_keys__WEBPACK_IMPORTED_MODULE_1__["Keys"].right, _common_keys__WEBPACK_IMPORTED_MODULE_1__["Keys"].enter,
+            _common_keys__WEBPACK_IMPORTED_MODULE_1__["Keys"].esc, _common_keys__WEBPACK_IMPORTED_MODULE_1__["Keys"].delete, _common_keys__WEBPACK_IMPORTED_MODULE_1__["Keys"].backspace, _common_keys__WEBPACK_IMPORTED_MODULE_1__["Keys"].home, _common_keys__WEBPACK_IMPORTED_MODULE_1__["Keys"].end];
+        if (keys.indexOf(keyCode) > -1) {
+            this.onNavigate.emit(event);
+        }
+    };
+    SearchBarComponent.prototype.focus = function () {
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_2__["isDocumentAvailable"])()) {
+            this.input.nativeElement.focus();
+        }
+    };
+    SearchBarComponent.prototype.blur = function () {
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_2__["isDocumentAvailable"])()) {
+            this.input.nativeElement.blur();
+        }
+    };
+    SearchBarComponent.prototype.setInputSize = function () {
+        var lengthOf = function (x) { return x ? x.length : 0; };
+        var input = this.input.nativeElement;
+        var placeholderLength = lengthOf(this.placeholder);
+        var textLength = lengthOf(this.value);
+        var size = Math.max(placeholderLength, textLength, 1);
+        this.renderer.setAttribute(input, 'size', size.toString());
+    };
+    SearchBarComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    selector: 'kendo-searchbar',
+                    template: "\n        <input #input\n            autocomplete=\"off\"\n            [id]=\"id\"\n            [disabled]=\"disabled\"\n            [readonly]=\"readonly\"\n            [placeholder]=\"placeholder\"\n            [class]=\"'k-input'\"\n            (input)=\"handleInput($event)\"\n            (focus)=\"handleFocus($event)\"\n            (blur)=\"handleBlur($event)\"\n            (keydown)=\"handleKeydown($event)\"\n            [attr.tabIndex]=\"tabIndex\"\n            [attr.dir]=\"direction\"\n            [attr.role]=\"role\"\n            [attr.aria-disabled]=\"disabled\"\n            [attr.aria-readonly]=\"readonly\"\n            [attr.aria-haspopup]=\"true\"\n            [attr.aria-expanded]=\"popupOpen\"\n            [attr.aria-owns]=\"listId\"\n            [attr.aria-activedescendant]=\"activeDescendant\"\n        />\n   "
+                },] },
+    ];
+    /** @nocollapse */
+    SearchBarComponent.ctorParameters = function () { return [
+        { type: _progress_kendo_angular_l10n__WEBPACK_IMPORTED_MODULE_3__["LocalizationService"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Renderer2"], },
+    ]; };
+    SearchBarComponent.propDecorators = {
+        'id': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'listId': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'activeDescendant': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'disabled': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'readonly': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'tabIndex': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'popupOpen': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'role': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'userInput': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'suggestedText': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'valueChange': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'onBlur': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'onFocus': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'onClick': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'onNavigate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'input': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ["input",] },],
+        'searchBarClass': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-searchbar',] },],
+        'placeholder': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'compositionStart': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"], args: ["compositionstart",] },],
+        'compositionUpdate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"], args: ["compositionupdate",] },],
+        'compositionEnd': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"], args: ["compositionend",] },],
+    };
+    return SearchBarComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/selectable.directive.js":
+/*!****************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/selectable.directive.js ***!
+  \****************************************************************************************/
+/*! exports provided: SelectableDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SelectableDirective", function() { return SelectableDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _selection_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./selection.service */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/selection.service.js");
+
+
+/**
+ * @hidden
+ */
+var SelectableDirective = /** @class */ (function () {
+    function SelectableDirective(selectionService) {
+        this.multipleSelection = false;
+        this.selectionService = selectionService;
+    }
+    Object.defineProperty(SelectableDirective.prototype, "focusedClassName", {
+        get: function () {
+            return this.selectionService.isFocused(this.index);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SelectableDirective.prototype, "selectedClassName", {
+        get: function () {
+            return this.selectionService.isSelected(this.index);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SelectableDirective.prototype, "ariaSelected", {
+        get: function () {
+            return this.selectionService.isSelected(this.index) ? true : undefined;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SelectableDirective.prototype.onClick = function (event) {
+        event.stopPropagation();
+        if (this.multipleSelection) {
+            if (this.selectionService.isSelected(this.index)) {
+                this.selectionService.unselect(this.index);
+            }
+            else {
+                this.selectionService.add(this.index);
+            }
+        }
+        else {
+            this.selectionService.change(this.index);
+        }
+    };
+    SelectableDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[kendoDropDownsSelectable]'
+                },] },
+    ];
+    /** @nocollapse */
+    SelectableDirective.ctorParameters = function () { return [
+        { type: _selection_service__WEBPACK_IMPORTED_MODULE_1__["SelectionService"], },
+    ]; };
+    SelectableDirective.propDecorators = {
+        'index': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'multipleSelection': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'focusedClassName': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-state-focused',] },],
+        'selectedClassName': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.k-state-selected',] },],
+        'ariaSelected': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['attr.aria-selected',] },],
+        'onClick': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"], args: ['click', ['$event'],] },],
+    };
+    return SelectableDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/selection.service.js":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/selection.service.js ***!
+  \*************************************************************************************/
+/*! exports provided: SelectionService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SelectionService", function() { return SelectionService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/util.js");
+
+
+/**
+ * @hidden
+ */
+var SelectionService = /** @class */ (function () {
+    function SelectionService() {
+        this.onSelect = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onFocus = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.selectedIndices = [];
+    }
+    SelectionService.prototype.isSelected = function (index) {
+        return Object(_util__WEBPACK_IMPORTED_MODULE_1__["isPresent"])(this.selectedIndices.find(function (current) { return current === index; }));
+    };
+    SelectionService.prototype.isFocused = function (index) {
+        return index === this.focused;
+    };
+    SelectionService.prototype.focus = function (index) {
+        if (this.isFocused(index)) {
+            return;
+        }
+        this.focused = index;
+        this.onFocus.emit(index);
+    };
+    SelectionService.prototype.select = function (index) {
+        if (this.isSelected(index)) {
+            return;
+        }
+        this.onSelect.emit({
+            indices: [index]
+        });
+        this.selectedIndices = [index];
+        this.focused = index;
+    };
+    SelectionService.prototype.add = function (index) {
+        if (this.isSelected(index)) {
+            return;
+        }
+        this.selectedIndices.push(index);
+        this.focused = index;
+        this.onChange.emit({
+            added: index,
+            indices: this.selectedIndices.slice()
+        });
+    };
+    SelectionService.prototype.unselect = function (index) {
+        if (!this.isSelected(index)) {
+            return;
+        }
+        var position = this.selectedIndices.indexOf(index);
+        this.selectedIndices.splice(position, 1);
+        this.focused = index;
+        this.onChange.emit({
+            indices: this.selectedIndices.slice(),
+            removed: index
+        });
+    };
+    SelectionService.prototype.change = function (index) {
+        this.onChange.emit({
+            indices: [index]
+        });
+        this.selectedIndices = [index];
+        this.focused = index;
+    };
+    SelectionService.prototype.resetSelection = function (index) {
+        this.selectedIndices = index instanceof Array ? index : [index];
+        this.focused = this.selectedIndices[this.selectedIndices.length - 1];
+    };
+    Object.defineProperty(SelectionService.prototype, "selected", {
+        get: function () {
+            return this.selectedIndices.slice();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SelectionService.prototype, "focused", {
+        get: function () {
+            return this.focusedIndex;
+        },
+        set: function (index) {
+            if (this.focusedIndex !== index) {
+                this.focusedIndex = index;
+                this.onFocus.emit(index);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SelectionService.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    SelectionService.ctorParameters = function () { return []; };
+    return SelectionService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/shared-directives.module.js":
+/*!********************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/shared-directives.module.js ***!
+  \********************************************************************************************/
+/*! exports provided: SharedDirectivesModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SharedDirectivesModule", function() { return SharedDirectivesModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _templates_item_template_directive__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./templates/item-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/item-template.directive.js");
+/* harmony import */ var _templates_header_template_directive__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./templates/header-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/header-template.directive.js");
+/* harmony import */ var _templates_footer_template_directive__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./templates/footer-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/footer-template.directive.js");
+/* harmony import */ var _templates_no_data_template_directive__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./templates/no-data-template.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/no-data-template.directive.js");
+
+
+
+
+
+var SHARED_DIRECTIVES = [
+    _templates_header_template_directive__WEBPACK_IMPORTED_MODULE_2__["HeaderTemplateDirective"],
+    _templates_footer_template_directive__WEBPACK_IMPORTED_MODULE_3__["FooterTemplateDirective"],
+    _templates_item_template_directive__WEBPACK_IMPORTED_MODULE_1__["ItemTemplateDirective"],
+    _templates_no_data_template_directive__WEBPACK_IMPORTED_MODULE_4__["NoDataTemplateDirective"]
+];
+/**
+ * @hidden
+ *
+ * The exported package module.
+ *
+ * The package exports:
+ * - `ItemTemplateDirective`&mdash;The item template directive.
+ * - `HeaderTemplateDirective`&mdash;The header template directive.
+ * - `FooterTemplateDirective`&mdash;The footer template directive.
+ * - `NoDataTemplateDirective`&mdash;The noData template directive.
+ */
+var SharedDirectivesModule = /** @class */ (function () {
+    function SharedDirectivesModule() {
+    }
+    SharedDirectivesModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    declarations: [SHARED_DIRECTIVES],
+                    exports: [SHARED_DIRECTIVES]
+                },] },
+    ];
+    /** @nocollapse */
+    SharedDirectivesModule.ctorParameters = function () { return []; };
+    return SharedDirectivesModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/shared.module.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/shared.module.js ***!
+  \*********************************************************************************/
+/*! exports provided: SharedModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SharedModule", function() { return SharedModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _list_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./list.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/list.component.js");
+/* harmony import */ var _searchbar_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./searchbar.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/searchbar.component.js");
+/* harmony import */ var _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @progress/kendo-angular-popup */ "./node_modules/@progress/kendo-angular-popup/dist/es/index.js");
+/* harmony import */ var _progress_kendo_angular_resize_sensor__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @progress/kendo-angular-resize-sensor */ "./node_modules/@progress/kendo-angular-resize-sensor/dist/es/index.js");
+/* harmony import */ var _shared_directives_module__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./shared-directives.module */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/shared-directives.module.js");
+/* harmony import */ var _list_item_directive__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./list-item.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/list-item.directive.js");
+/* harmony import */ var _selectable_directive__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./selectable.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/selectable.directive.js");
+/* harmony import */ var _templates_template_context_directive__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./templates/template-context.directive */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/template-context.directive.js");
+
+
+
+
+
+
+
+
+
+
+
+var INTERNAL_DIRECTIVES = [
+    _list_component__WEBPACK_IMPORTED_MODULE_3__["ListComponent"],
+    _list_item_directive__WEBPACK_IMPORTED_MODULE_8__["ListItemDirective"],
+    _selectable_directive__WEBPACK_IMPORTED_MODULE_9__["SelectableDirective"],
+    _searchbar_component__WEBPACK_IMPORTED_MODULE_4__["SearchBarComponent"],
+    _templates_template_context_directive__WEBPACK_IMPORTED_MODULE_10__["TemplateContextDirective"]
+];
+/**
+ * @hidden
+ */
+var SharedModule = /** @class */ (function () {
+    function SharedModule() {
+    }
+    SharedModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    declarations: [INTERNAL_DIRECTIVES],
+                    exports: [INTERNAL_DIRECTIVES, _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormsModule"], _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_5__["PopupModule"], _progress_kendo_angular_resize_sensor__WEBPACK_IMPORTED_MODULE_6__["ResizeSensorModule"], _shared_directives_module__WEBPACK_IMPORTED_MODULE_7__["SharedDirectivesModule"]],
+                    imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormsModule"], _progress_kendo_angular_popup__WEBPACK_IMPORTED_MODULE_5__["PopupModule"], _progress_kendo_angular_resize_sensor__WEBPACK_IMPORTED_MODULE_6__["ResizeSensorModule"], _shared_directives_module__WEBPACK_IMPORTED_MODULE_7__["SharedDirectivesModule"]]
+                },] },
+    ];
+    /** @nocollapse */
+    SharedModule.ctorParameters = function () { return []; };
+    return SharedModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/summary-tag.directive.js":
+/*!*****************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/summary-tag.directive.js ***!
+  \*****************************************************************************************/
+/*! exports provided: SummaryTagDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SummaryTagDirective", function() { return SummaryTagDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/util.js");
+/* harmony import */ var _multiselect_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./multiselect.component */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/multiselect.component.js");
+
+
+
+/**
+ * A Directive which configures the MultiSelect to show one single summary tag for all selected data items.
+ * When a number is provided, the summary tag is displayed after the given amount of data items are selected.
+ * @example
+ * ```ts-no-run
+ * <kendo-multiselect kendoMultiSelectSummaryTag [data]="data"></kendo-multiselect>
+ * ```
+ *
+ * @example
+ * ```ts-no-run
+ * <kendo-multiselect [kendoMultiSelectSummaryTag]="2" [data]="data"></kendo-multiselect>
+ * ```
+ */
+var SummaryTagDirective = /** @class */ (function () {
+    function SummaryTagDirective(multiSelectComponent) {
+        this.multiSelectComponent = multiSelectComponent;
+        /**
+         * A numeric value that indicates the number of selected data items after which the summary tag will appear.
+         */
+        this.showAfter = 0; // tslint:disable-line:no-input-rename
+        this.createTagMapper();
+    }
+    SummaryTagDirective.prototype.ngOnChanges = function (changes) {
+        if (Object(_util__WEBPACK_IMPORTED_MODULE_1__["isChanged"])("showAfter", changes)) {
+            this.createTagMapper();
+            this.multiSelectComponent.onTagMapperChange();
+        }
+    };
+    SummaryTagDirective.prototype.createTagMapper = function () {
+        var _this = this;
+        this.multiSelectComponent.tagMapper = function (tags) {
+            if (tags.length > _this.showAfter) {
+                var result = void 0;
+                result = tags.slice(0, _this.showAfter);
+                result.push(tags.slice(_this.showAfter, tags.length));
+                return result;
+            }
+            else {
+                return tags;
+            }
+        };
+    };
+    SummaryTagDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[kendoMultiSelectSummaryTag]'
+                },] },
+    ];
+    /** @nocollapse */
+    SummaryTagDirective.ctorParameters = function () { return [
+        { type: _multiselect_component__WEBPACK_IMPORTED_MODULE_2__["MultiSelectComponent"], },
+    ]; };
+    SummaryTagDirective.propDecorators = {
+        'showAfter': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['kendoMultiSelectSummaryTag',] },],
+    };
+    return SummaryTagDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/taglist.component.js":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/taglist.component.js ***!
+  \*************************************************************************************/
+/*! exports provided: TagListComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TagListComponent", function() { return TagListComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* tslint:disable:max-line-length */
+
+/**
+ * @hidden
+ */
+var TagListComponent = /** @class */ (function () {
+    function TagListComponent() {
+        this.removeTag = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+    }
+    TagListComponent.prototype.tagText = function (tag) {
+        return tag[this.textField] ? tag[this.textField] : tag;
+    };
+    TagListComponent.prototype.deleteTag = function (event, tag) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (!this.disabled && event.which === 1) {
+            this.removeTag.emit(tag);
+        }
+    };
+    TagListComponent.prototype.itemId = function (focused, index) {
+        return focused === index ? this.activeId : undefined;
+    };
+    TagListComponent.prototype.isGroupTag = function (tag) {
+        return tag instanceof Array;
+    };
+    TagListComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    selector: 'kendo-taglist',
+                    template: "\n        <ul role=\"listbox\" class=\"k-reset\">\n            <li *ngFor=\"let tag of tags; let i = index;\"\n                [ngClass]=\"{'k-button': true, 'k-state-focused': i === focused }\"\n                [attr.id]=\"itemId(focused, i)\"\n            >\n                <ng-template *ngIf=\"isGroupTag(tag); then groupTag else singleTag\"></ng-template>\n                    <ng-template #groupTag>\n                        <span>\n                            <ng-template *ngIf=\"groupTemplate\"\n                                [templateContext]=\"{\n                                templateRef: groupTemplate.templateRef,\n                                $implicit: tag\n                            }\">\n                            </ng-template>\n                            <ng-template [ngIf]=\"!groupTemplate\">{{ tag.length }} {{ tag.length === 1 ? 'item' : 'items' }} selected</ng-template>\n                        </span>\n                    </ng-template>\n                    <ng-template #singleTag>\n                        <span>\n                            <ng-template *ngIf=\"template\"\n                                [templateContext]=\"{\n                                templateRef: template.templateRef,\n                                $implicit: tag\n                            }\">\n                            </ng-template>\n                            <ng-template [ngIf]=\"!template\">{{ tagText(tag) }}</ng-template>\n                        </span>\n                    </ng-template>\n\n                <span aria-label=\"delete\" class=\"k-select\">\n                    <span class=\"k-icon k-i-close\" (mousedown)=\"deleteTag($event, tag)\">\n                    </span>\n                </span>\n            </li>\n        </ul>\n  "
+                },] },
+    ];
+    /** @nocollapse */
+    TagListComponent.ctorParameters = function () { return []; };
+    TagListComponent.propDecorators = {
+        'tags': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'textField': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'focused': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'template': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'groupTemplate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'disabled': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'activeId': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'removeTag': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+    };
+    return TagListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/custom-item-template.directive.js":
+/*!************************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/custom-item-template.directive.js ***!
+  \************************************************************************************************************/
+/*! exports provided: CustomItemTemplateDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomItemTemplateDirective", function() { return CustomItemTemplateDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* tslint:disable:max-line-length */
+
+/**
+ * Used for rendering the custom list item content.
+ * The template context is set to the current component.
+ * To get a reference to the current text that is typed by the user,
+ * use the `let-customItem` directive.
+ *
+ * @example
+ * ```ts
+ * _@Component({
+ * selector: 'my-app',
+ * template: `
+ *  <kendo-multiselect [data]="listItems" [allowCustom]="true">
+ *    <ng-template kendoMultiSelectCustomItemTemplate let-customItem>
+ *      <span>New Item: {{customItem}}</span>
+ *    </ng-template>
+ *  </kendo-multiselect>
+ * `
+ * })
+ * class AppComponent {
+ *   public listItems: Array<string> = ["Item 1", "Item 2", "Item 3", "Item 4"];
+ * }
+ * ```
+ *
+ * For more examples, refer to the article on [templates]({% slug templates_multiselect %}).
+ */
+var CustomItemTemplateDirective = /** @class */ (function () {
+    function CustomItemTemplateDirective(templateRef) {
+        this.templateRef = templateRef;
+    }
+    CustomItemTemplateDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[kendoMultiSelectCustomItemTemplate]'
+                },] },
+    ];
+    /** @nocollapse */
+    CustomItemTemplateDirective.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["TemplateRef"], },
+    ]; };
+    return CustomItemTemplateDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/footer-template.directive.js":
+/*!*******************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/footer-template.directive.js ***!
+  \*******************************************************************************************************/
+/*! exports provided: FooterTemplateDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FooterTemplateDirective", function() { return FooterTemplateDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* tslint:disable:max-line-length */
+
+/**
+ * Used for rendering the footer content of the list.
+ *
+ * To define the footer template, nest a `<ng-template>` tag with the `kendo<ComponentName>FooterTemplate` directive inside the component tag.
+ *
+ * You can use:
+ * - The `kendoAutoCompleteFooterTemplate` directive for the AutoComplete.
+ * - The `kendoComboBoxFooterTemplate` directive for the ComboBox.
+ * - The `kendoDropDownListFooterTemplate` directive for the DropDownList.
+ * - The `kendoMultiSelectFooterTemplate` directive for the MultiSelect.
+ *
+ *
+ * @example
+ * ```ts
+ * _@Component({
+ * selector: 'my-app',
+ * template: `
+ *  <kendo-combobox [data]="listItems">
+ *    <ng-template kendoComboBoxFooterTemplate>
+ *      <h4>Footer template</h4>
+ *    </ng-template>
+ *  </kendo-combobox>
+ * `
+ * })
+ * class AppComponent {
+ *   public listItems: Array<string> = ["Item 1", "Item 2", "Item 3", "Item 4"];
+ * }
+ * ```
+ *
+ * For more examples, refer to the article on [templates]({% slug templates_ddl %}).
+ */
+var FooterTemplateDirective = /** @class */ (function () {
+    function FooterTemplateDirective(templateRef) {
+        this.templateRef = templateRef;
+    }
+    FooterTemplateDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[kendoDropDownListFooterTemplate],[kendoComboBoxFooterTemplate],[kendoAutoCompleteFooterTemplate],[kendoMultiSelectFooterTemplate]'
+                },] },
+    ];
+    /** @nocollapse */
+    FooterTemplateDirective.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["TemplateRef"], },
+    ]; };
+    return FooterTemplateDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/group-tag-template.directive.js":
+/*!**********************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/group-tag-template.directive.js ***!
+  \**********************************************************************************************************/
+/*! exports provided: GroupTagTemplateDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GroupTagTemplateDirective", function() { return GroupTagTemplateDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* tslint:disable:max-line-length */
+
+/**
+ * Used for rendering the grouped tag values.
+ * It can only be used with the MultiSelect component.
+ *
+ * The template context is set to the current MultiSelect.
+ * To get a reference to the current grouped data items collection, use the `let-dataItems` directive.
+ *
+ * @example
+ * ```ts
+ * _@Component({
+ * selector: 'my-app',
+ * template: `
+ *  <kendo-multiselect kendoMultiSelectSummaryTag [data]="items">
+ *    <ng-template kendoMultiSelectGroupTagTemplate let-dataItems>
+ *      <span>{{dataItems.length}} item(s) selected</span>
+ *    </ng-template>
+ *  </kendo-multiselect>
+ * `
+ * })
+ * class AppComponent {
+ *   public items: Array<string> = ["Item 1", "Item 2", "Item 3", "Item 4"];
+ * }
+ * ```
+ *
+ * For more examples, refer to the article on [templates]({% slug templates_multiselect %}).
+ */
+var GroupTagTemplateDirective = /** @class */ (function () {
+    function GroupTagTemplateDirective(templateRef) {
+        this.templateRef = templateRef;
+    }
+    GroupTagTemplateDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[kendoMultiSelectGroupTagTemplate]'
+                },] },
+    ];
+    /** @nocollapse */
+    GroupTagTemplateDirective.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["TemplateRef"], },
+    ]; };
+    return GroupTagTemplateDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/header-template.directive.js":
+/*!*******************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/header-template.directive.js ***!
+  \*******************************************************************************************************/
+/*! exports provided: HeaderTemplateDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HeaderTemplateDirective", function() { return HeaderTemplateDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* tslint:disable:max-line-length */
+
+/**
+ * Used for rendering the header content of the list.
+ *
+ * To define the header template, nest a `<ng-template>` tag with the `kendo<ComponentName>HeaderTemplate` directive inside the component tag.
+ *
+ * You can use:
+ * - The `kendoAutoCompleteHeaderTemplate` directive for the AutoComplete.
+ * - The `kendoComboBoxHeaderTemplate` directive for the ComboBox.
+ * - The `kendoDropDownListHeaderTemplate` directive for the DropDownList.
+ * - The `kendoMultiSelectHeaderTemplate` directive for the MultiSelect.
+ *
+ * @example
+ * ```ts
+ * _@Component({
+ * selector: 'my-app',
+ * template: `
+ *  <kendo-combobox [data]="listItems">
+ *    <ng-template kendoComboBoxHeaderTemplate>
+ *      <h4>Header template</h4>
+ *    </ng-template>
+ *  </kendo-combobox>
+ * `
+ * })
+ * class AppComponent {
+ *   public listItems: Array<string> = ["Item 1", "Item 2", "Item 3", "Item 4"];
+ * }
+ * ```
+ * For more examples, refer to the article on [templates]({% slug templates_ddl %}).
+ */
+var HeaderTemplateDirective = /** @class */ (function () {
+    function HeaderTemplateDirective(templateRef) {
+        this.templateRef = templateRef;
+    }
+    HeaderTemplateDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[kendoDropDownListHeaderTemplate],[kendoComboBoxHeaderTemplate],[kendoAutoCompleteHeaderTemplate],[kendoMultiSelectHeaderTemplate]'
+                },] },
+    ];
+    /** @nocollapse */
+    HeaderTemplateDirective.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["TemplateRef"], },
+    ]; };
+    return HeaderTemplateDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/item-template.directive.js":
+/*!*****************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/item-template.directive.js ***!
+  \*****************************************************************************************************/
+/*! exports provided: ItemTemplateDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ItemTemplateDirective", function() { return ItemTemplateDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* tslint:disable:max-line-length */
+
+/**
+ * Used for rendering the list item content.
+ *
+ * To define the item template, nest a `<ng-template>` tag with the `kendo<ComponentName>ItemTemplate` directive inside the component tag.
+ *
+ * You can use:
+ * - The `kendoAutoCompleteItemTemplate` directive for the AutoComplete.
+ * - The `kendoComboBoxItemTemplate` directive for the ComboBox.
+ * - The `kendoDropDownListItemTemplate` directive for the DropDownList.
+ * - The `kendoMultiSelectItemTemplate` directive for the MultiSelect.
+ *
+ * The template context is set to the current component. To get a reference to the current data item, use the `let-dataItem` directive.
+ *
+ * @example
+ * ```ts
+ * _@Component({
+ * selector: 'my-app',
+ * template: `
+ *  <kendo-combobox [data]="listItems">
+ *    <ng-template kendoComboBoxItemTemplate let-dataItem>
+ *      <span>{{dataItem}} option</span>
+ *    </ng-template>
+ *  </kendo-combobox>
+ * `
+ * })
+ * class AppComponent {
+ *   public listItems: Array<string> = ["Item 1", "Item 2", "Item 3", "Item 4"];
+ * }
+ * ```
+ *
+ * For more examples, refer to the article on [templates]({% slug templates_ddl %}).
+ */
+var ItemTemplateDirective = /** @class */ (function () {
+    function ItemTemplateDirective(templateRef) {
+        this.templateRef = templateRef;
+    }
+    ItemTemplateDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[kendoDropDownListItemTemplate],[kendoComboBoxItemTemplate],[kendoAutoCompleteItemTemplate],[kendoMultiSelectItemTemplate]'
+                },] },
+    ];
+    /** @nocollapse */
+    ItemTemplateDirective.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["TemplateRef"], },
+    ]; };
+    return ItemTemplateDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/no-data-template.directive.js":
+/*!********************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/no-data-template.directive.js ***!
+  \********************************************************************************************************/
+/*! exports provided: NoDataTemplateDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NoDataTemplateDirective", function() { return NoDataTemplateDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* tslint:disable:max-line-length */
+
+/**
+ * Used for rendering content when there is no data present.
+ *
+ * To define the no-data template, nest a `<ng-template>` tag with the `kendo<ComponentName>NoDataTemplate` directive inside the component tag.
+ *
+ * You can use:
+ * - The `kendoAutoCompleteNoDataTemplate` directive for the AutoComplete.
+ * - The `kendoComboBoxNoDataTemplate` directive for the ComboBox.
+ * - The `kendoDropDownListNoDataTemplate` directive for the DropDownList.
+ * - The `kendoMultiSelectNoDataTemplate` directive for the MultiSelect.
+ *
+ *
+ * @example
+ * ```ts
+ * _@Component({
+ * selector: 'my-app',
+ * template: `
+ *  <kendo-combobox [data]="listItems">
+ *    <ng-template kendoComboBoxNoDataTemplate>
+ *      <h4>No data!</h4>
+ *    </ng-template>
+ *  </kendo-combobox>
+ * `
+ * })
+ * class AppComponent {
+ *   public listItems: Array<string> = [];
+ * }
+ * ```
+ *
+ * For more examples, refer to the article on [templates]({% slug templates_ddl %}).
+ */
+var NoDataTemplateDirective = /** @class */ (function () {
+    function NoDataTemplateDirective(templateRef) {
+        this.templateRef = templateRef;
+    }
+    NoDataTemplateDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[kendoDropDownListNoDataTemplate],[kendoComboBoxNoDataTemplate],[kendoAutoCompleteNoDataTemplate],[kendoMultiSelectNoDataTemplate]'
+                },] },
+    ];
+    /** @nocollapse */
+    NoDataTemplateDirective.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["TemplateRef"], },
+    ]; };
+    return NoDataTemplateDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/tag-template.directive.js":
+/*!****************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/tag-template.directive.js ***!
+  \****************************************************************************************************/
+/*! exports provided: TagTemplateDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TagTemplateDirective", function() { return TagTemplateDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* tslint:disable:max-line-length */
+
+/**
+ * Used for rendering the selected tag value. It can only be used with the MultiSelect component.
+ *
+ * The template context is set to the current MultiSelect. To get a reference to the current data item, use the `let-dataItem` directive.
+ *
+ * @example
+ * ```ts
+ * _@Component({
+ * selector: 'my-app',
+ * template: `
+ *  <kendo-multiselect [data]="items">
+ *    <ng-template kendoMultiSelectTagTemplate let-dataItem>
+ *      <span>{{dataItem}} option</span>
+ *    </ng-template>
+ *  </kendo-multiselect>
+ * `
+ * })
+ * class AppComponent {
+ *   public items: Array<string> = ["Item 1", "Item 2", "Item 3", "Item 4"];
+ * }
+ * ```
+ *
+ * For more examples, refer to the article on [templates]({% slug templates_multiselect %}).
+ */
+var TagTemplateDirective = /** @class */ (function () {
+    function TagTemplateDirective(templateRef) {
+        this.templateRef = templateRef;
+    }
+    TagTemplateDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[kendoMultiSelectTagTemplate]'
+                },] },
+    ];
+    /** @nocollapse */
+    TagTemplateDirective.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["TemplateRef"], },
+    ]; };
+    return TagTemplateDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/template-context.directive.js":
+/*!********************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/template-context.directive.js ***!
+  \********************************************************************************************************/
+/*! exports provided: TemplateContextDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TemplateContextDirective", function() { return TemplateContextDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+/**
+ * @hidden
+ */
+var TemplateContextDirective = /** @class */ (function () {
+    function TemplateContextDirective(viewContainerRef) {
+        this.viewContainerRef = viewContainerRef;
+    }
+    Object.defineProperty(TemplateContextDirective.prototype, "templateContext", {
+        set: function (context) {
+            if (this.insertedViewRef) {
+                this.viewContainerRef.remove(this.viewContainerRef.indexOf(this.insertedViewRef));
+                this.insertedViewRef = undefined;
+            }
+            if (context.templateRef) {
+                this.insertedViewRef = this.viewContainerRef.createEmbeddedView(context.templateRef, context);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    TemplateContextDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[templateContext]' // tslint:disable-line
+                },] },
+    ];
+    /** @nocollapse */
+    TemplateContextDirective.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"], },
+    ]; };
+    TemplateContextDirective.propDecorators = {
+        'templateContext': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+    };
+    return TemplateContextDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/value-template.directive.js":
+/*!******************************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/templates/value-template.directive.js ***!
+  \******************************************************************************************************/
+/*! exports provided: ValueTemplateDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ValueTemplateDirective", function() { return ValueTemplateDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* tslint:disable:max-line-length */
+
+/**
+ * Used for rendering the selected value of the component. It can only be used with the DropDownList.
+ *
+ * The template context is set to the current DropDownList. To get a reference to the current data item, use the `let-dataItem` directive.
+ *
+ * @example
+ * ```ts
+ * _@Component({
+ * selector: 'my-app',
+ * template: `
+ *  <kendo-dropdownlist [data]="listItems">
+ *    <ng-template kendoDropDownListValueTemplate let-dataItem>
+ *      <span>{{dataItem}} option</span>
+ *    </ng-template>
+ *  </kendo-dropdownlist>
+ * `
+ * })
+ * class AppComponent {
+ *   public listItems: Array<string> = ["Item 1", "Item 2", "Item 3", "Item 4"];
+ * }
+ * ```
+ *
+ * For more examples, refer to the article on [templates]({% slug templates_ddl %}).
+ */
+var ValueTemplateDirective = /** @class */ (function () {
+    function ValueTemplateDirective(templateRef) {
+        this.templateRef = templateRef;
+    }
+    ValueTemplateDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[kendoDropDownListValueTemplate]'
+                },] },
+    ];
+    /** @nocollapse */
+    ValueTemplateDirective.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["TemplateRef"], },
+    ]; };
+    return ValueTemplateDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/touch-enabled.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/touch-enabled.js ***!
+  \*********************************************************************************/
+/*! exports provided: TOUCH_ENABLED */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TOUCH_ENABLED", function() { return TOUCH_ENABLED; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+/**
+ * @hidden
+ */
+var TOUCH_ENABLED = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]('dropdowns-touch-enabled');
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/util.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-dropdowns/dist/es/util.js ***!
+  \************************************************************************/
+/*! exports provided: isPresent, isNumber, isChanged, guid, combineStr, isDocumentAvailable, isWindowAvailable, isArray, isObject, resolveValuesInArray, validateComplexValues, resolveAllValues, isObjectArray, selectedIndices, getter, resolveValue, sameCharsOnly, shuffleData, matchText */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isPresent", function() { return isPresent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isNumber", function() { return isNumber; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isChanged", function() { return isChanged; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "guid", function() { return guid; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "combineStr", function() { return combineStr; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDocumentAvailable", function() { return isDocumentAvailable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isWindowAvailable", function() { return isWindowAvailable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isArray", function() { return isArray; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isObject", function() { return isObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resolveValuesInArray", function() { return resolveValuesInArray; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateComplexValues", function() { return validateComplexValues; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resolveAllValues", function() { return resolveAllValues; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isObjectArray", function() { return isObjectArray; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectedIndices", function() { return selectedIndices; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getter", function() { return getter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resolveValue", function() { return resolveValue; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sameCharsOnly", function() { return sameCharsOnly; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "shuffleData", function() { return shuffleData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "matchText", function() { return matchText; });
+/* tslint:disable:no-null-keyword */
+/* tslint:disable:no-bitwise */
+/* tslint:disable:align */
+/**
+ * @hidden
+ */
+var isPresent = function (value) { return value !== null && value !== undefined; };
+/**
+ * @hidden
+ */
+var isNumber = function (value) { return !isNaN(value); };
+/**
+ * @hidden
+ */
+var isChanged = function (propertyName, changes) { return (changes[propertyName] && !changes[propertyName].isFirstChange() &&
+    changes[propertyName].previousValue !== changes[propertyName].currentValue); };
+/**
+ * @hidden
+ */
+var guid = function () {
+    var id = "";
+    var i;
+    var random;
+    for (i = 0; i < 32; i++) {
+        random = Math.random() * 16 | 0;
+        if (i === 8 || i === 12 || i === 16 || i === 20) {
+            id += "-";
+        }
+        id += (i === 12 ? 4 : (i === 16 ? (random & 3 | 8) : random)).toString(16);
+    }
+    return id;
+};
+/**
+ * @hidden
+ */
+var combineStr = function (begin, end) {
+    return begin.concat(end.substr(end.toLowerCase().indexOf(begin.toLowerCase()) + begin.length));
+};
+/**
+ * @hidden
+ */
+var isDocumentAvailable = function () { return typeof document !== 'undefined'; };
+/**
+ * @hidden
+ */
+var isWindowAvailable = function () { return typeof window !== 'undefined'; };
+/**
+ * @hidden
+ */
+var isArray = function (value) { return Array.isArray(value); };
+/**
+ * @hidden
+ */
+var isObject = function (value) { return typeof value === 'object'; };
+/**
+ * @hidden
+ */
+var resolveValuesInArray = function (values, data, valueField) {
+    if (data === void 0) { data = []; }
+    return data.filter(function (curr) {
+        return values.some(function (item) { return item === curr[valueField]; });
+    });
+};
+/**
+ * @hidden
+ */
+var validateComplexValues = function (values, valueField) {
+    return isArray(values) && values.filter(function (item) {
+        return isObject(item) && item[valueField];
+    });
+};
+/**
+ * @hidden
+ */
+var resolveAllValues = function (value, data, valueField) {
+    var customValues = validateComplexValues(value, valueField) || [];
+    var resolvedValues = resolveValuesInArray(value, data, valueField) || [];
+    return resolvedValues.concat(customValues);
+};
+/**
+ * @hidden
+ */
+var isObjectArray = function (values) {
+    return isArray(values) && values.some(function (item) { return isObject(item); });
+};
+/**
+ * @hidden
+ */
+var selectedIndices = function (values, data, valueField) {
+    var extractedValues = data.map(function (item) {
+        return isPresent(item[valueField]) ? item[valueField] : item;
+    });
+    return values.reduce(function (arr, item) {
+        var value = isPresent(item[valueField]) ? item[valueField] : item;
+        var index = extractedValues.indexOf(value);
+        if (index !== -1) {
+            arr.push(index);
+        }
+        return arr;
+    }, []);
+};
+/**
+ * @hidden
+ */
+var getter = function (dataItem, field, usePrimitive) {
+    if (usePrimitive === void 0) { usePrimitive = false; }
+    if (isPresent(dataItem)) {
+        if (usePrimitive) {
+            return field && isPresent(dataItem[field]) ? dataItem[field] : dataItem;
+        }
+        else {
+            return field ? dataItem[field] : dataItem;
+        }
+    }
+};
+/**
+ * @hidden
+ */
+var resolveValue = function (args) {
+    var dataItem;
+    if (isPresent(args.value)) {
+        var data = [args.defaultItem].concat(args.data);
+        dataItem = data.find(function (element) { return getter(element, args.valueField) === args.value; });
+        return {
+            dataItem: dataItem,
+            focused: args.data.indexOf(dataItem),
+            selected: args.data.indexOf(dataItem)
+        };
+    }
+    else if (args.index) {
+        dataItem = args.data[args.index];
+        return {
+            dataItem: args.data[args.index],
+            focused: args.index,
+            selected: args.index
+        };
+    }
+    return {
+        dataItem: args.defaultItem,
+        focused: -1,
+        selected: -1
+    };
+};
+/**
+ * @hidden
+ */
+var sameCharsOnly = function (word, character) {
+    for (var idx = 0; idx < word.length; idx++) {
+        if (word.charAt(idx) !== character) {
+            return false;
+        }
+    }
+    return true;
+};
+/**
+ * @hidden
+ */
+var shuffleData = function (data, splitIndex, defaultItem) {
+    var result = data;
+    if (defaultItem) {
+        result = [defaultItem].concat(result);
+    }
+    return result.slice(splitIndex).concat(result.slice(0, splitIndex));
+};
+/**
+ * @hidden
+ */
+var matchText = function (text, word, ignoreCase) {
+    if (!isPresent(text)) {
+        return false;
+    }
+    var temp = String(text);
+    if (ignoreCase) {
+        temp = temp.toLowerCase();
+    }
+    return temp.indexOf(word) === 0;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-l10n/dist/es/component-messages.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-l10n/dist/es/component-messages.js ***!
+  \*********************************************************************************/
+/*! exports provided: ComponentMessages */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ComponentMessages", function() { return ComponentMessages; });
+/* harmony import */ var rxjs_operators_skip__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators/skip */ "./node_modules/rxjs-compat/_esm5/operators/skip.js");
+
+/**
+ * Base class that acts as a component messages container.
+ *
+ * For internal use.
+ * @hidden
+ */
+var ComponentMessages = /** @class */ (function () {
+    function ComponentMessages() {
+    }
+    Object.defineProperty(ComponentMessages.prototype, "override", {
+        get: function () {
+            return false;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ComponentMessages.prototype.ngOnChanges = function (changes) {
+        this.register(changes);
+    };
+    ComponentMessages.prototype.ngOnInit = function () {
+        var _this = this;
+        this.subscription = this.service.changes.pipe(Object(rxjs_operators_skip__WEBPACK_IMPORTED_MODULE_0__["skip"])(1)).subscribe(function () { return _this.register(_this); });
+    };
+    ComponentMessages.prototype.register = function (changes) {
+        var _this = this;
+        var keys = Object.keys(changes);
+        keys.forEach(function (key) { return _this.service.register(key, _this[key], _this.override); });
+    };
+    ComponentMessages.prototype.ngOnDestroy = function () {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    };
+    return ComponentMessages;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-l10n/dist/es/index.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-l10n/dist/es/index.js ***!
+  \********************************************************************/
+/*! exports provided: MessageService, ComponentMessages, L10N_PREFIX, LocalizationService, RTL */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./main */ "./node_modules/@progress/kendo-angular-l10n/dist/es/main.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MessageService", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["MessageService"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ComponentMessages", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["ComponentMessages"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "L10N_PREFIX", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["L10N_PREFIX"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LocalizationService", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["LocalizationService"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RTL", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["RTL"]; });
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-l10n/dist/es/localization.service.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-l10n/dist/es/localization.service.js ***!
+  \***********************************************************************************/
+/*! exports provided: L10N_PREFIX, LocalizationService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "L10N_PREFIX", function() { return L10N_PREFIX; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LocalizationService", function() { return LocalizationService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _message_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./message.service */ "./node_modules/@progress/kendo-angular-l10n/dist/es/message.service.js");
+/* harmony import */ var _rtl__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./rtl */ "./node_modules/@progress/kendo-angular-l10n/dist/es/rtl.js");
+/* harmony import */ var rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/BehaviorSubject */ "./node_modules/rxjs-compat/_esm5/BehaviorSubject.js");
+/* harmony import */ var rxjs_operators_map__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators/map */ "./node_modules/rxjs-compat/_esm5/operators/map.js");
+/* harmony import */ var rxjs_operators_tap__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators/tap */ "./node_modules/rxjs-compat/_esm5/operators/tap.js");
+
+
+
+
+
+
+/**
+ * Localization prefix for the component messages.
+ *
+ * For internal use.
+ * @hidden
+ */
+var L10N_PREFIX = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]('Localization key prefix');
+/**
+ * Component localization service.
+ *
+ * For internal use.
+ * @hidden
+ */
+var LocalizationService = /** @class */ (function () {
+    function LocalizationService(prefix, messageService, _rtl) {
+        var _this = this;
+        this.prefix = prefix;
+        this.messageService = messageService;
+        this._rtl = _rtl;
+        this.changes = new rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"]({ rtl: this._rtl });
+        this.dictionary = {};
+        if (messageService) {
+            this.subscription = messageService.changes
+                .pipe(Object(rxjs_operators_map__WEBPACK_IMPORTED_MODULE_4__["map"])(function (_a) {
+                var rtl = _a.rtl;
+                return rtl !== undefined ? rtl : _this._rtl;
+            }), Object(rxjs_operators_tap__WEBPACK_IMPORTED_MODULE_5__["tap"])(function (rtl) { return _this._rtl = rtl; }))
+                .subscribe(function (rtl) {
+                _this.dictionary = {};
+                _this.changes.next({ rtl: rtl });
+            });
+        }
+    }
+    Object.defineProperty(LocalizationService.prototype, "rtl", {
+        get: function () {
+            return this._rtl;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    LocalizationService.prototype.ngOnDestroy = function () {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    };
+    LocalizationService.prototype.get = function (shortKey) {
+        var key = this.key(shortKey);
+        return this.dictionary[key];
+    };
+    LocalizationService.prototype.register = function (shortKey, value, override) {
+        if (override === void 0) { override = false; }
+        var key = this.key(shortKey);
+        var message = value;
+        if (!override) {
+            if (this.dictionary.hasOwnProperty(key)) {
+                return;
+            }
+            message = this.defaultValue(key, value);
+        }
+        this.dictionary[key] = message;
+    };
+    LocalizationService.prototype.key = function (shortKey) {
+        return this.prefix + '.' + shortKey;
+    };
+    LocalizationService.prototype.defaultValue = function (key, value) {
+        if (!this.messageService) {
+            return value;
+        }
+        var alt = this.messageService.get(key);
+        return (alt === undefined) ? value : alt;
+    };
+    LocalizationService.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    LocalizationService.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [L10N_PREFIX,] },] },
+        { type: _message_service__WEBPACK_IMPORTED_MODULE_1__["MessageService"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_rtl__WEBPACK_IMPORTED_MODULE_2__["RTL"],] },] },
+    ]; };
+    return LocalizationService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-l10n/dist/es/main.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-l10n/dist/es/main.js ***!
+  \*******************************************************************/
+/*! exports provided: MessageService, ComponentMessages, L10N_PREFIX, LocalizationService, RTL */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _message_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./message.service */ "./node_modules/@progress/kendo-angular-l10n/dist/es/message.service.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MessageService", function() { return _message_service__WEBPACK_IMPORTED_MODULE_0__["MessageService"]; });
+
+/* harmony import */ var _component_messages__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./component-messages */ "./node_modules/@progress/kendo-angular-l10n/dist/es/component-messages.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ComponentMessages", function() { return _component_messages__WEBPACK_IMPORTED_MODULE_1__["ComponentMessages"]; });
+
+/* harmony import */ var _localization_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./localization.service */ "./node_modules/@progress/kendo-angular-l10n/dist/es/localization.service.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "L10N_PREFIX", function() { return _localization_service__WEBPACK_IMPORTED_MODULE_2__["L10N_PREFIX"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LocalizationService", function() { return _localization_service__WEBPACK_IMPORTED_MODULE_2__["LocalizationService"]; });
+
+/* harmony import */ var _rtl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./rtl */ "./node_modules/@progress/kendo-angular-l10n/dist/es/rtl.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RTL", function() { return _rtl__WEBPACK_IMPORTED_MODULE_3__["RTL"]; });
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-l10n/dist/es/message.service.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-l10n/dist/es/message.service.js ***!
+  \******************************************************************************/
+/*! exports provided: MessageService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MessageService", function() { return MessageService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_Subject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/Subject */ "./node_modules/rxjs-compat/_esm5/Subject.js");
+
+
+/* tslint:disable:max-line-length */
+/**
+ * A base class for a service that returns localized messages.
+ *
+ * For more information, refer to the section on [using the message service]({% slug messages_l10n %}#toc-using-the-message-service).
+ */
+var MessageService = /** @class */ (function () {
+    function MessageService() {
+        /**
+         * @hidden
+         */
+        this.changes = new rxjs_Subject__WEBPACK_IMPORTED_MODULE_1__["Subject"]();
+    }
+    /**
+     * Notifies the components that the messages were changed.
+     *
+     * @param rtl - (Optional) A new value for the [text direction token]({% slug api_l10n_rtl %}).
+     */
+    MessageService.prototype.notify = function (rtl) {
+        this.changes.next({ rtl: rtl });
+    };
+    /**
+     * Returns a localized message for the supplied key.
+     *
+     * @param key - The message key. For example, `"kendo.grid.noRecords"`.
+     * @return - The localized message for this key or `undefined` if not found.
+     */
+    MessageService.prototype.get = function (key) {
+        return undefined;
+    };
+    MessageService.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    MessageService.ctorParameters = function () { return []; };
+    return MessageService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-l10n/dist/es/rtl.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-l10n/dist/es/rtl.js ***!
+  \******************************************************************/
+/*! exports provided: RTL */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RTL", function() { return RTL; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+/**
+ * A token that specifies the text direction of Kendo UI for Angular components.
+ *
+ * @example
+ * {% embed_file rtl/app.module.ts preview %}
+ * {% embed_file rtl/app.component.ts %}
+ * {% embed_file shared/main.ts hidden %}
+ *
+ */
+var RTL = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]("Kendo UI Right-to-Left token");
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-popup/dist/es/index.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-popup/dist/es/index.js ***!
+  \*********************************************************************/
+/*! exports provided: ɵa, ɵc, ɵb, ɵd, ɵe, ɵf, PopupService, POPUP_CONTAINER, PopupComponent, PopupModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./main */ "./node_modules/@progress/kendo-angular-popup/dist/es/main.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PopupService", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["PopupService"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "POPUP_CONTAINER", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["POPUP_CONTAINER"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PopupComponent", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["PopupComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PopupModule", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["PopupModule"]; });
+
+/* harmony import */ var _services_align_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/align.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/services/align.service.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵa", function() { return _services_align_service__WEBPACK_IMPORTED_MODULE_1__["AlignService"]; });
+
+/* harmony import */ var _services_animation_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/animation.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/services/animation.service.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵc", function() { return _services_animation_service__WEBPACK_IMPORTED_MODULE_2__["AnimationService"]; });
+
+/* harmony import */ var _services_dom_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./services/dom.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/services/dom.service.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵb", function() { return _services_dom_service__WEBPACK_IMPORTED_MODULE_3__["DOMService"]; });
+
+/* harmony import */ var _services_position_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./services/position.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/services/position.service.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵd", function() { return _services_position_service__WEBPACK_IMPORTED_MODULE_4__["PositionService"]; });
+
+/* harmony import */ var _services_resize_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./services/resize.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/services/resize.service.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵe", function() { return _services_resize_service__WEBPACK_IMPORTED_MODULE_5__["ResizeService"]; });
+
+/* harmony import */ var _services_scrollable_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./services/scrollable.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/services/scrollable.service.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ɵf", function() { return _services_scrollable_service__WEBPACK_IMPORTED_MODULE_6__["ScrollableService"]; });
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-popup/dist/es/main.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-popup/dist/es/main.js ***!
+  \********************************************************************/
+/*! exports provided: PopupService, POPUP_CONTAINER, PopupComponent, PopupModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _popup_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./popup.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/popup.service.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PopupService", function() { return _popup_service__WEBPACK_IMPORTED_MODULE_0__["PopupService"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "POPUP_CONTAINER", function() { return _popup_service__WEBPACK_IMPORTED_MODULE_0__["POPUP_CONTAINER"]; });
+
+/* harmony import */ var _popup_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./popup.component */ "./node_modules/@progress/kendo-angular-popup/dist/es/popup.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PopupComponent", function() { return _popup_component__WEBPACK_IMPORTED_MODULE_1__["PopupComponent"]; });
+
+/* harmony import */ var _popup_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./popup.module */ "./node_modules/@progress/kendo-angular-popup/dist/es/popup.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PopupModule", function() { return _popup_module__WEBPACK_IMPORTED_MODULE_2__["PopupModule"]; });
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-popup/dist/es/popup.component.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-popup/dist/es/popup.component.js ***!
+  \*******************************************************************************/
+/*! exports provided: PopupComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PopupComponent", function() { return PopupComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_observable_fromPromise__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/observable/fromPromise */ "./node_modules/rxjs-compat/_esm5/observable/fromPromise.js");
+/* harmony import */ var _services_align_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/align.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/services/align.service.js");
+/* harmony import */ var _services_dom_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./services/dom.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/services/dom.service.js");
+/* harmony import */ var _services_position_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./services/position.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/services/position.service.js");
+/* harmony import */ var _services_resize_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./services/resize.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/services/resize.service.js");
+/* harmony import */ var _services_scrollable_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./services/scrollable.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/services/scrollable.service.js");
+/* harmony import */ var _services_animation_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./services/animation.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/services/animation.service.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./util */ "./node_modules/@progress/kendo-angular-popup/dist/es/util.js");
+
+
+
+
+
+
+
+
+
+var DEFAULT_OFFSET = { left: -10000, top: 0 };
+var ANIMATION_CONTAINER = 'k-animation-container';
+var ANIMATION_CONTAINER_FIXED = 'k-animation-container-fixed';
+var hasObservers = function (emitter) { return emitter.observers.length > 0; };
+/**
+ * Represents the Kendo UI Popup component for Angular.
+ *
+ * @example
+ * ```ts
+ * _@Component({
+ * selector: 'my-app',
+ * template: `
+ *  <button #anchor (click)="show=!show">Toggle</button>
+ *  <kendo-popup *ngIf="show" [anchor]="anchor">
+ *      <strong>Popup content!</strong>
+ *  </kendo-popup>
+ * `
+ * })
+ * class AppComponent {
+ *   public show: boolean = false;
+ * }
+ * ```
+ */
+var PopupComponent = /** @class */ (function () {
+    function PopupComponent(container, _alignService, domService, _positionService, _resizeService, _scrollableService, animationService, _renderer, _zone) {
+        this.container = container;
+        this._alignService = _alignService;
+        this.domService = domService;
+        this._positionService = _positionService;
+        this._resizeService = _resizeService;
+        this._scrollableService = _scrollableService;
+        this.animationService = animationService;
+        this._renderer = _renderer;
+        this._zone = _zone;
+        /**
+         * Controls the Popup animation. By default, the opening and closing animations are enabled.
+         *
+         * For more information about controlling the Popup animations,
+         * refer to the article on [animations]({% slug animations_popup %}).
+         */
+        this.animate = true;
+        /**
+         * Specifies the anchor pivot point.
+         *
+         * For more information, refer to the section on
+         * [positioning]({% slug alignmentpositioning_popup %}#toc-positioning).
+         */
+        this.anchorAlign = { horizontal: 'left', vertical: 'bottom' };
+        /**
+         * Configures the collision behavior of the Popup.
+         *
+         * For more information, refer to the article on
+         * [viewport boundary detection]({% slug viewportboundarydetection_popup %}).
+         */
+        this.collision = { horizontal: 'fit', vertical: 'flip' };
+        /**
+         * Specifies the pivot point of the Popup.
+         *
+         * For more information, refer to the section on
+         * [positioning]({% slug alignmentpositioning_popup %}#toc-positioning).
+         */
+        this.popupAlign = { horizontal: 'left', vertical: 'top' };
+        /**
+         * Controls whether the component will copy the `anchor` font styles.
+         */
+        this.copyAnchorStyles = false;
+        /**
+         * Specifies the position mode of the component.
+         * By default, the Popup uses fixed positioning.
+         * To make the Popup acquire absolute positioning, set this option to `absolute`.
+         *
+         * > If you need to support mobile browsers with the zoom option,
+         * use the `absolute` positioning of the Popup.
+         *
+         * @example
+         * ```html
+         * <style>
+         *  .parent-content {
+         *     position: relative;
+         *     width: 200px;
+         *     height: 200px;
+         *     overflow: auto;
+         *     margin: 200px auto;
+         *     border: 1px solid red;
+         *  }
+         *  .content {
+         *     position: relative;
+         *     width: 100px;
+         *     height: 100px;
+         *     overflow: auto;
+         *     margin: 300px;
+         *     border: 1px solid blue;
+         *  }
+         *  .anchor {
+         *     position: absolute;
+         *     top: 200px;
+         *     left: 200px;
+         *  }
+         * </style>
+         * ```
+         * ```ts
+         * _@Component({
+         * selector: 'my-app',
+         * template: `
+         *   <div class="example-config">
+         *      Position mode:
+         *      <label><input type="radio" value="fixed" [(ngModel)]="mode" /> Fixed</label>
+         *      <label><input type="radio" value="absolute" [(ngModel)]="mode" /> Absolute</label>
+         *   </div>
+         *   <div class="example-config">
+         *       Append to
+         *       <label>
+         *           <input type="radio" name="place" [value]="1" [(ngModel)]="checked" />
+         *           Root component
+         *       </label>
+         *       <label>
+         *           <input type="radio" name="place" [value]="2" [(ngModel)]="checked" />
+         *           <span style="color: red">Red Container</span>
+         *       </label>
+         *       <label>
+         *           <input type="radio" name="place" [value]="3" [(ngModel)]="checked" />
+         *           <span style="color: blue">Blue Container</span>
+         *       </label>
+         *   </div>
+         *   <div class="example">
+         *     <div class="parent-content" [scrollLeft]="250" [scrollTop]="230">
+         *         <div class="content" [scrollLeft]="170" [scrollTop]="165">
+         *           <button #anchor class="anchor" (click)="show = !show">Toggle</button>
+         *           <kendo-popup [positionMode]="mode" [anchor]="anchor" (anchorViewportLeave)="show=false" *ngIf="show && checked === 3">
+         *             <ul>
+         *                 <li>Item1</li>
+         *                 <li>Item2</li>
+         *                 <li>Item3</li>
+         *             </ul>
+         *           </kendo-popup>
+         *           <span style="position: absolute; top: 400px; left: 400px">Bottom/Right</span>
+         *         </div>
+         *         <kendo-popup [positionMode]="mode" [anchor]="anchor" (anchorViewportLeave)="show=false" *ngIf="show && checked === 2">
+         *           <ul>
+         *               <li>Item1</li>
+         *               <li>Item2</li>
+         *               <li>Item3</li>
+         *           </ul>
+         *         </kendo-popup>
+         *         <span style="position: absolute; top: 600px; left: 600px">Bottom/Right</span>
+         *     </div>
+         *     <kendo-popup [positionMode]="mode" [anchor]="anchor" (anchorViewportLeave)="show=false" *ngIf="show && checked === 1">
+         *       <ul>
+         *           <li>Item1</li>
+         *           <li>Item2</li>
+         *           <li>Item3</li>
+         *       </ul>
+         *     </kendo-popup>
+         *   </div>
+         * `
+         * })
+         * class AppComponent {
+         *   public checked: number = 3;
+         *   public mode: string = 'absolute';
+         *   public show: boolean = true;
+         * }
+         * ```
+         */
+        this.positionMode = 'fixed';
+        /**
+         * Specifies the absolute position of the element. The Popup opens next to that point.
+         *
+         * The Popup pivot point is defined by the `popupAlign` configuration option.
+         * The boundary detection is applied by using the window viewport.
+         *
+         * For more information, refer to the section on
+         * [aligning to specific absolute points]({% slug alignmentpositioning_popup %}#toc-aligning-to-absolute-points).
+         */
+        this.offset = DEFAULT_OFFSET;
+        /**
+         * Fires when the anchor is scrolled outside the screen boundaries.
+         * For more information, refer to the section on
+         * [closing the Popup after leaving the viewport]({% slug closing_popup %}#toc-after-leaving-the-viewport).
+         */
+        this.anchorViewportLeave = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires after the component is closed.
+         */
+        this.close = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires after the component is opened and the opening animation ends.
+         */
+        this.open = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Fires after the component is opened and the Popup is positioned.
+         */
+        this.positionChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.resolvedPromise = Promise.resolve(null);
+        this._renderer.addClass(container.nativeElement, ANIMATION_CONTAINER);
+        this.updateFixedClass();
+    }
+    PopupComponent.prototype.ngOnInit = function () {
+        this.repositionCallback = this.reposition.bind(this);
+        this._resizeService.subscribe(this.repositionCallback);
+        this.animationSubscriptions = this.animationService.start.subscribe(this.onAnimationStart.bind(this))
+            .add(this.animationService.end.subscribe(this.onAnimationEnd.bind(this)));
+        this._scrollableService.forElement(this.anchor || this.container).subscribe(this.onScroll.bind(this));
+        this.currentOffset = DEFAULT_OFFSET;
+        this.setZIndex();
+        this.copyFontStyles();
+        this.updateFixedClass();
+    };
+    PopupComponent.prototype.ngOnChanges = function (changes) {
+        if (changes.copyAnchorStyles) {
+            this.copyFontStyles();
+        }
+        if (changes.positionMode) {
+            this.updateFixedClass();
+        }
+    };
+    PopupComponent.prototype.ngAfterViewInit = function () {
+        var _this = this;
+        this.reposition();
+        if (!this.animate) {
+            this.resolvedPromise.then(function () {
+                _this.onAnimationEnd();
+            });
+        }
+    };
+    PopupComponent.prototype.ngAfterViewChecked = function () {
+        var _this = this;
+        this._zone.runOutsideAngular(function () {
+            // workarounds https://github.com/angular/angular/issues/19094
+            // uses promise because it is executed synchronously after the content is updated
+            // does not use onStable in case the current zone is not the angular one.
+            if (_this.repositionSubscription) {
+                _this.repositionSubscription.unsubscribe();
+            }
+            _this.repositionSubscription = Object(rxjs_observable_fromPromise__WEBPACK_IMPORTED_MODULE_1__["fromPromise"])(_this.resolvedPromise)
+                .subscribe(_this.repositionCallback);
+        });
+    };
+    PopupComponent.prototype.ngOnDestroy = function () {
+        this.anchorViewportLeave.complete();
+        this.positionChange.complete();
+        this.close.emit();
+        this.close.complete();
+        this._resizeService.unsubscribe();
+        this._scrollableService.unsubscribe();
+        if (this.repositionSubscription) {
+            this.repositionSubscription.unsubscribe();
+        }
+        this.animationSubscriptions.unsubscribe();
+    };
+    PopupComponent.prototype.onAnimationStart = function () {
+        this._renderer.removeClass(this.container.nativeElement, 'k-animation-container-shown');
+    };
+    PopupComponent.prototype.onAnimationEnd = function () {
+        this._renderer.addClass(this.container.nativeElement, 'k-animation-container-shown');
+        this.open.emit();
+        this.open.complete();
+    };
+    Object.defineProperty(PopupComponent.prototype, "currentOffset", {
+        get: function () {
+            return this._currentOffset;
+        },
+        set: function (offset) {
+            this.setContainerStyle('left', offset.left + "px");
+            this.setContainerStyle('top', offset.top + "px");
+            this._currentOffset = offset;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    PopupComponent.prototype.setZIndex = function () {
+        if (this.anchor) {
+            this.setContainerStyle('z-index', String(this.domService.zIndex(this.anchor, this.container)));
+        }
+    };
+    PopupComponent.prototype.reposition = function () {
+        var _this = this;
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_8__["isDocumentAvailable"])()) {
+            return;
+        }
+        var _a = this.position(), flip = _a.flip, offset = _a.offset;
+        if (!this._currentOffset || Object(_util__WEBPACK_IMPORTED_MODULE_8__["isDifferentOffset"])(this._currentOffset, offset)) {
+            this.currentOffset = offset;
+            if (hasObservers(this.positionChange)) {
+                this._zone.run(function () { return _this.positionChange.emit({ offset: offset, flip: flip }); });
+            }
+        }
+        if (this.animate) {
+            this.animationService.play(this.contentContainer.nativeElement, this.animate, flip);
+        }
+    };
+    PopupComponent.prototype.position = function () {
+        var alignedOffset = this._alignService.alignElement({
+            anchor: this.anchor,
+            anchorAlign: this.anchorAlign,
+            element: this.container,
+            elementAlign: this.popupAlign,
+            margin: this.margin,
+            offset: this.offset,
+            positionMode: this.positionMode
+        });
+        return this._positionService.positionElement({
+            anchor: this.anchor,
+            anchorAlign: this.anchorAlign,
+            collisions: this.collision,
+            currentLocation: alignedOffset,
+            element: this.container,
+            elementAlign: this.popupAlign,
+            margin: this.margin
+        });
+    };
+    PopupComponent.prototype.onScroll = function (isInViewPort) {
+        var _this = this;
+        var hasLeaveObservers = hasObservers(this.anchorViewportLeave);
+        if (isInViewPort || !hasLeaveObservers) {
+            this.reposition();
+        }
+        else if (hasLeaveObservers) {
+            this._zone.run(function () {
+                _this.anchorViewportLeave.emit();
+            });
+        }
+    };
+    PopupComponent.prototype.copyFontStyles = function () {
+        var _this = this;
+        if (!this.anchor || !this.copyAnchorStyles) {
+            return;
+        }
+        this.domService.getFontStyles(this.anchor)
+            .forEach(function (s) { return _this.setContainerStyle(s.key, s.value); });
+    };
+    PopupComponent.prototype.updateFixedClass = function () {
+        var action = this.positionMode === 'fixed' ? 'addClass' : 'removeClass';
+        this._renderer[action](this.container.nativeElement, ANIMATION_CONTAINER_FIXED);
+    };
+    PopupComponent.prototype.setContainerStyle = function (name, value) {
+        this._renderer.setStyle(this.container.nativeElement, name, value);
+    };
+    PopupComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    exportAs: 'kendo-popup',
+                    providers: [_services_align_service__WEBPACK_IMPORTED_MODULE_2__["AlignService"], _services_animation_service__WEBPACK_IMPORTED_MODULE_7__["AnimationService"], _services_dom_service__WEBPACK_IMPORTED_MODULE_3__["DOMService"], _services_position_service__WEBPACK_IMPORTED_MODULE_4__["PositionService"], _services_resize_service__WEBPACK_IMPORTED_MODULE_5__["ResizeService"], _services_scrollable_service__WEBPACK_IMPORTED_MODULE_6__["ScrollableService"]],
+                    selector: 'kendo-popup',
+                    template: "\n        <div class=\"k-popup\" [ngClass]=\"popupClass\" #container>\n            <ng-content></ng-content>\n            <ng-template [ngTemplateOutlet]=\"content\" [ngIf]=\"content\"></ng-template>\n        </div>\n     "
+                },] },
+    ];
+    /** @nocollapse */
+    PopupComponent.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], },
+        { type: _services_align_service__WEBPACK_IMPORTED_MODULE_2__["AlignService"], },
+        { type: _services_dom_service__WEBPACK_IMPORTED_MODULE_3__["DOMService"], },
+        { type: _services_position_service__WEBPACK_IMPORTED_MODULE_4__["PositionService"], },
+        { type: _services_resize_service__WEBPACK_IMPORTED_MODULE_5__["ResizeService"], },
+        { type: _services_scrollable_service__WEBPACK_IMPORTED_MODULE_6__["ScrollableService"], },
+        { type: _services_animation_service__WEBPACK_IMPORTED_MODULE_7__["AnimationService"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Renderer2"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"], },
+    ]; };
+    PopupComponent.propDecorators = {
+        'animate': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'anchor': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'anchorAlign': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'collision': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'popupAlign': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'copyAnchorStyles': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'popupClass': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'positionMode': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'offset': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'margin': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'anchorViewportLeave': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'close': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'open': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'positionChange': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'contentContainer': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['container',] },],
+    };
+    return PopupComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-popup/dist/es/popup.module.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-popup/dist/es/popup.module.js ***!
+  \****************************************************************************/
+/*! exports provided: PopupModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PopupModule", function() { return PopupModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _popup_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./popup.component */ "./node_modules/@progress/kendo-angular-popup/dist/es/popup.component.js");
+/* harmony import */ var _popup_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./popup.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/popup.service.js");
+
+
+
+
+var POPUP_DIRECTIVES = [_popup_component__WEBPACK_IMPORTED_MODULE_2__["PopupComponent"]];
+/**
+ * Represents the [NgModule](https://angular.io/docs/ts/latest/guide/ngmodule.html)
+ * definition for the Popup component.
+ *
+ * @example
+ *
+ * ```ts-no-run
+ * // Import the Popup module
+ * import { PopupModule } from '@progress/kendo-angular-popup';
+ *
+ * // The browser platform with a compiler
+ * import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+ *
+ * import { NgModule } from '@angular/core';
+ *
+ * // Import the app component
+ * import { AppComponent } from './app.component';
+ *
+ * // Define the app module
+ * _@NgModule({
+ *     declarations: [AppComponent], // declare app component
+ *     imports:      [BrowserModule, PopupModule], // import Popup module
+ *     bootstrap:    [AppComponent]
+ * })
+ * export class AppModule {}
+ *
+ * // Compile and launch the module
+ * platformBrowserDynamic().bootstrapModule(AppModule);
+ *
+ * ```
+ */
+var PopupModule = /** @class */ (function () {
+    function PopupModule() {
+    }
+    PopupModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    declarations: [POPUP_DIRECTIVES],
+                    entryComponents: [POPUP_DIRECTIVES],
+                    exports: [POPUP_DIRECTIVES],
+                    imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"]],
+                    providers: [_popup_service__WEBPACK_IMPORTED_MODULE_3__["PopupService"]]
+                },] },
+    ];
+    /** @nocollapse */
+    PopupModule.ctorParameters = function () { return []; };
+    return PopupModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-popup/dist/es/popup.service.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-popup/dist/es/popup.service.js ***!
+  \*****************************************************************************/
+/*! exports provided: POPUP_CONTAINER, PopupService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "POPUP_CONTAINER", function() { return POPUP_CONTAINER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PopupService", function() { return PopupService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _popup_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./popup.component */ "./node_modules/@progress/kendo-angular-popup/dist/es/popup.component.js");
+
+
+var removeElement = function (element) {
+    if (element && element.parentNode) {
+        element.parentNode.removeChild(element);
+    }
+};
+/**
+ * Used to inject the Popup container. If not provided, the first root component of
+ * the application is used.
+ *
+ * > The `POPUP_CONTAINER` can be used only with the [`PopupService`]({% slug service_popup %}) class.
+ *
+ * @example
+ *
+ * ```ts-no-run
+ * // Import the Popup module
+ * import { PopupModule, POPUP_CONTAINER } from '@progress/kendo-angular-popup';
+ *
+ * // The browser platform with a compiler
+ * import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+ *
+ * import { ElementRef, NgModule } from '@angular/core';
+ *
+ * // Import the app component
+ * import { AppComponent } from './app.component';
+ *
+ * // Define the app module
+ * _@NgModule({
+ *     declarations: [AppComponent], // declare app component
+ *     imports:      [BrowserModule, PopupModule], // import Popup module
+ *     bootstrap:    [AppComponent],
+ *     providers: [{
+ *       provide: POPUP_CONTAINER,
+ *       useFactory: () => {
+ *          //return the container ElementRef, where the popup will be injected
+ *          return { nativeElement: document.body } as ElementRef;
+ *       }
+ *     }]
+ * })
+ * export class AppModule {}
+ *
+ * // Compile and launch the module
+ * platformBrowserDynamic().bootstrapModule(AppModule);
+ * ```
+ */
+var POPUP_CONTAINER = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]('Popup Container');
+/**
+ * A service for opening Popup components dynamically.
+ *
+ * For more information on how to use this class, refer to the article on
+ * the [Popup service]({% slug service_popup %}).
+ *
+ * @export
+ * @class PopupService
+ */
+var PopupService = /** @class */ (function () {
+    function PopupService(applicationRef, componentFactoryResolver, injector, container) {
+        this.applicationRef = applicationRef;
+        this.componentFactoryResolver = componentFactoryResolver;
+        this.injector = injector;
+        this.container = container;
+    }
+    Object.defineProperty(PopupService.prototype, "rootViewContainer", {
+        /**
+         * Gets the root view container into which the component will be injected.
+         *
+         * @returns {ComponentRef<any>}
+         */
+        get: function () {
+            // https://github.com/angular/angular/blob/4.0.x/packages/core/src/application_ref.ts#L571
+            var rootComponents = this.applicationRef.components || [];
+            if (rootComponents[0]) {
+                return rootComponents[0];
+            }
+            throw new Error("\n            View Container not found! Inject the POPUP_CONTAINER or define a specific ViewContainerRef via the appendTo option.\n            See http://www.telerik.com/kendo-angular-ui/components/popup/api/POPUP_CONTAINER/ for more details.\n        ");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PopupService.prototype, "rootViewContainerNode", {
+        /**
+         * Sets or gets the HTML element of the root component container.
+         *
+         * @returns {HTMLElement}
+         */
+        get: function () {
+            return this.container ? this.container.nativeElement : this.getComponentRootNode(this.rootViewContainer);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Opens a Popup component.
+     * Created Popups are mounted in the DOM directly in the root application component.
+     *
+     * @param {PopupSettings} options - The options which define the Popup.
+     * @returns {ComponentRef<PopupComponent>} - A reference to the Popup object.
+     *
+     * @example
+     *
+     * ```ts-no-run
+     * _@Component({
+     *   selector: 'my-app',
+     *   template: `
+     *     <ng-template #template>
+     *      Popup content
+     *     </ng-template>
+     *     <button #anchor kendoButton (click)="open(anchor, template)">Open</button>
+     *   `
+     * })
+     * export class AppComponent {
+     *     public popupRef: PopupRef;
+     *
+     *     constructor( private popupService: PopupService ) {}
+     *
+     *     public open(anchor: ElementRef, template: TemplateRef<any>): void {
+     *         if (this.popupRef) {
+     *              this.popupRef.close();
+     *              this.popupRef = null;
+     *              return;
+     *         }
+     *
+     *         this.popupRef = this.popupService.open({
+     *           anchor: anchor,
+     *           content: template
+     *         });
+     *     }
+     * }
+     * ```
+     */
+    PopupService.prototype.open = function (options) {
+        if (options === void 0) { options = {}; }
+        var _a = this.contentFrom(options.content), component = _a.component, nodes = _a.nodes;
+        var popupComponentRef = this.appendPopup(nodes, options.appendTo);
+        var popupInstance = popupComponentRef.instance;
+        this.projectComponentInputs(popupComponentRef, options);
+        popupComponentRef.changeDetectorRef.detectChanges();
+        if (component) {
+            component.changeDetectorRef.detectChanges();
+        }
+        var popupElement = this.getComponentRootNode(popupComponentRef);
+        return {
+            close: function () {
+                // XXX: Destroy is required due to this bug:
+                // https://github.com/angular/angular/issues/15578
+                //
+                if (component) {
+                    component.destroy();
+                }
+                else if (!popupComponentRef.hostView.destroyed) {
+                    popupComponentRef.instance.content = null;
+                    popupComponentRef.changeDetectorRef.detectChanges();
+                }
+                popupComponentRef.destroy();
+                // Angular will not remove the element unless the change detection is triggered
+                removeElement(popupElement);
+            },
+            content: component,
+            popup: popupComponentRef,
+            popupAnchorViewportLeave: popupInstance.anchorViewportLeave,
+            popupClose: popupInstance.close,
+            popupElement: popupElement,
+            popupOpen: popupInstance.open,
+            popupPositionChange: popupInstance.positionChange
+        };
+    };
+    PopupService.prototype.appendPopup = function (nodes, container) {
+        var popupComponentRef = this.createComponent(_popup_component__WEBPACK_IMPORTED_MODULE_1__["PopupComponent"], nodes, container);
+        if (!container) {
+            this.rootViewContainerNode.appendChild(this.getComponentRootNode(popupComponentRef));
+        }
+        return popupComponentRef;
+    };
+    /**
+     * Gets the HTML element for a component reference.
+     *
+     * @param {ComponentRef<any>} componentRef
+     * @returns {HTMLElement}
+     */
+    PopupService.prototype.getComponentRootNode = function (componentRef) {
+        return componentRef.hostView.rootNodes[0];
+    };
+    /**
+     * Gets the `ComponentFactory` instance by its type.
+     *
+     * @param {*} componentClass
+     * @param {*} nodes
+     * @returns {ComponentRef<any>}
+     */
+    PopupService.prototype.getComponentFactory = function (componentClass) {
+        return this.componentFactoryResolver.resolveComponentFactory(componentClass);
+    };
+    /**
+     * Creates a component reference from a `Component` type class.
+     *
+     * @param {*} componentClass
+     * @param {*} nodes
+     * @returns {ComponentRef<any>}
+     */
+    PopupService.prototype.createComponent = function (componentClass, nodes, container) {
+        var factory = this.getComponentFactory(componentClass);
+        if (container) {
+            return container.createComponent(factory, undefined, this.injector, nodes);
+        }
+        else {
+            var component = factory.create(this.injector, nodes);
+            this.applicationRef.attachView(component.hostView);
+            return component;
+        }
+    };
+    /**
+     * Projects the inputs on the component.
+     *
+     * @param {ComponentRef<any>} component
+     * @param {*} options
+     * @returns {ComponentRef<any>}
+     */
+    PopupService.prototype.projectComponentInputs = function (component, options) {
+        Object.getOwnPropertyNames(options)
+            .filter(function (prop) { return prop !== 'content' || options.content instanceof _angular_core__WEBPACK_IMPORTED_MODULE_0__["TemplateRef"]; })
+            .map(function (prop) {
+            component.instance[prop] = options[prop];
+        });
+        return component;
+    };
+    /**
+     * Gets the component and the nodes to append from the `content` option.
+     *
+     * @param {*} content
+     * @returns {any}
+     */
+    PopupService.prototype.contentFrom = function (content) {
+        if (!content || content instanceof _angular_core__WEBPACK_IMPORTED_MODULE_0__["TemplateRef"]) {
+            return { component: null, nodes: [[]] };
+        }
+        var component = this.createComponent(content);
+        var nodes = component ? [component.location.nativeElement] : [];
+        return {
+            component: component,
+            nodes: [
+                nodes // <ng-content>
+            ]
+        };
+    };
+    PopupService.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    PopupService.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ApplicationRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ComponentFactoryResolver"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injector"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [POPUP_CONTAINER,] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+    ]; };
+    return PopupService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-popup/dist/es/services/align.service.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-popup/dist/es/services/align.service.js ***!
+  \**************************************************************************************/
+/*! exports provided: AlignService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AlignService", function() { return AlignService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _dom_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dom.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/services/dom.service.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util */ "./node_modules/@progress/kendo-angular-popup/dist/es/util.js");
+
+
+
+/**
+ * @hidden
+ */
+var AlignService = /** @class */ (function () {
+    function AlignService(_dom) {
+        this._dom = _dom;
+    }
+    AlignService.prototype.alignElement = function (settings) {
+        var anchor = settings.anchor, element = settings.element, anchorAlign = settings.anchorAlign, elementAlign = settings.elementAlign, margin = settings.margin, offset = settings.offset, positionMode = settings.positionMode;
+        var fixedMode = positionMode === 'fixed' || !this._dom.hasOffsetParent(element);
+        var anchorRect = fixedMode ? this.absoluteRect(anchor, element, offset) : this.relativeRect(anchor, element, offset);
+        return this._dom.align({
+            anchorAlign: anchorAlign,
+            anchorRect: anchorRect,
+            elementAlign: elementAlign,
+            elementRect: this._dom.offset(element),
+            margin: margin
+        });
+    };
+    AlignService.prototype.absoluteRect = function (anchor, element, offset) {
+        return this._dom.removeScroll(this._dom.addScroll(Object(_util__WEBPACK_IMPORTED_MODULE_2__["removeStackingOffset"])(Object(_util__WEBPACK_IMPORTED_MODULE_2__["eitherRect"])(this._dom.offset(anchor), offset), this._dom.stackingElementOffset(element)), this._dom.stackingElementScroll(element)), this.elementScrollPosition(anchor, element));
+    };
+    AlignService.prototype.elementScrollPosition = function (anchor, element) {
+        return anchor ? { x: 0, y: 0 } : this._dom.scrollPosition(element);
+    };
+    AlignService.prototype.relativeRect = function (anchor, element, offset) {
+        return Object(_util__WEBPACK_IMPORTED_MODULE_2__["eitherRect"])(this._dom.position(anchor, element), offset);
+    };
+    AlignService.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    AlignService.ctorParameters = function () { return [
+        { type: _dom_service__WEBPACK_IMPORTED_MODULE_1__["DOMService"], },
+    ]; };
+    return AlignService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-popup/dist/es/services/animation.service.js":
+/*!******************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-popup/dist/es/services/animation.service.js ***!
+  \******************************************************************************************/
+/*! exports provided: AnimationService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimationService", function() { return AnimationService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_animations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/animations */ "./node_modules/@angular/animations/fesm5/animations.js");
+
+
+var LEFT = 'left';
+var RIGHT = 'right';
+var DOWN = 'down';
+var UP = 'up';
+var DEFAULT_TYPE = 'slide';
+var DEFAULT_DURATION = 100;
+var animationTypes = {};
+/* tslint:disable:object-literal-sort-keys */
+animationTypes.expand = function (direction) {
+    var scale = direction === UP || direction === DOWN ? 'scaleY' : 'scaleX';
+    var startScale = 0;
+    var endScale = 1;
+    var origin;
+    if (direction === DOWN) {
+        origin = 'top';
+    }
+    else if (direction === LEFT) {
+        origin = RIGHT;
+    }
+    else if (direction === RIGHT) {
+        origin = LEFT;
+    }
+    else {
+        origin = 'bottom';
+    }
+    return {
+        start: { transform: scale + "(" + startScale + ")", transformOrigin: origin },
+        end: { transform: scale + "(" + endScale + ")" }
+    };
+};
+animationTypes.slide = function (direction) {
+    var translate = direction === LEFT || direction === RIGHT ? 'translateX' : 'translateY';
+    var start = direction === RIGHT || direction === DOWN ? -100 : 100;
+    var end = 0;
+    return {
+        start: { transform: translate + "(" + start + "%)" },
+        end: { transform: translate + "(" + end + "%)" }
+    };
+};
+animationTypes.fade = function () {
+    return {
+        start: { opacity: 0 },
+        end: { opacity: 1 }
+    };
+};
+animationTypes.zoom = function () {
+    var start = 0;
+    var end = 1;
+    return {
+        start: { transform: "scale(" + start + ")" },
+        end: { transform: "scale(" + end + ")" }
+    };
+};
+/**
+ * @hidden
+ */
+var AnimationService = /** @class */ (function () {
+    function AnimationService(animationBuilder) {
+        this.animationBuilder = animationBuilder;
+        this.start = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.end = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+    }
+    AnimationService.prototype.play = function (element, options, flip) {
+        if (!this.flip || this.flip.horizontal !== flip.horizontal ||
+            this.flip.vertical !== flip.vertical) {
+            this.flip = flip;
+            var type = options.type || DEFAULT_TYPE;
+            var statesFn = animationTypes[type];
+            if (statesFn) {
+                var direction = this.getDirection(flip, options);
+                var states = statesFn(direction);
+                this.playStates(element, states, options);
+            }
+            else if (Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["isDevMode"])()) {
+                throw new Error("Unsupported animation type: \"" + type + "\". The supported types are slide, expand, fade and zoom.");
+            }
+        }
+    };
+    AnimationService.prototype.ngOnDestroy = function () {
+        this.stopPlayer();
+    };
+    AnimationService.prototype.playStates = function (element, states, options) {
+        var _this = this;
+        this.stopPlayer();
+        var duration = options.duration || DEFAULT_DURATION;
+        var factory = this.animationBuilder.build([
+            Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])(states.start),
+            Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["animate"])(duration + "ms ease-in", Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])(states.end))
+        ]);
+        var player = this.player = factory.create(element);
+        player.onDone(function () {
+            _this.end.emit();
+            _this.stopPlayer();
+        });
+        this.start.emit();
+        player.play();
+    };
+    AnimationService.prototype.getDirection = function (flip, options) {
+        var direction = options.direction || DOWN;
+        if (flip.horizontal) {
+            if (direction === LEFT) {
+                direction = RIGHT;
+            }
+            else if (direction === RIGHT) {
+                direction = LEFT;
+            }
+        }
+        if (flip.vertical) {
+            if (direction === DOWN) {
+                direction = UP;
+            }
+            else if (direction === UP) {
+                direction = DOWN;
+            }
+        }
+        return direction;
+    };
+    AnimationService.prototype.stopPlayer = function () {
+        if (this.player) {
+            this.player.destroy();
+            this.player = null;
+        }
+    };
+    AnimationService.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    AnimationService.ctorParameters = function () { return [
+        { type: _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AnimationBuilder"], },
+    ]; };
+    return AnimationService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-popup/dist/es/services/dom.service.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-popup/dist/es/services/dom.service.js ***!
+  \************************************************************************************/
+/*! exports provided: DOMService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DOMService", function() { return DOMService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _progress_kendo_popup_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @progress/kendo-popup-common */ "./node_modules/@progress/kendo-popup-common/dist/es/main.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util */ "./node_modules/@progress/kendo-angular-popup/dist/es/util.js");
+
+
+
+var STYLES = [
+    'font-size',
+    'font-family',
+    'font-stretch',
+    'font-style',
+    'font-weight',
+    'line-height'
+];
+/**
+ * @hidden
+ */
+var DOMService = /** @class */ (function () {
+    function DOMService() {
+    }
+    DOMService.prototype.addOffset = function (current, addition) {
+        return {
+            left: current.left + addition.left,
+            top: current.top + addition.top
+        };
+    };
+    DOMService.prototype.addScroll = function (rect, scroll) {
+        return Object(_progress_kendo_popup_common__WEBPACK_IMPORTED_MODULE_1__["addScroll"])(rect, scroll);
+    };
+    DOMService.prototype.align = function (settings) {
+        return Object(_progress_kendo_popup_common__WEBPACK_IMPORTED_MODULE_1__["align"])(settings);
+    };
+    DOMService.prototype.boundingOffset = function (el) {
+        return Object(_progress_kendo_popup_common__WEBPACK_IMPORTED_MODULE_1__["boundingOffset"])(this.nativeElement(el));
+    };
+    DOMService.prototype.getFontStyles = function (el) {
+        var window = this.getWindow();
+        if (!window || !el) {
+            return [];
+        }
+        var computedStyles = window.getComputedStyle(this.nativeElement(el));
+        return STYLES.map(function (font) { return ({ key: font, value: computedStyles[font] }); });
+    };
+    DOMService.prototype.getWindow = function () {
+        return Object(_util__WEBPACK_IMPORTED_MODULE_2__["isWindowAvailable"])() ? window : null;
+    };
+    DOMService.prototype.hasOffsetParent = function (el) {
+        if (!el) {
+            return false;
+        }
+        return !!this.nativeElement(el).offsetParent;
+    };
+    DOMService.prototype.offset = function (el) {
+        if (!el) {
+            return null;
+        }
+        return Object(_progress_kendo_popup_common__WEBPACK_IMPORTED_MODULE_1__["offset"])(this.nativeElement(el));
+    };
+    DOMService.prototype.offsetAtPoint = function (el, currentLocation) {
+        if (!el) {
+            return null;
+        }
+        var element = this.nativeElement(el);
+        var _a = element.style, left = _a.left, top = _a.top, transition = _a.transition;
+        element.style.transition = 'none';
+        element.style.left = currentLocation.left + "px";
+        element.style.top = currentLocation.top + "px";
+        var currentOffset = Object(_progress_kendo_popup_common__WEBPACK_IMPORTED_MODULE_1__["offset"])(element);
+        element.style.left = left;
+        element.style.top = top;
+        // prevents elements with transition to be animated because of the change
+        // tslint:disable-next-line:no-unused-expression
+        element.offsetHeight;
+        element.style.transition = transition;
+        return currentOffset;
+    };
+    DOMService.prototype.nativeElement = function (el) {
+        if (!el) {
+            return null;
+        }
+        return el.nativeElement || el;
+    };
+    DOMService.prototype.position = function (element, popup) {
+        if (!element || !popup) {
+            return null;
+        }
+        return Object(_progress_kendo_popup_common__WEBPACK_IMPORTED_MODULE_1__["positionWithScroll"])(this.nativeElement(element), this.nativeElement(popup));
+    };
+    DOMService.prototype.removeScroll = function (rect, scroll) {
+        return Object(_progress_kendo_popup_common__WEBPACK_IMPORTED_MODULE_1__["removeScroll"])(rect, scroll);
+    };
+    DOMService.prototype.restrictToView = function (settings) {
+        return Object(_progress_kendo_popup_common__WEBPACK_IMPORTED_MODULE_1__["restrictToView"])(settings);
+    };
+    DOMService.prototype.scrollPosition = function (el) {
+        return Object(_progress_kendo_popup_common__WEBPACK_IMPORTED_MODULE_1__["scrollPosition"])(this.nativeElement(el));
+    };
+    DOMService.prototype.scrollableParents = function (el) {
+        return Object(_util__WEBPACK_IMPORTED_MODULE_2__["scrollableParents"])(this.nativeElement(el));
+    };
+    DOMService.prototype.stackingElementOffset = function (el) {
+        var relativeContextElement = this.getRelativeContextElement(el);
+        if (!relativeContextElement) {
+            return null;
+        }
+        return Object(_progress_kendo_popup_common__WEBPACK_IMPORTED_MODULE_1__["offset"])(relativeContextElement);
+    };
+    DOMService.prototype.stackingElementScroll = function (el) {
+        var relativeContextElement = this.getRelativeContextElement(el);
+        if (!relativeContextElement) {
+            return { x: 0, y: 0 };
+        }
+        return {
+            x: relativeContextElement.scrollLeft,
+            y: relativeContextElement.scrollTop
+        };
+    };
+    DOMService.prototype.getRelativeContextElement = function (el) {
+        if (!el || !_util__WEBPACK_IMPORTED_MODULE_2__["HAS_RELATIVE_STACKING_CONTEXT"]) {
+            return null;
+        }
+        var parent = this.nativeElement(el).parentElement;
+        while (parent) {
+            if (window.getComputedStyle(parent).transform !== 'none') {
+                return parent;
+            }
+            parent = parent.parentElement;
+        }
+        return null;
+    };
+    DOMService.prototype.useRelativePosition = function (el) {
+        return !!this.getRelativeContextElement(el);
+    };
+    DOMService.prototype.windowViewPort = function (el) {
+        return Object(_progress_kendo_popup_common__WEBPACK_IMPORTED_MODULE_1__["getWindowViewPort"])(this.nativeElement(el));
+    };
+    DOMService.prototype.zIndex = function (anchor, container) {
+        return Object(_util__WEBPACK_IMPORTED_MODULE_2__["zIndex"])(this.nativeElement(anchor), this.nativeElement(container));
+    };
+    DOMService.prototype.zoomLevel = function () {
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_2__["isDocumentAvailable"])() || !Object(_util__WEBPACK_IMPORTED_MODULE_2__["isWindowAvailable"])()) {
+            return 1;
+        }
+        return parseFloat((document.documentElement.clientWidth / window.innerWidth).toFixed(2)) || 1;
+    };
+    DOMService.prototype.isZoomed = function () {
+        return this.zoomLevel() > 1;
+    };
+    DOMService.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    DOMService.ctorParameters = function () { return []; };
+    return DOMService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-popup/dist/es/services/position.service.js":
+/*!*****************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-popup/dist/es/services/position.service.js ***!
+  \*****************************************************************************************/
+/*! exports provided: PositionService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PositionService", function() { return PositionService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _dom_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dom.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/services/dom.service.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util */ "./node_modules/@progress/kendo-angular-popup/dist/es/util.js");
+
+
+
+/**
+ * @hidden
+ */
+var PositionService = /** @class */ (function () {
+    function PositionService(_dom) {
+        this._dom = _dom;
+    }
+    PositionService.prototype.positionElement = function (settings) {
+        var anchor = settings.anchor, currentLocation = settings.currentLocation, element = settings.element, anchorAlign = settings.anchorAlign, elementAlign = settings.elementAlign, collisions = settings.collisions, margin = settings.margin;
+        var dom = this._dom;
+        var result = dom.restrictToView({
+            anchorAlign: anchorAlign,
+            anchorRect: Object(_util__WEBPACK_IMPORTED_MODULE_2__["eitherRect"])(dom.offset(anchor), currentLocation),
+            collisions: collisions,
+            elementAlign: elementAlign,
+            elementRect: dom.offsetAtPoint(element, currentLocation),
+            margin: margin,
+            viewPort: settings.viewPort || dom.windowViewPort(element)
+        });
+        return {
+            flip: result.flip,
+            flipped: result.flipped,
+            offset: dom.addOffset(currentLocation, result.offset)
+        };
+    };
+    PositionService.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    PositionService.ctorParameters = function () { return [
+        { type: _dom_service__WEBPACK_IMPORTED_MODULE_1__["DOMService"], },
+    ]; };
+    return PositionService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-popup/dist/es/services/resize.service.js":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-popup/dist/es/services/resize.service.js ***!
+  \***************************************************************************************/
+/*! exports provided: ResizeService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResizeService", function() { return ResizeService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_observable_fromEvent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/observable/fromEvent */ "./node_modules/rxjs-compat/_esm5/observable/fromEvent.js");
+/* harmony import */ var rxjs_operators_auditTime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators/auditTime */ "./node_modules/rxjs-compat/_esm5/operators/auditTime.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../util */ "./node_modules/@progress/kendo-angular-popup/dist/es/util.js");
+/* harmony import */ var _dom_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./dom.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/services/dom.service.js");
+
+
+
+
+
+/**
+ * @hidden
+ */
+var ResizeService = /** @class */ (function () {
+    function ResizeService(_dom, _zone) {
+        this._dom = _dom;
+        this._zone = _zone;
+    }
+    ResizeService.prototype.subscribe = function (callback) {
+        var _this = this;
+        if (!Object(_util__WEBPACK_IMPORTED_MODULE_3__["isDocumentAvailable"])()) {
+            return;
+        }
+        this._zone.runOutsideAngular(function () {
+            _this.subscription = Object(rxjs_observable_fromEvent__WEBPACK_IMPORTED_MODULE_1__["fromEvent"])(_this._dom.getWindow(), "resize")
+                .pipe(Object(rxjs_operators_auditTime__WEBPACK_IMPORTED_MODULE_2__["auditTime"])(_util__WEBPACK_IMPORTED_MODULE_3__["FRAME_DURATION"]))
+                .subscribe(function () { return callback(); });
+        });
+    };
+    ResizeService.prototype.unsubscribe = function () {
+        if (!this.subscription) {
+            return;
+        }
+        this.subscription.unsubscribe();
+    };
+    ResizeService.prototype.isUnsubscribed = function () {
+        return this.subscription && this.subscription.closed;
+    };
+    ResizeService.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    ResizeService.ctorParameters = function () { return [
+        { type: _dom_service__WEBPACK_IMPORTED_MODULE_4__["DOMService"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"], },
+    ]; };
+    return ResizeService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-popup/dist/es/services/scrollable.service.js":
+/*!*******************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-popup/dist/es/services/scrollable.service.js ***!
+  \*******************************************************************************************/
+/*! exports provided: THRESHOLD_DIFF, ScrollableService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "THRESHOLD_DIFF", function() { return THRESHOLD_DIFF; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ScrollableService", function() { return ScrollableService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_observable_fromEvent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/observable/fromEvent */ "./node_modules/rxjs-compat/_esm5/observable/fromEvent.js");
+/* harmony import */ var rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/observable/merge */ "./node_modules/rxjs-compat/_esm5/observable/merge.js");
+/* harmony import */ var rxjs_operators_auditTime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators/auditTime */ "./node_modules/rxjs-compat/_esm5/operators/auditTime.js");
+/* harmony import */ var _dom_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./dom.service */ "./node_modules/@progress/kendo-angular-popup/dist/es/services/dom.service.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../util */ "./node_modules/@progress/kendo-angular-popup/dist/es/util.js");
+
+
+
+
+
+
+/**
+ * @hidden
+ */
+var THRESHOLD_DIFF = 1;
+/**
+ * @hidden
+ */
+var ScrollableService = /** @class */ (function () {
+    function ScrollableService(_dom, _zone) {
+        this._dom = _dom;
+        this._zone = _zone;
+    }
+    ScrollableService.prototype.forElement = function (element) {
+        this.unsubscribe();
+        this.element = element;
+        return this;
+    };
+    ScrollableService.prototype.subscribe = function (callback) {
+        var _this = this;
+        if (!callback || !Object(_util__WEBPACK_IMPORTED_MODULE_5__["isDocumentAvailable"])() || !this.element) {
+            return;
+        }
+        var nativeElement = this._dom.nativeElement(this.element);
+        var parents = this._dom.scrollableParents(this.element);
+        this._zone.runOutsideAngular(function () {
+            var observables = parents.map(function (p) { return Object(rxjs_observable_fromEvent__WEBPACK_IMPORTED_MODULE_1__["fromEvent"])(p, "scroll").pipe(Object(rxjs_operators_auditTime__WEBPACK_IMPORTED_MODULE_3__["auditTime"])(_util__WEBPACK_IMPORTED_MODULE_5__["FRAME_DURATION"])); });
+            var subscriber = function (e) {
+                var target = e.target;
+                var isParent = parents.filter(function (p) { return p === target; }).length > 0;
+                var isDocument = target === document;
+                var isWindow = target === window;
+                if (isParent || isDocument || isWindow) {
+                    callback(_this.isVisible(nativeElement, target));
+                }
+            };
+            _this.subscription = rxjs_observable_merge__WEBPACK_IMPORTED_MODULE_2__["merge"].apply(void 0, observables).subscribe(subscriber);
+        });
+    };
+    ScrollableService.prototype.unsubscribe = function () {
+        if (!this.subscription) {
+            return;
+        }
+        this.subscription.unsubscribe();
+    };
+    ScrollableService.prototype.isVisible = function (elem, container) {
+        var elemRect = this._dom.boundingOffset(elem);
+        var containerRect = this._dom.boundingOffset(container);
+        if (THRESHOLD_DIFF < (containerRect.top - elemRect.bottom)) {
+            return false;
+        }
+        if (THRESHOLD_DIFF < (elemRect.top - containerRect.bottom)) {
+            return false;
+        }
+        if (THRESHOLD_DIFF < (elemRect.left - containerRect.right)) {
+            return false;
+        }
+        if (THRESHOLD_DIFF < (containerRect.left - elemRect.right)) {
+            return false;
+        }
+        return true;
+    };
+    ScrollableService.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    ScrollableService.ctorParameters = function () { return [
+        { type: _dom_service__WEBPACK_IMPORTED_MODULE_4__["DOMService"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"], },
+    ]; };
+    return ScrollableService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-popup/dist/es/util.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-popup/dist/es/util.js ***!
+  \********************************************************************/
+/*! exports provided: eitherRect, replaceOffset, removeStackingOffset, isDifferentOffset, isDocumentAvailable, isWindowAvailable, hasBoundingRect, OVERFLOW_REGEXP, scrollableParents, FRAME_DURATION, hasRelativeStackingContext, HAS_RELATIVE_STACKING_CONTEXT, zIndex */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "eitherRect", function() { return eitherRect; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "replaceOffset", function() { return replaceOffset; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeStackingOffset", function() { return removeStackingOffset; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDifferentOffset", function() { return isDifferentOffset; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDocumentAvailable", function() { return isDocumentAvailable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isWindowAvailable", function() { return isWindowAvailable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hasBoundingRect", function() { return hasBoundingRect; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OVERFLOW_REGEXP", function() { return OVERFLOW_REGEXP; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "scrollableParents", function() { return scrollableParents; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FRAME_DURATION", function() { return FRAME_DURATION; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hasRelativeStackingContext", function() { return hasRelativeStackingContext; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HAS_RELATIVE_STACKING_CONTEXT", function() { return HAS_RELATIVE_STACKING_CONTEXT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "zIndex", function() { return zIndex; });
+/* harmony import */ var _progress_kendo_popup_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @progress/kendo-popup-common */ "./node_modules/@progress/kendo-popup-common/dist/es/main.js");
+
+/**
+ * @hidden
+ */
+var eitherRect = function (rect, offset) {
+    if (!rect) {
+        return { height: 0, left: offset.left, top: offset.top, width: 0 };
+    }
+    return rect;
+};
+/**
+ * @hidden
+ */
+var replaceOffset = function (rect, offset) {
+    if (!offset) {
+        return rect;
+    }
+    var result = {
+        height: rect.height,
+        left: offset.left,
+        top: offset.top,
+        width: rect.width
+    };
+    return result;
+};
+/**
+ * @hidden
+ */
+var removeStackingOffset = function (rect, stackingOffset) {
+    if (!stackingOffset) {
+        return rect;
+    }
+    var result = {
+        height: rect.height,
+        left: rect.left - stackingOffset.left,
+        top: rect.top - stackingOffset.top,
+        width: rect.width
+    };
+    return result;
+};
+/**
+ * @hidden
+ */
+var isDifferentOffset = function (oldOffset, newOffset) {
+    var oldLeft = oldOffset.left, oldTop = oldOffset.top;
+    var newLeft = newOffset.left, newTop = newOffset.top;
+    return Math.abs(oldLeft - newLeft) >= 1 || Math.abs(oldTop - newTop) >= 1;
+};
+/**
+ * @hidden
+ */
+var isDocumentAvailable = function () {
+    return typeof document !== 'undefined' && !!document.body;
+};
+/**
+ * @hidden
+ */
+var isWindowAvailable = function () {
+    return typeof window !== 'undefined';
+};
+/**
+ * @hidden
+ */
+var hasBoundingRect = function (elem) { return !!elem.getBoundingClientRect; };
+/**
+ * @hidden
+ */
+var OVERFLOW_REGEXP = /auto|scroll/;
+var overflowElementStyle = function (element) {
+    return "" + element.style.overflow + element.style.overflowX + element.style.overflowY;
+};
+var overflowComputedStyle = function (element) {
+    var styles = window.getComputedStyle(element);
+    return "" + styles.overflow + styles.overflowX + styles.overflowY;
+};
+var overflowStyle = function (element) {
+    return overflowElementStyle(element) || overflowComputedStyle(element);
+};
+/**
+ * @hidden
+ */
+var scrollableParents = function (element) {
+    var parentElements = [];
+    if (!isDocumentAvailable() || !isWindowAvailable()) {
+        return parentElements;
+    }
+    var parent = element.parentElement;
+    while (parent) {
+        if (OVERFLOW_REGEXP.test(overflowStyle(parent)) || parent.hasAttribute('data-scrollable')) {
+            parentElements.push(parent);
+        }
+        parent = parent.parentElement;
+    }
+    parentElements.push(window);
+    return parentElements;
+};
+/**
+ * @hidden
+ */
+var FRAME_DURATION = 1000 / 60; //1000ms divided by 60fps
+/**
+ * @hidden
+ */
+var hasRelativeStackingContext = function () {
+    if (!isDocumentAvailable()) {
+        return false;
+    }
+    var top = 10;
+    var parent = document.createElement("div");
+    parent.style.transform = "matrix(10, 0, 0, 10, 0, 0)";
+    parent.innerHTML = "<div style=\"position: fixed; top: " + top + "px;\">child</div>";
+    document.body.appendChild(parent);
+    var isDifferent = parent.children[0].getBoundingClientRect().top !== top;
+    document.body.removeChild(parent);
+    return isDifferent;
+};
+/**
+ * @hidden
+ */
+var HAS_RELATIVE_STACKING_CONTEXT = hasRelativeStackingContext();
+/**
+ * @hidden
+ */
+var zIndex = function (anchor, container) {
+    if (!anchor || !isDocumentAvailable() || !isWindowAvailable()) {
+        return null;
+    }
+    var sibling = Object(_progress_kendo_popup_common__WEBPACK_IMPORTED_MODULE_0__["siblingContainer"])(anchor, container);
+    if (!sibling) {
+        return null;
+    }
+    var result = [anchor].concat(Object(_progress_kendo_popup_common__WEBPACK_IMPORTED_MODULE_0__["parents"])(anchor, sibling)).reduce(function (index, p) {
+        var zIndexStyle = p.style.zIndex || window.getComputedStyle(p).zIndex;
+        var current = parseInt(zIndexStyle, 10);
+        return current > index ? current : index;
+    }, 0);
+    return result ? (result + 1) : null;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-resize-sensor/dist/es/index.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-resize-sensor/dist/es/index.js ***!
+  \*****************************************************************************/
+/*! exports provided: ResizeSensorComponent, ResizeSensorModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./main */ "./node_modules/@progress/kendo-angular-resize-sensor/dist/es/main.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ResizeSensorComponent", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["ResizeSensorComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ResizeSensorModule", function() { return _main__WEBPACK_IMPORTED_MODULE_0__["ResizeSensorModule"]; });
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-resize-sensor/dist/es/main.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-resize-sensor/dist/es/main.js ***!
+  \****************************************************************************/
+/*! exports provided: ResizeSensorComponent, ResizeSensorModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _resize_sensor_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./resize-sensor.component */ "./node_modules/@progress/kendo-angular-resize-sensor/dist/es/resize-sensor.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ResizeSensorComponent", function() { return _resize_sensor_component__WEBPACK_IMPORTED_MODULE_0__["ResizeSensorComponent"]; });
+
+/* harmony import */ var _resize_sensor_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./resize-sensor.module */ "./node_modules/@progress/kendo-angular-resize-sensor/dist/es/resize-sensor.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ResizeSensorModule", function() { return _resize_sensor_module__WEBPACK_IMPORTED_MODULE_1__["ResizeSensorModule"]; });
+
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-resize-sensor/dist/es/resize-sensor.component.js":
+/*!***********************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-resize-sensor/dist/es/resize-sensor.component.js ***!
+  \***********************************************************************************************/
+/*! exports provided: ResizeSensorComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResizeSensorComponent", function() { return ResizeSensorComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_Subject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/Subject */ "./node_modules/rxjs-compat/_esm5/Subject.js");
+/* harmony import */ var rxjs_operators_auditTime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators/auditTime */ "./node_modules/rxjs-compat/_esm5/operators/auditTime.js");
+
+
+
+/**
+ * Emit up to 10 resize events per second by default.
+ * Chosen as a compromise between responsiveness and performance.
+ */
+var DEFAULT_RATE_LIMIT = 10;
+var computedProp = function (elem, prop) {
+    return getComputedStyle(elem, null).getPropertyValue(prop);
+};
+var WRAP_STYLE = 'position: absolute; display: block; left: 0; top: 0; right: 0; bottom: 0; z-index: -1;' +
+    'overflow: hidden; visibility: hidden;';
+var EXPAND_CHILD_STYLE = 'position: absolute; left: 0; top: 0; transition: 0s;';
+var SHRINK_CHILD_STYLE = EXPAND_CHILD_STYLE + 'width: 200%; height: 200%;';
+/**
+ * Resize Sensor Component
+ *
+ * Triggers a "resize" event whenever the parent DOM element size changes.
+ */
+var ResizeSensorComponent = /** @class */ (function () {
+    function ResizeSensorComponent(element, zone, renderer) {
+        this.element = element;
+        this.zone = zone;
+        this.renderer = renderer;
+        /**
+         * The maximum number of resize events to emit per second.
+         *
+         * Defaults to 10.
+         */
+        this.rateLimit = DEFAULT_RATE_LIMIT;
+        /**
+         * Fires when the parent DOM element has been resized.
+         */
+        this.resize = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.source = new rxjs_Subject__WEBPACK_IMPORTED_MODULE_1__["Subject"]();
+        this.initialized = false;
+        this.acceptedSize = false;
+    }
+    ResizeSensorComponent.prototype.ngAfterViewInit = function () {
+        var _this = this;
+        this.zone.runOutsideAngular(function () {
+            var scrollHandler = _this.scroll.bind(_this);
+            var detachExpand = _this.renderer.listen(_this.expand.nativeElement, 'scroll', scrollHandler);
+            var detachShrink = _this.renderer.listen(_this.shrink.nativeElement, 'scroll', scrollHandler);
+            _this.detachScrollHandlers = function () {
+                detachExpand();
+                detachShrink();
+            };
+        });
+    };
+    ResizeSensorComponent.prototype.ngAfterViewChecked = function () {
+        var _this = this;
+        if (typeof document === 'undefined') {
+            return;
+        }
+        if (this.initialized) {
+            this.scroll();
+            return;
+        }
+        var throttleTime = 1000 / (this.rateLimit || DEFAULT_RATE_LIMIT);
+        this.subscription = this.source.asObservable()
+            .pipe(Object(rxjs_operators_auditTime__WEBPACK_IMPORTED_MODULE_2__["auditTime"])(throttleTime))
+            .subscribe(function () {
+            if (!_this.acceptedSize) {
+                _this.resize.emit();
+            }
+        });
+        this.parentElement = this.element.nativeElement.parentElement;
+        if (computedProp(this.parentElement, 'position') === 'static') {
+            this.parentElement.style.position = 'relative';
+        }
+        this.reset();
+        this.lastWidth = this.parentElement.offsetWidth;
+        this.lastHeight = this.parentElement.offsetHeight;
+        this.initialized = true;
+    };
+    ResizeSensorComponent.prototype.ngOnDestroy = function () {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+        if (this.detachScrollHandlers) {
+            this.detachScrollHandlers();
+        }
+    };
+    /**
+     * Sets the passed size or the element size as current.
+     */
+    ResizeSensorComponent.prototype.acceptSize = function (size) {
+        if (size === void 0) { size = this.measure(); }
+        this.lastWidth = size.width;
+        this.lastHeight = size.height;
+        this.acceptedSize = true;
+    };
+    /**
+     * @hidden
+     */
+    ResizeSensorComponent.prototype.scroll = function (_event) {
+        var _this = this;
+        if (!this.parentElement) {
+            return;
+        }
+        var _a = this.measure(), width = _a.width, height = _a.height;
+        var sameSize = width === this.lastWidth && height === this.lastHeight;
+        if (sameSize) {
+            return;
+        }
+        this.lastWidth = width;
+        this.lastHeight = height;
+        this.acceptedSize = false;
+        this.zone.runOutsideAngular(function () {
+            _this.source.next();
+        });
+        this.reset();
+    };
+    ResizeSensorComponent.prototype.reset = function () {
+        var expandChild = this.expandChild.nativeElement;
+        expandChild.style.width = 100000 + 'px';
+        expandChild.style.height = 100000 + 'px';
+        var expand = this.expand.nativeElement;
+        expand.scrollLeft = 100000;
+        expand.scrollTop = 100000;
+        var shrink = this.shrink.nativeElement;
+        shrink.scrollLeft = 100000;
+        shrink.scrollTop = 100000;
+    };
+    ResizeSensorComponent.prototype.measure = function () {
+        return {
+            height: this.parentElement.offsetHeight,
+            width: this.parentElement.offsetWidth
+        };
+    };
+    ResizeSensorComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    selector: 'kendo-resize-sensor',
+                    styles: [':host { ' + WRAP_STYLE + ' }'],
+                    template: '<div #expand style="' + WRAP_STYLE + '">' +
+                        '  <div #expandChild style="' + EXPAND_CHILD_STYLE + '"></div>' +
+                        '</div>' +
+                        '<div #shrink style="' + WRAP_STYLE + '">' +
+                        '  <div style="' + SHRINK_CHILD_STYLE + '"></div>' +
+                        '</div>'
+                },] },
+    ];
+    /** @nocollapse */
+    ResizeSensorComponent.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Renderer2"], },
+    ]; };
+    ResizeSensorComponent.propDecorators = {
+        'rateLimit': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        'resize': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        'expand': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['expand',] },],
+        'expandChild': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['expandChild',] },],
+        'shrink': [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['shrink',] },],
+    };
+    return ResizeSensorComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-angular-resize-sensor/dist/es/resize-sensor.module.js":
+/*!********************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-angular-resize-sensor/dist/es/resize-sensor.module.js ***!
+  \********************************************************************************************/
+/*! exports provided: ResizeSensorModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResizeSensorModule", function() { return ResizeSensorModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _resize_sensor_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./resize-sensor.component */ "./node_modules/@progress/kendo-angular-resize-sensor/dist/es/resize-sensor.component.js");
+
+
+var COMPONENT_DIRECTIVES = [_resize_sensor_component__WEBPACK_IMPORTED_MODULE_1__["ResizeSensorComponent"]];
+/**
+ * Resize Sensor module
+ */
+var ResizeSensorModule = /** @class */ (function () {
+    function ResizeSensorModule() {
+    }
+    ResizeSensorModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    declarations: [COMPONENT_DIRECTIVES],
+                    exports: [COMPONENT_DIRECTIVES]
+                },] },
+    ];
+    /** @nocollapse */
+    ResizeSensorModule.ctorParameters = function () { return []; };
+    return ResizeSensorModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/add-scroll.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/add-scroll.js ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return addScroll; });
+function addScroll(rect, scroll) {
+    return {
+        top: rect.top + scroll.y,
+        left: rect.left + scroll.x,
+        height: rect.height,
+        width: rect.width
+    };
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/align-point.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/align-point.js ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+    "bottom": "bottom",
+    "center": "center",
+    "middle": "middle",
+    "left": "left",
+    "right": "right",
+    "top": "top"
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/align.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/align.js ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _align_point__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./align-point */ "./node_modules/@progress/kendo-popup-common/dist/es/align-point.js");
+
+
+var align = function (options) {
+    var anchorRect = options.anchorRect;
+    var anchorAlign = options.anchorAlign;
+    var elementRect = options.elementRect;
+    var elementAlign = options.elementAlign;
+    var margin = options.margin; if ( margin === void 0 ) margin = {};
+    var anchorHorizontal = anchorAlign.horizontal;
+    var anchorVertical = anchorAlign.vertical;
+    var elementHorizontal = elementAlign.horizontal;
+    var elementVertical = elementAlign.vertical;
+
+    var horizontalMargin = margin.horizontal || 0;
+    var verticalMargin = margin.vertical || 0;
+
+    var top = anchorRect.top;
+    var left = anchorRect.left;
+
+    if (anchorVertical === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].bottom) {
+        top += anchorRect.height;
+    }
+
+    if (anchorVertical === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].center || anchorVertical === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].middle) {
+        top += Math.round(anchorRect.height / 2);
+    }
+
+    if (elementVertical === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].bottom) {
+        top -= elementRect.height;
+        verticalMargin *= -1;
+    }
+
+    if (elementVertical === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].center || elementVertical === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].middle) {
+        top -= Math.round(elementRect.height / 2);
+        verticalMargin *= -1;
+    }
+
+    if (anchorHorizontal === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].right) {
+        left += anchorRect.width;
+    }
+
+    if (anchorHorizontal === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].center || anchorHorizontal === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].middle) {
+        left += Math.round(anchorRect.width / 2);
+    }
+
+    if (elementHorizontal === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].right) {
+        left -= elementRect.width;
+        horizontalMargin *= -1;
+    }
+
+    if (elementHorizontal === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].center || elementHorizontal === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].middle) {
+        left -= Math.round(elementRect.width / 2);
+        horizontalMargin *= -1;
+    }
+
+    return {
+        top: top + verticalMargin,
+        left: left + horizontalMargin
+    };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (align);
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/apply-location-offset.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/apply-location-offset.js ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return applyLocationOffset; });
+function applyLocationOffset(rect, location, isOffsetBody) {
+    var top = rect.top;
+    var left = rect.left;
+
+    if (isOffsetBody) {
+        left = 0;
+        top = 0;
+    }
+
+    return {
+        top: top + location.top,
+        left: left + location.left,
+        height: rect.height,
+        width: rect.width
+    };
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/bounding-offset.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/bounding-offset.js ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _window_viewport__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./window-viewport */ "./node_modules/@progress/kendo-popup-common/dist/es/window-viewport.js");
+
+
+var boundingOffset = function (element) {
+    if (!element.getBoundingClientRect) {
+        var viewport = Object(_window_viewport__WEBPACK_IMPORTED_MODULE_0__["default"])(element);
+        return {
+            bottom: viewport.height,
+            left: 0,
+            right: viewport.width,
+            top: 0
+        };
+    }
+
+    var ref = element.getBoundingClientRect();
+    var bottom = ref.bottom;
+    var left = ref.left;
+    var right = ref.right;
+    var top = ref.top;
+
+    return {
+        bottom: bottom,
+        left: left,
+        right: right,
+        top: top
+    };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (boundingOffset);
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/collision.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/collision.js ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+    "fit": "fit",
+    "flip": "flip"
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/document.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/document.js ***!
+  \***********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _owner_document__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./owner-document */ "./node_modules/@progress/kendo-popup-common/dist/es/owner-document.js");
+
+
+var getDocument = function (element) { return Object(_owner_document__WEBPACK_IMPORTED_MODULE_0__["default"])(element).documentElement; };
+
+/* harmony default export */ __webpack_exports__["default"] = (getDocument);
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/element-scroll-position.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/element-scroll-position.js ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _scroll_position__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scroll-position */ "./node_modules/@progress/kendo-popup-common/dist/es/scroll-position.js");
+
+
+/* harmony default export */ __webpack_exports__["default"] = (function (element) {
+    if (element === (element.ownerDocument || {}).body) {
+        return Object(_scroll_position__WEBPACK_IMPORTED_MODULE_0__["default"])(element);
+    }
+
+    return {
+        x: element.scrollLeft,
+        y: element.scrollTop
+    };
+});;
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/is-body-offset.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/is-body-offset.js ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _offset_parent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./offset-parent */ "./node_modules/@progress/kendo-popup-common/dist/es/offset-parent.js");
+
+
+var isBodyOffset = function (element) { return (Object(_offset_parent__WEBPACK_IMPORTED_MODULE_0__["default"])(element) === element.ownerDocument.body); };
+
+/* harmony default export */ __webpack_exports__["default"] = (isBodyOffset);
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/main.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/main.js ***!
+  \*******************************************************************/
+/*! exports provided: align, addScroll, applyLocationOffset, boundingOffset, isBodyOffset, offsetParent, offset, parents, parentScrollPosition, position, positionWithScroll, removeScroll, restrictToView, scrollPosition, siblingContainer, siblings, getDocumentElement, getWindow, getWindowViewPort, AlignPoint, Collision */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _align__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./align */ "./node_modules/@progress/kendo-popup-common/dist/es/align.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "align", function() { return _align__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+/* harmony import */ var _add_scroll__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./add-scroll */ "./node_modules/@progress/kendo-popup-common/dist/es/add-scroll.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addScroll", function() { return _add_scroll__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+
+/* harmony import */ var _apply_location_offset__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./apply-location-offset */ "./node_modules/@progress/kendo-popup-common/dist/es/apply-location-offset.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "applyLocationOffset", function() { return _apply_location_offset__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+
+/* harmony import */ var _bounding_offset__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./bounding-offset */ "./node_modules/@progress/kendo-popup-common/dist/es/bounding-offset.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "boundingOffset", function() { return _bounding_offset__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+
+/* harmony import */ var _is_body_offset__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./is-body-offset */ "./node_modules/@progress/kendo-popup-common/dist/es/is-body-offset.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isBodyOffset", function() { return _is_body_offset__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+
+/* harmony import */ var _offset_parent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./offset-parent */ "./node_modules/@progress/kendo-popup-common/dist/es/offset-parent.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "offsetParent", function() { return _offset_parent__WEBPACK_IMPORTED_MODULE_5__["default"]; });
+
+/* harmony import */ var _offset__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./offset */ "./node_modules/@progress/kendo-popup-common/dist/es/offset.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "offset", function() { return _offset__WEBPACK_IMPORTED_MODULE_6__["default"]; });
+
+/* harmony import */ var _parents__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./parents */ "./node_modules/@progress/kendo-popup-common/dist/es/parents.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "parents", function() { return _parents__WEBPACK_IMPORTED_MODULE_7__["default"]; });
+
+/* harmony import */ var _parent_scroll_position__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./parent-scroll-position */ "./node_modules/@progress/kendo-popup-common/dist/es/parent-scroll-position.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "parentScrollPosition", function() { return _parent_scroll_position__WEBPACK_IMPORTED_MODULE_8__["default"]; });
+
+/* harmony import */ var _position__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./position */ "./node_modules/@progress/kendo-popup-common/dist/es/position.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "position", function() { return _position__WEBPACK_IMPORTED_MODULE_9__["default"]; });
+
+/* harmony import */ var _position_with_scroll__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./position-with-scroll */ "./node_modules/@progress/kendo-popup-common/dist/es/position-with-scroll.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "positionWithScroll", function() { return _position_with_scroll__WEBPACK_IMPORTED_MODULE_10__["default"]; });
+
+/* harmony import */ var _remove_scroll__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./remove-scroll */ "./node_modules/@progress/kendo-popup-common/dist/es/remove-scroll.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "removeScroll", function() { return _remove_scroll__WEBPACK_IMPORTED_MODULE_11__["default"]; });
+
+/* harmony import */ var _restrict_to_view__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./restrict-to-view */ "./node_modules/@progress/kendo-popup-common/dist/es/restrict-to-view.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "restrictToView", function() { return _restrict_to_view__WEBPACK_IMPORTED_MODULE_12__["default"]; });
+
+/* harmony import */ var _scroll_position__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./scroll-position */ "./node_modules/@progress/kendo-popup-common/dist/es/scroll-position.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "scrollPosition", function() { return _scroll_position__WEBPACK_IMPORTED_MODULE_13__["default"]; });
+
+/* harmony import */ var _sibling_container__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./sibling-container */ "./node_modules/@progress/kendo-popup-common/dist/es/sibling-container.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "siblingContainer", function() { return _sibling_container__WEBPACK_IMPORTED_MODULE_14__["default"]; });
+
+/* harmony import */ var _siblings__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./siblings */ "./node_modules/@progress/kendo-popup-common/dist/es/siblings.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "siblings", function() { return _siblings__WEBPACK_IMPORTED_MODULE_15__["default"]; });
+
+/* harmony import */ var _document__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./document */ "./node_modules/@progress/kendo-popup-common/dist/es/document.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getDocumentElement", function() { return _document__WEBPACK_IMPORTED_MODULE_16__["default"]; });
+
+/* harmony import */ var _window__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./window */ "./node_modules/@progress/kendo-popup-common/dist/es/window.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getWindow", function() { return _window__WEBPACK_IMPORTED_MODULE_17__["default"]; });
+
+/* harmony import */ var _window_viewport__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./window-viewport */ "./node_modules/@progress/kendo-popup-common/dist/es/window-viewport.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getWindowViewPort", function() { return _window_viewport__WEBPACK_IMPORTED_MODULE_18__["default"]; });
+
+/* harmony import */ var _align_point__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./align-point */ "./node_modules/@progress/kendo-popup-common/dist/es/align-point.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AlignPoint", function() { return _align_point__WEBPACK_IMPORTED_MODULE_19__["default"]; });
+
+/* harmony import */ var _collision__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./collision */ "./node_modules/@progress/kendo-popup-common/dist/es/collision.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Collision", function() { return _collision__WEBPACK_IMPORTED_MODULE_20__["default"]; });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/offset-parent-scroll-position.js":
+/*!********************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/offset-parent-scroll-position.js ***!
+  \********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _element_scroll_position__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element-scroll-position */ "./node_modules/@progress/kendo-popup-common/dist/es/element-scroll-position.js");
+/* harmony import */ var _parent_scroll_position__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./parent-scroll-position */ "./node_modules/@progress/kendo-popup-common/dist/es/parent-scroll-position.js");
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (function (offsetParentElement, element) { return ( // eslint-disable-line no-arrow-condition
+    offsetParentElement ? Object(_element_scroll_position__WEBPACK_IMPORTED_MODULE_0__["default"])(offsetParentElement) : Object(_parent_scroll_position__WEBPACK_IMPORTED_MODULE_1__["default"])(element)
+); });;
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/offset-parent.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/offset-parent.js ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _document__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./document */ "./node_modules/@progress/kendo-popup-common/dist/es/document.js");
+
+
+var offsetParent = function (element) {
+    var offsetParent = element.offsetParent;
+
+    while (offsetParent && offsetParent.style.position === "static") {
+        offsetParent = offsetParent.offsetParent;
+    }
+
+    return offsetParent || Object(_document__WEBPACK_IMPORTED_MODULE_0__["default"])(element);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (offsetParent);
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/offset.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/offset.js ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var rectOfHiddenElement = function (element) {
+    var ref = element.style;
+    var display = ref.display;
+    var left = ref.left;
+    var position = ref.position;
+
+    element.style.display = '';
+    element.style.left = '-10000px';
+    element.style.position = 'absolute';
+
+    var rect = element.getBoundingClientRect();
+
+    element.style.display = display;
+    element.style.left = left;
+    element.style.position = position;
+
+    return rect;
+};
+
+var offset = function (element) {
+    var rect = element.getBoundingClientRect();
+    var left = rect.left;
+    var top = rect.top;
+
+    if (!rect.height && !rect.width) {
+        rect = rectOfHiddenElement(element);
+    }
+
+    return {
+        top: top,
+        left: left,
+        height: rect.height,
+        width: rect.width
+    };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (offset);
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/owner-document.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/owner-document.js ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ownerDocument; });
+function ownerDocument(element) {
+    return element.ownerDocument || element.document || element;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/parent-scroll-position.js":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/parent-scroll-position.js ***!
+  \*************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return parentScrollPosition; });
+/* harmony import */ var _offset_parent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./offset-parent */ "./node_modules/@progress/kendo-popup-common/dist/es/offset-parent.js");
+/* harmony import */ var _element_scroll_position__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element-scroll-position */ "./node_modules/@progress/kendo-popup-common/dist/es/element-scroll-position.js");
+
+
+
+function parentScrollPosition(element) {
+    var parent = Object(_offset_parent__WEBPACK_IMPORTED_MODULE_0__["default"])(element);
+
+    return parent ? Object(_element_scroll_position__WEBPACK_IMPORTED_MODULE_1__["default"])(parent) : { x: 0, y: 0 };
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/parents.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/parents.js ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (function (element, until) {
+    var result = [];
+    var next = element.parentNode;
+
+    while (next) {
+        result.push(next);
+
+        if (next === until) { break; }
+
+        next = next.parentNode;
+    }
+
+    return result;
+});;
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/position-with-scroll.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/position-with-scroll.js ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _offset_parent_scroll_position__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./offset-parent-scroll-position */ "./node_modules/@progress/kendo-popup-common/dist/es/offset-parent-scroll-position.js");
+/* harmony import */ var _offset_parent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./offset-parent */ "./node_modules/@progress/kendo-popup-common/dist/es/offset-parent.js");
+/* harmony import */ var _position__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./position */ "./node_modules/@progress/kendo-popup-common/dist/es/position.js");
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (function (element, parent) {
+    var offsetParentElement = parent ? Object(_offset_parent__WEBPACK_IMPORTED_MODULE_1__["default"])(parent) : null;
+    var ref = Object(_position__WEBPACK_IMPORTED_MODULE_2__["default"])(element, offsetParentElement);
+    var top = ref.top;
+    var left = ref.left;
+    var height = ref.height;
+    var width = ref.width;
+    var ref$1 = Object(_offset_parent_scroll_position__WEBPACK_IMPORTED_MODULE_0__["default"])(offsetParentElement, element);
+    var x = ref$1.x;
+    var y = ref$1.y;
+
+    return {
+        top: top + y,
+        left: left + x,
+        height: height,
+        width: width
+    };
+});;
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/position.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/position.js ***!
+  \***********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _offset_parent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./offset-parent */ "./node_modules/@progress/kendo-popup-common/dist/es/offset-parent.js");
+/* harmony import */ var _offset__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./offset */ "./node_modules/@progress/kendo-popup-common/dist/es/offset.js");
+/* harmony import */ var _window__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./window */ "./node_modules/@progress/kendo-popup-common/dist/es/window.js");
+
+
+
+
+var position = function (element, parent) {
+    var win = Object(_window__WEBPACK_IMPORTED_MODULE_2__["default"])(element);
+    var elementStyles = win.getComputedStyle(element);
+    var offset = Object(_offset__WEBPACK_IMPORTED_MODULE_1__["default"])(element);
+    var parentElement = parent || Object(_offset_parent__WEBPACK_IMPORTED_MODULE_0__["default"])(element);
+
+    var ownerDocument = element.ownerDocument;
+    var useRelative = parentElement !== ownerDocument.body && parentElement !== ownerDocument.documentElement;
+
+    var parentOffset = { top: 0, left: 0 };
+
+    if (elementStyles.position !== "fixed" && useRelative) {
+        var parentStyles = win.getComputedStyle(parentElement);
+
+        parentOffset = Object(_offset__WEBPACK_IMPORTED_MODULE_1__["default"])(parentElement);
+        parentOffset.top += parseInt(parentStyles.borderTopWidth, 10);
+        parentOffset.left += parseInt(parentStyles.borderLeftWidth, 10);
+    }
+
+    return {
+        top: offset.top - parentOffset.top,
+        left: offset.left - parentOffset.left,
+        height: offset.height,
+        width: offset.width
+    };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (position);
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/remove-scroll.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/remove-scroll.js ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return removeScroll; });
+function removeScroll(rect, scroll) {
+    return {
+        top: rect.top - scroll.y,
+        left: rect.left - scroll.x,
+        height: rect.height,
+        width: rect.width
+    };
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/restrict-to-view.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/restrict-to-view.js ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _align_point__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./align-point */ "./node_modules/@progress/kendo-popup-common/dist/es/align-point.js");
+/* harmony import */ var _collision__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./collision */ "./node_modules/@progress/kendo-popup-common/dist/es/collision.js");
+
+
+
+var fit = function(position, size, viewPortSize) {
+    var output = 0;
+
+    if (position + size > viewPortSize) {
+        output = viewPortSize - (position + size);
+    }
+
+    if (position < 0) {
+        output = -position;
+    }
+
+    return output;
+};
+
+var flip = function(ref) {
+    var offset = ref.offset;
+    var size = ref.size;
+    var anchorSize = ref.anchorSize;
+    var viewPortSize = ref.viewPortSize;
+    var anchorAlignPoint = ref.anchorAlignPoint;
+    var elementAlignPoint = ref.elementAlignPoint;
+    var margin = ref.margin;
+
+    var output = 0;
+
+    var isPositionCentered = elementAlignPoint === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].center || elementAlignPoint === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].middle;
+    var isOriginCentered = anchorAlignPoint === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].center || anchorAlignPoint === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].middle;
+    var marginToAdd = 2 * margin; //2x to keep margin after flip
+
+    if (elementAlignPoint !== anchorAlignPoint && !isPositionCentered && !isOriginCentered) {
+        var isBeforeAnchor = anchorAlignPoint === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].top || anchorAlignPoint === _align_point__WEBPACK_IMPORTED_MODULE_0__["default"].left;
+        if (offset < 0 && isBeforeAnchor) {
+            output = size + anchorSize + marginToAdd;
+            if (offset + output + size > viewPortSize) {
+                output = 0; //skip flip
+            }
+        } else if (offset >= 0 && !isBeforeAnchor) {
+            if (offset + size > viewPortSize) {
+                output += -(anchorSize + size + marginToAdd);
+            }
+
+            if (offset + output < 0) {
+                output = 0; //skip flip
+            }
+        }
+    }
+
+    return output;
+};
+
+var restrictToView = function (options) {
+    var anchorRect = options.anchorRect;
+    var anchorAlign = options.anchorAlign;
+    var elementRect = options.elementRect;
+    var elementAlign = options.elementAlign;
+    var collisions = options.collisions;
+    var viewPort = options.viewPort;
+    var margin = options.margin; if ( margin === void 0 ) margin = {};
+    var elementTop = elementRect.top;
+    var elementLeft = elementRect.left;
+    var elementHeight = elementRect.height;
+    var elementWidth = elementRect.width;
+    var viewPortHeight = viewPort.height;
+    var viewPortWidth = viewPort.width;
+    var horizontalMargin = margin.horizontal || 0;
+    var verticalMargin = margin.vertical || 0;
+
+    var left = 0;
+    var top = 0;
+
+    var isHorizontalFlip = collisions.horizontal === _collision__WEBPACK_IMPORTED_MODULE_1__["default"].flip;
+    var isVerticalFlip = collisions.vertical === _collision__WEBPACK_IMPORTED_MODULE_1__["default"].flip;
+
+    if (collisions.vertical === _collision__WEBPACK_IMPORTED_MODULE_1__["default"].fit) {
+        top += fit(elementTop, elementHeight, viewPortHeight);
+    }
+
+    if (collisions.horizontal === _collision__WEBPACK_IMPORTED_MODULE_1__["default"].fit) {
+        left += fit(elementLeft, elementWidth, viewPortWidth);
+    }
+
+    if (isVerticalFlip) {
+        top += flip({
+            margin: verticalMargin,
+            offset: elementTop,
+            size: elementHeight,
+            anchorSize: anchorRect.height,
+            viewPortSize: viewPortHeight,
+            anchorAlignPoint: anchorAlign.vertical,
+            elementAlignPoint: elementAlign.vertical
+        });
+    }
+
+    if (isHorizontalFlip) {
+        left += flip({
+            margin: horizontalMargin,
+            offset: elementLeft,
+            size: elementWidth,
+            anchorSize: anchorRect.width,
+            viewPortSize: viewPortWidth,
+            anchorAlignPoint: anchorAlign.horizontal,
+            elementAlignPoint: elementAlign.horizontal
+        });
+    }
+    var flippedHorizontal = isHorizontalFlip && left !== 0;
+    var flippedVertical = isVerticalFlip && top !== 0;
+
+    return {
+        flipped: flippedHorizontal || flippedVertical,
+        flip: {
+            horizontal: flippedHorizontal,
+            vertical: flippedVertical
+        },
+        offset: {
+            left: left,
+            top: top
+        }
+    };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (restrictToView);
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/scroll-position.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/scroll-position.js ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return scrollPosition; });
+/* harmony import */ var _document__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./document */ "./node_modules/@progress/kendo-popup-common/dist/es/document.js");
+/* harmony import */ var _window__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./window */ "./node_modules/@progress/kendo-popup-common/dist/es/window.js");
+
+
+
+function scrollPosition(element) {
+    var documentElement = Object(_document__WEBPACK_IMPORTED_MODULE_0__["default"])(element);
+    var win = Object(_window__WEBPACK_IMPORTED_MODULE_1__["default"])(element);
+
+    return {
+        x: win.pageXOffset || documentElement.scrollLeft || 0,
+        y: win.pageYOffset || documentElement.scrollTop || 0
+    };
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/scrollbar-width.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/scrollbar-width.js ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return scrollbarWidth; });
+var cachedWidth = 0;
+
+function scrollbarWidth() {
+    if (!cachedWidth && typeof document !== 'undefined') {
+        var div = document.createElement("div");
+
+        div.style.cssText = "overflow:scroll;overflow-x:hidden;zoom:1;clear:both;display:block";
+        div.innerHTML = "&nbsp;";
+        document.body.appendChild(div);
+
+        cachedWidth = div.offsetWidth - div.scrollWidth;
+
+        document.body.removeChild(div);
+    }
+
+    return cachedWidth;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/sibling-container.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/sibling-container.js ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _parents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./parents */ "./node_modules/@progress/kendo-popup-common/dist/es/parents.js");
+/* harmony import */ var _siblings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./siblings */ "./node_modules/@progress/kendo-popup-common/dist/es/siblings.js");
+/* eslint-disable no-loop-func */
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (function (anchor, container) {
+    var parentElements = Object(_parents__WEBPACK_IMPORTED_MODULE_0__["default"])(anchor);
+    var containerElement = container;
+    var siblingElements;
+    var result;
+
+    while (containerElement) {
+        siblingElements = Object(_siblings__WEBPACK_IMPORTED_MODULE_1__["default"])(containerElement);
+
+        result = parentElements.reduce(
+            function (list, p) { return list.concat(siblingElements.filter(function (s) { return s === p; })); },
+            []
+        )[0];
+
+        if (result) { break; }
+
+        containerElement = containerElement.parentElement;
+    }
+
+    return result;
+});;
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/siblings.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/siblings.js ***!
+  \***********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (function (element) {
+    var result = [];
+
+    var sibling = element.parentNode.firstElementChild;
+
+    while (sibling) {
+        if (sibling !== element) {
+            result.push(sibling);
+        }
+
+        sibling = sibling.nextElementSibling;
+    }
+    return result;
+});;
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/window-viewport.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/window-viewport.js ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return windowViewport; });
+/* harmony import */ var _window__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./window */ "./node_modules/@progress/kendo-popup-common/dist/es/window.js");
+/* harmony import */ var _document__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./document */ "./node_modules/@progress/kendo-popup-common/dist/es/document.js");
+/* harmony import */ var _scrollbar_width__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./scrollbar-width */ "./node_modules/@progress/kendo-popup-common/dist/es/scrollbar-width.js");
+
+
+
+
+function windowViewport(element) {
+    var win = Object(_window__WEBPACK_IMPORTED_MODULE_0__["default"])(element);
+    var document = Object(_document__WEBPACK_IMPORTED_MODULE_1__["default"])(element);
+    var result = {
+        height: win.innerHeight,
+        width: win.innerWidth
+    };
+
+    if (document.scrollHeight - document.clientHeight > 0) {
+        result.width -= Object(_scrollbar_width__WEBPACK_IMPORTED_MODULE_2__["default"])();
+    }
+
+    return result;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@progress/kendo-popup-common/dist/es/window.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-popup-common/dist/es/window.js ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _owner_document__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./owner-document */ "./node_modules/@progress/kendo-popup-common/dist/es/owner-document.js");
+
+
+var getWindow = function (element) { return Object(_owner_document__WEBPACK_IMPORTED_MODULE_0__["default"])(element).defaultView; };
+
+/* harmony default export */ __webpack_exports__["default"] = (getWindow);
+
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/BehaviorSubject.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/BehaviorSubject.js ***!
+  \***********************************************************/
+/*! exports provided: BehaviorSubject */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BehaviorSubject", function() { return rxjs__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"]; });
+
+
+//# sourceMappingURL=BehaviorSubject.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/Subject.js":
+/*!***************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/Subject.js ***!
+  \***************************************************/
+/*! exports provided: Subject */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Subject", function() { return rxjs__WEBPACK_IMPORTED_MODULE_0__["Subject"]; });
+
+
+//# sourceMappingURL=Subject.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/Subscription.js":
+/*!********************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/Subscription.js ***!
+  \********************************************************/
+/*! exports provided: Subscription */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Subscription", function() { return rxjs__WEBPACK_IMPORTED_MODULE_0__["Subscription"]; });
+
+
+//# sourceMappingURL=Subscription.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/observable/fromEvent.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/observable/fromEvent.js ***!
+  \****************************************************************/
+/*! exports provided: fromEvent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "fromEvent", function() { return rxjs__WEBPACK_IMPORTED_MODULE_0__["fromEvent"]; });
+
+
+//# sourceMappingURL=fromEvent.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/observable/fromPromise.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/observable/fromPromise.js ***!
+  \******************************************************************/
+/*! exports provided: fromPromise */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "fromPromise", function() { return rxjs__WEBPACK_IMPORTED_MODULE_0__["from"]; });
+
+
+//# sourceMappingURL=fromPromise.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/observable/interval.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/observable/interval.js ***!
+  \***************************************************************/
+/*! exports provided: interval */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "interval", function() { return rxjs__WEBPACK_IMPORTED_MODULE_0__["interval"]; });
+
+
+//# sourceMappingURL=interval.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/observable/merge.js":
+/*!************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/observable/merge.js ***!
+  \************************************************************/
+/*! exports provided: merge */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "merge", function() { return rxjs__WEBPACK_IMPORTED_MODULE_0__["merge"]; });
+
+
+//# sourceMappingURL=merge.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/operators/auditTime.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operators/auditTime.js ***!
+  \***************************************************************/
+/*! exports provided: auditTime */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "auditTime", function() { return rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["auditTime"]; });
+
+
+//# sourceMappingURL=auditTime.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/operators/catchError.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operators/catchError.js ***!
+  \****************************************************************/
+/*! exports provided: catchError */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "catchError", function() { return rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["catchError"]; });
+
+
+//# sourceMappingURL=catchError.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/operators/concatMap.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operators/concatMap.js ***!
+  \***************************************************************/
+/*! exports provided: concatMap */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "concatMap", function() { return rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["concatMap"]; });
+
+
+//# sourceMappingURL=concatMap.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/operators/distinctUntilChanged.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operators/distinctUntilChanged.js ***!
+  \**************************************************************************/
+/*! exports provided: distinctUntilChanged */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "distinctUntilChanged", function() { return rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["distinctUntilChanged"]; });
+
+
+//# sourceMappingURL=distinctUntilChanged.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/operators/filter.js":
+/*!************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operators/filter.js ***!
+  \************************************************************/
+/*! exports provided: filter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "filter", function() { return rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["filter"]; });
+
+
+//# sourceMappingURL=filter.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/operators/map.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operators/map.js ***!
+  \*********************************************************/
+/*! exports provided: map */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "map", function() { return rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"]; });
+
+
+//# sourceMappingURL=map.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/operators/merge.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operators/merge.js ***!
+  \***********************************************************/
+/*! exports provided: merge */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "merge", function() { return rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["merge"]; });
+
+
+//# sourceMappingURL=merge.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/operators/partition.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operators/partition.js ***!
+  \***************************************************************/
+/*! exports provided: partition */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "partition", function() { return rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["partition"]; });
+
+
+//# sourceMappingURL=partition.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/operators/skip.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operators/skip.js ***!
+  \**********************************************************/
+/*! exports provided: skip */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "skip", function() { return rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["skip"]; });
+
+
+//# sourceMappingURL=skip.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/operators/skipWhile.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operators/skipWhile.js ***!
+  \***************************************************************/
+/*! exports provided: skipWhile */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "skipWhile", function() { return rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["skipWhile"]; });
+
+
+//# sourceMappingURL=skipWhile.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/operators/take.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operators/take.js ***!
+  \**********************************************************/
+/*! exports provided: take */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "take", function() { return rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["take"]; });
+
+
+//# sourceMappingURL=take.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/operators/takeUntil.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operators/takeUntil.js ***!
+  \***************************************************************/
+/*! exports provided: takeUntil */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "takeUntil", function() { return rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["takeUntil"]; });
+
+
+//# sourceMappingURL=takeUntil.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/operators/tap.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operators/tap.js ***!
+  \*********************************************************/
+/*! exports provided: tap */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "tap", function() { return rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["tap"]; });
+
+
+//# sourceMappingURL=tap.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs-compat/_esm5/operators/throttleTime.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/rxjs-compat/_esm5/operators/throttleTime.js ***!
+  \******************************************************************/
+/*! exports provided: throttleTime */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "throttleTime", function() { return rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["throttleTime"]; });
+
+
+//# sourceMappingURL=throttleTime.js.map
 
 /***/ }),
 

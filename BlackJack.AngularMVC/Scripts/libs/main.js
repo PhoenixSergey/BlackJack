@@ -98,12 +98,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _heroes_heroes_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./heroes/heroes.component */ "./src/app/heroes/heroes.component.ts");
 /* harmony import */ var _hero_detail_hero_detail_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./hero-detail/hero-detail.component */ "./src/app/hero-detail/hero-detail.component.ts");
 /* harmony import */ var _start_start_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./start/start.component */ "./src/app/start/start.component.ts");
+/* harmony import */ var _progress_kendo_angular_buttons__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @progress/kendo-angular-buttons */ "./node_modules/@progress/kendo-angular-buttons/dist/es/index.js");
+/* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/fesm5/animations.js");
+/* harmony import */ var _progress_kendo_angular_dropdowns__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @progress/kendo-angular-dropdowns */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/index.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
 
 
 
@@ -124,7 +130,10 @@ var AppModule = /** @class */ (function () {
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormsModule"]
+                _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormsModule"],
+                _progress_kendo_angular_buttons__WEBPACK_IMPORTED_MODULE_7__["ButtonsModule"],
+                _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_8__["BrowserAnimationsModule"],
+                _progress_kendo_angular_dropdowns__WEBPACK_IMPORTED_MODULE_9__["DropDownsModule"]
             ],
             providers: [],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]]
@@ -339,7 +348,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Welcome to the game</h1>"
+module.exports = "<h1>Welcome to the game</h1>\r\n<h4>Enter your name or select player</h4>\r\n<kendo-combobox [data]=\"data\"\r\n                [allowCustom]=\"true\"\r\n                (open)=\"open()\"\r\n                (close)=\"close()\"\r\n                (focus)=\"focus()\"\r\n                (blur)=\"blur()\">\r\n</kendo-combobox>\r\n<h4>Choose count bot-player</h4>\r\n<kendo-dropdownlist [data]=\"countBots\"\r\n                    [value]=1\r\n                    (open)=\"open()\"\r\n                    (close)=\"close()\"\r\n                    (focus)=\"focus()\"\r\n                    (blur)=\"blur()\">\r\n</kendo-dropdownlist>\r\n<h4>and start game</h4>\r\n<button kendoButton (click)=\"onButtonClick()\">Start</button>\r\n"
 
 /***/ }),
 
@@ -366,8 +375,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 var StartComponent = /** @class */ (function () {
     function StartComponent() {
+        this.countBots = [1, 2, 3, 4, 5];
     }
     StartComponent.prototype.ngOnInit = function () {
+    };
+    StartComponent.prototype.onButtonClick = function () {
+        console.log('click');
     };
     StartComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({

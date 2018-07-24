@@ -5,7 +5,9 @@ import { AppComponent } from './app.component';
 import { HeroesComponent } from './heroes/heroes.component';
 import { HeroDetailComponent } from './hero-detail/hero-detail.component';
 import { StartComponent } from './start/start.component';
-
+import { ButtonsModule } from '@progress/kendo-angular-buttons';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 
 @NgModule({
     declarations: [
@@ -16,7 +18,10 @@ import { StartComponent } from './start/start.component';
     ],
     imports: [
         BrowserModule,
-        FormsModule
+        FormsModule,
+        ButtonsModule,
+        BrowserAnimationsModule,
+        DropDownsModule
     ],
     providers: [
         // no need to place any providers due to the `providedIn` flag...

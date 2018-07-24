@@ -15,6 +15,9 @@ var StartComponent = /** @class */ (function () {
     }
     StartComponent.prototype.ngOnInit = function () {
     };
+    StartComponent.prototype.onButtonClick = function () {
+        console.log('click');
+    };
     StartComponent = __decorate([
         core_1.Component({
             selector: 'app-start',

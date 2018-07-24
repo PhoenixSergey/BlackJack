@@ -90,3 +90,4 @@ C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\obj\Debug\BlackJack
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\obj\Debug\BlackJack.AngularMVC.csproj.CopyComplete
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\obj\Debug\BlackJack.AngularMVC.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\obj\Debug\BlackJack.AngularMVC.pdb
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\obj\Debug\BlackJack.AngularMVC.csprojAssemblyReference.cache
