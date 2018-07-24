@@ -86,7 +86,6 @@ C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\bin\Microsoft.AI.De
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\bin\Microsoft.AI.WindowsServer.xml
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\bin\Microsoft.AI.Web.xml
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\obj\Debug\BlackJack.AngularMVC.csprojAssemblyReference.cache
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\obj\Debug\BlackJack.AngularMVC.csproj.CoreCompileInputs.cache
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\obj\Debug\BlackJack.AngularMVC.csproj.CopyComplete
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\obj\Debug\BlackJack.AngularMVC.dll

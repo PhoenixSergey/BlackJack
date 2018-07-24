@@ -10,7 +10,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0CC72524-AFCC-4BBC-B50B-109D9EFBF51B}</ProjectGuid>
+    <ProjectGuid>{25D3AB35-CDED-407C-B252-4E4571E763CE}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -194,6 +194,12 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="src\app\app.component.css" />
     <Content Include="src\app\app.component.html" />
+    <Content Include="src\app\hero-detail\hero-detail.component.css" />
+    <Content Include="src\app\hero-detail\hero-detail.component.html" />
+    <Content Include="src\app\heroes\heroes.component.css" />
+    <Content Include="src\app\heroes\heroes.component.html" />
+    <Content Include="src\app\start\start.component.css" />
+    <Content Include="src\app\start\start.component.html" />
     <Content Include="src\favicon.ico" />
     <Content Include="src\index.html" />
     <Content Include="src\karma.conf.js" />
@@ -209,8 +215,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="src\assets\.gitkeep" />
     <Content Include="src\browserslist" />
@@ -226,7 +230,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -242,14 +245,27 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="src\app\app.component.spec.ts" />
     <TypeScriptCompile Include="src\app\app.component.ts" />
     <TypeScriptCompile Include="src\app\app.module.ts" />
+    <TypeScriptCompile Include="src\app\hero-detail\hero-detail.component.ts" />
+    <TypeScriptCompile Include="src\app\heroes\hero.ts" />
+    <TypeScriptCompile Include="src\app\heroes\heroes.component.ts" />
+    <TypeScriptCompile Include="src\app\moke-heroes.ts" />
+    <TypeScriptCompile Include="src\app\start\start.component.ts" />
     <TypeScriptCompile Include="src\environments\environment.prod.ts" />
     <TypeScriptCompile Include="src\environments\environment.ts" />
     <TypeScriptCompile Include="src\main.ts" />
     <TypeScriptCompile Include="src\polyfills.ts" />
     <TypeScriptCompile Include="src\test.ts" />
+    <TypeScriptCompile Include="ViewModels\EnumViewModel\GameEnd.ts" />
+    <TypeScriptCompile Include="ViewModels\EnumViewModel\ResultEnumView.ts" />
+    <TypeScriptCompile Include="ViewModels\EnumViewModel\RoleEnumView.ts" />
+    <TypeScriptCompile Include="ViewModels\GameViewModel\CurrentGameGameView.ts" />
+    <TypeScriptCompile Include="ViewModels\GameViewModel\EndGameGameView.ts" />
+    <TypeScriptCompile Include="ViewModels\GameViewModel\ErrorGameView.ts" />
+    <TypeScriptCompile Include="ViewModels\GameViewModel\StartInfoGameView.ts" />
+    <TypeScriptCompile Include="ViewModels\HistoryViewModel\AllGamesHistoryView.ts" />
+    <TypeScriptCompile Include="ViewModels\HistoryViewModel\GameDetailsHistoryView.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -271,7 +287,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>49813</DevelopmentServerPort>
+          <DevelopmentServerPort>51366</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:58825/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

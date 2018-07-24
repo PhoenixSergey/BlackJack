@@ -1,10 +1,15 @@
-﻿using System;
+﻿using Autofac;
+using Autofac.Integration.WebApi;
+using BlackJack.AngularMVC;
+using BlackJack.Config;
+using BusinessLogic;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Http;
-using System.Web.Mvc;
-using System.Web.Optimization;
 using System.Web.Routing;
 
 namespace BlackJack.WebAPI
@@ -13,11 +18,13 @@ namespace BlackJack.WebAPI
     {
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            var builder = new ContainerBuilder();
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+            var container = AutofacWebAPIServicesConfig.ConfigureAPIContainer(builder, connectionString);
+            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            AutoMapperConfig.Initialize();
         }
     }
 }

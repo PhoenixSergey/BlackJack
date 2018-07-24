@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="AppValidationException.cs" />
     <Compile Include="AutofacServicesConfig.cs" />
+    <Compile Include="AutofacWebAPIServicesConfig.cs" />
     <Compile Include="Interfaces\IGameService.cs" />
     <Compile Include="Interfaces\IHistoryService.cs" />
     <Compile Include="Interfaces\IMappingService.cs" />
