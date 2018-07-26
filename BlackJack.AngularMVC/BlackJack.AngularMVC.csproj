@@ -194,12 +194,16 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="src\app\app.component.css" />
     <Content Include="src\app\app.component.html" />
+    <Content Include="src\app\current-game\current-game.component.css" />
+    <Content Include="src\app\current-game\current-game.component.html" />
     <Content Include="src\app\hero-detail\hero-detail.component.css" />
     <Content Include="src\app\hero-detail\hero-detail.component.html" />
     <Content Include="src\app\heroes\heroes.component.css" />
     <Content Include="src\app\heroes\heroes.component.html" />
     <Content Include="src\app\start\start.component.css" />
     <Content Include="src\app\start\start.component.html" />
+    <Content Include="src\app\view-round\view-round.component.css" />
+    <Content Include="src\app\view-round\view-round.component.html" />
     <Content Include="src\favicon.ico" />
     <Content Include="src\index.html" />
     <Content Include="src\karma.conf.js" />
@@ -245,27 +249,31 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="models\game-model\gameStartInfo.ts" />
     <TypeScriptCompile Include="src\app\app.component.ts" />
     <TypeScriptCompile Include="src\app\app.module.ts" />
+    <TypeScriptCompile Include="src\app\current-game\current-game.component.ts" />
+    <TypeScriptCompile Include="src\app\game-service.service.ts" />
     <TypeScriptCompile Include="src\app\hero-detail\hero-detail.component.ts" />
     <TypeScriptCompile Include="src\app\heroes\hero.ts" />
     <TypeScriptCompile Include="src\app\heroes\heroes.component.ts" />
     <TypeScriptCompile Include="src\app\moke-heroes.ts" />
     <TypeScriptCompile Include="src\app\start\start.component.ts" />
+    <TypeScriptCompile Include="src\app\view-round\view-round.component.ts" />
     <TypeScriptCompile Include="src\environments\environment.prod.ts" />
     <TypeScriptCompile Include="src\environments\environment.ts" />
     <TypeScriptCompile Include="src\main.ts" />
     <TypeScriptCompile Include="src\polyfills.ts" />
     <TypeScriptCompile Include="src\test.ts" />
-    <TypeScriptCompile Include="ViewModels\EnumViewModel\GameEnd.ts" />
-    <TypeScriptCompile Include="ViewModels\EnumViewModel\ResultEnumView.ts" />
-    <TypeScriptCompile Include="ViewModels\EnumViewModel\RoleEnumView.ts" />
-    <TypeScriptCompile Include="ViewModels\GameViewModel\CurrentGameGameView.ts" />
-    <TypeScriptCompile Include="ViewModels\GameViewModel\EndGameGameView.ts" />
-    <TypeScriptCompile Include="ViewModels\GameViewModel\ErrorGameView.ts" />
-    <TypeScriptCompile Include="ViewModels\GameViewModel\StartInfoGameView.ts" />
-    <TypeScriptCompile Include="ViewModels\HistoryViewModel\AllGamesHistoryView.ts" />
-    <TypeScriptCompile Include="ViewModels\HistoryViewModel\GameDetailsHistoryView.ts" />
+    <TypeScriptCompile Include="models\enum-model\GameEnd.ts" />
+    <TypeScriptCompile Include="models\enum-model\ResultEnumView.ts" />
+    <TypeScriptCompile Include="models\enum-model\RoleEnumView.ts" />
+    <TypeScriptCompile Include="models\game-model\CurrentGameGameView.ts" />
+    <TypeScriptCompile Include="models\game-model\EndGameGameView.ts" />
+    <TypeScriptCompile Include="models\game-model\ErrorGameView.ts" />
+    <TypeScriptCompile Include="models\game-model\StartInfoGameView.ts" />
+    <TypeScriptCompile Include="models\history-model\AllGamesHistoryView.ts" />
+    <TypeScriptCompile Include="models\history-model\GameDetailsHistoryView.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

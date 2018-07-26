@@ -16,6 +16,10 @@ var start_component_1 = require("./start/start.component");
 var kendo_angular_buttons_1 = require("@progress/kendo-angular-buttons");
 var animations_1 = require("@angular/platform-browser/animations");
 var kendo_angular_dropdowns_1 = require("@progress/kendo-angular-dropdowns");
+var game_service_service_1 = require("src/app/game-service.service");
+var http_1 = require("@angular/common/http");
+var current_game_component_1 = require("./current-game/current-game.component");
+var view_round_component_1 = require("./view-round/view-round.component");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -25,7 +29,9 @@ var AppModule = /** @class */ (function () {
                 app_component_1.AppComponent,
                 heroes_component_1.HeroesComponent,
                 hero_detail_component_1.HeroDetailComponent,
-                start_component_1.StartComponent
+                start_component_1.StartComponent,
+                current_game_component_1.CurrentGameComponent,
+                view_round_component_1.ViewRoundComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -35,7 +41,11 @@ var AppModule = /** @class */ (function () {
                 kendo_angular_dropdowns_1.DropDownsModule
             ],
             providers: [
-            // no need to place any providers due to the `providedIn` flag...
+                game_service_service_1.GameService
+                // no need to place any providers due to the `providedIn` flag...
+            ],
+            exports: [
+                http_1.HttpClientModule
             ],
             bootstrap: [app_component_1.AppComponent]
         })

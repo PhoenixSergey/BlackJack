@@ -1,4 +1,5 @@
 ﻿using BlackJack.ViewModels.GameViewModel;
+using BlackJack.WebAPI.Models;
 using BusinessLogic;
 using BusinessLogic.Interfaces;
 using System;
@@ -8,9 +9,11 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace BlackJack.WebAPI.Controllers
 {
+    
     public class GameController : ApiController
     {
         #region references
@@ -24,6 +27,7 @@ namespace BlackJack.WebAPI.Controllers
         #endregion
 
         [HttpGet]
+        [Route("api/Game/Start")]
         public async Task<System.Web.Http.IHttpActionResult> Start()
         {
             var allHumanPlayer = await _gameService.SelectAllHumanPlayers();
@@ -37,9 +41,13 @@ namespace BlackJack.WebAPI.Controllers
             return Ok(startGame);
         }
 
-        [HttpPost]
-        public async Task<System.Web.Http.IHttpActionResult> CreateGame(string ourPlayers, int countBot)
+        [HttpGet, HttpPost]
+        [Route("api/Game/CreateGame")]
+        public async Task<System.Web.Http.IHttpActionResult> CreateGame(StartInfoGame startInfoGame)
         {
+
+            string ourPlayers = startInfoGame.OurPlayers;
+            int countBot = startInfoGame.CountBot;
             try
             {
                 var startGame = await _gameService.CreateGame(ourPlayers, countBot);

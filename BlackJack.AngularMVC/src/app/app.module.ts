@@ -8,13 +8,18 @@ import { StartComponent } from './start/start.component';
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
-
+import { GameService } from 'src/app/game-service.service';
+import { HttpClientModule } from '@angular/common/http';
+import { CurrentGameComponent } from './current-game/current-game.component';
+import { ViewRoundComponent } from './view-round/view-round.component';
 @NgModule({
     declarations: [
         AppComponent,
         HeroesComponent,
         HeroDetailComponent,
-        StartComponent
+        StartComponent,
+        CurrentGameComponent,
+        ViewRoundComponent
     ],
     imports: [
         BrowserModule,
@@ -24,8 +29,12 @@ import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
         DropDownsModule
     ],
     providers: [
+        GameService
+     
         // no need to place any providers due to the `providedIn` flag...
     ],
+    exports: [
+        HttpClientModule],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

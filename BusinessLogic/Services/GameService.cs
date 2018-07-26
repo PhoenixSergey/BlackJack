@@ -46,7 +46,7 @@ namespace BusinessLogic
         {
             IEnumerable<Player> humanPlayers = await _playerRepository.GetAllHumanPlayer();
             StartInfoGameView allHumanPlayers = new StartInfoGameView();
-            allHumanPlayers.HumanPlayers = humanPlayers.Select(x => x.Name).ToList();
+            allHumanPlayers.HumanPlayers = humanPlayers.Select(x => new PlayerStartInfoViewItem { Id=x.Id ,Name = x.Name }).ToList();
             return allHumanPlayers;
         }
 

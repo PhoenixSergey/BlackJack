@@ -1,5 +1,25 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["main"],{
 
+/***/ "./models/game-model/gameStartInfo.ts":
+/*!********************************************!*\
+  !*** ./models/game-model/gameStartInfo.ts ***!
+  \********************************************/
+/*! exports provided: StartInfoGame */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StartInfoGame", function() { return StartInfoGame; });
+var StartInfoGame = /** @class */ (function () {
+    function StartInfoGame() {
+    }
+    return StartInfoGame;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/$$_lazy_route_resource lazy recursive":
 /*!**********************************************************!*\
   !*** ./src/$$_lazy_route_resource lazy namespace object ***!
@@ -41,7 +61,7 @@ module.exports = "h1 {\r\n    color: #369;\r\n    font-family: Arial, Helvetica,
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--<h1>{{title}}</h1>-->\r\n<!--<app-heroes></app-heroes>-->\r\n<app-start></app-start>\r\n"
+module.exports = "<app-start></app-start>\r\n\r\n"
 
 /***/ }),
 
@@ -101,12 +121,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _progress_kendo_angular_buttons__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @progress/kendo-angular-buttons */ "./node_modules/@progress/kendo-angular-buttons/dist/es/index.js");
 /* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/fesm5/animations.js");
 /* harmony import */ var _progress_kendo_angular_dropdowns__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @progress/kendo-angular-dropdowns */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/index.js");
+/* harmony import */ var src_app_game_service_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! src/app/game-service.service */ "./src/app/game-service.service.ts");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var _current_game_current_game_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./current-game/current-game.component */ "./src/app/current-game/current-game.component.ts");
+/* harmony import */ var _view_round_view_round_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./view-round/view-round.component */ "./src/app/view-round/view-round.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
+
 
 
 
@@ -126,7 +154,9 @@ var AppModule = /** @class */ (function () {
                 _app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"],
                 _heroes_heroes_component__WEBPACK_IMPORTED_MODULE_4__["HeroesComponent"],
                 _hero_detail_hero_detail_component__WEBPACK_IMPORTED_MODULE_5__["HeroDetailComponent"],
-                _start_start_component__WEBPACK_IMPORTED_MODULE_6__["StartComponent"]
+                _start_start_component__WEBPACK_IMPORTED_MODULE_6__["StartComponent"],
+                _current_game_current_game_component__WEBPACK_IMPORTED_MODULE_12__["CurrentGameComponent"],
+                _view_round_view_round_component__WEBPACK_IMPORTED_MODULE_13__["ViewRoundComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -135,11 +165,129 @@ var AppModule = /** @class */ (function () {
                 _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_8__["BrowserAnimationsModule"],
                 _progress_kendo_angular_dropdowns__WEBPACK_IMPORTED_MODULE_9__["DropDownsModule"]
             ],
-            providers: [],
+            providers: [
+                src_app_game_service_service__WEBPACK_IMPORTED_MODULE_10__["GameService"]
+                // no need to place any providers due to the `providedIn` flag...
+            ],
+            exports: [
+                _angular_common_http__WEBPACK_IMPORTED_MODULE_11__["HttpClientModule"]
+            ],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]]
         })
     ], AppModule);
     return AppModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/current-game/current-game.component.css":
+/*!*********************************************************!*\
+  !*** ./src/app/current-game/current-game.component.css ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/current-game/current-game.component.html":
+/*!**********************************************************!*\
+  !*** ./src/app/current-game/current-game.component.html ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<br />\r\n<app-view-round></app-view-round>\r\n<button kendoButton (click)=\"onButtonClick()\">Take more</button>\r\n<br />\r\n<br />\r\n<button kendoButton (click)=\"onButtonClick()\">Enough</button>"
+
+/***/ }),
+
+/***/ "./src/app/current-game/current-game.component.ts":
+/*!********************************************************!*\
+  !*** ./src/app/current-game/current-game.component.ts ***!
+  \********************************************************/
+/*! exports provided: CurrentGameComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CurrentGameComponent", function() { return CurrentGameComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var CurrentGameComponent = /** @class */ (function () {
+    function CurrentGameComponent() {
+    }
+    CurrentGameComponent.prototype.onButtonClick = function () {
+        console.log('click');
+    };
+    CurrentGameComponent.prototype.ngOnInit = function () {
+    };
+    CurrentGameComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-current-game',
+            template: __webpack_require__(/*! ./current-game.component.html */ "./src/app/current-game/current-game.component.html"),
+            styles: [__webpack_require__(/*! ./current-game.component.css */ "./src/app/current-game/current-game.component.css")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], CurrentGameComponent);
+    return CurrentGameComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/game-service.service.ts":
+/*!*****************************************!*\
+  !*** ./src/app/game-service.service.ts ***!
+  \*****************************************/
+/*! exports provided: GameService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GameService", function() { return GameService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var GameService = /** @class */ (function () {
+    function GameService(http) {
+        this.http = http;
+        this.url = "http://localhost:58816/api/Game/";
+    }
+    GameService.prototype.start = function () {
+        return this.http.get(this.url + "Start");
+    };
+    GameService.prototype.createGame = function (startInfoGame) {
+        var body = { ourPlayers: startInfoGame.ourPlayers, countBot: startInfoGame.countBot };
+        return this.http.post(this.url + "CreateGame", body);
+    };
+    GameService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]])
+    ], GameService);
+    return GameService;
 }());
 
 
@@ -348,7 +496,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Welcome to the game</h1>\r\n<h4>Enter your name or select player</h4>\r\n<kendo-combobox [data]=\"data\"\r\n                [allowCustom]=\"true\"\r\n                (open)=\"open()\"\r\n                (close)=\"close()\"\r\n                (focus)=\"focus()\"\r\n                (blur)=\"blur()\">\r\n</kendo-combobox>\r\n<h4>Choose count bot-player</h4>\r\n<kendo-dropdownlist [data]=\"countBots\"\r\n                    [value]=1\r\n                    (open)=\"open()\"\r\n                    (close)=\"close()\"\r\n                    (focus)=\"focus()\"\r\n                    (blur)=\"blur()\">\r\n</kendo-dropdownlist>\r\n<h4>and start game</h4>\r\n<button kendoButton (click)=\"onButtonClick()\">Start</button>\r\n"
+module.exports = "<h1>Welcome to the game</h1>\r\n<h4>Enter your name or select player</h4>\r\n<kendo-combobox [(ngModel)]=\"startInfoGame.ourPlayers\"\r\n                [data]=\"humanPlayers\"\r\n                [allowCustom]=\"true\">\r\n</kendo-combobox>\r\n<h4>Choose count bot-player</h4>\r\n<kendo-dropdownlist [data]=\"countBots\"\r\n                    [value]=\"0\"\r\n                    [(ngModel)]=\"startInfoGame.countBot\">\r\n</kendo-dropdownlist>\r\n<h4>and start game</h4>\r\n<button kendoButton (click)=\"createGame(startInfoGame)\">Start</button>\r\n"
 
 /***/ }),
 
@@ -363,6 +511,8 @@ module.exports = "<h1>Welcome to the game</h1>\r\n<h4>Enter your name or select 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StartComponent", function() { return StartComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_game_service_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/game-service.service */ "./src/app/game-service.service.ts");
+/* harmony import */ var models_game_model_gameStartInfo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! models/game-model/gameStartInfo */ "./models/game-model/gameStartInfo.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -373,14 +523,32 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var StartComponent = /** @class */ (function () {
-    function StartComponent() {
+    function StartComponent(gameService) {
+        this.gameService = gameService;
+        this.humanPlayers = [];
         this.countBots = [1, 2, 3, 4, 5];
+        this.startInfoGame = new models_game_model_gameStartInfo__WEBPACK_IMPORTED_MODULE_2__["StartInfoGame"]();
     }
     StartComponent.prototype.ngOnInit = function () {
+        this.start();
     };
-    StartComponent.prototype.onButtonClick = function () {
-        console.log('click');
+    StartComponent.prototype.start = function () {
+        var _this = this;
+        this.gameService.start()
+            .subscribe(function (heroes) {
+            for (var i = 0; i < heroes.humanPlayers.length; i++) {
+                _this.humanPlayers[i] = heroes.humanPlayers[i].name;
+            }
+        });
+    };
+    StartComponent.prototype.createGame = function (startInfoGame) {
+        var _this = this;
+        this.gameService.createGame(startInfoGame)
+            .subscribe(function (gameId) { return _this.gameId = gameId; });
+        return this.gameId;
     };
     StartComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -388,9 +556,72 @@ var StartComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./start.component.html */ "./src/app/start/start.component.html"),
             styles: [__webpack_require__(/*! ./start.component.css */ "./src/app/start/start.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [src_app_game_service_service__WEBPACK_IMPORTED_MODULE_1__["GameService"]])
     ], StartComponent);
     return StartComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/view-round/view-round.component.css":
+/*!*****************************************************!*\
+  !*** ./src/app/view-round/view-round.component.css ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/view-round/view-round.component.html":
+/*!******************************************************!*\
+  !*** ./src/app/view-round/view-round.component.html ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  view-round works!\n</p>\n"
+
+/***/ }),
+
+/***/ "./src/app/view-round/view-round.component.ts":
+/*!****************************************************!*\
+  !*** ./src/app/view-round/view-round.component.ts ***!
+  \****************************************************/
+/*! exports provided: ViewRoundComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ViewRoundComponent", function() { return ViewRoundComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var ViewRoundComponent = /** @class */ (function () {
+    function ViewRoundComponent() {
+    }
+    ViewRoundComponent.prototype.ngOnInit = function () {
+    };
+    ViewRoundComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-view-round',
+            template: __webpack_require__(/*! ./view-round.component.html */ "./src/app/view-round/view-round.component.html"),
+            styles: [__webpack_require__(/*! ./view-round.component.css */ "./src/app/view-round/view-round.component.css")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], ViewRoundComponent);
+    return ViewRoundComponent;
 }());
 
 

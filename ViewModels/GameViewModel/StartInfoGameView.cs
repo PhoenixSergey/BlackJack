@@ -4,6 +4,11 @@ namespace BlackJack.ViewModels.GameViewModel
 {
     public class StartInfoGameView
     {
-        public List<string> HumanPlayers = new List<string>();    
+        public List<PlayerStartInfoViewItem> HumanPlayers = new List<PlayerStartInfoViewItem>();    
+    }
+    public class PlayerStartInfoViewItem
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }       
     }
 }

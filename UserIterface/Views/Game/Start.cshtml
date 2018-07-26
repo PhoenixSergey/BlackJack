@@ -1,6 +1,11 @@
 ﻿@using BlackJack.ViewModels.GameViewModel
 @model StartInfoGameView
 @{
+    List<string> HumanPLayers = new List<string>();
+    foreach(var player in Model.HumanPlayers)
+    {
+        HumanPLayers.Add(player.Name);
+    }
     ViewBag.Title = "BlackJack";
 }
 <center><h1>Welcome to the game</h1></center>
@@ -18,6 +23,6 @@
     </div>
 </center>
 <script>
-    var array = JSON.parse('@Newtonsoft.Json.JsonConvert.SerializeObject(Model.HumanPlayers)'.replace(/&quot;/g, "\""));   
+    var array = JSON.parse('@Newtonsoft.Json.JsonConvert.SerializeObject(HumanPLayers)'.replace(/&quot;/g, "\""));   
 </script>
 @Scripts.Render("~/bundles/Game/Start")
