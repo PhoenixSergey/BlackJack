@@ -10,17 +10,18 @@ var platform_browser_1 = require("@angular/platform-browser");
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var app_component_1 = require("./app.component");
-var heroes_component_1 = require("./heroes/heroes.component");
-var hero_detail_component_1 = require("./hero-detail/hero-detail.component");
-var start_component_1 = require("./start/start.component");
+var start_component_1 = require("./Game/start/start.component");
 var kendo_angular_buttons_1 = require("@progress/kendo-angular-buttons");
 var animations_1 = require("@angular/platform-browser/animations");
 var kendo_angular_dropdowns_1 = require("@progress/kendo-angular-dropdowns");
-var game_service_service_1 = require("src/app/game-service.service");
+var game_service_service_1 = require("src/app/Game/game-service.service");
+var history_service_1 = require("src/app/History/history.service");
 var http_1 = require("@angular/common/http");
-var current_game_component_1 = require("./current-game/current-game.component");
+var current_game_component_1 = require("./Game/current-game/current-game.component");
 var app_routing_module_1 = require(".//app-routing.module");
-var end_game_component_1 = require("./end-game/end-game.component");
+var end_game_component_1 = require("./Game/end-game/end-game.component");
+var all_game_component_1 = require("src/app/History/all-game/all-game.component");
+var game_details_component_1 = require("src/app/History/game-details/game-details.component");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -28,11 +29,11 @@ var AppModule = /** @class */ (function () {
         core_1.NgModule({
             declarations: [
                 app_component_1.AppComponent,
-                heroes_component_1.HeroesComponent,
-                hero_detail_component_1.HeroDetailComponent,
                 start_component_1.StartComponent,
                 current_game_component_1.CurrentGameComponent,
                 end_game_component_1.EndGameComponent,
+                all_game_component_1.AllGameComponent,
+                game_details_component_1.GameDetailsComponent,
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -43,8 +44,8 @@ var AppModule = /** @class */ (function () {
                 app_routing_module_1.AppRoutingModule
             ],
             providers: [
-                game_service_service_1.GameService
-                // no need to place any providers due to the `providedIn` flag...
+                game_service_service_1.GameService,
+                history_service_1.HistoryService
             ],
             exports: [
                 http_1.HttpClientModule

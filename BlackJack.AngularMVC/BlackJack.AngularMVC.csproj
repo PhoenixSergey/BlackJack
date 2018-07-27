@@ -194,16 +194,16 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="src\app\app.component.css" />
     <Content Include="src\app\app.component.html" />
-    <Content Include="src\app\current-game\current-game.component.css" />
-    <Content Include="src\app\current-game\current-game.component.html" />
-    <Content Include="src\app\end-game\end-game.component.css" />
-    <Content Include="src\app\end-game\end-game.component.html" />
-    <Content Include="src\app\hero-detail\hero-detail.component.css" />
-    <Content Include="src\app\hero-detail\hero-detail.component.html" />
-    <Content Include="src\app\heroes\heroes.component.css" />
-    <Content Include="src\app\heroes\heroes.component.html" />
-    <Content Include="src\app\start\start.component.css" />
-    <Content Include="src\app\start\start.component.html" />
+    <Content Include="src\app\Game\current-game\current-game.component.css" />
+    <Content Include="src\app\Game\current-game\current-game.component.html" />
+    <Content Include="src\app\Game\end-game\end-game.component.css" />
+    <Content Include="src\app\Game\end-game\end-game.component.html" />
+    <Content Include="src\app\Game\start\start.component.css" />
+    <Content Include="src\app\Game\start\start.component.html" />
+    <Content Include="src\app\History\all-game\all-game.component.css" />
+    <Content Include="src\app\History\all-game\all-game.component.html" />
+    <Content Include="src\app\History\game-details\game-details.component.css" />
+    <Content Include="src\app\History\game-details\game-details.component.html" />
     <Content Include="src\favicon.ico" />
     <Content Include="src\index.html" />
     <Content Include="src\karma.conf.js" />
@@ -234,6 +234,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Start\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -253,14 +254,13 @@
     <TypeScriptCompile Include="src\app\app-routing.module.ts" />
     <TypeScriptCompile Include="src\app\app.component.ts" />
     <TypeScriptCompile Include="src\app\app.module.ts" />
-    <TypeScriptCompile Include="src\app\current-game\current-game.component.ts" />
-    <TypeScriptCompile Include="src\app\end-game\end-game.component.ts" />
-    <TypeScriptCompile Include="src\app\game-service.service.ts" />
-    <TypeScriptCompile Include="src\app\hero-detail\hero-detail.component.ts" />
-    <TypeScriptCompile Include="src\app\heroes\hero.ts" />
-    <TypeScriptCompile Include="src\app\heroes\heroes.component.ts" />
-    <TypeScriptCompile Include="src\app\moke-heroes.ts" />
-    <TypeScriptCompile Include="src\app\start\start.component.ts" />
+    <TypeScriptCompile Include="src\app\Game\current-game\current-game.component.ts" />
+    <TypeScriptCompile Include="src\app\Game\end-game\end-game.component.ts" />
+    <TypeScriptCompile Include="src\app\Game\game-service.service.ts" />
+    <TypeScriptCompile Include="src\app\History\history.service.ts" />
+    <TypeScriptCompile Include="src\app\History\all-game\all-game.component.ts" />
+    <TypeScriptCompile Include="src\app\History\game-details\game-details.component.ts" />
+    <TypeScriptCompile Include="src\app\Game\start\start.component.ts" />
     <TypeScriptCompile Include="src\environments\environment.prod.ts" />
     <TypeScriptCompile Include="src\environments\environment.ts" />
     <TypeScriptCompile Include="src\main.ts" />
