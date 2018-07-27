@@ -110,6 +110,10 @@ MIT
 MIT
 MIT
 
+@angular/router@6.0.9
+MIT
+MIT
+
 @progress/kendo-angular-buttons@4.1.2
 SEE LICENSE in LICENSE.md
 # Kendo UI for Angular

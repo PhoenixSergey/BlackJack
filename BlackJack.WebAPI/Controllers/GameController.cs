@@ -13,7 +13,7 @@ using System.Web.Http.Cors;
 
 namespace BlackJack.WebAPI.Controllers
 {
-    
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class GameController : ApiController
     {
         #region references
@@ -35,13 +35,14 @@ namespace BlackJack.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("api/Game/CurrentGame/{gameId}")]
         public async Task<System.Web.Http.IHttpActionResult> CurrentGame(int gameId)
         {
             var startGame = await _gameService.CreateFirstRoundForAllPlayers(gameId);
             return Ok(startGame);
         }
 
-        [HttpGet, HttpPost]
+        [HttpPost]
         [Route("api/Game/CreateGame")]
         public async Task<System.Web.Http.IHttpActionResult> CreateGame(StartInfoGame startInfoGame)
         {
@@ -50,30 +51,34 @@ namespace BlackJack.WebAPI.Controllers
             int countBot = startInfoGame.CountBot;
             try
             {
-                var startGame = await _gameService.CreateGame(ourPlayers, countBot);
-                return Ok(startGame);
+                var gameId = await _gameService.CreateGame(ourPlayers, countBot);
+                return Ok(gameId);
             }
             catch (AppValidationException e)
             {
-                ErrorGameView errorGameView = new ErrorGameView();
+                ErrorGameView errorGameView = new ErrorGameView();//return bad request
                 errorGameView.Error = e.Message;
                 return Ok(errorGameView);
             }
             catch (Exception e)
             {
-                ErrorGameView errorGameView = new ErrorGameView();
+                ErrorGameView errorGameView = new ErrorGameView();//return bad request
                 errorGameView.Error = e.Message;
                 return Ok(errorGameView);
             }
         }
 
-        public async Task<System.Web.Http.IHttpActionResult> _ViewRound(int gameId)
+        [HttpGet]
+        [Route("api/Game/NextRound/{gameId}")]
+        public async Task<System.Web.Http.IHttpActionResult> NextRound(int gameId)
         {
             var continueGame = await _gameService.ContinueGameForPlayers(gameId);
             return Ok(continueGame);
 
         }
 
+        [HttpGet]
+        [Route("api/Game/EndGame/{gameId}")]
         public async Task<System.Web.Http.IHttpActionResult> EndGame(int gameId)
         {
             await _gameService.ContinueGameForDealer(gameId);

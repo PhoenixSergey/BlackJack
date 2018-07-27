@@ -12,9 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var game_service_service_1 = require("src/app/game-service.service");
 var gameStartInfo_1 = require("models/game-model/gameStartInfo");
+var router_1 = require("@angular/router");
 var StartComponent = /** @class */ (function () {
-    function StartComponent(gameService) {
+    function StartComponent(gameService, route) {
         this.gameService = gameService;
+        this.route = route;
         this.humanPlayers = [];
         this.countBots = [1, 2, 3, 4, 5];
         this.startInfoGame = new gameStartInfo_1.StartInfoGame();
@@ -33,9 +35,11 @@ var StartComponent = /** @class */ (function () {
     };
     StartComponent.prototype.createGame = function (startInfoGame) {
         var _this = this;
-        this.gameService.createGame(startInfoGame)
-            .subscribe(function (gameId) { return _this.gameId = gameId; });
-        return this.gameId;
+        this.gameService.createGame(startInfoGame).subscribe(function (result) {
+            _this.gameId = result;
+            console.log(_this.gameId);
+            _this.route.navigate(['/currentGame', _this.gameId]);
+        });
     };
     StartComponent = __decorate([
         core_1.Component({
@@ -43,7 +47,7 @@ var StartComponent = /** @class */ (function () {
             templateUrl: './start.component.html',
             styleUrls: ['./start.component.css']
         }),
-        __metadata("design:paramtypes", [game_service_service_1.GameService])
+        __metadata("design:paramtypes", [game_service_service_1.GameService, router_1.Router])
     ], StartComponent);
     return StartComponent;
 }());

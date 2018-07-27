@@ -23,6 +23,15 @@ var GameService = /** @class */ (function () {
         var body = { ourPlayers: startInfoGame.ourPlayers, countBot: startInfoGame.countBot };
         return this.http.post(this.url + "CreateGame", body);
     };
+    GameService.prototype.currentGame = function (gameId) {
+        return this.http.get(this.url + "CurrentGame/" + gameId);
+    };
+    GameService.prototype.nextRound = function (gameId) {
+        return this.http.get(this.url + "NextRound/" + gameId);
+    };
+    GameService.prototype.endGame = function (gameId) {
+        return this.http.get(this.url + "EndGame/" + gameId);
+    };
     GameService = __decorate([
         core_1.Injectable(),
         __metadata("design:paramtypes", [http_1.HttpClient])

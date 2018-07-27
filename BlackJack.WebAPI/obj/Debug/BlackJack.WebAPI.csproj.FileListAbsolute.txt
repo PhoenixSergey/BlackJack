@@ -1,3 +1,9 @@
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\System.IO.Compression.dll
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\VBCSCompiler.exe
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\ApplicationInsights.config
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\BlackJack.WebAPI.dll.config
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\BlackJack.WebAPI.dll
@@ -9,13 +15,9 @@ C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\csi.exe
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\csi.exe.config
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\csi.rsp
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
-C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\Microsoft.CodeAnalysis.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
-C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\Microsoft.CSharp.Core.targets
-C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\Microsoft.VisualBasic.Core.targets
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\Microsoft.Win32.Primitives.dll
@@ -25,7 +27,6 @@ C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\System.Conso
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\System.Diagnostics.Process.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\System.Diagnostics.StackTrace.dll
-C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\System.IO.Compression.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\System.IO.FileSystem.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\System.IO.FileSystem.DriveInfo.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\System.IO.FileSystem.Primitives.dll
@@ -48,7 +49,6 @@ C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\System.Xml.X
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\vbc.exe
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\vbc.exe.config
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\vbc.rsp
-C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\VBCSCompiler.exe
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\roslyn\VBCSCompiler.exe.config
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\Autofac.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\Autofac.Integration.WebApi.dll
@@ -60,6 +60,8 @@ C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\Newtonsoft.Json.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\NLog.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\Purplelight.Framework.Autofac.Integration.WebApi.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\System.Net.Http.Formatting.dll
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\System.Web.Cors.dll
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\System.Web.Http.Cors.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\System.Web.Http.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\System.Web.Http.WebHost.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\ViewModels.dll
@@ -91,9 +93,10 @@ C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\Autofac.xml
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\Autofac.Integration.WebApi.pdb
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\Autofac.Integration.WebApi.xml
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\NLog.xml
-C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\Newtonsoft.Json.xml
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\System.Net.Http.Formatting.xml
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\System.Web.Http.xml
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\System.Web.Http.Cors.xml
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\Newtonsoft.Json.xml
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\System.Web.Http.WebHost.xml
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\System.Web.Optimization.xml
@@ -118,6 +121,3 @@ C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\obj\Debug\BlackJack.Web
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\obj\Debug\BlackJack.WebAPI.csproj.CopyComplete
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\obj\Debug\BlackJack.WebAPI.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\obj\Debug\BlackJack.WebAPI.pdb
-C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\System.Web.Cors.dll
-C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\System.Web.Http.Cors.dll
-C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\System.Web.Http.Cors.xml

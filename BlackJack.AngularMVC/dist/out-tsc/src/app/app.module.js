@@ -19,7 +19,8 @@ var kendo_angular_dropdowns_1 = require("@progress/kendo-angular-dropdowns");
 var game_service_service_1 = require("src/app/game-service.service");
 var http_1 = require("@angular/common/http");
 var current_game_component_1 = require("./current-game/current-game.component");
-var view_round_component_1 = require("./view-round/view-round.component");
+var app_routing_module_1 = require(".//app-routing.module");
+var end_game_component_1 = require("./end-game/end-game.component");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -31,14 +32,15 @@ var AppModule = /** @class */ (function () {
                 hero_detail_component_1.HeroDetailComponent,
                 start_component_1.StartComponent,
                 current_game_component_1.CurrentGameComponent,
-                view_round_component_1.ViewRoundComponent
+                end_game_component_1.EndGameComponent,
             ],
             imports: [
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
                 kendo_angular_buttons_1.ButtonsModule,
                 animations_1.BrowserAnimationsModule,
-                kendo_angular_dropdowns_1.DropDownsModule
+                kendo_angular_dropdowns_1.DropDownsModule,
+                app_routing_module_1.AppRoutingModule
             ],
             providers: [
                 game_service_service_1.GameService

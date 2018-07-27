@@ -1,6 +1,6 @@
-﻿import { ResultEnumView } from "../EnumViewModel/ResultEnumView";
-import { RoleEnumView } from "../EnumViewModel/RoleEnumView";
-import { GameEnd } from "../EnumViewModel/GameEnd";
+﻿import { ResultEnumView } from "models/enum-model/ResultEnumView";
+import { RoleEnumView } from "models/enum-model/RoleEnumView";
+import { GameEnd } from "models/enum-model/GameEnd";
 
 export class EndGameGameView {
     public playersList: Array<PlayerEndGameGameViewItem>;

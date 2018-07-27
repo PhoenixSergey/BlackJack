@@ -10,6 +10,16 @@ C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\ap
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\app\hero-detail\hero-detail.component.js.map
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\models\game-model\StartInfoGameView.js
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\models\game-model\StartInfoGameView.js.map
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\models\enum-model\ResultEnumView.js
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\models\enum-model\ResultEnumView.js.map
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\models\enum-model\RoleEnumView.js
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\models\enum-model\RoleEnumView.js.map
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\models\enum-model\GameEnd.js
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\models\enum-model\GameEnd.js.map
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\models\game-model\CurrentGameGameView.js
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\models\game-model\CurrentGameGameView.js.map
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\models\game-model\EndGameGameView.js
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\models\game-model\EndGameGameView.js.map
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\models\game-model\gameStartInfo.js
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\models\game-model\gameStartInfo.js.map
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\app\game-service.service.js
@@ -18,8 +28,10 @@ C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\ap
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\app\start\start.component.js.map
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\app\current-game\current-game.component.js
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\app\current-game\current-game.component.js.map
-C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\app\view-round\view-round.component.js
-C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\app\view-round\view-round.component.js.map
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\app\end-game\end-game.component.js
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\app\end-game\end-game.component.js.map
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\app\app-routing.module.js
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\app\app-routing.module.js.map
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\app\app.module.js
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\app\app.module.js.map
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\environments\environment.js
@@ -30,5 +42,7 @@ C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\po
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\polyfills.js.map
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\test.js
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\test.js.map
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\app\app-routing.module.spec.js
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\app\app-routing.module.spec.js.map
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\environments\environment.prod.js
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.AngularMVC\dist\out-tsc\src\environments\environment.prod.js.map

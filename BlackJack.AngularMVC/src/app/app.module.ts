@@ -11,7 +11,9 @@ import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { GameService } from 'src/app/game-service.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CurrentGameComponent } from './current-game/current-game.component';
-import { ViewRoundComponent } from './view-round/view-round.component';
+import { AppRoutingModule } from './/app-routing.module';
+import { EndGameComponent } from './end-game/end-game.component';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -19,14 +21,15 @@ import { ViewRoundComponent } from './view-round/view-round.component';
         HeroDetailComponent,
         StartComponent,
         CurrentGameComponent,
-        ViewRoundComponent
+        EndGameComponent,
     ],
     imports: [
         BrowserModule,
         FormsModule,
         ButtonsModule,
         BrowserAnimationsModule,
-        DropDownsModule
+        DropDownsModule,
+        AppRoutingModule
     ],
     providers: [
         GameService
