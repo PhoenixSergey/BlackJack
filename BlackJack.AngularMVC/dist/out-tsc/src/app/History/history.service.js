@@ -10,12 +10,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
+var http_1 = require("@angular/common/http");
 var HistoryService = /** @class */ (function () {
-    function HistoryService() {
+    function HistoryService(http) {
+        this.http = http;
+        this.url = "http://localhost:58816/api/History/";
     }
+    HistoryService.prototype.getAllGames = function () {
+        return this.http.get(this.url + "AllGames");
+    };
     HistoryService = __decorate([
         core_1.Injectable(),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [http_1.HttpClient])
     ], HistoryService);
     return HistoryService;
 }());

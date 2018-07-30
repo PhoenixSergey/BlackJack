@@ -1,13 +1,19 @@
 import { Injectable, Component } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { StartInfoGameView } from 'models/game-model/StartInfoGameView';
-import { CurrentGameGameView } from 'models/game-model/CurrentGameGameView';
-import { EndGameGameView } from 'models/game-model/EndGameGameView';
-import { StartInfoGame } from 'models/game-model/gameStartInfo'
+import { AllGamesHistoryView } from 'models/history-model/AllGamesHistoryView';
+import { GameDetailsHistoryView } from 'models/history-model/GameDetailsHistoryView';
+
 
 @Injectable()
 export class HistoryService {
 
-  constructor() { }
+    public url: string = "http://localhost:58816/api/History/"
+    constructor(private http: HttpClient) { }
+
+    public getAllGames(): Observable<AllGamesHistoryView> {
+        return this.http.get<AllGamesHistoryView>(this.url + "AllGames");
+    }
+
+    
 }

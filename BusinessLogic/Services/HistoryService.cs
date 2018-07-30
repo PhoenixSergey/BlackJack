@@ -61,7 +61,7 @@ namespace BusinessLogic.Services
             foreach (var player in playersOnTheGame)
             {
                 player.Result = (ResultEnumView)(await _playersGameRepository.GetPlayerStatusOnTheGame(gameId, player.Id));
-                player.CardSum = player.PlayerCards.Sum(x => x.Value);
+                player.CardSum = await _gameService.CalculationPlayerCardSum(player.Id, gameId);
             }
             var dealerPlayer = playersOnTheGame.Where(x => x.Role == (RoleEnumView)Role.Dealer).First();
             playersOnTheGame.Remove(dealerPlayer);

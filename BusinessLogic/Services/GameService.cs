@@ -142,7 +142,7 @@ namespace BusinessLogic
             var playersOnTheCurrentGame = await GetInformationAboutPlayers(gameId);
             foreach (PlayerCurrentGameGameViewItem playerViewItem in playersOnTheCurrentGame)
             {
-                playerViewItem.CardSum = playerViewItem.PlayerCards.Sum(x => x.Value);
+                playerViewItem.CardSum = await CalculationPlayerCardSum(playerViewItem.Id, gameId);
                 playerViewItem.Result = (ResultEnumView)(await SetResult(playerViewItem.Id, dealerPlayer.Id, gameId));
             }
             var dealerPlayerOnTheCurrentGame = playersOnTheCurrentGame.Where(x => x.Role == (RoleEnumView)Role.Dealer).First();
@@ -250,7 +250,7 @@ namespace BusinessLogic
             }).DistinctBy(x => x.Id).ToList();
             foreach (PlayerCurrentGameGameViewItem playerViewItem in playersOnTheGame)
             {
-                playerViewItem.CardSum = playerViewItem.PlayerCards.Sum(x => x.Value);
+                playerViewItem.CardSum = await CalculationPlayerCardSum(playerViewItem.Id, gameId);
                 playerViewItem.Result = (ResultEnumView)(await SetResult(playerViewItem.Id, playersOnTheGame.Where(x => x.Role == (RoleEnumView)Role.Dealer).First().Id, gameId));
             }
             return playersOnTheGame;
@@ -312,7 +312,7 @@ namespace BusinessLogic
             }).DistinctBy(x => x.Id).ToList();
             foreach (PlayerEndGameGameViewItem playersEndGame in playersOnTheGame)
             {
-                playersEndGame.CardSum = playersEndGame.PlayerCards.Sum(x => x.Value);
+                playersEndGame.CardSum = await CalculationPlayerCardSum(playersEndGame.Id, gameId);
                 playersEndGame.Result = (ResultEnumView)await _playerGameRepository.GetPlayerStatusOnTheGame(gameId, playersEndGame.Id);
             }
             return playersOnTheGame;

@@ -15,13 +15,15 @@ namespace BlackJack.WebAPI.Controllers
         #endregion
 
         [HttpGet]
+        [Route("api/Histroy/AllGames")]
         public async Task<IHttpActionResult> AllGames()
         {
             var allGames = await _historyService.SelectAllGames();
             return Ok(allGames);
         }
 
-        [HttpPost]
+        [HttpGet]
+        [Route("api/Histroy/GameDetails/{gameId}")]
         public async Task<IHttpActionResult> GameDetails(int id)
         {
             var detailsGame = await _historyService.GetDetails(id);

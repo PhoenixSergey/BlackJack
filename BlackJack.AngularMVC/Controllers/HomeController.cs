@@ -10,7 +10,8 @@ namespace BlackJack.AngularMVC.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            //return View();
+            return new FilePathResult("~/src/index.html", "text/html");
         }
   
     }

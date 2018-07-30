@@ -48,7 +48,7 @@ module.exports = ".k-button[disabled],[disabled] .k-button{outline:none;cursor:d
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/* You can add global styles to this file, and also import other style files */\n"
+module.exports = "/* You can add global styles to this file, and also import other style files */\n\n"
 
 /***/ }),
 
