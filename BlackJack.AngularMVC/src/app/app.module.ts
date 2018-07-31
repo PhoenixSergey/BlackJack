@@ -1,38 +1,30 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { AppComponent } from './app.component';
-import { StartComponent } from './Game/start/start.component';
-import { ButtonsModule } from '@progress/kendo-angular-buttons';
+//import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { AppRoutingModule } from './/app-routing.module';
+//import { GridModule } from '@progress/kendo-angular-grid';
+import { HashLocationStrategy, LocationStrategy, CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+import { AppComponent } from './app.component';
 import { GameService } from 'src/app/Game/game-service.service';
 import { HistoryService } from 'src/app/History/history.service';
-import { HttpClientModule } from '@angular/common/http';
-import { CurrentGameComponent } from './Game/current-game/current-game.component';
-import { AppRoutingModule } from './/app-routing.module';
-import { EndGameComponent } from './Game/end-game/end-game.component';
-import { AllGameComponent } from 'src/app/History/all-game/all-game.component';
-import { GameDetailsComponent } from 'src/app/History/game-details/game-details.component';
+import { SharedModule } from 'Shared/shared.module';
 
 @NgModule({
     declarations: [
-        AppComponent,
-        StartComponent,
-        CurrentGameComponent,
-        EndGameComponent,
-        AllGameComponent,
-        GameDetailsComponent,
+        AppComponent,     
     ],
     imports: [
         BrowserModule,
-        FormsModule,
-        ButtonsModule,
+        SharedModule,
         BrowserAnimationsModule,
         DropDownsModule,
-        AppRoutingModule
+        AppRoutingModule,
     ],
     providers: [
+        { provide: LocationStrategy, useClass: HashLocationStrategy },
         GameService,
         HistoryService
     ],

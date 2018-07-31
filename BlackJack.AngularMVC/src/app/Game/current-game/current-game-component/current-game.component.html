@@ -1,0 +1,42 @@
+﻿<h1>Game number {{gameId}}</h1>
+<table class="table1">
+    <tr><th>Name </th><th>Role </th><th>Cards </th><th>Total points </th><th>Status </th></tr>
+    <tr *ngFor="let player of currentGame.playersList">
+        <td>{{player.name}}</td>
+        <td>{{getTypeRole(player.role)}}</td>
+        <td> 
+            <div *ngFor="let card of player.playerCards">
+                {{card.name}} {{card.suit}} {{card.value}}
+            </div>
+            <br />
+        </td>
+        <td>
+            {{player.cardSum}}
+        </td>
+        <td>
+            {{getTypeResult(player.result)}}
+        </td>
+    </tr>
+    <tr>
+        <td>{{currentGame.dealerPlayer.name}}</td>
+        <td>{{getTypeRole(currentGame.dealerPlayer.role)}}</td>
+        <td> 
+            <div *ngFor="let card of currentGame.dealerPlayer.playerCards">
+                {{card.name}} {{card.suit}} {{card.value}}
+            </div>
+            <br />
+        </td>
+        <td>
+            {{currentGame.dealerPlayer.cardSum}}
+        </td>
+        <td>
+            -
+        </td>
+    </tr>
+</table>
+<br>
+<br />
+<button kendoButton (click)="createNextRound()">Take more</button>
+<br />
+<br />
+<button kendoButton (click)="endGame()">Enough</button>

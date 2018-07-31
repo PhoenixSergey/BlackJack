@@ -1,2 +1,50 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+  margin: 0;
+  padding-bottom: 20px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1;
+  color: #333;
+}
 
+.container {
+  width: 800px;
+}
+
+.header {
+  background-color: #222;
+  margin: 0;
+  width: 100%;
+  height: 70px;
+  padding-bottom: 1px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.links {
+  color: #9d9d9d;
+  float: left;
+  padding: 15px 15px;
+  font-size: 18px;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+.links_container {
+  width: 1000px;
+  margin: 0 auto;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+}
+
+a:hover {
+  color: #ffffff;
+}
+
+/*# sourceMappingURL=styles.css.map */

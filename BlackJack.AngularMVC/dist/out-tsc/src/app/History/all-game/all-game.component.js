@@ -10,10 +10,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
+var history_service_1 = require("src/app/History/history.service");
+var router_1 = require("@angular/router");
 var AllGameComponent = /** @class */ (function () {
-    function AllGameComponent() {
+    function AllGameComponent(historyService, route) {
+        this.historyService = historyService;
+        this.route = route;
+        this.countBots = [1, 2, 3, 4, 5];
     }
     AllGameComponent.prototype.ngOnInit = function () {
+        this.getAllGames();
+    };
+    AllGameComponent.prototype.getAllGames = function () {
+        var _this = this;
+        this.historyService.getAllGames()
+            .subscribe(function (games) {
+            _this.allgames = games;
+        });
+    };
+    AllGameComponent.prototype.showDetails = function (gameId) {
+        this.route.navigate(['allGames/gameDetails', gameId]);
+    };
+    AllGameComponent.prototype.startNewGame = function () {
+        this.route.navigate(['/start']);
     };
     AllGameComponent = __decorate([
         core_1.Component({
@@ -21,7 +40,7 @@ var AllGameComponent = /** @class */ (function () {
             templateUrl: './all-game.component.html',
             styleUrls: ['./all-game.component.css']
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [history_service_1.HistoryService, router_1.Router])
     ], AllGameComponent);
     return AllGameComponent;
 }());

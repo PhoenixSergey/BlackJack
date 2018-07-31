@@ -10,10 +10,35 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var history_service_1 = require("../history.service");
+var RoleEnumView_1 = require("Shared/models/enum-model/RoleEnumView");
+var ResultEnumView_1 = require("Shared/models/enum-model/ResultEnumView");
 var GameDetailsComponent = /** @class */ (function () {
-    function GameDetailsComponent() {
+    function GameDetailsComponent(historyService, activateRoute, route) {
+        this.historyService = historyService;
+        this.activateRoute = activateRoute;
+        this.route = route;
+        this.gameId = this.activateRoute.snapshot.params['id'];
     }
     GameDetailsComponent.prototype.ngOnInit = function () {
+        this.getGameDetails(this.gameId);
+    };
+    GameDetailsComponent.prototype.getGameDetails = function (gameId) {
+        var _this = this;
+        this.historyService.getGameDetails(gameId)
+            .subscribe(function (gameDetails) {
+            _this.gameDetails = gameDetails;
+        });
+    };
+    GameDetailsComponent.prototype.openHistory = function () {
+        this.route.navigate(['/allGames']);
+    };
+    GameDetailsComponent.prototype.getTypeRole = function (id) {
+        return RoleEnumView_1.RoleEnumView[id];
+    };
+    GameDetailsComponent.prototype.getTypeResult = function (id) {
+        return ResultEnumView_1.ResultEnumView[id];
     };
     GameDetailsComponent = __decorate([
         core_1.Component({
@@ -21,7 +46,7 @@ var GameDetailsComponent = /** @class */ (function () {
             templateUrl: './game-details.component.html',
             styleUrls: ['./game-details.component.css']
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [history_service_1.HistoryService, router_1.ActivatedRoute, router_1.Router])
     ], GameDetailsComponent);
     return GameDetailsComponent;
 }());

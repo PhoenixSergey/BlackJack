@@ -1,10 +1,10 @@
 import { Injectable, Component } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { StartInfoGameView } from 'models/game-model/StartInfoGameView';
-import { CurrentGameGameView } from 'models/game-model/CurrentGameGameView';
-import { EndGameGameView } from 'models/game-model/EndGameGameView';
-import { StartInfoGame } from 'models/game-model/gameStartInfo'
+import { StartInfoGameView } from 'Shared/models/game-model/StartInfoGameView';
+import { CurrentGameGameView } from 'Shared/models/game-model/CurrentGameGameView';
+import { EndGameGameView } from 'Shared/models/game-model/EndGameGameView';
+import { StartInfoGame } from 'Shared/models/game-model/gameStartInfo'
 @Injectable()
 
 export class GameService {
@@ -17,6 +17,9 @@ export class GameService {
     }
 
     public createGame(startInfoGame: StartInfoGame): Observable<number> {
+        if (startInfoGame.ourPlayers == undefined) {
+            startInfoGame.ourPlayers = "";
+        }
         const body = { ourPlayers: startInfoGame.ourPlayers, countBot: startInfoGame.countBot };
         return this.http.post<number>(this.url + "CreateGame", body);
     }

@@ -56,15 +56,13 @@ namespace BlackJack.WebAPI.Controllers
             }
             catch (AppValidationException e)
             {
-                ErrorGameView errorGameView = new ErrorGameView();//return bad request
-                errorGameView.Error = e.Message;
-                return Ok(errorGameView);
+
+                return BadRequest(e.Message);
+
             }
             catch (Exception e)
             {
-                ErrorGameView errorGameView = new ErrorGameView();//return bad request
-                errorGameView.Error = e.Message;
-                return Ok(errorGameView);
+                return BadRequest(e.Message);
             }
         }
 

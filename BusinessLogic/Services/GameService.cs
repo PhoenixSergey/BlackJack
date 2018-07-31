@@ -65,7 +65,7 @@ namespace BusinessLogic
 
         public async Task<int> CreateGame(string ourPlayers, int countBot)
         {
-            if (ourPlayers == System.String.Empty)
+            if (ourPlayers == string.Empty)
             {
                 throw new AppValidationException("Error: empty name");
             }

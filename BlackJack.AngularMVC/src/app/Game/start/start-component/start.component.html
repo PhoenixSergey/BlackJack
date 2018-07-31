@@ -1,0 +1,13 @@
+﻿<h1>Welcome to the game</h1>
+<h4>Enter your name or select player</h4>
+<kendo-combobox [(ngModel)]="startInfoGame.ourPlayers"
+                [data]="humanPlayers"
+                [allowCustom]="true">
+</kendo-combobox>
+<h4>Choose count bot-player</h4>
+<kendo-dropdownlist [data]="countBots"
+                    [value]="0"
+                    [(ngModel)]="startInfoGame.countBot">
+</kendo-dropdownlist>
+<h4>and start game</h4>
+<button kendoButton (click)="createGame(startInfoGame)">Start</button>

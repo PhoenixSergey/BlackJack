@@ -1,5 +1,3 @@
-C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\obj\Debug\BlackJack.WebAPI.csprojAssemblyReference.cache
-C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\obj\Debug\BlackJack.WebAPI.csproj.CoreCompileInputs.cache
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\ApplicationInsights.config
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\BlackJack.WebAPI.dll.config
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\BlackJack.WebAPI.dll
@@ -118,6 +116,8 @@ C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\Autofac.Integration
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\Dapper.xml
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\Antlr3.Runtime.pdb
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\bin\System.Web.WebPages.Deployment.xml
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\obj\Debug\BlackJack.WebAPI.csprojAssemblyReference.cache
+C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\obj\Debug\BlackJack.WebAPI.csproj.CoreCompileInputs.cache
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\obj\Debug\BlackJack.WebAPI.csproj.CopyComplete
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\obj\Debug\BlackJack.WebAPI.dll
 C:\Users\Anuitex\source\repos\BlackJack\BlackJack.WebAPI\obj\Debug\BlackJack.WebAPI.pdb

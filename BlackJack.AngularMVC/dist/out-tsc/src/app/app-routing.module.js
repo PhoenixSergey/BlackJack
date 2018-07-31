@@ -9,11 +9,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var router_1 = require("@angular/router");
-var start_component_1 = require("src/app/Game/start/start.component");
-var current_game_component_1 = require("src/app/Game/current-game/current-game.component");
-var end_game_component_1 = require("src/app/Game/end-game/end-game.component");
-var all_game_component_1 = require("src/app/History/all-game/all-game.component");
-var game_details_component_1 = require("src/app/History/game-details/game-details.component");
 var routes = [
     {
         path: '',
@@ -22,23 +17,19 @@ var routes = [
     },
     {
         path: 'start',
-        component: start_component_1.StartComponent
+        loadChildren: 'src/app/Game/start/start.module#StartModule'
     },
     {
         path: 'currentGame/:id',
-        component: current_game_component_1.CurrentGameComponent
+        loadChildren: 'src/app/Game/current-game/current.module#CurrentModule'
     },
     {
         path: 'endGame/:id',
-        component: end_game_component_1.EndGameComponent
+        loadChildren: 'src/app/Game/end-game/end.module#EndModule'
     },
     {
-        path: 'allGame',
-        component: all_game_component_1.AllGameComponent
-    },
-    {
-        path: 'gameDetails/:id',
-        component: game_details_component_1.GameDetailsComponent
+        path: 'allGames',
+        loadChildren: 'src/app/History/history.module#HistoryModule'
     }
 ];
 var AppRoutingModule = /** @class */ (function () {

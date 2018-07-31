@@ -20,6 +20,9 @@ var GameService = /** @class */ (function () {
         return this.http.get(this.url + "Start");
     };
     GameService.prototype.createGame = function (startInfoGame) {
+        if (startInfoGame.ourPlayers == undefined) {
+            startInfoGame.ourPlayers = "";
+        }
         var body = { ourPlayers: startInfoGame.ourPlayers, countBot: startInfoGame.countBot };
         return this.http.post(this.url + "CreateGame", body);
     };

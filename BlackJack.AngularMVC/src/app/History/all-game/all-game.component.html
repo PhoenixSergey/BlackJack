@@ -1,3 +1,12 @@
-<p>
-  all-game works!
-</p>
+<h2>All Games</h2>
+<kendo-grid [data]="allgames.listGames">
+    <kendo-grid-column field="id" title="Game Id"></kendo-grid-column>
+    <kendo-grid-column field="creationDate" title="Game date"></kendo-grid-column>
+    <kendo-grid-command-column  width="220">
+        <ng-template kendoGridCellTemplate let-dataItem >
+            <button kendoGridEditCommand (click)="showDetails(dataItem.id)">Details</button>
+        </ng-template>
+    </kendo-grid-command-column>
+</kendo-grid>
+<br>
+<button kendoButton (click)="startNewGame()">Start new game</button>

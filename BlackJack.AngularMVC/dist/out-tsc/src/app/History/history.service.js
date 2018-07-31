@@ -19,6 +19,9 @@ var HistoryService = /** @class */ (function () {
     HistoryService.prototype.getAllGames = function () {
         return this.http.get(this.url + "AllGames");
     };
+    HistoryService.prototype.getGameDetails = function (gameId) {
+        return this.http.get(this.url + "GameDetails/" + gameId);
+    };
     HistoryService = __decorate([
         core_1.Injectable(),
         __metadata("design:paramtypes", [http_1.HttpClient])

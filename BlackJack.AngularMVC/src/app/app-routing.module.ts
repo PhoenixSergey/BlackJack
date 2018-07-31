@@ -2,11 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { ModuleWithProviders } from "@angular/core";
-import { StartComponent } from 'src/app/Game/start/start.component';
-import { CurrentGameComponent } from 'src/app/Game/current-game/current-game.component';
-import { EndGameComponent } from 'src/app/Game/end-game/end-game.component';
-import { AllGameComponent } from 'src/app/History/all-game/all-game.component';
-import { GameDetailsComponent } from 'src/app/History/game-details/game-details.component';
 
 const routes: Routes = [
     {
@@ -16,23 +11,20 @@ const routes: Routes = [
     },
     {
         path: 'start',
-        component: StartComponent
+        loadChildren: 'src/app/Game/start/start.module#StartModule'
+        
     },
     {
         path: 'currentGame/:id',
-        component: CurrentGameComponent
+        loadChildren: 'src/app/Game/current-game/current.module#CurrentModule'
     },
     {
         path: 'endGame/:id',
-        component: EndGameComponent
+        loadChildren: 'src/app/Game/end-game/end.module#EndModule'
     },
     {
-        path: 'allGame',
-        component: AllGameComponent
-    },   
-    {
-        path: 'gameDetails/:id',
-        component: GameDetailsComponent
+        path: 'allGames',
+        loadChildren: 'src/app/History/history.module#HistoryModule'
     }
 
 ];
