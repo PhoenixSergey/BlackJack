@@ -61,7 +61,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"common":"common","src-app-Game-current-game-current-module":"src-app-Game-current-game-current-module","src-app-Game-end-game-end-module":"src-app-Game-end-game-end-module","src-app-History-history-module":"src-app-History-history-module","src-app-Game-start-start-module":"src-app-Game-start-start-module"}[chunkId]||chunkId) + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"common":"common","src-app-game-current-game-current-module":"src-app-game-current-game-current-module","src-app-game-end-game-end-module":"src-app-game-end-game-end-module","src-app-history-history-module":"src-app-history-history-module","src-app-game-start-start-module":"src-app-game-start-start-module"}[chunkId]||chunkId) + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function

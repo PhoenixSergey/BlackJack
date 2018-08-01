@@ -174,7 +174,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\kendo.material.min.css" />
-    <Content Include="Content\MyCSS.css" />
+    <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -185,12 +185,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
-    <Content Include="Scripts\Game\CurrentGame.js" />
-    <Content Include="Scripts\Game\EndGame.js" />
-    <Content Include="Scripts\Game\Error.js" />
-    <Content Include="Scripts\Game\Start.js" />
-    <Content Include="Scripts\History\AllGames.js" />
-    <Content Include="Scripts\History\GameDetails.js" />
+    <Content Include="Scripts\Game\currentGame.js" />
+    <Content Include="Scripts\Game\endGame.js" />
+    <Content Include="Scripts\Game\error.js" />
+    <Content Include="Scripts\Game\start.js" />
+    <Content Include="Scripts\History\allGames.js" />
+    <Content Include="Scripts\History\gameDetails.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />

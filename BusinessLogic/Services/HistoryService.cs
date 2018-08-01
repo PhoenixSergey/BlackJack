@@ -9,24 +9,26 @@ using AutoMapper;
 using BlackJack.ViewModels.GameViewModel.Enum;
 using BlackJack.Entities.Enum;
 using MoreLinq;
+using BlackJack.Config;
+using BusinessLogic.Services.Interfaces;
 
 namespace BusinessLogic.Services
 {
     public class HistoryService : IHistoryService
     {
         #region references   
-        private readonly IGameService _gameService;
-        private readonly IRoundRepository<Round> _roundRepository;
-        private readonly IPlayerGameRepository<PlayerGame> _playersGameRepository;
-        private readonly IGameRepository<Game> _gameRepository;
+        private readonly IBaseService _baseService;
+        private readonly IRoundRepository _roundRepository;
+        private readonly IPlayerGameRepository _playersGameRepository;
+        private readonly IGameRepository _gameRepository;
         public HistoryService(
-            IGameService gameService,
-            IRoundRepository<Round> roundRepository,
-            IPlayerGameRepository<PlayerGame> playerGameRepository,
-            IGameRepository<Game> gameRepository
+            IBaseService baseService,
+            IRoundRepository roundRepository,
+            IPlayerGameRepository playerGameRepository,
+            IGameRepository gameRepository
             )
         {
-            _gameService = gameService;
+            _baseService = baseService;
             _roundRepository = roundRepository;
             _playersGameRepository = playerGameRepository;
             _gameRepository = gameRepository;
@@ -36,7 +38,7 @@ namespace BusinessLogic.Services
         public async Task<AllGamesHistoryView> SelectAllGames()
         {
             AllGamesHistoryView historyViewModel = new AllGamesHistoryView();
-            historyViewModel.ListGames = Mapper.Map<IEnumerable<Game>, List<GameAllGamesHistoryViewItem>>((await _gameRepository.GetAll()).ToList()); 
+            historyViewModel.Games = Mapper.Map<IEnumerable<Game>, List<GameAllGamesHistoryViewItem>>((await _gameRepository.GetAll()).ToList()); 
             return historyViewModel;
         }
 
@@ -61,15 +63,34 @@ namespace BusinessLogic.Services
             foreach (var player in playersOnTheGame)
             {
                 player.Result = (ResultEnumView)(await _playersGameRepository.GetPlayerStatusOnTheGame(gameId, player.Id));
-                player.CardSum = await _gameService.CalculationPlayerCardSum(player.Id, gameId);
+                player.CardSum = await _baseService.CalculationPlayerCardSum(player.Id, gameId);
             }
             var dealerPlayer = playersOnTheGame.Where(x => x.Role == (RoleEnumView)Role.Dealer).First();
             playersOnTheGame.Remove(dealerPlayer);
             GameDetailsHistoryView detailsGameViewModel = new GameDetailsHistoryView();
-            detailsGameViewModel.PlayersList = playersOnTheGame;
+            detailsGameViewModel.Players = playersOnTheGame;
             detailsGameViewModel.DealerPlayer = dealerPlayer;
             detailsGameViewModel.GameId = gameId;
             return detailsGameViewModel;
         }
+        //public async Task<int> CalculationPlayerCardSum(int playersOnTheGameId, int gameId)
+        //{
+        //    int cardSum = Config.ZeroingOutCardSum;
+        //    var cardsForPlayer = (await _roundRepository.GetAllRoundsInTheGame(gameId))
+        //    .Where(round => round.PlayerId == playersOnTheGameId)
+        //    .Select(round => round.Card)
+        //    .ToList();
+        //    foreach (var card in cardsForPlayer)
+        //    {
+        //        cardSum += card.Value;
+        //        if (cardSum > Config.BlackJack && card.Name == Config.AceName)
+        //        {
+        //            card.Value = Config.DoubleAcePoint;
+        //            cardSum -= Config.DoubleAcePointReduce;
+        //        }
+        //    }
+        //    return cardSum;
+        //}
     }
+
 }

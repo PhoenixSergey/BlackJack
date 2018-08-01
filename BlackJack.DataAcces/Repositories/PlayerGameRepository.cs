@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BlackJack.DataAcces.Repositorys
 {
-    public class PlayerGameRepository : IPlayerGameRepository<PlayerGame>
+    public class PlayerGameRepository : IPlayerGameRepository
     {
         private readonly string _connectionString;
         public PlayerGameRepository(string connectionString)
@@ -28,12 +28,13 @@ namespace BlackJack.DataAcces.Repositorys
             return playerGame;
         }
 
-        public async Task Create(List<PlayerGame> playersGame)
+        public async Task Create(PlayerGame playerGame)
         {
             using (IDbConnection connection = new SqlConnection(_connectionString))
             {
-                string processQuery = "INSERT INTO PlayerGame VALUES (@PlayerId,@GameId,@Result)";
-                await connection.ExecuteAsync(processQuery, playersGame);
+                string processQuery = "INSERT INTO PlayerGame VALUES (@PlayerId,@GameId,@Result,@CreationDate)";
+
+                await connection.ExecuteAsync(processQuery, new{ playerGame.PlayerId, playerGame.GameId,playerGame.Result,playerGame.CreationDate });
             }
         }
 

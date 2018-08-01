@@ -2,9 +2,8 @@
 
 namespace BlackJack.Entities
 {
-    public class Round 
+    public class Round : BaseEntity
     {  
-        public int Id { get; set; }
         public int GameId { get; set; }
         [Write(false)]
         public Game Game { get; set; }

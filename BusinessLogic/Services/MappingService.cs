@@ -10,14 +10,6 @@ namespace BusinessLogic
 {
     public class MappingServices : IMappingService
     {
-        #region references
-        private readonly IPlayerRepository<Player> _playerRepository;
-        public MappingServices(IPlayerRepository<Player> playerRepository)
-        {
-            _playerRepository = playerRepository;
-        }
-        #endregion
-
         public PlayerCurrentGameGameViewItem PlayerToPlayerCurrentGame(Player player)
         {
             var playerCurrentGameGameView = Mapper.Map<Player, PlayerCurrentGameGameViewItem>(player);      

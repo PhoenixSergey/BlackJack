@@ -3,7 +3,7 @@ using Dapper.Contrib.Extensions;
 
 namespace BlackJack.Entities
 {
-    public class PlayerGame 
+    public class PlayerGame : BaseEntity
     {
         public int PlayerId { get; set; }
         [Write(false)]

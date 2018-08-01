@@ -10,7 +10,7 @@ using BlackJack.DataAcces.Interfaces;
 
 namespace BlackJack.DataAcces.Repositorys
 {
-    public class PlayerRepository : IPlayerRepository<Player>
+    public class PlayerRepository : IPlayerRepository
     {
         private readonly string _connectionString;
         public PlayerRepository(string connectionString)

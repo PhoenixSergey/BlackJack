@@ -11,20 +11,20 @@ const routes: Routes = [
     },
     {
         path: 'start',
-        loadChildren: 'src/app/Game/start/start.module#StartModule'
+        loadChildren: 'src/app/game/start/start.module#StartModule'
         
     },
     {
         path: 'currentGame/:id',
-        loadChildren: 'src/app/Game/current-game/current.module#CurrentModule'
+        loadChildren: 'src/app/game/current-game/current.module#CurrentModule'
     },
     {
         path: 'endGame/:id',
-        loadChildren: 'src/app/Game/end-game/end.module#EndModule'
+        loadChildren: 'src/app/game/end-game/end.module#EndModule'
     },
     {
         path: 'allGames',
-        loadChildren: 'src/app/History/history.module#HistoryModule'
+        loadChildren: 'src/app/history/history.module#HistoryModule'
     }
 
 ];

@@ -29,20 +29,29 @@ namespace UserIterface.Controllers
         [HttpGet]
         public async Task<ActionResult> CurrentGame(int gameId)
         {
-            var startGame = await _gameService.CreateFirstRoundForAllPlayers(gameId);
-            if (startGame.CheckEndGame == GameEnd.EndGame)
+            try
             {
-                return RedirectToAction("EndGame", "Game", new { gameId = startGame.GameId });
+                var startGame = await _gameService.CreateFirstRoundForAllPlayers(gameId);
+                if (startGame.CheckEndGame == GameEndView.EndGame)
+                {
+                    return RedirectToAction("EndGame", "Game", new { gameId = startGame.GameId });
+                }
+                return View(startGame);
             }
-            return View(startGame);
+            catch (Exception e)
+            {
+                ErrorGameView errorGameView = new ErrorGameView();
+                errorGameView.Error = e.Message;
+                return View("_Error", errorGameView);
+            }
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateGame(string ourPlayers, int countBot)
+        public async Task<ActionResult> CreateGame(string ourPlayer, int botCounts)
         {
             try
             {
-                var startGame = await _gameService.CreateGame(ourPlayers, countBot);
+                var startGame = await _gameService.CreateGame(ourPlayer, botCounts);
                 return RedirectToAction("CurrentGame", "Game", new { gameId = startGame });
             }
             catch (AppValidationException e)
@@ -61,22 +70,40 @@ namespace UserIterface.Controllers
 
         public async Task<ActionResult> _ViewRound(int gameId)
         {
-            var continueGame = await _gameService.ContinueGameForPlayers(gameId);
-            if (continueGame.CheckEndGame == GameEnd.ContinueGame)
+            try
             {
-                return View(continueGame);
+                var continueGame = await _gameService.ContinueGameForPlayers(gameId);
+                if (continueGame.CheckEndGame == GameEndView.ContinueGame)
+                {
+                    return View(continueGame);
+                }
+                return Json(new
+                {
+                    url = Url.Action("EndGame", "Game", new { gameId }),
+                }, JsonRequestBehavior.AllowGet);
             }
-            return Json(new
+            catch (Exception e)
             {
-                url = Url.Action("EndGame", "Game", new { gameId }),
-            }, JsonRequestBehavior.AllowGet);
+                ErrorGameView errorGameView = new ErrorGameView();
+                errorGameView.Error = e.Message;
+                return View("_Error", errorGameView);
+            }
         }
 
         public async Task<ActionResult> EndGame(int gameId)
         {
-            await _gameService.ContinueGameForDealer(gameId);
-            var endGame = await _gameService.GetInformationForEndGame(gameId);
-            return View(endGame);
+            try
+            {
+                await _gameService.ContinueGameForDealer(gameId);
+                var endGame = await _gameService.GetInformationForEndGame(gameId);
+                return View(endGame);
+            }
+            catch (Exception e)
+            {
+                ErrorGameView errorGameView = new ErrorGameView();
+                errorGameView.Error = e.Message;
+                return View("_Error", errorGameView);
+            }
         }
     }
 }

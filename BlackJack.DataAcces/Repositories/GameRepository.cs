@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using Dapper.Contrib.Extensions;
 using System.Linq;
 using BlackJack.DataAcces.Interfaces;
+using System;
 
 namespace BlackJack.DataAcces.Repositorys
 {
-    public class GameRepository : IGameRepository<Game> 
+    public class GameRepository : IGameRepository
     {
         private readonly string _connectionString;
         public GameRepository(string connectionString)
@@ -32,8 +33,9 @@ namespace BlackJack.DataAcces.Repositorys
             using (IDbConnection connection = new SqlConnection(_connectionString))
             {
                 return await connection.InsertAsync(game);
-            }
+            }        
         }
+
         public async Task<Game> Get(int id)
         {
             using (IDbConnection connection = new SqlConnection(_connectionString))

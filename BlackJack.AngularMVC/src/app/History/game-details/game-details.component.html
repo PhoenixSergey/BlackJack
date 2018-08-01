@@ -1,7 +1,7 @@
 <h2>Game {{gameId}} details</h2>
 <table class="table1">
     <tr><th>Name </th><th>Role </th><th>Cards </th><th>Total points </th><th>Status </th></tr>
-    <tr *ngFor="let player of gameDetails.playersList">
+    <tr *ngFor="let player of gameDetails.players">
         <td>{{player.name}}</td>
         <td>{{getTypeRole(player.role)}}</td>
         <td>

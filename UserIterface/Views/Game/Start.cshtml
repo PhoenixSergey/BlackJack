@@ -14,9 +14,9 @@
         @using (Html.BeginForm("CreateGame", "Game", FormMethod.Post))
         {
             <h4>Enter your name or select player</h4>
-            <input id="ourPlayers" name="ourPlayers" />
+            <input id="ourPlayers" name="ourPlayer" />
             <h4>Choose count bot-player</h4>
-            <input id="countBot" name="countBot" />
+            <input id="countBot" name="botCounts" />
             <h4>and start game</h4>
             <button id="button_start" type="submit">Start</button>
         }

@@ -2,7 +2,7 @@
 @model CurrentGameGameView
 <table class="table1">
     <tr><th>Name </th><th>Role </th><th>Cards </th><th>Total points </th><th>Status </th></tr>
-    @foreach (var players in Model.PlayersList)
+    @foreach (var players in Model.Players)
     {
         <tr>
             <td>@players.Name</td>

@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseEntity.cs" />
     <Compile Include="Card.cs" />
     <Compile Include="Enum\Result.cs" />
     <Compile Include="Enum\Role.cs" />

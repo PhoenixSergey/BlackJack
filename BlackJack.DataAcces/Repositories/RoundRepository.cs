@@ -9,9 +9,10 @@ using BlackJack.DataAcces.Interfaces;
 
 namespace BlackJack.DataAcces.Repositorys
 {
-    public class RoundRepository : IRoundRepository<Round>
+    public class RoundRepository : IRoundRepository
     {
         private readonly string _connectionString;
+
         public RoundRepository(string connectionString)
         {
             _connectionString = connectionString;

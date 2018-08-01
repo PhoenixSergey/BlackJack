@@ -1,4 +1,6 @@
-﻿using BusinessLogic.Interfaces;
+﻿using BlackJack.ViewModels.GameViewModel;
+using BusinessLogic.Interfaces;
+using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -8,22 +10,40 @@ namespace UserIterface.Controllers
     {
         #region references
         private readonly IHistoryService _historyService;
-        public HistoryController(IHistoryService historyServices)
+        public HistoryController(IHistoryService historyService)
         {
-            _historyService = historyServices;
+            _historyService = historyService;
         }
         #endregion
 
         public async Task<ActionResult> AllGames()
         {
-            var allGames = await _historyService.SelectAllGames();
-            return View(allGames);
+            try
+            {
+                var allGames = await _historyService.SelectAllGames();
+                return View(allGames);
+            }
+            catch (Exception e)
+            {
+                ErrorGameView errorGameView = new ErrorGameView();
+                errorGameView.Error = e.Message;
+                return View("_Error", errorGameView);
+            }
         }
 
         public async Task<ActionResult> GameDetails(int id)
         {
-            var detailsGame = await _historyService.GetDetails(id);
-            return View(detailsGame);
+            try
+            {
+                var detailsGame = await _historyService.GetDetails(id);
+                return View(detailsGame);
+            }
+            catch (Exception e)
+            {
+                ErrorGameView errorGameView = new ErrorGameView();
+                errorGameView.Error = e.Message;
+                return View("_Error", errorGameView);
+            }
         }
     }
 }

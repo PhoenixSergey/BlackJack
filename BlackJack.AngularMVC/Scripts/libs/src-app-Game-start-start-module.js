@@ -1,24 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["src-app-Game-start-start-module"],{
-
-/***/ "./Shared/models/game-model/gameStartInfo.ts":
-/*!***************************************************!*\
-  !*** ./Shared/models/game-model/gameStartInfo.ts ***!
-  \***************************************************/
-/*! exports provided: StartInfoGame */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StartInfoGame", function() { return StartInfoGame; });
-var StartInfoGame = /** @class */ (function () {
-    function StartInfoGame() {
-    }
-    return StartInfoGame;
-}());
-
-
-
-/***/ }),
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["src-app-game-start-start-module"],{
 
 /***/ "./src/app/Game/start/start-component/start.component.css":
 /*!****************************************************************!*\
@@ -38,7 +18,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Welcome to the game</h1>\r\n<h4>Enter your name or select player</h4>\r\n<kendo-combobox [(ngModel)]=\"startInfoGame.ourPlayers\"\r\n                [data]=\"humanPlayers\"\r\n                [allowCustom]=\"true\">\r\n</kendo-combobox>\r\n<h4>Choose count bot-player</h4>\r\n<kendo-dropdownlist [data]=\"countBots\"\r\n                    [value]=\"0\"\r\n                    [(ngModel)]=\"startInfoGame.countBot\">\r\n</kendo-dropdownlist>\r\n<h4>and start game</h4>\r\n<button kendoButton (click)=\"createGame(startInfoGame)\">Start</button>\r\n"
+module.exports = "<h1>Welcome to the game</h1>\r\n<h4>Enter your name or select player</h4>\r\n<kendo-combobox [(ngModel)]=\"createGameGameView.ourPlayer\"\r\n                [data]=\"humanPlayers\"\r\n                [allowCustom]=\"true\">\r\n</kendo-combobox>\r\n<h4>Choose count bot-player</h4>\r\n<kendo-dropdownlist [data]=\"botCounts\"\r\n                    [value]=\"0\"\r\n                    [(ngModel)]=\"createGameGameView.botCounts\">\r\n</kendo-dropdownlist>\r\n<h4>and start game</h4>\r\n<button kendoButton (click)=\"createGame(createGameGameView)\">Start</button>\r\n"
 
 /***/ }),
 
@@ -53,8 +33,8 @@ module.exports = "<h1>Welcome to the game</h1>\r\n<h4>Enter your name or select 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StartComponent", function() { return StartComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var src_app_Game_game_service_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/Game/game-service.service */ "./src/app/Game/game-service.service.ts");
-/* harmony import */ var Shared_models_game_model_gameStartInfo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! Shared/models/game-model/gameStartInfo */ "./Shared/models/game-model/gameStartInfo.ts");
+/* harmony import */ var src_shared_services_game_service_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/shared/services/game-service.service */ "./src/shared/services/game-service.service.ts");
+/* harmony import */ var src_shared_models_game_model_createGameGameView__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/shared/models/game-model/createGameGameView */ "./src/shared/models/game-model/createGameGameView.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -74,8 +54,8 @@ var StartComponent = /** @class */ (function () {
         this.gameService = gameService;
         this.route = route;
         this.humanPlayers = [];
-        this.countBots = [1, 2, 3, 4, 5];
-        this.startInfoGame = new Shared_models_game_model_gameStartInfo__WEBPACK_IMPORTED_MODULE_2__["StartInfoGame"]();
+        this.botCounts = [1, 2, 3, 4, 5];
+        this.createGameGameView = new src_shared_models_game_model_createGameGameView__WEBPACK_IMPORTED_MODULE_2__["CreateGameGameView"]();
     }
     StartComponent.prototype.ngOnInit = function () {
         this.start();
@@ -89,9 +69,9 @@ var StartComponent = /** @class */ (function () {
             }
         });
     };
-    StartComponent.prototype.createGame = function (startInfoGame) {
+    StartComponent.prototype.createGame = function (createGameGameView) {
         var _this = this;
-        this.gameService.createGame(startInfoGame).subscribe(function (result) {
+        this.gameService.createGame(createGameGameView).subscribe(function (result) {
             _this.gameId = result;
             console.log(_this.gameId);
             _this.route.navigate(['/currentGame', _this.gameId]);
@@ -104,7 +84,7 @@ var StartComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./start.component.html */ "./src/app/Game/start/start-component/start.component.html"),
             styles: [__webpack_require__(/*! ./start.component.css */ "./src/app/Game/start/start-component/start.component.css")]
         }),
-        __metadata("design:paramtypes", [src_app_Game_game_service_service__WEBPACK_IMPORTED_MODULE_1__["GameService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
+        __metadata("design:paramtypes", [src_shared_services_game_service_service__WEBPACK_IMPORTED_MODULE_1__["GameService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
     ], StartComponent);
     return StartComponent;
 }());
@@ -113,9 +93,9 @@ var StartComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/Game/start/start-routing.module.ts":
+/***/ "./src/app/game/start/start-routing.module.ts":
 /*!****************************************************!*\
-  !*** ./src/app/Game/start/start-routing.module.ts ***!
+  !*** ./src/app/game/start/start-routing.module.ts ***!
   \****************************************************/
 /*! exports provided: StartRoutingModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -157,9 +137,9 @@ var StartRoutingModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/Game/start/start.module.ts":
+/***/ "./src/app/game/start/start.module.ts":
 /*!********************************************!*\
-  !*** ./src/app/Game/start/start.module.ts ***!
+  !*** ./src/app/game/start/start.module.ts ***!
   \********************************************/
 /*! exports provided: StartModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -168,10 +148,9 @@ var StartRoutingModule = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StartModule", function() { return StartModule; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _start_routing_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./start-routing.module */ "./src/app/Game/start/start-routing.module.ts");
+/* harmony import */ var _start_routing_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./start-routing.module */ "./src/app/game/start/start-routing.module.ts");
 /* harmony import */ var src_app_Game_start_start_component_start_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/Game/start/start-component/start.component */ "./src/app/Game/start/start-component/start.component.ts");
-/* harmony import */ var _progress_kendo_angular_dropdowns__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @progress/kendo-angular-dropdowns */ "./node_modules/@progress/kendo-angular-dropdowns/dist/es/index.js");
-/* harmony import */ var Shared_shared_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! Shared/shared.module */ "./Shared/shared.module.ts");
+/* harmony import */ var src_shared_shared_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/shared/shared.module */ "./src/shared/shared.module.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -182,16 +161,14 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
-
 var StartModule = /** @class */ (function () {
     function StartModule() {
     }
     StartModule = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
             imports: [
-                Shared_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
+                src_shared_shared_module__WEBPACK_IMPORTED_MODULE_3__["SharedModule"],
                 _start_routing_module__WEBPACK_IMPORTED_MODULE_1__["StartRoutingModule"],
-                _progress_kendo_angular_dropdowns__WEBPACK_IMPORTED_MODULE_3__["DropDownsModule"]
             ],
             declarations: [src_app_Game_start_start_component_start_component__WEBPACK_IMPORTED_MODULE_2__["StartComponent"]]
         })
@@ -201,7 +178,27 @@ var StartModule = /** @class */ (function () {
 
 
 
+/***/ }),
+
+/***/ "./src/shared/models/game-model/createGameGameView.ts":
+/*!************************************************************!*\
+  !*** ./src/shared/models/game-model/createGameGameView.ts ***!
+  \************************************************************/
+/*! exports provided: CreateGameGameView */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CreateGameGameView", function() { return CreateGameGameView; });
+var CreateGameGameView = /** @class */ (function () {
+    function CreateGameGameView() {
+    }
+    return CreateGameGameView;
+}());
+
+
+
 /***/ })
 
 }]);
-//# sourceMappingURL=src-app-Game-start-start-module.js.map
+//# sourceMappingURL=src-app-game-start-start-module.js.map

@@ -1,8 +1,8 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { StartInfoGameView } from 'Shared/models/game-model/StartInfoGameView';
-import { GameService } from 'src/app/Game/game-service.service';
-import { StartInfoGame } from 'Shared/models/game-model/gameStartInfo'
+import { StartInfoGameView } from 'src/shared/models/game-model/StartInfoGameView';
+import { GameService } from 'src/shared/services/game-service.service';
+import { CreateGameGameView } from 'src/shared/models/game-model/createGameGameView'
 import { Router } from '@angular/router';
 import { error } from '@angular/compiler/src/util';
 @Component({
@@ -14,7 +14,7 @@ export class StartComponent implements OnInit {
 
 
     public humanPlayers: string[] = [];
-    public countBots: Array<number> = [1, 2, 3, 4, 5];
+    public botCounts: Array<number> = [1, 2, 3, 4, 5];
     constructor(private gameService: GameService, private route: Router) { }
 
     ngOnInit() {
@@ -30,10 +30,10 @@ export class StartComponent implements OnInit {
             });
     }
 
-    startInfoGame: StartInfoGame = new StartInfoGame();
+    createGameGameView: CreateGameGameView = new CreateGameGameView();
     gameId: number;
-    createGame(startInfoGame: StartInfoGame) {
-        this.gameService.createGame(startInfoGame).subscribe(result => {
+    createGame(createGameGameView: CreateGameGameView) {
+        this.gameService.createGame(createGameGameView).subscribe(result => {
 
             this.gameId = result;
             console.log(this.gameId);

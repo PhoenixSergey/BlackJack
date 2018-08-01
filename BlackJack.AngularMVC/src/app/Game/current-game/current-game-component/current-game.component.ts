@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CurrentGameGameView } from 'Shared/models/game-model/CurrentGameGameView';
-import { GameService } from 'src/app/Game/game-service.service';
+import { CurrentGameGameView } from 'src/shared/models/game-model/CurrentGameGameView';
+import { GameService } from 'src/shared/services/game-service.service';
 import { Subscription } from 'rxjs';
-import { RoleEnumView } from 'Shared/models/enum-model/RoleEnumView';
-import { ResultEnumView } from 'Shared/models/enum-model/ResultEnumView';
-import { GameEnd } from 'Shared/models/enum-model/GameEnd';
+import { RoleEnumView } from 'src/shared/models/enum-model/RoleEnumView';
+import { ResultEnumView } from 'src/shared/models/enum-model/ResultEnumView';
+import { GameEndView } from 'src/shared/models/enum-model/GameEndView';
 
 
 @Component({
@@ -28,7 +28,7 @@ export class CurrentGameComponent implements OnInit {
         this.gameService.currentGame(gameId)
             .subscribe(currentGame => {
                 this.currentGame = currentGame
-                if (currentGame.checkEndGame == GameEnd.EndGame) {
+                if (currentGame.checkEndGame == GameEndView.EndGame) {
                     this.endGame();
                 }
             });
@@ -39,7 +39,7 @@ export class CurrentGameComponent implements OnInit {
         this.gameService.nextRound(this.gameId)
             .subscribe(nextRound => {
                 this.currentGame = nextRound
-                if (nextRound.checkEndGame == GameEnd.EndGame) {
+                if (nextRound.checkEndGame == GameEndView.EndGame) {
                     this.endGame();
                 }
             });

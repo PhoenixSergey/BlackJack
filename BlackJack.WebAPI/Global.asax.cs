@@ -21,8 +21,10 @@ namespace BlackJack.WebAPI
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             var builder = new ContainerBuilder();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
-            var container = AutofacWebAPIServicesConfig.ConfigureAPIContainer(builder, connectionString);
+            AutofacServicesConfig.ConfigureContainer(builder, connectionString);
+            var container = builder.Build();
             GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+
             GlobalConfiguration.Configure(WebApiConfig.Register);
             AutoMapperConfig.Initialize();
         }

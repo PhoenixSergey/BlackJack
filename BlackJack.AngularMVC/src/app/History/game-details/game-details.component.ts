@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HistoryService } from '../history.service';
-import { GameDetailsHistoryView } from 'Shared/models/history-model/GameDetailsHistoryView';
-import { RoleEnumView } from 'Shared/models/enum-model/RoleEnumView';
-import { ResultEnumView } from 'Shared/models/enum-model/ResultEnumView';
+import { HistoryService } from 'src/shared/services/history.service';
+import { GameDetailsHistoryView } from 'src/shared/models/history-model/GameDetailsHistoryView';
+import { RoleEnumView } from 'src/shared/models/enum-model/RoleEnumView';
+import { ResultEnumView } from 'src/shared/models/enum-model/ResultEnumView';
 @Component({
     selector: 'app-game-details',
     templateUrl: './game-details.component.html',

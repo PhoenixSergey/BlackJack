@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["src-app-Game-end-game-end-module"],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["src-app-game-end-game-end-module"],{
 
 /***/ "./src/app/Game/end-game/end-game-component/end-game.component.css":
 /*!*************************************************************************!*\
@@ -18,7 +18,7 @@ module.exports = ".table1 {\r\n    font-family: \"Lucida Sans Unicode\", \"Lucid
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h2>End of Game</h2>\r\n<h2>Result</h2>\r\n<table class=\"table1\">\r\n    <tr><th>Name </th><th>Role </th><th>Cards </th><th>Total points </th><th>Status </th></tr>\r\n    <tr *ngFor=\"let player of endGameInfo.playersList\">\r\n        <td>{{player.name}}</td>\r\n        <td>{{getTypeRole(player.role)}}</td>\r\n        <td>\r\n            <div *ngFor=\"let card of player.playerCards\">\r\n                {{card.name}} {{card.suit}} {{card.value}}\r\n            </div>\r\n            <br />\r\n        </td>\r\n        <td>\r\n            {{player.cardSum}}\r\n        </td>\r\n        <td>\r\n            {{getTypeResult(player.result)}}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>{{endGameInfo.dealerPlayer.name}}</td>\r\n        <td>{{getTypeRole(endGameInfo.dealerPlayer.role)}}</td>\r\n        <td>\r\n            <div *ngFor=\"let card of endGameInfo.dealerPlayer.playerCards\">\r\n                {{card.name}} {{card.suit}} {{card.value}}\r\n            </div>\r\n            <br />\r\n        </td>\r\n        <td>\r\n            {{endGameInfo.dealerPlayer.cardSum}}\r\n        </td>\r\n        <td>\r\n            -\r\n        </td>\r\n    </tr>\r\n</table>\r\n<br />\r\n<button kendoButton (click)=\"startNewGame()\">Start new game</button>\r\n<br />\r\n<br />\r\n<button kendoButton (click)=\"openHistory()\">View history</button>"
+module.exports = "<h2>End of Game</h2>\r\n<h2>Result</h2>\r\n<table class=\"table1\">\r\n    <tr><th>Name </th><th>Role </th><th>Cards </th><th>Total points </th><th>Status </th></tr>\r\n    <tr *ngFor=\"let player of endGameInfo.players\">\r\n        <td>{{player.name}}</td>\r\n        <td>{{getTypeRole(player.role)}}</td>\r\n        <td>\r\n            <div *ngFor=\"let card of player.playerCards\">\r\n                {{card.name}} {{card.suit}} {{card.value}}\r\n            </div>\r\n            <br />\r\n        </td>\r\n        <td>\r\n            {{player.cardSum}}\r\n        </td>\r\n        <td>\r\n            {{getTypeResult(player.result)}}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>{{endGameInfo.dealerPlayer.name}}</td>\r\n        <td>{{getTypeRole(endGameInfo.dealerPlayer.role)}}</td>\r\n        <td>\r\n            <div *ngFor=\"let card of endGameInfo.dealerPlayer.playerCards\">\r\n                {{card.name}} {{card.suit}} {{card.value}}\r\n            </div>\r\n            <br />\r\n        </td>\r\n        <td>\r\n            {{endGameInfo.dealerPlayer.cardSum}}\r\n        </td>\r\n        <td>\r\n            -\r\n        </td>\r\n    </tr>\r\n</table>\r\n<br />\r\n<button kendoButton (click)=\"startNewGame()\">Start new game</button>\r\n<br />\r\n<br />\r\n<button kendoButton (click)=\"openHistory()\">View history</button>"
 
 /***/ }),
 
@@ -34,9 +34,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EndGameComponent", function() { return EndGameComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var src_app_Game_game_service_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/Game/game-service.service */ "./src/app/Game/game-service.service.ts");
-/* harmony import */ var Shared_models_enum_model_RoleEnumView__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! Shared/models/enum-model/RoleEnumView */ "./Shared/models/enum-model/RoleEnumView.ts");
-/* harmony import */ var Shared_models_enum_model_ResultEnumView__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! Shared/models/enum-model/ResultEnumView */ "./Shared/models/enum-model/ResultEnumView.ts");
+/* harmony import */ var src_shared_services_game_service_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/shared/services/game-service.service */ "./src/shared/services/game-service.service.ts");
+/* harmony import */ var src_shared_models_enum_model_RoleEnumView__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/shared/models/enum-model/RoleEnumView */ "./src/shared/models/enum-model/RoleEnumView.ts");
+/* harmony import */ var src_shared_models_enum_model_ResultEnumView__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/shared/models/enum-model/ResultEnumView */ "./src/shared/models/enum-model/ResultEnumView.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -75,10 +75,10 @@ var EndGameComponent = /** @class */ (function () {
         this.route.navigate(['/allGames']);
     };
     EndGameComponent.prototype.getTypeRole = function (id) {
-        return Shared_models_enum_model_RoleEnumView__WEBPACK_IMPORTED_MODULE_3__["RoleEnumView"][id];
+        return src_shared_models_enum_model_RoleEnumView__WEBPACK_IMPORTED_MODULE_3__["RoleEnumView"][id];
     };
     EndGameComponent.prototype.getTypeResult = function (id) {
-        return Shared_models_enum_model_ResultEnumView__WEBPACK_IMPORTED_MODULE_4__["ResultEnumView"][id];
+        return src_shared_models_enum_model_ResultEnumView__WEBPACK_IMPORTED_MODULE_4__["ResultEnumView"][id];
     };
     EndGameComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -86,7 +86,7 @@ var EndGameComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./end-game.component.html */ "./src/app/Game/end-game/end-game-component/end-game.component.html"),
             styles: [__webpack_require__(/*! ./end-game.component.css */ "./src/app/Game/end-game/end-game-component/end-game.component.css")]
         }),
-        __metadata("design:paramtypes", [src_app_Game_game_service_service__WEBPACK_IMPORTED_MODULE_2__["GameService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
+        __metadata("design:paramtypes", [src_shared_services_game_service_service__WEBPACK_IMPORTED_MODULE_2__["GameService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
     ], EndGameComponent);
     return EndGameComponent;
 }());
@@ -95,9 +95,9 @@ var EndGameComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/Game/end-game/end-routing.module.ts":
+/***/ "./src/app/game/end-game/end-routing.module.ts":
 /*!*****************************************************!*\
-  !*** ./src/app/Game/end-game/end-routing.module.ts ***!
+  !*** ./src/app/game/end-game/end-routing.module.ts ***!
   \*****************************************************/
 /*! exports provided: EndRoutingModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -139,9 +139,9 @@ var EndRoutingModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/Game/end-game/end.module.ts":
+/***/ "./src/app/game/end-game/end.module.ts":
 /*!*********************************************!*\
-  !*** ./src/app/Game/end-game/end.module.ts ***!
+  !*** ./src/app/game/end-game/end.module.ts ***!
   \*********************************************/
 /*! exports provided: EndModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -151,8 +151,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EndModule", function() { return EndModule; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var src_app_Game_end_game_end_game_component_end_game_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/Game/end-game/end-game-component/end-game.component */ "./src/app/Game/end-game/end-game-component/end-game.component.ts");
-/* harmony import */ var _end_routing_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./end-routing.module */ "./src/app/Game/end-game/end-routing.module.ts");
-/* harmony import */ var Shared_shared_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! Shared/shared.module */ "./Shared/shared.module.ts");
+/* harmony import */ var _end_routing_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./end-routing.module */ "./src/app/game/end-game/end-routing.module.ts");
+/* harmony import */ var src_shared_shared_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/shared/shared.module */ "./src/shared/shared.module.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -169,7 +169,7 @@ var EndModule = /** @class */ (function () {
     EndModule = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
             imports: [
-                Shared_shared_module__WEBPACK_IMPORTED_MODULE_3__["SharedModule"],
+                src_shared_shared_module__WEBPACK_IMPORTED_MODULE_3__["SharedModule"],
                 _end_routing_module__WEBPACK_IMPORTED_MODULE_2__["EndRoutingModule"]
             ],
             declarations: [src_app_Game_end_game_end_game_component_end_game_component__WEBPACK_IMPORTED_MODULE_1__["EndGameComponent"]]
@@ -183,4 +183,4 @@ var EndModule = /** @class */ (function () {
 /***/ })
 
 }]);
-//# sourceMappingURL=src-app-Game-end-game-end-module.js.map
+//# sourceMappingURL=src-app-game-end-game-end-module.js.map

@@ -1,24 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["src-app-Game-current-game-current-module"],{
-
-/***/ "./Shared/models/enum-model/GameEnd.ts":
-/*!*********************************************!*\
-  !*** ./Shared/models/enum-model/GameEnd.ts ***!
-  \*********************************************/
-/*! exports provided: GameEnd */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GameEnd", function() { return GameEnd; });
-var GameEnd;
-(function (GameEnd) {
-    GameEnd[GameEnd["None"] = 0] = "None";
-    GameEnd[GameEnd["EndGame"] = 1] = "EndGame";
-    GameEnd[GameEnd["ContinueGame"] = 2] = "ContinueGame";
-})(GameEnd || (GameEnd = {}));
-
-
-/***/ }),
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["src-app-game-current-game-current-module"],{
 
 /***/ "./src/app/Game/current-game/current-game-component/current-game.component.css":
 /*!*************************************************************************************!*\
@@ -38,7 +18,7 @@ module.exports = ".table1 {\r\n    font-family: \"Lucida Sans Unicode\", \"Lucid
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Game number {{gameId}}</h1>\r\n<table class=\"table1\">\r\n    <tr><th>Name </th><th>Role </th><th>Cards </th><th>Total points </th><th>Status </th></tr>\r\n    <tr *ngFor=\"let player of currentGame.playersList\">\r\n        <td>{{player.name}}</td>\r\n        <td>{{getTypeRole(player.role)}}</td>\r\n        <td> \r\n            <div *ngFor=\"let card of player.playerCards\">\r\n                {{card.name}} {{card.suit}} {{card.value}}\r\n            </div>\r\n            <br />\r\n        </td>\r\n        <td>\r\n            {{player.cardSum}}\r\n        </td>\r\n        <td>\r\n            {{getTypeResult(player.result)}}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>{{currentGame.dealerPlayer.name}}</td>\r\n        <td>{{getTypeRole(currentGame.dealerPlayer.role)}}</td>\r\n        <td> \r\n            <div *ngFor=\"let card of currentGame.dealerPlayer.playerCards\">\r\n                {{card.name}} {{card.suit}} {{card.value}}\r\n            </div>\r\n            <br />\r\n        </td>\r\n        <td>\r\n            {{currentGame.dealerPlayer.cardSum}}\r\n        </td>\r\n        <td>\r\n            -\r\n        </td>\r\n    </tr>\r\n</table>\r\n<br>\r\n<br />\r\n<button kendoButton (click)=\"createNextRound()\">Take more</button>\r\n<br />\r\n<br />\r\n<button kendoButton (click)=\"endGame()\">Enough</button>"
+module.exports = "<h1>Game number {{gameId}}</h1>\r\n<table class=\"table1\">\r\n    <tr><th>Name </th><th>Role </th><th>Cards </th><th>Total points </th><th>Status </th></tr>\r\n    <tr *ngFor=\"let player of currentGame.players\">\r\n        <td>{{player.name}}</td>\r\n        <td>{{getTypeRole(player.role)}}</td>\r\n        <td> \r\n            <div *ngFor=\"let card of player.playerCards\">\r\n                {{card.name}} {{card.suit}} {{card.value}}\r\n            </div>\r\n            <br />\r\n        </td>\r\n        <td>\r\n            {{player.cardSum}}\r\n        </td>\r\n        <td>\r\n            {{getTypeResult(player.result)}}\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td>{{currentGame.dealerPlayer.name}}</td>\r\n        <td>{{getTypeRole(currentGame.dealerPlayer.role)}}</td>\r\n        <td> \r\n            <div *ngFor=\"let card of currentGame.dealerPlayer.playerCards\">\r\n                {{card.name}} {{card.suit}} {{card.value}}\r\n            </div>\r\n            <br />\r\n        </td>\r\n        <td>\r\n            {{currentGame.dealerPlayer.cardSum}}\r\n        </td>\r\n        <td>\r\n            -\r\n        </td>\r\n    </tr>\r\n</table>\r\n<br>\r\n<br />\r\n<button kendoButton (click)=\"createNextRound()\">Take more</button>\r\n<br />\r\n<br />\r\n<button kendoButton (click)=\"endGame()\">Enough</button>"
 
 /***/ }),
 
@@ -54,10 +34,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CurrentGameComponent", function() { return CurrentGameComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var src_app_Game_game_service_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/Game/game-service.service */ "./src/app/Game/game-service.service.ts");
-/* harmony import */ var Shared_models_enum_model_RoleEnumView__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! Shared/models/enum-model/RoleEnumView */ "./Shared/models/enum-model/RoleEnumView.ts");
-/* harmony import */ var Shared_models_enum_model_ResultEnumView__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! Shared/models/enum-model/ResultEnumView */ "./Shared/models/enum-model/ResultEnumView.ts");
-/* harmony import */ var Shared_models_enum_model_GameEnd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! Shared/models/enum-model/GameEnd */ "./Shared/models/enum-model/GameEnd.ts");
+/* harmony import */ var src_shared_services_game_service_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/shared/services/game-service.service */ "./src/shared/services/game-service.service.ts");
+/* harmony import */ var src_shared_models_enum_model_RoleEnumView__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/shared/models/enum-model/RoleEnumView */ "./src/shared/models/enum-model/RoleEnumView.ts");
+/* harmony import */ var src_shared_models_enum_model_ResultEnumView__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/shared/models/enum-model/ResultEnumView */ "./src/shared/models/enum-model/ResultEnumView.ts");
+/* harmony import */ var src_shared_models_enum_model_GameEndView__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/shared/models/enum-model/GameEndView */ "./src/shared/models/enum-model/GameEndView.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -88,7 +68,7 @@ var CurrentGameComponent = /** @class */ (function () {
         this.gameService.currentGame(gameId)
             .subscribe(function (currentGame) {
             _this.currentGame = currentGame;
-            if (currentGame.checkEndGame == Shared_models_enum_model_GameEnd__WEBPACK_IMPORTED_MODULE_5__["GameEnd"].EndGame) {
+            if (currentGame.checkEndGame == src_shared_models_enum_model_GameEndView__WEBPACK_IMPORTED_MODULE_5__["GameEndView"].EndGame) {
                 _this.endGame();
             }
         });
@@ -98,7 +78,7 @@ var CurrentGameComponent = /** @class */ (function () {
         this.gameService.nextRound(this.gameId)
             .subscribe(function (nextRound) {
             _this.currentGame = nextRound;
-            if (nextRound.checkEndGame == Shared_models_enum_model_GameEnd__WEBPACK_IMPORTED_MODULE_5__["GameEnd"].EndGame) {
+            if (nextRound.checkEndGame == src_shared_models_enum_model_GameEndView__WEBPACK_IMPORTED_MODULE_5__["GameEndView"].EndGame) {
                 _this.endGame();
             }
         });
@@ -107,10 +87,10 @@ var CurrentGameComponent = /** @class */ (function () {
         this.route.navigate(['/endGame', this.gameId]);
     };
     CurrentGameComponent.prototype.getTypeRole = function (id) {
-        return Shared_models_enum_model_RoleEnumView__WEBPACK_IMPORTED_MODULE_3__["RoleEnumView"][id];
+        return src_shared_models_enum_model_RoleEnumView__WEBPACK_IMPORTED_MODULE_3__["RoleEnumView"][id];
     };
     CurrentGameComponent.prototype.getTypeResult = function (id) {
-        return Shared_models_enum_model_ResultEnumView__WEBPACK_IMPORTED_MODULE_4__["ResultEnumView"][id];
+        return src_shared_models_enum_model_ResultEnumView__WEBPACK_IMPORTED_MODULE_4__["ResultEnumView"][id];
     };
     CurrentGameComponent.prototype.onButtonClick = function () {
         console.log('click');
@@ -121,7 +101,7 @@ var CurrentGameComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./current-game.component.html */ "./src/app/Game/current-game/current-game-component/current-game.component.html"),
             styles: [__webpack_require__(/*! ./current-game.component.css */ "./src/app/Game/current-game/current-game-component/current-game.component.css")]
         }),
-        __metadata("design:paramtypes", [src_app_Game_game_service_service__WEBPACK_IMPORTED_MODULE_2__["GameService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
+        __metadata("design:paramtypes", [src_shared_services_game_service_service__WEBPACK_IMPORTED_MODULE_2__["GameService"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
     ], CurrentGameComponent);
     return CurrentGameComponent;
 }());
@@ -130,9 +110,9 @@ var CurrentGameComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/Game/current-game/current-routing.module.ts":
+/***/ "./src/app/game/current-game/current-routing.module.ts":
 /*!*************************************************************!*\
-  !*** ./src/app/Game/current-game/current-routing.module.ts ***!
+  !*** ./src/app/game/current-game/current-routing.module.ts ***!
   \*************************************************************/
 /*! exports provided: CurrentRoutingModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -174,9 +154,9 @@ var CurrentRoutingModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/Game/current-game/current.module.ts":
+/***/ "./src/app/game/current-game/current.module.ts":
 /*!*****************************************************!*\
-  !*** ./src/app/Game/current-game/current.module.ts ***!
+  !*** ./src/app/game/current-game/current.module.ts ***!
   \*****************************************************/
 /*! exports provided: CurrentModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -185,9 +165,9 @@ var CurrentRoutingModule = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CurrentModule", function() { return CurrentModule; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _current_routing_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./current-routing.module */ "./src/app/Game/current-game/current-routing.module.ts");
+/* harmony import */ var _current_routing_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./current-routing.module */ "./src/app/game/current-game/current-routing.module.ts");
 /* harmony import */ var src_app_Game_current_game_current_game_component_current_game_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/Game/current-game/current-game-component/current-game.component */ "./src/app/Game/current-game/current-game-component/current-game.component.ts");
-/* harmony import */ var Shared_shared_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! Shared/shared.module */ "./Shared/shared.module.ts");
+/* harmony import */ var src_shared_shared_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/shared/shared.module */ "./src/shared/shared.module.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -204,7 +184,7 @@ var CurrentModule = /** @class */ (function () {
     CurrentModule = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
             imports: [
-                Shared_shared_module__WEBPACK_IMPORTED_MODULE_3__["SharedModule"],
+                src_shared_shared_module__WEBPACK_IMPORTED_MODULE_3__["SharedModule"],
                 _current_routing_module__WEBPACK_IMPORTED_MODULE_1__["CurrentRoutingModule"],
             ],
             declarations: [src_app_Game_current_game_current_game_component_current_game_component__WEBPACK_IMPORTED_MODULE_2__["CurrentGameComponent"]]
@@ -215,7 +195,27 @@ var CurrentModule = /** @class */ (function () {
 
 
 
+/***/ }),
+
+/***/ "./src/shared/models/enum-model/GameEndView.ts":
+/*!*****************************************************!*\
+  !*** ./src/shared/models/enum-model/GameEndView.ts ***!
+  \*****************************************************/
+/*! exports provided: GameEndView */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GameEndView", function() { return GameEndView; });
+var GameEndView;
+(function (GameEndView) {
+    GameEndView[GameEndView["None"] = 0] = "None";
+    GameEndView[GameEndView["EndGame"] = 1] = "EndGame";
+    GameEndView[GameEndView["ContinueGame"] = 2] = "ContinueGame";
+})(GameEndView || (GameEndView = {}));
+
+
 /***/ })
 
 }]);
-//# sourceMappingURL=src-app-Game-current-game-current-module.js.map
+//# sourceMappingURL=src-app-game-current-game-current-module.js.map

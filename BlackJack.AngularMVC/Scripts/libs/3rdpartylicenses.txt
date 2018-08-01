@@ -44,6 +44,90 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
+@progress/kendo-theme-default@2.54.1
+Apache-2.0
+This package is part of the following suites:
+
+* [Kendo UI for Angular](http://www.telerik.com/kendo-angular-ui/)
+* [Kendo UI for jQuery](http://www.telerik.com/kendo-ui)
+* [UI for ASP.NET MVC](http://www.telerik.com/aspnet-mvc)
+* [UI for ASP.NET Core](http://www.telerik.com/aspnet-core-ui)
+
+All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
+
+If you do not own a commercial license, the usage of this software shall be governed by the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+
+*Copyright © 2018 Telerik EAD. All rights reserved.*
+
+style-loader@0.21.0
+MIT
+Copyright JS Foundation and other contributors
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+@angular/animations@6.0.9
+MIT
+MIT
+
+@angular/common@6.0.9
+MIT
+MIT
+
+@angular/compiler@6.0.9
+MIT
+MIT
+
+@angular/core@6.0.9
+MIT
+MIT
+
+@angular/forms@6.0.9
+MIT
+MIT
+
+@angular/platform-browser-dynamic@6.0.9
+MIT
+MIT
+
+@angular/platform-browser@6.0.9
+MIT
+MIT
+
+@angular/router@6.0.9
+MIT
+MIT
+
+@progress/kendo-angular-buttons@4.1.2
+SEE LICENSE in LICENSE.md
+# Kendo UI for Angular
+
+This package is part of the [Kendo UI for Angular](http://www.telerik.com/kendo-angular-ui/) suite.
+
+## License
+
+This is commercial software. To use it, you need to agree to the [**Telerik End User License Agreement for Kendo UI Complete**](http://www.telerik.com/purchase/license-agreement/kendo-ui-complete). If you do not own a commercial license, this file shall be governed by the trial license terms.
+
+All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
+
+*Copyright © 2018 Telerik EAD. All rights reserved.*
+
 @progress/kendo-angular-dateinputs@3.4.4
 SEE LICENSE IN LICENSE.md
 # Kendo UI for Angular
@@ -57,6 +141,20 @@ This is commercial software. To use it, you need to agree to the [**Telerik End 
 All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
 
 *Copyright © 2018 Telerik EAD. All rights reserved.*
+
+@progress/kendo-angular-dropdowns@3.0.2
+SEE LICENSE in LICENSE.md
+# Kendo UI for Angular
+
+This package is part of the [Kendo UI for Angular](http://www.telerik.com/kendo-angular-ui/) suite.
+
+## License
+
+This is commercial software. To use it, you need to agree to the [**Telerik End User License Agreement for Kendo UI Complete**](http://www.telerik.com/purchase/license-agreement/kendo-ui-complete). If you do not own a commercial license, this file shall be governed by the trial license terms.
+
+All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
+
+*Copyright © 2018 Telerik AD. All rights reserved.*
 
 @progress/kendo-angular-excel-export@2.1.1
 SEE LICENSE IN LICENSE.md
@@ -114,6 +212,20 @@ All available Kendo UI commercial licenses may be obtained at http://www.telerik
 
 *Copyright © 2018 Telerik AD. All rights reserved.*
 
+@progress/kendo-angular-l10n@1.2.0
+SEE LICENSE IN LICENSE.md
+# Kendo UI for Angular
+
+This package is part of the [Kendo UI for Angular](http://www.telerik.com/kendo-angular-ui/) suite.
+
+## License
+
+This is commercial software. To use it, you need to agree to the [**Telerik End User License Agreement for Kendo UI Complete**](http://www.telerik.com/purchase/license-agreement/kendo-ui-complete). If you do not own a commercial license, this file shall be governed by the trial license terms.
+
+All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
+
+*Copyright © 2018 Telerik AD. All rights reserved.*
+
 @progress/kendo-angular-pdf-export@1.1.2
 SEE LICENSE IN LICENSE.md
 # Kendo UI for Angular
@@ -127,6 +239,34 @@ This is commercial software. To use it, you need to agree to the [**Telerik End 
 All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
 
 *Copyright © 2018 Telerik EAD. All rights reserved.*
+
+@progress/kendo-angular-popup@2.4.1
+SEE LICENSE in LICENSE.md
+# Kendo UI for Angular
+
+This package is part of the [Kendo UI for Angular](http://www.telerik.com/kendo-angular-ui/) suite.
+
+## License
+
+This is commercial software. To use it, you need to agree to the [**Telerik End User License Agreement for Kendo UI Complete**](http://www.telerik.com/purchase/license-agreement/kendo-ui-complete). If you do not own a commercial license, this file shall be governed by the trial license terms.
+
+All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
+
+*Copyright © 2018 Telerik AD. All rights reserved.*
+
+@progress/kendo-angular-resize-sensor@3.0.3
+SEE LICENSE IN LICENSE.md
+# Kendo UI for Angular
+
+This package is part of the [Kendo UI for Angular](http://www.telerik.com/kendo-angular-ui/) suite.
+
+## License
+
+This is commercial software. To use it, you need to agree to the [**Telerik End User License Agreement for Kendo UI Complete**](http://www.telerik.com/purchase/license-agreement/kendo-ui-complete). If you do not own a commercial license, this file shall be governed by the trial license terms.
+
+All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
+
+*Copyright © 2017 Telerik AD. All rights reserved.*
 
 @progress/kendo-data-query@1.4.0
 SEE LICENSE IN LICENSE.md
@@ -197,6 +337,16 @@ This is commercial software. To use it, you need to agree to the [**Telerik End 
 All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
 
 *Copyright © 2017 Telerik AD. All rights reserved.*
+
+@progress/kendo-popup-common@1.6.0
+Apache-2.0
+[Kendo UI for Angular](http://www.telerik.com/kendo-angular-ui)
+
+Copyright © 2017 Telerik AD. All rights reserved.
+
+This is commercial software. To use it, you need to agree to the [**Telerik End User License Agreement for Kendo UI Complete**](http://www.telerik.com/purchase/license-agreement/kendo-ui-complete). If you do not own a commercial license, this file shall be governed by the trial license terms.
+
+All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
 
 @telerik/kendo-draggable@1.8.2
 Apache-2.0
@@ -483,156 +633,6 @@ Apache License
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
-
-@progress/kendo-theme-default@2.54.1
-Apache-2.0
-This package is part of the following suites:
-
-* [Kendo UI for Angular](http://www.telerik.com/kendo-angular-ui/)
-* [Kendo UI for jQuery](http://www.telerik.com/kendo-ui)
-* [UI for ASP.NET MVC](http://www.telerik.com/aspnet-mvc)
-* [UI for ASP.NET Core](http://www.telerik.com/aspnet-core-ui)
-
-All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
-
-If you do not own a commercial license, the usage of this software shall be governed by the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
-
-*Copyright © 2018 Telerik EAD. All rights reserved.*
-
-style-loader@0.21.0
-MIT
-Copyright JS Foundation and other contributors
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-@angular/animations@6.0.9
-MIT
-MIT
-
-@angular/common@6.0.9
-MIT
-MIT
-
-@angular/compiler@6.0.9
-MIT
-MIT
-
-@angular/core@6.0.9
-MIT
-MIT
-
-@angular/forms@6.0.9
-MIT
-MIT
-
-@angular/platform-browser-dynamic@6.0.9
-MIT
-MIT
-
-@angular/platform-browser@6.0.9
-MIT
-MIT
-
-@angular/router@6.0.9
-MIT
-MIT
-
-@progress/kendo-angular-buttons@4.1.2
-SEE LICENSE in LICENSE.md
-# Kendo UI for Angular
-
-This package is part of the [Kendo UI for Angular](http://www.telerik.com/kendo-angular-ui/) suite.
-
-## License
-
-This is commercial software. To use it, you need to agree to the [**Telerik End User License Agreement for Kendo UI Complete**](http://www.telerik.com/purchase/license-agreement/kendo-ui-complete). If you do not own a commercial license, this file shall be governed by the trial license terms.
-
-All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
-
-*Copyright © 2018 Telerik EAD. All rights reserved.*
-
-@progress/kendo-angular-dropdowns@3.0.2
-SEE LICENSE in LICENSE.md
-# Kendo UI for Angular
-
-This package is part of the [Kendo UI for Angular](http://www.telerik.com/kendo-angular-ui/) suite.
-
-## License
-
-This is commercial software. To use it, you need to agree to the [**Telerik End User License Agreement for Kendo UI Complete**](http://www.telerik.com/purchase/license-agreement/kendo-ui-complete). If you do not own a commercial license, this file shall be governed by the trial license terms.
-
-All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
-
-*Copyright © 2018 Telerik AD. All rights reserved.*
-
-@progress/kendo-angular-l10n@1.2.0
-SEE LICENSE IN LICENSE.md
-# Kendo UI for Angular
-
-This package is part of the [Kendo UI for Angular](http://www.telerik.com/kendo-angular-ui/) suite.
-
-## License
-
-This is commercial software. To use it, you need to agree to the [**Telerik End User License Agreement for Kendo UI Complete**](http://www.telerik.com/purchase/license-agreement/kendo-ui-complete). If you do not own a commercial license, this file shall be governed by the trial license terms.
-
-All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
-
-*Copyright © 2018 Telerik AD. All rights reserved.*
-
-@progress/kendo-angular-popup@2.4.1
-SEE LICENSE in LICENSE.md
-# Kendo UI for Angular
-
-This package is part of the [Kendo UI for Angular](http://www.telerik.com/kendo-angular-ui/) suite.
-
-## License
-
-This is commercial software. To use it, you need to agree to the [**Telerik End User License Agreement for Kendo UI Complete**](http://www.telerik.com/purchase/license-agreement/kendo-ui-complete). If you do not own a commercial license, this file shall be governed by the trial license terms.
-
-All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
-
-*Copyright © 2018 Telerik AD. All rights reserved.*
-
-@progress/kendo-angular-resize-sensor@3.0.3
-SEE LICENSE IN LICENSE.md
-# Kendo UI for Angular
-
-This package is part of the [Kendo UI for Angular](http://www.telerik.com/kendo-angular-ui/) suite.
-
-## License
-
-This is commercial software. To use it, you need to agree to the [**Telerik End User License Agreement for Kendo UI Complete**](http://www.telerik.com/purchase/license-agreement/kendo-ui-complete). If you do not own a commercial license, this file shall be governed by the trial license terms.
-
-All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
-
-*Copyright © 2017 Telerik AD. All rights reserved.*
-
-@progress/kendo-popup-common@1.6.0
-Apache-2.0
-[Kendo UI for Angular](http://www.telerik.com/kendo-angular-ui)
-
-Copyright © 2017 Telerik AD. All rights reserved.
-
-This is commercial software. To use it, you need to agree to the [**Telerik End User License Agreement for Kendo UI Complete**](http://www.telerik.com/purchase/license-agreement/kendo-ui-complete). If you do not own a commercial license, this file shall be governed by the trial license terms.
-
-All available Kendo UI commercial licenses may be obtained at http://www.telerik.com/purchase/kendo-ui.
 
 tslib@1.9.3
 Apache-2.0

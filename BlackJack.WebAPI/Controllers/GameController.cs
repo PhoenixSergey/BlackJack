@@ -13,7 +13,7 @@ using System.Web.Http.Cors;
 
 namespace BlackJack.WebAPI.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [RoutePrefix("api/Game")]
     public class GameController : ApiController
     {
         #region references
@@ -27,28 +27,42 @@ namespace BlackJack.WebAPI.Controllers
         #endregion
 
         [HttpGet]
-        [Route("api/Game/Start")]
-        public async Task<System.Web.Http.IHttpActionResult> Start()
+        [Route("Start")]
+        public async Task<IHttpActionResult> Start()
         {
-            var allHumanPlayer = await _gameService.SelectAllHumanPlayers();
-            return Ok(allHumanPlayer);
+            try
+            {
+                var allHumanPlayer = await _gameService.SelectAllHumanPlayers();
+                return Ok(allHumanPlayer);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpGet]
-        [Route("api/Game/CurrentGame/{gameId}")]
-        public async Task<System.Web.Http.IHttpActionResult> CurrentGame(int gameId)
+        [Route("CurrentGame/{gameId}")]
+        public async Task<IHttpActionResult> CurrentGame(int gameId)
         {
-            var startGame = await _gameService.CreateFirstRoundForAllPlayers(gameId);
-            return Ok(startGame);
+            try
+            {
+                var startGame = await _gameService.CreateFirstRoundForAllPlayers(gameId);
+                return Ok(startGame);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost]
-        [Route("api/Game/CreateGame")]
-        public async Task<System.Web.Http.IHttpActionResult> CreateGame(StartInfoGame startInfoGame)
+        [Route("CreateGame")]
+        public async Task<IHttpActionResult> CreateGame(CreateGameGameView startInfoGame)
         {
 
-            string ourPlayers = startInfoGame.OurPlayers;
-            int countBot = startInfoGame.CountBot;
+            string ourPlayers = startInfoGame.OurPlayer;
+            int countBot = startInfoGame.BotCounts;
             try
             {
                 var gameId = await _gameService.CreateGame(ourPlayers, countBot);
@@ -56,7 +70,6 @@ namespace BlackJack.WebAPI.Controllers
             }
             catch (AppValidationException e)
             {
-
                 return BadRequest(e.Message);
 
             }
@@ -67,21 +80,36 @@ namespace BlackJack.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("api/Game/NextRound/{gameId}")]
-        public async Task<System.Web.Http.IHttpActionResult> NextRound(int gameId)
+        [Route("NextRound/{gameId}")]
+        public async Task<IHttpActionResult> NextRound(int gameId)
         {
-            var continueGame = await _gameService.ContinueGameForPlayers(gameId);
-            return Ok(continueGame);
+            try
+            {
+                var continueGame = await _gameService.ContinueGameForPlayers(gameId);
+                return Ok(continueGame);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
 
         }
 
         [HttpGet]
-        [Route("api/Game/EndGame/{gameId}")]
-        public async Task<System.Web.Http.IHttpActionResult> EndGame(int gameId)
+        [Route("EndGame/{gameId}")]
+        public async Task<IHttpActionResult> EndGame(int gameId)
         {
-            await _gameService.ContinueGameForDealer(gameId);
-            var endGame = await _gameService.GetInformationForEndGame(gameId);
-            return Ok(endGame);
+            try
+            {
+                await _gameService.ContinueGameForDealer(gameId);
+                var endGame = await _gameService.GetInformationForEndGame(gameId);
+                return Ok(endGame);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
         }
     }
 }

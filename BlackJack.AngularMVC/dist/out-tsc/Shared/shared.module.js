@@ -10,18 +10,24 @@ var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var kendo_angular_buttons_1 = require("@progress/kendo-angular-buttons");
 var forms_1 = require("@angular/forms");
+var kendo_angular_dropdowns_1 = require("@progress/kendo-angular-dropdowns");
+var kendo_angular_grid_1 = require("@progress/kendo-angular-grid");
 var SharedModule = /** @class */ (function () {
     function SharedModule() {
     }
     SharedModule = __decorate([
         core_1.NgModule({
             imports: [
+                kendo_angular_grid_1.GridModule,
+                kendo_angular_dropdowns_1.DropDownsModule,
                 common_1.CommonModule,
                 kendo_angular_buttons_1.ButtonsModule,
                 forms_1.FormsModule
             ],
             declarations: [],
             exports: [
+                kendo_angular_grid_1.GridModule,
+                kendo_angular_dropdowns_1.DropDownsModule,
                 common_1.CommonModule,
                 kendo_angular_buttons_1.ButtonsModule,
                 forms_1.FormsModule

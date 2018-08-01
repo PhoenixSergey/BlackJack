@@ -8,14 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var platform_browser_1 = require("@angular/platform-browser");
 var core_1 = require("@angular/core");
-var forms_1 = require("@angular/forms");
-var app_component_1 = require("./app.component");
-var heroes_component_1 = require("./heroes/heroes.component");
-var hero_detail_component_1 = require("./hero-detail/hero-detail.component");
-var start_component_1 = require("./start/start.component");
-var kendo_angular_buttons_1 = require("@progress/kendo-angular-buttons");
+var http_1 = require("@angular/common/http");
+var app_routing_module_1 = require(".//app-routing.module");
+var common_1 = require("@angular/common");
 var animations_1 = require("@angular/platform-browser/animations");
-var kendo_angular_dropdowns_1 = require("@progress/kendo-angular-dropdowns");
+var app_component_1 = require("./app.component");
+var game_service_service_1 = require("src/shared/services/game-service.service");
+var history_service_1 = require("src/shared/services/history.service");
+var shared_module_1 = require("src/shared/shared.module");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -23,19 +23,20 @@ var AppModule = /** @class */ (function () {
         core_1.NgModule({
             declarations: [
                 app_component_1.AppComponent,
-                heroes_component_1.HeroesComponent,
-                hero_detail_component_1.HeroDetailComponent,
-                start_component_1.StartComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
-                forms_1.FormsModule,
-                kendo_angular_buttons_1.ButtonsModule,
+                shared_module_1.SharedModule,
                 animations_1.BrowserAnimationsModule,
-                kendo_angular_dropdowns_1.DropDownsModule
+                app_routing_module_1.AppRoutingModule,
             ],
             providers: [
-            // no need to place any providers due to the `providedIn` flag...
+                { provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy },
+                game_service_service_1.GameService,
+                history_service_1.HistoryService
+            ],
+            exports: [
+                http_1.HttpClientModule
             ],
             bootstrap: [app_component_1.AppComponent]
         })

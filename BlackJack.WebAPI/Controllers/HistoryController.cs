@@ -1,9 +1,11 @@
 ﻿using System.Web.Http;
 using BusinessLogic.Interfaces;
 using System.Threading.Tasks;
+using System;
 
 namespace BlackJack.WebAPI.Controllers
 {
+    [RoutePrefix("api/History")]
     public class HistoryController : ApiController
     {
         #region references
@@ -15,19 +17,34 @@ namespace BlackJack.WebAPI.Controllers
         #endregion
 
         [HttpGet]
-        [Route("api/History/AllGames")]
+        [Route("AllGames")]
         public async Task<IHttpActionResult> AllGames()
         {
-            var allGames = await _historyService.SelectAllGames();
-            return Ok(allGames);
+            try
+            {
+                var allGames = await _historyService.SelectAllGames();
+                return Ok(allGames);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpGet]
-        [Route("api/History/GameDetails/{gameId}")]
+        [Route("GameDetails/{gameId}")]
         public async Task<IHttpActionResult> GameDetails(int gameId)
         {
-            var detailsGame = await _historyService.GetDetails(gameId);
-            return Ok(detailsGame);
+            try
+            {
+                var detailsGame = await _historyService.GetDetails(gameId);
+                return Ok(detailsGame);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
         }
     }
 }

@@ -2,7 +2,7 @@
 <h2>Result</h2>
 <table class="table1">
     <tr><th>Name </th><th>Role </th><th>Cards </th><th>Total points </th><th>Status </th></tr>
-    <tr *ngFor="let player of endGameInfo.playersList">
+    <tr *ngFor="let player of endGameInfo.players">
         <td>{{player.name}}</td>
         <td>{{getTypeRole(player.role)}}</td>
         <td>

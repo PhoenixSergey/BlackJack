@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GameService } from 'src/app/Game/game-service.service';
+import { GameService } from 'src/shared/services/game-service.service';
 import { Subscription } from 'rxjs';
-import { RoleEnumView } from 'Shared/models/enum-model/RoleEnumView';
-import { ResultEnumView } from 'Shared/models/enum-model/ResultEnumView';
-import { EndGameGameView } from 'Shared/models/game-model/EndGameGameView';
+import { RoleEnumView } from 'src/shared/models/enum-model/RoleEnumView';
+import { ResultEnumView } from 'src/shared/models/enum-model/ResultEnumView';
+import { EndGameGameView } from 'src/shared/models/game-model/EndGameGameView';
 
 
 @Component({
