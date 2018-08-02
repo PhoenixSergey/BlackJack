@@ -9,26 +9,23 @@ using AutoMapper;
 using BlackJack.ViewModels.GameViewModel.Enum;
 using BlackJack.Entities.Enum;
 using MoreLinq;
-using BlackJack.Config;
-using BusinessLogic.Services.Interfaces;
 
 namespace BusinessLogic.Services
 {
-    public class HistoryService : IHistoryService
+    public class HistoryService :BaseService, IHistoryService
     {
         #region references   
-        private readonly IBaseService _baseService;
+
         private readonly IRoundRepository _roundRepository;
         private readonly IPlayerGameRepository _playersGameRepository;
         private readonly IGameRepository _gameRepository;
         public HistoryService(
-            IBaseService baseService,
             IRoundRepository roundRepository,
             IPlayerGameRepository playerGameRepository,
             IGameRepository gameRepository
-            )
+            ):base(roundRepository)
         {
-            _baseService = baseService;
+
             _roundRepository = roundRepository;
             _playersGameRepository = playerGameRepository;
             _gameRepository = gameRepository;
@@ -63,7 +60,7 @@ namespace BusinessLogic.Services
             foreach (var player in playersOnTheGame)
             {
                 player.Result = (ResultEnumView)(await _playersGameRepository.GetPlayerStatusOnTheGame(gameId, player.Id));
-                player.CardSum = await _baseService.CalculationPlayerCardSum(player.Id, gameId);
+                player.CardSum = await CalculationPlayerCardSum(player.Id, gameId);
             }
             var dealerPlayer = playersOnTheGame.Where(x => x.Role == (RoleEnumView)Role.Dealer).First();
             playersOnTheGame.Remove(dealerPlayer);
@@ -73,24 +70,5 @@ namespace BusinessLogic.Services
             detailsGameViewModel.GameId = gameId;
             return detailsGameViewModel;
         }
-        //public async Task<int> CalculationPlayerCardSum(int playersOnTheGameId, int gameId)
-        //{
-        //    int cardSum = Config.ZeroingOutCardSum;
-        //    var cardsForPlayer = (await _roundRepository.GetAllRoundsInTheGame(gameId))
-        //    .Where(round => round.PlayerId == playersOnTheGameId)
-        //    .Select(round => round.Card)
-        //    .ToList();
-        //    foreach (var card in cardsForPlayer)
-        //    {
-        //        cardSum += card.Value;
-        //        if (cardSum > Config.BlackJack && card.Name == Config.AceName)
-        //        {
-        //            card.Value = Config.DoubleAcePoint;
-        //            cardSum -= Config.DoubleAcePointReduce;
-        //        }
-        //    }
-        //    return cardSum;
-        //}
     }
-
 }

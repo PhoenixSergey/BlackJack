@@ -15,7 +15,6 @@ var environment_1 = require("src/environments/environment");
 var GameService = /** @class */ (function () {
     function GameService(http) {
         this.http = http;
-        //public url: string = "http://localhost:58816/api/Game/"
         this.gameAPIControllerUrl = environment_1.environment.gameAPIControllerUrl;
     }
     GameService.prototype.start = function () {

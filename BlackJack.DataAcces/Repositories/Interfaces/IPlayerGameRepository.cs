@@ -8,7 +8,7 @@ namespace BlackJack.DataAcces.Interfaces
     public interface IPlayerGameRepository
     {
         Task<IEnumerable<PlayerGame>> GetAll();
-        Task Create(PlayerGame playerGames);
+        Task Create(List<PlayerGame> playerGames);
         Task<PlayerGame> GetHumanPlayerOnTheGame(int gameId);
         Task<PlayerGame> GetDealerPlayerOnTheGame(int gameId);
         Task<Result> GetPlayerStatusOnTheGame(int gameId, int playerId);

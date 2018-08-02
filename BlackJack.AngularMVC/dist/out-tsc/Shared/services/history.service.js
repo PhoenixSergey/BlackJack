@@ -15,7 +15,6 @@ var environment_1 = require("src/environments/environment");
 var HistoryService = /** @class */ (function () {
     function HistoryService(http) {
         this.http = http;
-        //public url: string = "http://localhost:58816/api/History/"
         this.historyAPIControllerUrl = environment_1.environment.historyAPIControllerUrl;
     }
     HistoryService.prototype.getAllGames = function () {

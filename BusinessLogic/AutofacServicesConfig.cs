@@ -2,7 +2,7 @@
 using BlackJack.DataAcces;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Services;
-using BusinessLogic.Services.Interfaces;
+
 
 namespace BusinessLogic
 {
@@ -13,7 +13,6 @@ namespace BusinessLogic
             builder.RegisterType<HistoryService>().As<IHistoryService>().InstancePerRequest();
             builder.RegisterType<MappingServices>().As<IMappingService>().InstancePerRequest();
             builder.RegisterType<GameService>().As<IGameService>().InstancePerRequest();
-            builder.RegisterType<BaseService>().As<IBaseService>().InstancePerRequest();
             AutofacRepositoriesConfig.ConfigureContainer(builder, connectionString);
         }
     }

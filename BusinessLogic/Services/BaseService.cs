@@ -1,16 +1,11 @@
 ﻿using BlackJack.Config;
 using BlackJack.DataAcces.Interfaces;
-using BlackJack.DataAcces.Repositorys;
-using BusinessLogic.Services.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BusinessLogic.Services
 {
-    public class BaseService : IBaseService
+    public class BaseService 
     {
         private readonly IRoundRepository _roundRepository;
 
@@ -19,9 +14,6 @@ namespace BusinessLogic.Services
          )
         {
             _roundRepository = roundRepository;
-        }
-        public BaseService()
-        {
         }
 
         public async Task<int> CalculationPlayerCardSum(int playersOnTheGameId, int gameId)

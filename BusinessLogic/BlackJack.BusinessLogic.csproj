@@ -80,7 +80,6 @@
     <Compile Include="AppValidationException.cs" />
     <Compile Include="AutofacServicesConfig.cs" />
     <Compile Include="Services\BaseService.cs" />
-    <Compile Include="Services\Interfaces\IBaseSevice.cs" />
     <Compile Include="Services\Interfaces\IGameService.cs" />
     <Compile Include="Services\Interfaces\IHistoryService.cs" />
     <Compile Include="Services\Interfaces\IMappingService.cs" />

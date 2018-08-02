@@ -2,6 +2,7 @@
 using BlackJack.Entities;
 using BlackJack.Entities.Enum;
 using Dapper;
+using Dapper.Contrib.Extensions;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -28,13 +29,12 @@ namespace BlackJack.DataAcces.Repositorys
             return playerGame;
         }
 
-        public async Task Create(PlayerGame playerGame)
+        public async Task Create(List<PlayerGame> playerGame)
         {
             using (IDbConnection connection = new SqlConnection(_connectionString))
             {
                 string processQuery = "INSERT INTO PlayerGame VALUES (@PlayerId,@GameId,@Result,@CreationDate)";
-
-                await connection.ExecuteAsync(processQuery, new{ playerGame.PlayerId, playerGame.GameId,playerGame.Result,playerGame.CreationDate });
+                await connection.ExecuteAsync(processQuery, playerGame);
             }
         }
 
