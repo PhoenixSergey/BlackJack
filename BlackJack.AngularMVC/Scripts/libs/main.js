@@ -254,7 +254,9 @@ __webpack_require__.r(__webpack_exports__);
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 var environment = {
-    production: false
+    production: false,
+    gameAPIControllerUrl: 'http://localhost:58816/api/Game/',
+    historyAPIControllerUrl: 'http://localhost:58816/api/History/'
 };
 /*
  * In development mode, to ignore zone related error stack frames such as
@@ -305,6 +307,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GameService", function() { return GameService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -316,29 +319,30 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var GameService = /** @class */ (function () {
     function GameService(http) {
         this.http = http;
-        this.url = "http://localhost:58816/api/Game/";
+        this.gameAPIControllerUrl = src_environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].gameAPIControllerUrl;
     }
     GameService.prototype.start = function () {
-        return this.http.get(this.url + "Start");
+        return this.http.get(this.gameAPIControllerUrl + "Start");
     };
     GameService.prototype.createGame = function (createGameGameView) {
         if (createGameGameView.ourPlayer == undefined) {
             createGameGameView.ourPlayer = "";
         }
         var body = { ourPlayer: createGameGameView.ourPlayer, botCounts: createGameGameView.botCounts };
-        return this.http.post(this.url + "CreateGame", body);
+        return this.http.post(this.gameAPIControllerUrl + "CreateGame", body);
     };
     GameService.prototype.currentGame = function (gameId) {
-        return this.http.get(this.url + "CurrentGame/" + gameId);
+        return this.http.get(this.gameAPIControllerUrl + "CurrentGame/" + gameId);
     };
     GameService.prototype.nextRound = function (gameId) {
-        return this.http.get(this.url + "NextRound/" + gameId);
+        return this.http.get(this.gameAPIControllerUrl + "NextRound/" + gameId);
     };
     GameService.prototype.endGame = function (gameId) {
-        return this.http.get(this.url + "EndGame/" + gameId);
+        return this.http.get(this.gameAPIControllerUrl + "EndGame/" + gameId);
     };
     GameService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -363,6 +367,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HistoryService", function() { return HistoryService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -374,16 +379,17 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var HistoryService = /** @class */ (function () {
     function HistoryService(http) {
         this.http = http;
-        this.url = "http://localhost:58816/api/History/";
+        this.historyAPIControllerUrl = src_environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].historyAPIControllerUrl;
     }
     HistoryService.prototype.getAllGames = function () {
-        return this.http.get(this.url + "AllGames");
+        return this.http.get(this.historyAPIControllerUrl + "AllGames");
     };
     HistoryService.prototype.getGameDetails = function (gameId) {
-        return this.http.get(this.url + "GameDetails/" + gameId);
+        return this.http.get(this.historyAPIControllerUrl + "GameDetails/" + gameId);
     };
     HistoryService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),

@@ -4,7 +4,9 @@
 // The list of file replacements can be found in `angular.json`.
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.environment = {
-    production: false
+    production: false,
+    gameAPIControllerUrl: 'http://localhost:58816/api/Game/',
+    historyAPIControllerUrl: 'http://localhost:58816/api/History/'
 };
 /*
  * In development mode, to ignore zone related error stack frames such as

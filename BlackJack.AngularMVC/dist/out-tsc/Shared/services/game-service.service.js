@@ -11,29 +11,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/common/http");
+var environment_1 = require("src/environments/environment");
 var GameService = /** @class */ (function () {
     function GameService(http) {
         this.http = http;
-        this.url = "http://localhost:58816/api/Game/";
+        //public url: string = "http://localhost:58816/api/Game/"
+        this.gameAPIControllerUrl = environment_1.environment.gameAPIControllerUrl;
     }
     GameService.prototype.start = function () {
-        return this.http.get(this.url + "Start");
+        return this.http.get(this.gameAPIControllerUrl + "Start");
     };
     GameService.prototype.createGame = function (createGameGameView) {
         if (createGameGameView.ourPlayer == undefined) {
             createGameGameView.ourPlayer = "";
         }
         var body = { ourPlayer: createGameGameView.ourPlayer, botCounts: createGameGameView.botCounts };
-        return this.http.post(this.url + "CreateGame", body);
+        return this.http.post(this.gameAPIControllerUrl + "CreateGame", body);
     };
     GameService.prototype.currentGame = function (gameId) {
-        return this.http.get(this.url + "CurrentGame/" + gameId);
+        return this.http.get(this.gameAPIControllerUrl + "CurrentGame/" + gameId);
     };
     GameService.prototype.nextRound = function (gameId) {
-        return this.http.get(this.url + "NextRound/" + gameId);
+        return this.http.get(this.gameAPIControllerUrl + "NextRound/" + gameId);
     };
     GameService.prototype.endGame = function (gameId) {
-        return this.http.get(this.url + "EndGame/" + gameId);
+        return this.http.get(this.gameAPIControllerUrl + "EndGame/" + gameId);
     };
     GameService = __decorate([
         core_1.Injectable(),

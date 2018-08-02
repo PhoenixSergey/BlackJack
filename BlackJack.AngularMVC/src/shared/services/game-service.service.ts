@@ -5,15 +5,16 @@ import { StartInfoGameView } from 'src/shared/models/game-model/StartInfoGameVie
 import { CurrentGameGameView } from 'src/shared/models/game-model/CurrentGameGameView';
 import { EndGameGameView } from 'src/shared/models/game-model/EndGameGameView';
 import { CreateGameGameView } from 'src/shared/models/game-model/createGameGameView'
+import { environment } from 'src/environments/environment';
 @Injectable()
 
 export class GameService {
 
-    public url: string = "http://localhost:58816/api/Game/"
+    private gameAPIControllerUrl = environment.gameAPIControllerUrl;
     constructor(private http: HttpClient) { }
 
     public start(): Observable<StartInfoGameView> {
-        return this.http.get<StartInfoGameView>(this.url+"Start");
+        return this.http.get<StartInfoGameView>(this.gameAPIControllerUrl+"Start");
     }
 
     public createGame(createGameGameView: CreateGameGameView): Observable<number> {
@@ -21,18 +22,18 @@ export class GameService {
             createGameGameView.ourPlayer = "";
         }
         const body = { ourPlayer: createGameGameView.ourPlayer, botCounts: createGameGameView.botCounts };
-        return this.http.post<number>(this.url + "CreateGame", body);
+        return this.http.post<number>(this.gameAPIControllerUrl + "CreateGame", body);
     }
 
     public currentGame(gameId: number): Observable<CurrentGameGameView> {
-        return this.http.get<CurrentGameGameView>(this.url + "CurrentGame/" + gameId);
+        return this.http.get<CurrentGameGameView>(this.gameAPIControllerUrl + "CurrentGame/" + gameId);
     }
 
     public nextRound(gameId: number): Observable<CurrentGameGameView> {
-        return this.http.get<CurrentGameGameView>(this.url + "NextRound/" + gameId);
+        return this.http.get<CurrentGameGameView>(this.gameAPIControllerUrl + "NextRound/" + gameId);
     }
 
     public endGame(gameId: number): Observable<EndGameGameView> {
-        return this.http.get<EndGameGameView>(this.url + "EndGame/" + gameId);
+        return this.http.get<EndGameGameView>(this.gameAPIControllerUrl + "EndGame/" + gameId);
     }
 }

@@ -18,7 +18,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h2>All Games</h2>\r\n<kendo-grid [data]=\"allgames.games\">\r\n    <kendo-grid-column field=\"id\" title=\"Game Id\"></kendo-grid-column>\r\n    <kendo-grid-column field=\"creationDate\" title=\"Game date\"></kendo-grid-column>\r\n    <kendo-grid-command-column  width=\"220\">\r\n        <ng-template kendoGridCellTemplate let-dataItem >\r\n            <button kendoGridEditCommand (click)=\"showDetails(dataItem.id)\">Details</button>\r\n        </ng-template>\r\n    </kendo-grid-command-column>\r\n</kendo-grid>\r\n\r\n<button kendoButton (click)=\"startNewGame()\">Start new game</button>\r\n"
+module.exports = "<h2>All Games</h2>\r\n<kendo-grid [data]=\"allgames.games\">\r\n    <kendo-grid-column field=\"id\" title=\"Game Id\"></kendo-grid-column>\r\n    <kendo-grid-column field=\"creationDate\" title=\"Game date\"></kendo-grid-column>\r\n    <kendo-grid-command-column  width=\"220\">\r\n        <ng-template kendoGridCellTemplate let-dataItem >\r\n            <button kendoGridEditCommand (click)=\"showDetails(dataItem.id)\">Details</button>\r\n        </ng-template>\r\n    </kendo-grid-command-column>\r\n</kendo-grid>\r\n<br />\r\n<button kendoButton (click)=\"startNewGame()\">Start new game</button>\r\n"
 
 /***/ }),
 
